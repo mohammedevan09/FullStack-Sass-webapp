@@ -16,6 +16,10 @@
   fill: #1310c6;
 }
 
+.menu-color-stroke > svg > path {
+  stroke: #1310c6;
+}
+
 .gradient {
   border-radius: 20px;
   background: linear-gradient(

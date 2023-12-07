@@ -95,8 +95,13 @@ const Menu = () => {
             >
               <div
                 className={`flex-col justify-center items-center inline-flex ${
-                  active === i && 'menu-color'
-                }`}
+                  active === i
+                    ? active === 7
+                      ? 'menu-color-stroke'
+                      : 'menu-color'
+                    : ''
+                }
+`}
               >
                 {item?.icon}
               </div>
