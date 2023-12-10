@@ -3,16 +3,24 @@
 import ThanksAcceptProposalModal from '@/components/modals/proposalsModals/ThanksAcceptProposalModal'
 import {
   AnyQuestionsIcon,
+  BackButtonIcon,
   CheckSignIcon4,
   DollarSignButtonIcon,
   TimeSignButtonIcon,
 } from '@/staticData/Icon'
+import Link from 'next/link'
 import { useState } from 'react'
 
 const MainViewProposalsPage = ({ params }) => {
   const [openModal, setOpenModal] = useState(false)
   return (
     <div className="w-[942px]">
+      <Link
+        href={'/dashboard/proposals'}
+        className="flex justify-start items-center w-[120px] gap-1 my-10 font-semibold text-xl -ml-1"
+      >
+        <BackButtonIcon /> Go Back
+      </Link>
       <div className="my-16 bg-white rounded-[15px]">
         <div className="grid py-10 justify-center items-center w-full gap-3">
           <h1 className="text-2xl font-semibold">

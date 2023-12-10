@@ -7,11 +7,15 @@ import {
   statisticsData,
   ticketsData,
 } from '@/staticData/MainData'
+import { setActiveMenu } from '@/store/reducers/activeReducer'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+import { useDispatch } from 'react-redux'
 
 const Main = () => {
   const router = useRouter()
+  const dispatch = useDispatch()
+
   return (
     <div className="w-full">
       <div className="flex items-end my-12">
@@ -110,9 +114,9 @@ const Main = () => {
             <tr className="text-zinc-700 text-xl font-semibold tracking-tight text-left">
               <th>ID</th>
               <th>Projects Name</th>
-              <th>Status</th>
-              <th>Progress</th>
-              <th>Track</th>
+              <th className="text-center">Status</th>
+              <th className="text-center">Progress</th>
+              <th className="text-center">Track</th>
             </tr>
 
             {projectData?.map((item, i) => (
@@ -122,7 +126,7 @@ const Main = () => {
                     #{item?.orderId}
                   </div>
                 </td>
-                <td className="py-7 w-[400px]">
+                <td className="py-7 w-[350px]">
                   <div className="text-zinc-700 text-xl font-normal flex justify-start items-center gap-3">
                     {/* <div className="w-10">
                       <Image
@@ -136,9 +140,9 @@ const Main = () => {
                     {item?.name}
                   </div>
                 </td>
-                <td className="py-7">
+                <td className="py-7 text-center">
                   <div
-                    className={`w-[117px] h-[34px] bg-opacity-20 rounded-[20px] flex justify-center items-center gap-2 ${
+                    className={`mx-auto w-[117px] h-[34px] bg-opacity-20 rounded-[20px] flex justify-center items-center gap-2 ${
                       item?.status?.toLocaleLowerCase() === 'pending'
                         ? 'bg-rose-600'
                         : item?.status?.toLocaleLowerCase() === 'done'
@@ -158,13 +162,14 @@ const Main = () => {
                     {item?.status}
                   </div>
                 </td>
-                <td className="py-7">{item?.progress}</td>
-                <td className="py-7">
+                <td className="py-7 text-center">{item?.progress}</td>
+                <td className="py-7 text-center">
                   <button
-                    className=" w-[100px] h-[34px] bg-blue-800 rounded-[10px] text-white text-center"
-                    onClick={() =>
+                    className=" w-[100px] h-[34px] bg-blue-800 rounded-[10px] text-white text-center mx-auto"
+                    onClick={() => {
                       router.push(`/dashboard/all-projects/${item?.orderId}`)
-                    }
+                      dispatch(setActiveMenu(2))
+                    }}
                   >
                     Open
                   </button>

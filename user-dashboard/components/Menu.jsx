@@ -3,8 +3,6 @@
 import { LogoutIcon, SettingsIcon } from '@/staticData/Icon'
 import Image from 'next/image'
 import Link from 'next/link'
-import { usePathname, useRouter } from 'next/navigation'
-import { useState } from 'react'
 
 import {
   AllProjectsIcon,
@@ -17,12 +15,13 @@ import {
   ProposalsIcon,
   SubscriptionIcon,
 } from '../staticData/Icon'
+import { useDispatch, useSelector } from 'react-redux'
+import { setActiveMenu } from '@/store/reducers/activeReducer'
 
 const Menu = () => {
-  const [active, setActive] = useState(null)
+  const dispatch = useDispatch()
 
-  const pathname = usePathname()
-  const router = useRouter()
+  const { currentActiveMenu } = useSelector((state) => state?.active)
 
   const MenuData = [
     {
@@ -91,12 +90,12 @@ const Menu = () => {
               href={item?.link}
               key={i}
               className="flex justify-start items-center gap-3"
-              onClick={() => setActive(i)}
+              onClick={() => dispatch(setActiveMenu(i))}
             >
               <div
-                className={`flex-col justify-center items-center inline-flex ${
-                  active === i
-                    ? active === 7
+                className={`flex-col justify-center items-center flex ${
+                  currentActiveMenu === i
+                    ? currentActiveMenu === 7
                       ? 'menu-color-stroke'
                       : 'menu-color'
                     : ''
@@ -107,7 +106,7 @@ const Menu = () => {
               </div>
               <div
                 className={`text-xl ${
-                  active === i
+                  currentActiveMenu === i
                     ? 'text-blue-800 font-medium'
                     : 'text-slate-500 font-normal'
                 }`}
@@ -121,18 +120,18 @@ const Menu = () => {
           <Link
             href={'/dashboard/settings'}
             className="mb-4 flex justify-center items-center gap-2 cursor-pointer"
-            onClick={() => setActive(9)}
+            onClick={() => dispatch(setActiveMenu(9))}
           >
             <div
               className={`flex-col justify-center items-center inline-flex ${
-                active === 9 && 'menu-color'
+                currentActiveMenu === 9 && 'menu-color'
               }`}
             >
               <SettingsIcon />
             </div>
             <div
               className={`text-xl ${
-                active === 9
+                currentActiveMenu === 9
                   ? 'text-blue-800 font-medium'
                   : 'text-slate-500 font-normal'
               }`}

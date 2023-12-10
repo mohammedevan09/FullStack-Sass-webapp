@@ -10,7 +10,7 @@ const layout = ({ children }) => {
         </div>
         <div className="grid w-full">
           <Header />
-          {children}{' '}
+          {children}
         </div>
       </div>
     </div>

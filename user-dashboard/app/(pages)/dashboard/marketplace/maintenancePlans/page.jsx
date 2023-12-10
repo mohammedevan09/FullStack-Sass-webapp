@@ -1,4 +1,6 @@
+import { BackButtonIcon } from '@/staticData/Icon'
 import MainMaintenancePlans from './MainMaintenancePlans'
+import Link from 'next/link'
 
 const page = () => {
   const pricing = [
@@ -42,7 +44,13 @@ const page = () => {
   ]
   return (
     <div className="grid items-center justify-center">
-      <div className="grid items-center my-20">
+      <div className="grid items-center mb-10">
+        <Link
+          href={'/dashboard/marketplace'}
+          className="flex justify-start items-center w-[200px] gap-1 my-10 font-semibold text-xl -ml-1"
+        >
+          <BackButtonIcon /> See Other Plans
+        </Link>
         <h5 className="text-blue-800 text-base font-semibold leading-normal">
           Pricing
         </h5>

@@ -1,8 +1,9 @@
 'use client'
 
-import { FilterByIdIcon } from '@/staticData/Icon'
+import { BackButtonIcon, FilterByIdIcon } from '@/staticData/Icon'
 import { dropData2 } from '@/staticData/MainData'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useState } from 'react'
 
 const MainViewAllProjectsPage = ({ params }) => {
@@ -47,6 +48,12 @@ const MainViewAllProjectsPage = ({ params }) => {
   const [dropOpen, setDropOpen] = useState(false)
   return (
     <div className="my-14">
+      <Link
+        href={'/dashboard/all-projects'}
+        className="flex justify-start items-center w-[120px] gap-1 mb-10 font-semibold text-xl -ml-1"
+      >
+        <BackButtonIcon /> Go Back
+      </Link>
       <div className="flex justify-between items-start">
         <div>
           <h1 className="text-2xl font-semibold">
