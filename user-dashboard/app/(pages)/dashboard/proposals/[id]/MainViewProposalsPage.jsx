@@ -39,10 +39,10 @@ const MainViewProposalsPage = ({ params }) => {
               <span className="text-black text-base font-bold">
                 Problem overview:{' '}
               </span>
-              Current online store has problems with loading speeds, inventory
+              {`Current online store has problems with loading speeds, inventory
               management has limitations when it comes to setting up and
               managing product variations, and the current payment provider
-              doesn't support all desired payment methods
+              doesn't support all desired payment methods`}
             </p>
             <p className="text-base font-normal bg-green-500 bg-opacity-20 rounded-[15px] py-8 px-12 text-center">
               <span className="text-black text-base font-bold">

@@ -1,11 +1,8 @@
 'use client'
 
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import MainSettingsLayoutPage from './MainSettingsLayoutPage'
 
 const layout = ({ children }) => {
-  const pathname = usePathname()
-
   const allSettings = [
     {
       title: 'Profile',
@@ -35,16 +32,7 @@ const layout = ({ children }) => {
         Settings
       </div>
       <div className="w-[1180px] h-[0px] border border-stone-300"></div>
-      <div className="flex justify-center items-center w-[500px] ml-20 my-3 gap-16 text-black text-xl">
-        {allSettings?.map((item, i) => (
-          <div
-            key={i}
-            className={`${item?.link === pathname && 'font-semibold'}`}
-          >
-            <Link href={item?.link}>{item?.title}</Link>
-          </div>
-        ))}
-      </div>
+      <MainSettingsLayoutPage allSettings={allSettings} />
       <div className="w-[1180px] h-[0px] border border-stone-300"></div>
       {children}
     </div>

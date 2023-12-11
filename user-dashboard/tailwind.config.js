@@ -8,8 +8,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        iconNotActive: '#6C7893 ',
-        iconActive: '#1310C6 ',
+        iconNotActive: '#6C7893',
+        iconActive: '#1310C6',
       },
     },
   },

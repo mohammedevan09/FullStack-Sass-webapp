@@ -1,6 +1,11 @@
 'use client'
 
-import { LogoutIcon, SettingsIcon } from '@/staticData/Icon'
+import {
+  FeedbackIcon,
+  HowToGuideIcon,
+  LogoutIcon,
+  SettingsIcon,
+} from '@/staticData/Icon'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -69,6 +74,16 @@ const Menu = () => {
       icon: <MeetingIcon color="#6C7893" />,
       link: '/dashboard/meetings',
     },
+    {
+      name: 'How To Guide',
+      icon: <HowToGuideIcon color="#6C7893" />,
+      link: '/dashboard/how-to-guide',
+    },
+    {
+      name: 'Feedback',
+      icon: <FeedbackIcon color="#6C7893" />,
+      link: '/dashboard/feedback',
+    },
   ]
 
   return (
@@ -120,18 +135,18 @@ const Menu = () => {
           <Link
             href={'/dashboard/settings'}
             className="mb-4 flex justify-center items-center gap-2 cursor-pointer"
-            onClick={() => dispatch(setActiveMenu(9))}
+            onClick={() => dispatch(setActiveMenu(11))}
           >
             <div
               className={`flex-col justify-center items-center inline-flex ${
-                currentActiveMenu === 9 && 'menu-color'
+                currentActiveMenu === 11 && 'menu-color'
               }`}
             >
               <SettingsIcon />
             </div>
             <div
               className={`text-xl ${
-                currentActiveMenu === 9
+                currentActiveMenu === 11
                   ? 'text-blue-800 font-medium'
                   : 'text-slate-500 font-normal'
               }`}

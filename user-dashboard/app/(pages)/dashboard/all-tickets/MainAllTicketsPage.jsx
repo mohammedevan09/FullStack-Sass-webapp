@@ -25,7 +25,7 @@ const MainAllTicketsPage = ({ projects }) => {
         <AddProjectIcon /> Add Tickets
       </Link>
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-semibold">All Projects</h2>
+        <h2 className="text-2xl font-semibold">All Tickets</h2>
         <div className="flex gap-9">
           <div className="flex px-4 py-[7px] bg-white rounded-xl justify-start items-center gap-4">
             <SearchByIdIcon />

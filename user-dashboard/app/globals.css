@@ -12,7 +12,12 @@
   }
 }
 
-.menu-color > svg > path {
+.bg-blue-800 {
+  background-color: #1310c6;
+}
+
+.menu-color > svg > path,
+.menu-color > svg > g > path {
   fill: #1310c6;
 }
 
