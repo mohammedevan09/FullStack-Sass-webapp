@@ -98,7 +98,7 @@ const Menu = () => {
         />
       </div>
       <hr className="h-px bg-gray-200 border-0 dark:bg-gray-300" />
-      <div className="grid justify-between gap-14 items-start">
+      <div className="grid justify-between gap-14 items-start h-screen overflow-y-scroll">
         <div className="mx-[51px] grid justify-center items-start gap-10 mt-5">
           {MenuData?.map((item, i) => (
             <Link
@@ -131,7 +131,7 @@ const Menu = () => {
             </Link>
           ))}
         </div>
-        <div className="text-center">
+        <div className="text-center mb-20">
           <Link
             href={'/dashboard/settings'}
             className="mb-4 flex justify-center items-center gap-2 cursor-pointer"

@@ -10,11 +10,16 @@ import {
 import { setActiveMenu } from '@/store/reducers/activeReducer'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 
 const Main = () => {
   const router = useRouter()
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(setActiveMenu(0))
+  }, [dispatch])
 
   return (
     <div className="w-full">
@@ -42,7 +47,7 @@ const Main = () => {
         <h4 className="text-neutral-700 text-2xl font-medium mb-[31px]">
           Statistics
         </h4>
-        <div className="flex justify-between items-center text-white">
+        <div className="flex justify-between items-center text-white gap-4">
           {statisticsData?.map((item, i) => (
             <div
               key={i}

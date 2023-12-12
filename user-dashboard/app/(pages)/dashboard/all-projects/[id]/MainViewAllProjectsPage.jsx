@@ -4,7 +4,8 @@ import { BackButtonIcon, FilterByIdIcon } from '@/staticData/Icon'
 import { dropData2 } from '@/staticData/MainData'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { useEffect, useRef, useState } from 'react'
 
 const MainViewAllProjectsPage = ({ params }) => {
   const projectTracking = [
@@ -45,15 +46,35 @@ const MainViewAllProjectsPage = ({ params }) => {
       ],
     },
   ]
+
+  const router = useRouter()
+
   const [dropOpen, setDropOpen] = useState(false)
+
+  const dropRef = useRef()
+
+  useEffect(() => {
+    const handleClick = (e) => {
+      if (dropRef.current && !dropRef.current.contains(e.target)) {
+        setDropOpen(false)
+      }
+    }
+
+    document.addEventListener('click', handleClick)
+
+    return () => {
+      document.removeEventListener('click', handleClick)
+    }
+  }, [dropRef])
+
   return (
     <div className="my-14">
-      <Link
-        href={'/dashboard/all-projects'}
+      <button
+        onClick={() => router.back()}
         className="flex justify-start items-center w-[120px] gap-1 mb-10 font-semibold text-xl -ml-1"
       >
         <BackButtonIcon /> Go Back
-      </Link>
+      </button>
       <div className="flex justify-between items-start">
         <div>
           <h1 className="text-2xl font-semibold">
@@ -69,6 +90,7 @@ const MainViewAllProjectsPage = ({ params }) => {
                 e.preventDefault()
                 setDropOpen((prev) => !prev)
               }}
+              ref={dropRef}
             >
               Take Action <FilterByIdIcon />
             </button>

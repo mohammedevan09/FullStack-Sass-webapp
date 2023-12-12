@@ -7,10 +7,10 @@ import {
   RemainingHoursIcon,
   SpentHourIcon,
 } from '@/staticData/Icon'
-import { dropData2 } from '@/staticData/MainData'
+import { dropData3 } from '@/staticData/MainData'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 const MainViewHourlyPlanPage = ({ params }) => {
   const [dropOpen, setDropOpen] = useState(false)
@@ -102,6 +102,22 @@ const MainViewHourlyPlanPage = ({ params }) => {
       ],
     },
   ]
+
+  const dropRef = useRef()
+
+  useEffect(() => {
+    const handleClick = (e) => {
+      if (dropRef.current && !dropRef.current.contains(e.target)) {
+        setDropOpen(false)
+      }
+    }
+
+    document.addEventListener('click', handleClick)
+
+    return () => {
+      document.removeEventListener('click', handleClick)
+    }
+  }, [dropRef])
   return (
     <div className="my-14">
       <Link
@@ -125,6 +141,7 @@ const MainViewHourlyPlanPage = ({ params }) => {
                 e.preventDefault()
                 setDropOpen((prev) => !prev)
               }}
+              ref={dropRef}
             >
               Take Action <FilterByIdIcon />
             </button>
@@ -133,7 +150,7 @@ const MainViewHourlyPlanPage = ({ params }) => {
                 dropOpen ? 'h-full mt-2' : 'h-0'
               }`}
             >
-              {dropData2?.map((item, i) => (
+              {dropData3?.map((item, i) => (
                 <div key={i}>
                   <button className="border-t pt-3 border-zinc-400 hover:text-blue-600">
                     {item?.title}

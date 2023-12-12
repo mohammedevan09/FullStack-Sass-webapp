@@ -10,12 +10,40 @@ import {
   StoreIcon,
 } from '@/staticData/Icon'
 import { dropdownData, notificationDropDownData } from '@/staticData/MainData'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 const Header = () => {
   const [dropOpen, setDropOpen] = useState(false)
   const [notificationDropOpen, setNotificationDropOpen] = useState(false)
   const [messageDropOpen, setMessageDropOpen] = useState(false)
+
+  const dropRef = useRef()
+  const notificationRef = useRef()
+  const messageRef = useRef()
+
+  useEffect(() => {
+    const handleClick = (e) => {
+      if (dropRef.current && !dropRef.current.contains(e.target)) {
+        setDropOpen(false)
+      }
+      if (
+        notificationRef.current &&
+        !notificationRef.current.contains(e.target)
+      ) {
+        setNotificationDropOpen(false)
+      }
+      if (messageRef.current && !messageRef.current.contains(e.target)) {
+        setMessageDropOpen(false)
+      }
+    }
+
+    document.addEventListener('click', handleClick)
+
+    return () => {
+      document.removeEventListener('click', handleClick)
+    }
+  }, [dropRef, notificationRef, messageRef])
+
   return (
     <div className="flex justify-end items-start gap-28 my-5">
       <div></div>
@@ -28,7 +56,7 @@ const Header = () => {
         />
       </div>
       <div className="flex justify-center items-start gap-6">
-        <div className="relative">
+        <div className="relative" ref={messageRef}>
           <div
             className="rounded-lg relative w-10 h-10 cursor-pointer"
             onClick={() => setMessageDropOpen((prev) => !prev)}
@@ -83,7 +111,7 @@ const Header = () => {
             </div>
           )}
         </div>
-        <div className="relative">
+        <div className="relative" ref={notificationRef}>
           <div
             className="rounded-lg relative w-10 h-10 cursor-pointer"
             onClick={() => setNotificationDropOpen((prev) => !prev)}
@@ -139,7 +167,10 @@ const Header = () => {
           )}
         </div>
         <div className="relative w-[150px]">
-          <div className="dropdown-shadow bg-white py-1 px-3 font-semibold bg-opacity-40 rounded-lg absolute">
+          <div
+            className="dropdown-shadow bg-white py-1 px-3 font-semibold bg-opacity-40 rounded-lg absolute"
+            ref={dropRef}
+          >
             <button
               className="flex justify-center items-center gap-1"
               onClick={(e) => {

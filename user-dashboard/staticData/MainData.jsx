@@ -30,6 +30,31 @@ export const dropData2 = [
   { title: 'Request Revision' },
 ]
 
+export const dropData3 = [
+  { title: 'Close The Project' },
+  { title: 'Renew The Plan' },
+]
+
+export const dropData4 = [
+  { title: 'Cancel Subscription' },
+  { title: 'Renew The Plan' },
+]
+
+export const filterByStatusData = [
+  {
+    title: 'Item 1',
+  },
+  {
+    title: 'Item 2',
+  },
+  {
+    title: 'Item 3',
+  },
+  {
+    title: 'Item 4',
+  },
+]
+
 export const notificationDropDownData = [
   {
     title: 'D-marketing subscription',

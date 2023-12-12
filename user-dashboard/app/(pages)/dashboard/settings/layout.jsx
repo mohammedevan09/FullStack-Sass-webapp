@@ -31,9 +31,9 @@ const layout = ({ children }) => {
       <div className="text-gray-800 text-2xl font-bold mt-20 mb-8 ml-[92px]">
         Settings
       </div>
-      <div className="w-[1180px] h-[0px] border border-stone-300"></div>
+      <div className="h-[0px] border border-stone-300"></div>
       <MainSettingsLayoutPage allSettings={allSettings} />
-      <div className="w-[1180px] h-[0px] border border-stone-300"></div>
+      <div className="h-[0px] border border-stone-300"></div>
       {children}
     </div>
   )

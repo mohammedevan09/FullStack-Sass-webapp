@@ -32,7 +32,7 @@ const page = () => {
         {services?.map((item, i) => (
           <div
             key={i}
-            className="grid items-center justify-center py-5 px-6 bg-white rounded-[15px] gap-6"
+            className="grid items-center justify-center py-5 px-10 bg-white rounded-[15px] gap-6"
           >
             <div className="grid justify-center gap-1">
               <div className="mx-auto">{item?.icon}</div>

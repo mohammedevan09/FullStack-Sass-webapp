@@ -7,13 +7,33 @@ import {
 } from '@/staticData/Icon'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { filterByStatusData } from '@/staticData/MainData'
+import { useEffect, useRef, useState } from 'react'
 
 const MainSubscriptionPage = ({ projects }) => {
   const router = useRouter()
+
+  const [dropOpen, setDropOpen] = useState(false)
+
+  const dropRef = useRef()
+
+  useEffect(() => {
+    const handleClick = (e) => {
+      if (dropRef.current && !dropRef.current.contains(e.target)) {
+        setDropOpen(false)
+      }
+    }
+
+    document.addEventListener('click', handleClick)
+
+    return () => {
+      document.removeEventListener('click', handleClick)
+    }
+  }, [])
   return (
     <>
       <Link
-        href={'/dashboard/marketplace'}
+        href={'/dashboard/marketplace/maintenancePlans'}
         className="mt-16 mb-14 px-[14px] py-3 w-[190px] flex items-center justify-center gap-2 rounded-lg shadow border-2 border-blue-800 text-blue-800 text-xl font-medium"
       >
         <AddProjectIcon /> Add Plan
@@ -29,12 +49,38 @@ const MainSubscriptionPage = ({ projects }) => {
               placeholder="Search by name, ID"
             />
           </div>
-          <div className="w-[185px] h-[37px] bg-white bg-opacity-25 rounded-[5px] flex justify-center items-center gap-2">
-            Filter by status <FilterByIdIcon />
+          <div className="relative w-[185px]" ref={dropRef}>
+            <div className="bg-white py-1 px-3 bg-opacity-40 rounded-[5px] absolute text-base backdrop-blur-[40px]">
+              <button
+                className="flex justify-center items-center h-[30px] gap-2"
+                onClick={(e) => {
+                  e.preventDefault()
+                  setDropOpen((prev) => !prev)
+                }}
+              >
+                Filter by status <FilterByIdIcon />
+              </button>
+              <div
+                className={`grid justify-normal items-center gap-3 overflow-hidden font-semibold ${
+                  dropOpen ? 'h-full mt-2' : 'h-0'
+                }`}
+              >
+                {filterByStatusData?.map((item, i) => (
+                  <div
+                    className="border-t pt-3 border-zinc-400 text-center"
+                    key={i}
+                  >
+                    <button className=" hover:text-blue-600">
+                      {item?.title}
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      <div className="w-full bg-white rounded-[20.37px] px-7 py-8 my-14">
+      <div className="w-[1111px] bg-white rounded-[20.37px] px-7 py-8 my-14">
         <table className="w-full ">
           <tbody>
             <tr className="text-zinc-700 text-xl font-semibold tracking-tight text-left">

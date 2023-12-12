@@ -11,7 +11,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 
-const MainViewSubscriptionPage = ({ params }) => {
+const MainOpenTicketViewPage = ({ params }) => {
   const projectTracking = [
     {
       track: 'To do',
@@ -207,4 +207,4 @@ const MainViewSubscriptionPage = ({ params }) => {
   )
 }
 
-export default MainViewSubscriptionPage
+export default MainOpenTicketViewPage

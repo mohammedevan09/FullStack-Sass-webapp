@@ -29,7 +29,9 @@ const MainHowToGuideIcon = () => {
       <div className="grid items-center justify-center w-full grid-cols-2 gap-8 my-20">
         {ytVideo?.map((item, i) => (
           <div key={i} className="bg-white py-4 px-4 rounded-[15px]">
-            {/* <h3 className="text-xl font-bold mb-3">{item?.title}</h3> */}
+            <h3 className="text-xl font-bold mb-3 text-center">
+              {item?.title}
+            </h3>
             <iframe
               width="499"
               height="279"

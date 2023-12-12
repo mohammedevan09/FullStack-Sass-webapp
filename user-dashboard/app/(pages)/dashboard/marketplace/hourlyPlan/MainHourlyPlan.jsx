@@ -46,7 +46,7 @@ const MainHourlyPlan = () => {
 
   const [active, setActive] = useState(0)
   return (
-    <div className="grid justify-center items-center bg-white px-11 pt-12 rounded-[15px] mb-20">
+    <div className="grid justify-center items-center bg-white px-11 pt-12 rounded-[15px] mb-20 w-[1111px]">
       <div className="flex justify-center items-start gap-16">
         <div className="grid items-center w-1/2">
           <h1 className="text-slate-900 text-6xl font-bold leading-[66px]">
@@ -73,15 +73,15 @@ const MainHourlyPlan = () => {
             {pricing?.map((item, i) => (
               <div
                 key={i}
-                className={`flex justify-between py-5 px-6 rounded-xl border-2 ${
-                  active === i ? 'border-indigo-500' : 'border-white'
+                className={`flex justify-between py-5 px-6 rounded-xl border-2 cursor-pointer ${
+                  active === i ? 'border-blue-800' : 'border-white'
                 }`}
                 onClick={() => setActive(i)}
               >
                 <div className="flex items-center gap-6">
                   <div
                     className={`w-10 h-10 ${
-                      active === i ? 'bg-indigo-500' : 'bg-white'
+                      active === i ? 'bg-blue-800' : 'bg-white'
                     } rounded-full flex items-center justify-center`}
                   >
                     <CheckSignIcon3 color={active === i && 'white'} />
@@ -96,7 +96,7 @@ const MainHourlyPlan = () => {
                   </div>
                 </div>
                 {item?.valueType && (
-                  <div className="bg-indigo-500 rounded-[20px] h-8 w-[100px] flex items-center text-white justify-center text-[13px] font-medium">
+                  <div className="bg-blue-800 rounded-[20px] h-8 w-[100px] flex items-center text-white justify-center text-[13px] font-medium">
                     {item?.valueType}
                   </div>
                 )}
@@ -104,14 +104,14 @@ const MainHourlyPlan = () => {
             ))}
           </div>
           <button
-            className="w-full py-4 text-white text-base font-semibold bg-indigo-500 rounded-lg my-5"
+            className="w-full py-4 text-white text-base font-semibold bg-blue-800 rounded-lg my-5"
             onClick={() => setOpenModal(true)}
           >
             Try 2 Days For Free
           </button>
         </div>
       </div>
-      <div className="flex justify-between items-center p-16">
+      <div className="flex justify-between items-center py-16 mt-16">
         <div className="grid gap-4">
           <h2 className="text-gray-800 text-3xl font-semibold leading-[38px]">
             Looking for custom proposals?

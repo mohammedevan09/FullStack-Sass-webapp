@@ -15,7 +15,7 @@ const MainMeetingPage = ({ meetings }) => {
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-semibold">Upcoming Meetings</h2>
       </div>
-      <div className="w-full rounded-[20.37px] py-8 grid justify-between items-center gap-12">
+      <div className="rounded-[20.37px] py-8 grid justify-between items-center gap-12">
         <div className="flex justify-between items-center text-xl font-semibold pb-6 pt-2 border-b border-stone-300">
           <h2 className="w-[350px]">Name</h2>
           <h2 className="w-[200px] text-center">Participant</h2>
