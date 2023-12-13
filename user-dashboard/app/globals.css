@@ -18,6 +18,9 @@
 .text-blue-800 {
   color: #1310c6;
 }
+.border-blue-800 {
+  border-color: #1310c6 !important;
+}
 
 .border-stone-300 {
   border-color: #d0d0d0;
@@ -72,7 +75,7 @@ th {
 
 /* width */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 /* Track */

@@ -46,7 +46,7 @@ const MainHourlyPlan = () => {
 
   const [active, setActive] = useState(0)
   return (
-    <div className="grid justify-center items-center bg-white px-11 pt-12 rounded-[15px] mb-20 w-[1111px]">
+    <div className="grid justify-center items-center bg-white px-11 pt-12 rounded-[15px] mb-20 2xl:w-[1111px] w-full 2xl:max-w-full max-w-[950px]">
       <div className="flex justify-center items-start gap-16">
         <div className="grid items-center w-1/2">
           <h1 className="text-slate-900 text-6xl font-bold leading-[66px]">

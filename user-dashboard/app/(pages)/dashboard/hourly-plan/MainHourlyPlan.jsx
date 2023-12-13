@@ -80,10 +80,10 @@ const MainHourlyPlan = ({ projects }) => {
           </div>
         </div>
       </div>
-      <div className="w-[1111px] bg-white rounded-[20.37px] px-7 py-8 my-14">
+      <div className="2xl:w-[1111px] w-full 2xl:max-w-full max-w-[950px] bg-white rounded-[20.37px] px-7 py-8 my-14">
         <table className="w-full">
           <tbody>
-            <tr className="text-zinc-700 text-xl font-semibold tracking-tight text-left">
+            <tr className="text-zinc-700 2xl:text-xl text-lg font-semibold tracking-tight text-left">
               <th>ID</th>
               <th>Projects Name</th>
               <th className="text-center">Total Hours</th>
@@ -99,28 +99,28 @@ const MainHourlyPlan = ({ projects }) => {
                     #{item?.orderId}
                   </div>
                 </td>
-                <td className="py-7 w-[294px]">
-                  <div className="text-zinc-700 text-xl font-normal flex justify-start items-center gap-3">
+                <td className="py-7 2xl:w-[350px] w-[350px] ">
+                  <div className="text-zinc-700 2xl:text-xl text-lg font-normal flex justify-start items-center gap-3">
                     {item?.name}
                   </div>
                 </td>
                 <td className="py-7 w-[157px]">
                   <div
-                    className={`w-[117px] h-[34px] bg-opacity-20 rounded-[20px] flex justify-center items-center gap-2 bg-green-500 text-zinc-700 text-xl font-bold tracking-tight mx-auto`}
+                    className={`2xl:w-[117px] w-[100px] h-[34px] bg-opacity-20 rounded-[20px] flex justify-center items-center gap-2 bg-green-500 text-zinc-700 2xl:text-xl text-lg font-bold tracking-tight mx-auto`}
                   >
                     {item?.totalHours}
                   </div>
                 </td>
                 <td className="py-7 w-[157px]">
                   <div
-                    className={`w-[117px] h-[34px] bg-opacity-20 rounded-[20px] flex justify-center items-center gap-2 bg-sky-500 text-zinc-700 text-xl font-bold tracking-tight mx-auto`}
+                    className={`2xl:w-[117px] w-[100px] h-[34px] bg-opacity-20 rounded-[20px] flex justify-center items-center gap-2 bg-sky-500 text-zinc-700 2xl:text-xl text-lg font-bold tracking-tight mx-auto`}
                   >
                     {item?.spentHours}
                   </div>
                 </td>
-                <td className="py-7 w-[157px]">
+                <td className="py-7 w-[170px]">
                   <div
-                    className={`w-[117px] h-[34px] bg-opacity-20 rounded-[20px] flex justify-center items-center gap-2 bg-rose-600 text-zinc-700 text-xl font-bold tracking-tight mx-auto`}
+                    className={`2xl:w-[117px] w-[100px] h-[34px] bg-opacity-20 rounded-[20px] flex justify-center items-center gap-2 bg-rose-600 text-zinc-700 2xl:text-xl text-lg font-bold tracking-tight mx-auto`}
                   >
                     {item?.totalHours}
                   </div>

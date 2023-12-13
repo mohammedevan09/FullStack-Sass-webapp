@@ -9,7 +9,7 @@ const MainDesignAndDevPricing = ({ pricing }) => {
   const [openModalCustom, setOpenModalCustom] = useState(false)
   const [openModal, setOpenModal] = useState(false)
   return (
-    <div className="grid justify-center items-center bg-white px-11 pt-12 rounded-[15px] mb-20 w-[1111px]">
+    <div className="grid justify-center items-center bg-white px-11 pt-12 rounded-[15px] mb-20 2xl:w-[1111px] w-full 2xl:max-w-full max-w-[950px]">
       <div className="flex justify-center items-center gap-8">
         {pricing?.map((item, i) => {
           return (

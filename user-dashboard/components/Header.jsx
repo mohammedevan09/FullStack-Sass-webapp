@@ -3,6 +3,7 @@
 import {
   DownIcon,
   DropUpIcon,
+  MenuIcon,
   MessageIcon,
   NotificationBellIcon,
   NotificationIcon,
@@ -10,12 +11,16 @@ import {
   StoreIcon,
 } from '@/staticData/Icon'
 import { dropdownData, notificationDropDownData } from '@/staticData/MainData'
+import { setOpenMenu } from '@/store/reducers/activeReducer'
 import { useEffect, useRef, useState } from 'react'
+import { useDispatch } from 'react-redux'
 
 const Header = () => {
   const [dropOpen, setDropOpen] = useState(false)
   const [notificationDropOpen, setNotificationDropOpen] = useState(false)
   const [messageDropOpen, setMessageDropOpen] = useState(false)
+
+  const dispatch = useDispatch()
 
   const dropRef = useRef()
   const notificationRef = useRef()
@@ -45,8 +50,13 @@ const Header = () => {
   }, [dropRef, notificationRef, messageRef])
 
   return (
-    <div className="flex justify-between items-start gap-28 my-5">
-      <div>M</div>
+    <div className="flex justify-between items-center gap-28 my-5">
+      <div
+        className="xl:invisible visible cursor-pointer"
+        onClick={() => dispatch(setOpenMenu(true))}
+      >
+        <MenuIcon />
+      </div>
       <div className="flex w-[438px] h-[52px] bg-white rounded-xl justify-start items-center gap-4 p-3">
         <SearchIcon />
         <input
@@ -71,7 +81,7 @@ const Header = () => {
               <div className="-mb-2 absolute left-2">
                 <DropUpIcon />
               </div>
-              <div className="absolute w-[358px] bg-white rounded-[15px] dropdown-shadow2 -right-[400%] top-4 p-4">
+              <div className="absolute w-[358px] bg-white rounded-[15px] dropdown-shadow2 -right-[400%] top-4 p-4 z-50">
                 <div className="grid gap-4">
                   {notificationDropDownData?.map((item, i) => (
                     <div
@@ -126,7 +136,7 @@ const Header = () => {
               <div className="-mb-2 absolute left-2">
                 <DropUpIcon />
               </div>
-              <div className="absolute w-[358px] bg-white rounded-[15px] dropdown-shadow2 -right-[400%] top-4 p-4">
+              <div className="absolute w-[358px] bg-white rounded-[15px] dropdown-shadow2 -right-[400%] top-4 p-4 z-50">
                 <div className="grid gap-4">
                   {notificationDropDownData?.map((item, i) => (
                     <div

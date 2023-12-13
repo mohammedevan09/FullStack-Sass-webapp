@@ -10,9 +10,7 @@ const layout = ({ children }) => {
       </div>
       <div className="relative mx-auto">
         <div className="flex justify-center items-start gap-24">
-          <div className="w-[260px] text-center h-screen">
-            <Menu />
-          </div>
+          <Menu />
           <div className="grid w-full justify-center">
             <Header />
             {children}

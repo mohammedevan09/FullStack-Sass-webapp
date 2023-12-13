@@ -47,16 +47,20 @@ const Main = () => {
         <h4 className="text-neutral-700 text-2xl font-medium mb-[31px]">
           Statistics
         </h4>
-        <div className="flex justify-between items-center text-white gap-4">
+        <div className="flex justify-between items-center text-white 2xl:gap-4 gap-2">
           {statisticsData?.map((item, i) => (
             <div
               key={i}
-              className="flex justify-center items-center gap-12 w-[360px] h-[171px] gradient"
+              className="flex justify-center items-center gap-12 2xl:w-[360px] w-[290px] 2xl:h-[171px] h-[140px] gradient"
             >
-              <div className="w-[58px]">{item?.image}</div>
+              <div className="2xl:w-[58px] w-[40px]">{item?.image}</div>
               <div className="grid gap-5">
-                <h3 className="text-[25px] font-normal">{item?.title}</h3>
-                <h2 className="text-[40px] font-medium">{item?.value}</h2>
+                <h3 className="2xl:text-[25px] text-[20px] font-normal">
+                  {item?.title}
+                </h3>
+                <h2 className="2xl:text-[40px] text-[30px] font-medium">
+                  {item?.value}
+                </h2>
               </div>
             </div>
           ))}
@@ -70,7 +74,7 @@ const Main = () => {
           {ordersData?.map((item, i) => (
             <div
               key={i}
-              className="grid justify-start items-center w-[360px] h-[171px] bg-white rounded-[20px] px-5 py-6"
+              className="grid justify-start items-center 2xl:w-[360px] w-[290px] 2xl:h-[171px] h-[140px] bg-white rounded-[20px] px-5 py-6"
             >
               <div className="w-[43px] h-10 p-2.5 flex-col justify-start items-start gap-2.5 inline-flex bg-[#C8E5FB]">
                 <OrderIcon />
@@ -95,7 +99,7 @@ const Main = () => {
           {ticketsData?.map((item, i) => (
             <div
               key={i}
-              className="grid justify-start items-center w-[360px] h-[171px] bg-white rounded-[20px] px-5 py-6"
+              className="grid justify-start items-center 2xl:w-[360px] w-[290px] 2xl:h-[171px] h-[140px] bg-white rounded-[20px] px-5 py-6"
             >
               <div className="w-[43px] h-10 p-2.5 flex-col justify-start items-start gap-2.5 inline-flex bg-[#C8E5FB]">
                 <OrderIcon />
@@ -114,7 +118,7 @@ const Main = () => {
       </div>
 
       <div className="w-full bg-white rounded-[20.37px] px-7 py-8 my-14">
-        <table className="w-full ">
+        <table className="w-full">
           <tbody>
             <tr className="text-zinc-700 text-xl font-semibold tracking-tight text-left">
               <th>ID</th>
@@ -127,21 +131,12 @@ const Main = () => {
             {projectData?.map((item, i) => (
               <tr key={i}>
                 <td className="py-7">
-                  <div className="text-zinc-700 text-xl font-normal flex justify-start items-center gap-3">
+                  <div className="text-zinc-700 2xl:text-xl text-lg font-normal flex justify-start items-center gap-3">
                     #{item?.orderId}
                   </div>
                 </td>
-                <td className="py-7 w-[350px]">
-                  <div className="text-zinc-700 text-xl font-normal flex justify-start items-center gap-3">
-                    {/* <div className="w-10">
-                      <Image
-                        src={item?.image}
-                        alt="image"
-                        width={400}
-                        height={400}
-                        className={'h-10 object-cover'}
-                      />
-                    </div> */}
+                <td className="py-7 2xl:w-[350px] w-[300px]">
+                  <div className="text-zinc-700 2xl:text-xl text-lg font-normal flex justify-start items-center gap-3">
                     {item?.name}
                   </div>
                 </td>

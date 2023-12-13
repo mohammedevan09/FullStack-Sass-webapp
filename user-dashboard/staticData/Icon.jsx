@@ -1,3 +1,31 @@
+export const MenuIcon = ({ size }) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size || '35'}
+      height={size || '35'}
+      viewBox="0 0 24 24"
+    >
+      <path
+        fill="#1310C6"
+        d="M21 18v2H3v-2zM6.596 3.903L8.01 5.318L4.828 8.5l3.182 3.182l-1.414 1.414L2 8.5zM21 11v2h-9v-2zm0-7v2h-9V4z"
+      />
+    </svg>
+  )
+}
+export const CloseMenuIcon = ({ size }) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size || '35'}
+      height={size || '35'}
+      viewBox="0 0 15 15"
+    >
+      <path fill="#1310C6" d="M3 7.5L11 0v15z" />
+    </svg>
+  )
+}
+
 export const HomeIcon = ({ color }) => {
   return (
     <svg
@@ -22,6 +50,7 @@ export const MarketPlaceIcon = ({ color }) => {
       viewBox="0 0 22 25"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      className="-mx-[2px]"
     >
       <rect width="22" height="25" fill="#1E1E1E" />
       <rect
@@ -169,6 +198,7 @@ export const HowToGuideIcon = ({ color }) => {
       viewBox="0 0 35 35"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      className="-mx-[2px]"
     >
       <g id="ph:question">
         <path
@@ -188,6 +218,7 @@ export const FeedbackIcon = ({ color }) => {
       viewBox="0 0 35 35"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      className="-ml-[1px] -mr-[3px]"
     >
       <g id="ep:edit">
         <path

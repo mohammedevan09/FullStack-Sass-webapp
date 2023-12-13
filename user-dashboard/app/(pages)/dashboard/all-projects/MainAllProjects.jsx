@@ -81,7 +81,7 @@ const MainAllProjects = ({ projects }) => {
           </div>
         </div>
       </div>
-      <div className="w-[1111px] bg-white rounded-[20.37px] px-7 py-8 my-14">
+      <div className="2xl:w-[1111px] w-full 2xl:max-w-full max-w-[950px] bg-white rounded-[20.37px] px-7 py-8 my-14">
         <table className="w-full">
           <tbody>
             <tr className="text-zinc-700 text-xl font-semibold tracking-tight text-left">

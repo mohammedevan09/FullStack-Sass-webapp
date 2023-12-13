@@ -28,7 +28,7 @@ const page = () => {
       <h1 className="w-[492px] text-center  text-[32px] font-semibold mx-auto">
         What type of service are you looking for?
       </h1>
-      <div className="flex justify-center items-center gap-20">
+      <div className="flex justify-center items-center 2xl:gap-20 gap-10">
         {services?.map((item, i) => (
           <div
             key={i}
@@ -36,7 +36,9 @@ const page = () => {
           >
             <div className="grid justify-center gap-1">
               <div className="mx-auto">{item?.icon}</div>
-              <h3 className="text-xl font-semibold">{item?.title}</h3>
+              <h3 className="text-xl font-semibold text-center">
+                {item?.title}
+              </h3>
             </div>
             <Link
               href={item?.links}

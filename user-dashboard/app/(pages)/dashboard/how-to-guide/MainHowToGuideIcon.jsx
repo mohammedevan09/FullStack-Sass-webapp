@@ -26,15 +26,17 @@ const MainHowToGuideIcon = () => {
       <h1 className="text-5xl font-semibold flex gap-2">
         How to guide & Tutorials <HowToGuideTutorialsYTIcon />
       </h1>
-      <div className="grid items-center justify-center w-full grid-cols-2 gap-8 my-20">
+      <div className="grid items-center justify-center w-full grid-cols-2 gap-8 2xl:my-20 my-10">
         {ytVideo?.map((item, i) => (
-          <div key={i} className="bg-white py-4 px-4 rounded-[15px]">
+          <div
+            key={i}
+            className="bg-white py-4 px-4 rounded-[15px] 2xl:w-full w-[400px]"
+          >
             <h3 className="text-xl font-bold mb-3 text-center">
               {item?.title}
             </h3>
             <iframe
-              width="499"
-              height="279"
+              className="2xl:w-[499px] w-full 2xl:h-[279px] h-[200px]"
               src={item?.link}
               title="YouTube video player"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
