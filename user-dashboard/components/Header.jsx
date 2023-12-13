@@ -45,13 +45,13 @@ const Header = () => {
   }, [dropRef, notificationRef, messageRef])
 
   return (
-    <div className="flex justify-end items-start gap-28 my-5">
-      <div></div>
+    <div className="flex justify-between items-start gap-28 my-5">
+      <div>M</div>
       <div className="flex w-[438px] h-[52px] bg-white rounded-xl justify-start items-center gap-4 p-3">
         <SearchIcon />
         <input
           type="text"
-          className="outline-none"
+          className="outline-none w-[300px]"
           placeholder="Search Anything Here..."
         />
       </div>

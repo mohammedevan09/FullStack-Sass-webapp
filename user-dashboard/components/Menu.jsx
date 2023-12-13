@@ -131,7 +131,7 @@ const Menu = () => {
             </Link>
           ))}
         </div>
-        <div className="text-center mb-20">
+        <div className="text-center mb-40">
           <Link
             href={'/dashboard/settings'}
             className="mb-4 flex justify-center items-center gap-2 cursor-pointer"
