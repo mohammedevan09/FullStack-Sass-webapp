@@ -19,9 +19,12 @@ export const CloseMenuIcon = ({ size }) => {
       xmlns="http://www.w3.org/2000/svg"
       width={size || '35'}
       height={size || '35'}
-      viewBox="0 0 15 15"
+      viewBox="0 0 24 24"
     >
-      <path fill="#1310C6" d="M3 7.5L11 0v15z" />
+      <path
+        fill="#1310C6"
+        d="M11.67 3.87L9.9 2.1L0 12l9.9 9.9l1.77-1.77L3.54 12z"
+      />
     </svg>
   )
 }
@@ -50,15 +53,7 @@ export const MarketPlaceIcon = ({ color }) => {
       viewBox="0 0 22 25"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className="-mx-[2px]"
     >
-      <rect width="22" height="25" fill="#1E1E1E" />
-      <rect
-        width="1440"
-        height="1578"
-        transform="translate(-51 -162)"
-        fill="#E2E8F0"
-      />
       <path
         d="M21.972 20.9213L21.4978 19.0808C21.4674 18.9634 21.4132 18.8533 21.3385 18.7571C21.2637 18.6609 21.1699 18.5806 21.0627 18.5209C20.9549 18.4604 20.836 18.4215 20.7128 18.4067C20.5896 18.3918 20.4647 18.4013 20.3452 18.4344L14.7816 19.977L11.0001 18.4104L15.7851 17.2054C16.1117 16.919 16.3484 16.5468 16.4671 16.1326L16.0919 14.8063L6.11115 16.0077H0V23.2159H6.11115L11.5562 24.374C11.8522 24.4005 12.1503 24.3936 12.4447 24.3536L21.3181 22.0061C21.5509 21.9449 21.75 21.7965 21.873 21.5928C21.9337 21.4926 21.9737 21.3816 21.9907 21.2662C22.0077 21.1507 22.0013 21.0343 21.972 20.9213ZM3.66669 22.0145H1.22223V17.209H3.66669V22.0145ZM12.127 23.1943C12.0719 23.2084 12.0152 23.2157 11.9583 23.2159C11.911 23.2161 11.8639 23.2112 11.8177 23.2015L6.11115 21.9701V17.2331L15.0689 16.1422L8.5556 18.4104L14.3257 21.0919L14.7132 21.2444L15.1141 21.1327L20.3892 19.6706L20.7119 20.9225L12.127 23.1943ZM7.33337 0.389801V13.6049L17.3312 6.99736L7.33337 0.389801ZM9.77783 4.90697L12.9556 6.99736L9.77783 9.09976V4.90697Z"
         fill={color}
@@ -69,8 +64,8 @@ export const MarketPlaceIcon = ({ color }) => {
 export const AllProjectsIcon = ({ color }) => {
   return (
     <svg
-      width="17"
-      height="20"
+      width="22"
+      height="25"
       viewBox="0 0 17 20"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -198,7 +193,6 @@ export const HowToGuideIcon = ({ color }) => {
       viewBox="0 0 35 35"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className="-mx-[2px]"
     >
       <g id="ph:question">
         <path
@@ -284,7 +278,7 @@ export const LogoutIcon = () => {
         d="M-87 -879H153C164.046 -879 173 -870.046 173 -859V43C173 54.0457 164.046 63 153 63H-87V-879Z"
         fill="white"
       />
-      <rect x="-24" y="-16" width="133" height="47.881" rx="8" fill="#1E40AF" />
+      <rect x="-24" y="-16" width="133" height="47.881" rx="8" fill="#1310C6" />
       <path
         d="M9.48629 10.1859C9.79673 10.1859 10.0487 10.4396 10.0487 10.7521V11.444C10.0487 13.2426 8.59515 14.7059 6.80775 14.7059H3.24756C1.45724 14.7059 0 13.2389 0 11.4359C0 11.1234 0.252003 10.8705 0.562443 10.8705C0.872882 10.8705 1.12489 11.1234 1.12489 11.4359C1.12489 12.6154 2.07739 13.5735 3.24756 13.5735H6.80775C7.975 13.5735 8.92385 12.6183 8.92385 11.444V10.7521C8.92385 10.4396 9.17585 10.1859 9.48629 10.1859ZM14.4374 6.78617C14.6653 6.78617 14.8705 6.92441 14.9575 7.13692C15.0444 7.34869 14.9954 7.59282 14.8348 7.75459L12.7004 9.89365C12.5901 10.0032 12.4469 10.0591 12.303 10.0591C12.1591 10.0591 12.0145 10.0032 11.9049 9.89218C11.6858 9.67012 11.6858 9.31201 11.9064 9.09141L13.0758 7.91931H5.66182C5.35139 7.91931 5.09865 7.66562 5.09865 7.35311C5.09865 7.04059 5.35139 6.78617 5.66182 6.78617H14.4374ZM6.80059 0C8.59164 0 10.0489 1.46697 10.0489 3.26999V3.95458C10.0489 4.26636 9.79687 4.52004 9.48643 4.52004C9.17599 4.52004 8.92399 4.26636 8.92399 3.95458V3.26999C8.92399 2.09053 7.97149 1.1324 6.80059 1.1324H3.24113C2.07388 1.1324 1.12503 2.08832 1.12503 3.2619V8.8614C1.12503 9.17392 0.873028 9.42761 0.562589 9.42761C0.25215 9.42761 0.000146089 9.17392 0.000146089 8.8614V3.2619C0.000146089 1.4633 1.45373 0 3.24113 0H6.80059ZM11.9035 4.81631C12.1226 4.59277 12.4776 4.5913 12.6989 4.81189L13.2365 5.34721C13.4579 5.56781 13.4593 5.92591 13.2409 6.14798C13.1306 6.25975 12.986 6.31637 12.8414 6.31637C12.6982 6.31637 12.555 6.26122 12.4455 6.15239L11.9071 5.61634C11.6865 5.39648 11.6851 5.03764 11.9035 4.81631Z"
         fill="white"
@@ -293,11 +287,11 @@ export const LogoutIcon = () => {
   )
 }
 
-export const SearchIcon = () => {
+export const SearchIcon = ({ size }) => {
   return (
     <svg
-      width="18"
-      height="17"
+      width={size || '18'}
+      height={size || '17'}
       viewBox="0 0 18 17"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -333,14 +327,15 @@ export const StoreIcon = () => {
   )
 }
 
-export const MessageIcon = () => {
+export const MessageIcon = ({ size }) => {
   return (
     <svg
-      width="41"
-      height="40"
+      width={size || '41'}
+      height={size || '40'}
       viewBox="0 0 41 40"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      // className="lg:w-[41px] w-[15px] lg:h-[40px] h-[15px]"
     >
       <g id="ph:envelope-thin">
         <path
@@ -353,11 +348,11 @@ export const MessageIcon = () => {
   )
 }
 
-export const NotificationIcon = () => {
+export const NotificationIcon = ({ size }) => {
   return (
     <svg
-      width="31"
-      height="35"
+      width={size || '31'}
+      height={size || '35'}
       viewBox="0 0 31 35"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -393,11 +388,11 @@ export const NotificationBellIcon = () => {
   )
 }
 
-export const DownIcon = () => {
+export const DownIcon = ({ size }) => {
   return (
     <svg
-      width="17"
-      height="17"
+      width={size || '17'}
+      height={size || '17'}
       viewBox="0 0 17 17"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -947,8 +942,8 @@ export const AddProjectIcon = () => {
 export const SearchByIdIcon = () => {
   return (
     <svg
-      width="24"
-      height="24"
+      width="20"
+      height="20"
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -1210,11 +1205,11 @@ export const JoinMeetingIcon = () => {
   )
 }
 
-export const HowToGuideTutorialsYTIcon = () => {
+export const HowToGuideTutorialsYTIcon = ({ size }) => {
   return (
     <svg
-      width="55"
-      height="55"
+      width={size || '50'}
+      height={size || '50'}
       viewBox="0 0 55 55"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

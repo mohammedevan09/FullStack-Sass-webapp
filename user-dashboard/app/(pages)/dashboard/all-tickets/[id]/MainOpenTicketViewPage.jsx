@@ -83,7 +83,7 @@ const MainOpenTicketViewPage = ({ params }) => {
           </h1>
           <h6 className="text-base font-normal py-4">Order ID #{params?.id}</h6>
         </div>
-        <div className="relative w-[175px]">
+        <div className="relative w-[175px] font-medium">
           <div className="bg-white py-1 px-3 bg-opacity-40 rounded-[5px] absolute text-base">
             <button
               className="flex justify-center items-center gap-1"

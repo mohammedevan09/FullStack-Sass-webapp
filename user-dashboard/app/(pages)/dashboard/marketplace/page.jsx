@@ -24,15 +24,15 @@ const page = () => {
     },
   ]
   return (
-    <div className="grid justify-center items-center gap-24 mt-44">
-      <h1 className="w-[492px] text-center  text-[32px] font-semibold mx-auto">
+    <div className="grid justify-center items-center lg:gap-24 sm:gap-12 gap-8 lg:mt-44 sm:mt-20 mt-8">
+      <h1 className="sm:w-[492px] w-full text-center sm:text-[32px] text-[26px] font-semibold mx-auto">
         What type of service are you looking for?
       </h1>
-      <div className="flex justify-center items-center 2xl:gap-20 gap-10">
+      <div className="md:flex grid md:justify-center items-center 2xl:gap-20 lg:gap-10 md:gap-5 gap-7">
         {services?.map((item, i) => (
           <div
             key={i}
-            className="grid items-center justify-center py-5 px-10 bg-white rounded-[15px] gap-6"
+            className="grid items-center justify-center py-5 lg:px-10 px-5 bg-white rounded-[15px] gap-6"
           >
             <div className="grid justify-center gap-1">
               <div className="mx-auto">{item?.icon}</div>

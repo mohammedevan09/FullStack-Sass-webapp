@@ -23,8 +23,11 @@ import {
 } from '../staticData/Icon'
 import { useDispatch, useSelector } from 'react-redux'
 import { setActiveMenu, setOpenMenu } from '@/store/reducers/activeReducer'
+import { useEffect, useState } from 'react'
 
 const Menu = () => {
+  const [isSmallScreen, setIsSmallScreen] = useState(false)
+
   const dispatch = useDispatch()
 
   const { currentActiveMenu, openMenu } = useSelector((state) => state?.active)
@@ -86,33 +89,47 @@ const Menu = () => {
       link: '/dashboard/feedback',
     },
   ]
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 640) {
+        setIsSmallScreen(true)
+      } else {
+        setIsSmallScreen(false)
+      }
+    }
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
   return (
     <div
-      className={`w-[260px] text-center h-screen xl:static absolute z-50 left-0 transition-all duration-500 ease-linear ${
+      className={`lg:w-[260px] w-[230px] text-center h-screen xl:static absolute z-50 left-0 transition-all duration-500 ease-linear ${
         openMenu ? 'left-0' : 'left-[-120%]'
       }`}
     >
       <div
         className={`fixed bg-white rounded-tr-[20px] rounded-br-[20px] pb-5`}
       >
-        <div className="w-[151px] py-5 mx-auto divide-slate-700 flex">
+        <div className="md:w-[151px] w-[120px] lg:py-5 py-3 mx-auto divide-slate-700 flex">
           <Image
             src={'/images/logo.png'}
             width={300}
             height={300}
             alt="logo"
-            className="h-[33px]"
+            className="md:h-[33px] h-[29px]"
           />
           <div
-            className="absolute right-2 rounded-full p-1 xl:hidden block cursor-pointer"
+            className="absolute lg:right-2 md:right-[-4px] right-[-8px] rounded-full p-1 xl:hidden block cursor-pointer"
             onClick={() => dispatch(setOpenMenu(false))}
           >
-            <CloseMenuIcon size={'26px'} />
+            <CloseMenuIcon size={isSmallScreen ? '20' : '24'} />
           </div>
         </div>
         <hr className="h-px bg-gray-200 border-0 dark:bg-gray-300" />
         <div className="grid justify-between gap-14 items-start h-screen overflow-y-scroll">
-          <div className="mx-[51px] grid justify-center items-start gap-8 mt-5">
+          <div className="lg:mx-[51px] md:mx-[20px] mx-[10px] grid justify-center items-start gap-8 mt-5">
             {MenuData?.map((item, i) => (
               <Link
                 href={item?.link}
@@ -133,7 +150,7 @@ const Menu = () => {
                   {item?.icon}
                 </div>
                 <div
-                  className={`text-xl ${
+                  className={`md:text-xl text-[16px] ${
                     currentActiveMenu === i
                       ? 'text-blue-800 font-medium'
                       : 'text-slate-500 font-normal'

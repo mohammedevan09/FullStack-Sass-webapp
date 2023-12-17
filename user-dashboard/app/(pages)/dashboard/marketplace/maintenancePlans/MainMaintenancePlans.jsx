@@ -9,8 +9,8 @@ const MainMaintenancePlans = ({ pricing }) => {
   const [openModalCustom, setOpenModalCustom] = useState(false)
   const [openModal, setOpenModal] = useState(false)
   return (
-    <div className="grid justify-center items-center bg-white px-11 pt-12 rounded-[15px] mb-20 2xl:w-[1111px] w-full">
-      <div className="flex justify-center items-center gap-8">
+    <div className="grid justify-center items-center bg-white px-11 pt-12 rounded-[15px] mb-20 2xl:w-[1111px] w-full 2xl:max-w-full max-w-[950px]">
+      <div className="lg:flex grid lg:justify-center items-center gap-8">
         {pricing?.map((item, i) => {
           return (
             <div
@@ -21,7 +21,7 @@ const MainMaintenancePlans = ({ pricing }) => {
                 {item?.price}
                 <span className="text-3xl">mo</span>
               </h1>
-              <div className="text-center pt-4">
+              <div className="text-center sm:pt-4 pt-2">
                 <h3 className="mx-auto text-gray-900 text-xl font-semibold leading-[30px]">
                   {item?.title}
                 </h3>
@@ -52,17 +52,17 @@ const MainMaintenancePlans = ({ pricing }) => {
           )
         })}
       </div>
-      <div className="flex justify-between items-center p-16">
-        <div className="grid gap-4">
-          <h2 className="text-gray-800 text-3xl font-semibold leading-[38px]">
+      <div className="lg:flex grid lg:justify-between items-center lg:p-16 py-12 px-0">
+        <div className="grid lg:gap-4 gap-0">
+          <h2 className="text-gray-800 lg:text-3xl text-[18px] font-semibold leading-[38px]">
             Looking for custom proposals?
           </h2>
-          <p className="text-blue-800 text-xl font-normal">
+          <p className="text-blue-800 lg:text-xl text-[16px] font-normal">
             No worries, we got you covered!
           </p>
         </div>
         <button
-          className="px-5 py-3 Get a custom proposal rounded-lg shadow border-2 border-zinc-800  font-semibold"
+          className="px-5 py-3 Get a custom proposal rounded-lg shadow border-2 border-zinc-800  font-semibold lg:mt-0 mt-8"
           onClick={() => setOpenModalCustom(true)}
         >
           Get a custom proposal

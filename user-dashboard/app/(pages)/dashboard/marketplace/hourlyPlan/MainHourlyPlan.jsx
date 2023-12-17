@@ -46,20 +46,20 @@ const MainHourlyPlan = () => {
 
   const [active, setActive] = useState(0)
   return (
-    <div className="grid justify-center items-center bg-white px-11 pt-12 rounded-[15px] mb-20 2xl:w-[1111px] w-full 2xl:max-w-full max-w-[950px]">
-      <div className="flex justify-center items-start gap-16">
-        <div className="grid items-center w-1/2">
-          <h1 className="text-slate-900 text-6xl font-bold leading-[66px]">
+    <div className="grid justify-center items-center bg-white xs:px-11 px-6 sm:pt-12 pt-6 rounded-[15px] mb-20 2xl:w-[1111px] w-full 2xl:max-w-full max-w-[950px]">
+      <div className="lg:flex grid lg:justify-center items-center gap-8">
+        <div className="grid items-center lg:w-1/2 w-full">
+          <h1 className="text-slate-900 sm:text-6xl text-4xl font-bold leading-[66px]">
             Try Flaro for Free
           </h1>
-          <h6 className="text-gray-600 text-lg font-normal leading-[30px] pt-5 pb-7">
+          <h6 className="text-gray-600 sm:text-lg text-base font-normal leading-[30px] sm:pt-5 pt-1 sm:pb-7 pb-5">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
             varius enim in eros elemen.
           </h6>
-          <div className="grid gap-5 text-slate-900 text-base font-semibold leading-normal">
+          <div className="grid sm:gap-5 xs:gap-4 gap-3 text-slate-900 text-base font-semibold leading-normal">
             {services?.map((item, i) => (
               <div
-                className="flex gap-2 text-slate-900 text-base font-semibold"
+                className="flex gap-2 text-slate-900 sm:text-base text-[15px] font-semibold"
                 key={i}
               >
                 <CheckSignIcon2 />
@@ -68,35 +68,35 @@ const MainHourlyPlan = () => {
             ))}
           </div>
         </div>
-        <div className="w-1/2">
+        <div className="lg:w-1/2 w-full">
           <div className="grid gap-4">
             {pricing?.map((item, i) => (
               <div
                 key={i}
-                className={`flex justify-between py-5 px-6 rounded-xl border-2 cursor-pointer ${
+                className={`flex justify-between sm:py-5 py-4 sm:px-6 px-4 rounded-xl border-2 cursor-pointer ${
                   active === i ? 'border-blue-800' : 'border-white'
                 }`}
                 onClick={() => setActive(i)}
               >
-                <div className="flex items-center gap-6">
+                <div className="flex items-center sm:gap-6 gap-3">
                   <div
-                    className={`w-10 h-10 ${
+                    className={`sm:w-10 w-8 sm:h-10 h-8 ${
                       active === i ? 'bg-blue-800' : 'bg-white'
                     } rounded-full flex items-center justify-center`}
                   >
                     <CheckSignIcon3 color={active === i && 'white'} />
                   </div>
-                  <div className="grid gap-1">
-                    <h3 className="text-slate-900 text-lg font-semibold leading-7">
+                  <div className="grid sm:gap-1">
+                    <h3 className="text-slate-900 sm:text-lg text-base font-semibold leading-7">
                       {item?.title}
                     </h3>
-                    <h4 className="text-zinc-500 text-base font-normal leading-relaxed">
+                    <h4 className="text-zinc-500 sm:text-base text-sm font-normal leading-relaxed">
                       {item?.title}
                     </h4>
                   </div>
                 </div>
                 {item?.valueType && (
-                  <div className="bg-blue-800 rounded-[20px] h-8 w-[100px] flex items-center text-white justify-center text-[13px] font-medium">
+                  <div className="bg-blue-800 rounded-[20px] h-8 sm:w-[100px] w-[80px] sm:flex hidden items-center text-white justify-center text-[13px] font-medium">
                     {item?.valueType}
                   </div>
                 )}
@@ -104,24 +104,24 @@ const MainHourlyPlan = () => {
             ))}
           </div>
           <button
-            className="w-full py-4 text-white text-base font-semibold bg-blue-800 rounded-lg my-5"
+            className="w-full sm:py-4 py-3 text-white text-base font-semibold bg-blue-800 sm:rounded-lg rounded-md my-5"
             onClick={() => setOpenModal(true)}
           >
             Try 2 Days For Free
           </button>
         </div>
       </div>
-      <div className="flex justify-between items-center py-16 mt-16">
-        <div className="grid gap-4">
-          <h2 className="text-gray-800 text-3xl font-semibold leading-[38px]">
+      <div className="sm:flex grid sm:justify-between sm:items-center items-start lg:p-16 py-12 px-0">
+        <div className="grid lg:gap-4 gap-0">
+          <h2 className="text-gray-800 md:text-3xl text-[18px] font-semibold leading-[38px]">
             Looking for custom proposals?
           </h2>
-          <p className="text-blue-800 text-xl font-normal">
+          <p className="text-blue-800 md:text-xl text-[16px] font-normal">
             No worries, we got you covered!
           </p>
         </div>
         <button
-          className="px-5 py-3 Get a custom proposal rounded-lg shadow border-2 border-zinc-800 font-semibold"
+          className="px-5 py-3 Get a custom proposal rounded-lg shadow border-2 border-zinc-800  font-semibold sm:mt-0 mt-8"
           onClick={() => setOpenModalCustom(true)}
         >
           Get a custom proposal
