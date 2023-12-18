@@ -9,9 +9,12 @@ import {
 import { useRouter } from 'next/navigation'
 import { filterByStatusData } from '@/staticData/MainData'
 import { useEffect, useRef, useState } from 'react'
+import ThanksSubModal from '@/components/modals/marketplaceModal/ThanksSubModal'
 
 const MainProposalsPage = () => {
   const [openModalCustom, setOpenModalCustom] = useState(false)
+  const [openSubModal, setOpenSubModal] = useState(false)
+
   const [dropOpen, setDropOpen] = useState(false)
 
   const dropRef = useRef()
@@ -125,8 +128,8 @@ const MainProposalsPage = () => {
                     #{item?.id}
                   </div>
                 </td>
-                <td className="lg:py-7 py-4 2xl:w-[350px] w-[300px]">
-                  <div className="text-zinc-700 lg:text-xl text-[16px] font-normal flex justify-start items-center gap-3 lg:w-full w-[270px]">
+                <td className="lg:py-7 py-4">
+                  <div className="text-zinc-700 lg:text-xl text-[16px] font-normal flex justify-center items-center gap-3 lg:w-full w-[270px] mx-auto">
                     {item?.name}
                   </div>
                 </td>
@@ -150,6 +153,14 @@ const MainProposalsPage = () => {
         <GetACustomProposalModal
           openModal={openModalCustom}
           setOpenModal={setOpenModalCustom}
+          openSubModal={openSubModal}
+          setOpenSubModal={setOpenSubModal}
+        />
+      )}
+      {openSubModal && (
+        <ThanksSubModal
+          setOpenModal={setOpenModalCustom}
+          setOpenSubModal={setOpenSubModal}
         />
       )}
     </>

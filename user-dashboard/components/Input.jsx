@@ -32,13 +32,20 @@ const Input = ({
   )
 }
 
-export const PasswordInput = ({ value, setValue, placeholder, id, cn }) => {
+export const PasswordInput = ({
+  value,
+  setValue,
+  placeholder,
+  id,
+  cn,
+  cnh,
+}) => {
   const [showPass, setShowPass] = useState()
   return (
     <div
-      className={`${
-        cn ? cn : 'w-[472.44px]'
-      } h-[65px] border border-zinc-400 rounded-[9px] text-center flex justify-center items-center relative`}
+      className={`${cn ? cn : 'w-[472.44px]'} ${
+        cnh ? cnh : 'h-[65px]'
+      } border border-zinc-400 rounded-[9px] text-center flex justify-center items-center relative`}
     >
       <input
         id={id}

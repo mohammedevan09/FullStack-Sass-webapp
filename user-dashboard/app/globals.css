@@ -64,6 +64,15 @@
   backdrop-filter: blur(8px);
 }
 
+tr td:first-child {
+  border-bottom-left-radius: 10px;
+  border-top-left-radius: 10px;
+}
+tr td:last-child {
+  border-bottom-right-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
 th {
   border-bottom: 1px solid #ccc;
   padding-bottom: 8px;
@@ -78,11 +87,11 @@ th {
   width: 6px;
 }
 
-/* Track */
+/* Track
 ::-webkit-scrollbar-track {
   box-shadow: inset 0 0 5px rgb(201, 201, 255);
   border-radius: 5px;
-}
+} */
 
 /* Handle */
 ::-webkit-scrollbar-thumb {

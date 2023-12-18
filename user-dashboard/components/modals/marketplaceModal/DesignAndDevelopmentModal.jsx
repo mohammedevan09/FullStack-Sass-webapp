@@ -3,27 +3,27 @@ import { LabelsTwo } from '@/components/Labels'
 
 const DesignAndDevelopmentModal = ({ setOpenModal }) => {
   return (
-    <div className="fixed z-40 left-0 top-0 right-0 bottom-0 modal-b-blur h-screen w-screen overflow-y-scroll">
-      <div className="flex justify-center items-center my-20">
-        <div className="grid bg-white pt-16 pb-4 px-24 rounded-[20px]">
-          <h3 className="text-2xl font-semibold tracking-tight mx-auto">
+    <div className="fixed z-[100] left-0 top-0 right-0 bottom-0 modal-b-blur h-screen w-screen overflow-y-scroll">
+      <div className="flex justify-center items-center sm:my-20 my-16">
+        <div className="grid bg-white sm:pt-16 pt-8 pb-4 sm:px-24 xs:px-6 px-2 rounded-[20px] overflow-x-hidden">
+          <h3 className="xs:text-2xl text-xl font-semibold tracking-tight mx-auto">
             Provide project details & questionnaire
           </h3>
           <div className="w-full h-[0px] border border-neutral-400 mt-5 mb-14"></div>
           <div className="grid gap-5">
-            <div className="grid">
+            <div className="grid justify-center">
               <LabelsTwo htmlFor={'project-title'} name={'Project Title'} />
               <Input
                 left={true}
                 id={'project-title'}
                 placeholder={'Ex: Andrea’s personal web development'}
                 type={'text'}
-                cn={'w-[570px] text-sm'}
+                cn={'sm:w-[570px] xs:w-[446px] w-[340px] text-sm'}
                 cnb={'rounded-[5px]'}
                 cnh={'h-[58px]'}
               />
             </div>
-            <div className="grid">
+            <div className="grid justify-center">
               <LabelsTwo
                 htmlFor={'Describe-the-projects'}
                 name={'Describe the Business/projects.'}
@@ -33,17 +33,17 @@ const DesignAndDevelopmentModal = ({ setOpenModal }) => {
                 id={'Describe-the-projects'}
                 placeholder={'Example: its an salon business in new York etc.'}
                 type={'text'}
-                cn={'w-[570px] text-sm'}
+                cn={'sm:w-[570px] xs:w-[446px] w-[340px] text-sm'}
                 cnb={'rounded-[5px]'}
                 cnh={'h-[81.66px]'}
               />
             </div>
-            <div className="grid  gap-5">
+            <div className="grid justify-center gap-5">
               <Input
                 left={true}
                 placeholder={'What Services Do You Offer?.'}
                 type={'text'}
-                cn={'w-[570px] text-sm'}
+                cn={'sm:w-[570px] xs:w-[446px] w-[340px] text-sm'}
                 cnb={'rounded-[5px]'}
                 cnh={'h-[58px]'}
               />
@@ -51,7 +51,7 @@ const DesignAndDevelopmentModal = ({ setOpenModal }) => {
                 left={true}
                 placeholder={'Who Is Your Target Audience?'}
                 type={'text'}
-                cn={'w-[570px] text-sm'}
+                cn={'sm:w-[570px] xs:w-[446px] w-[340px] text-sm'}
                 cnb={'rounded-[5px]'}
                 cnh={'h-[58px]'}
               />
@@ -59,7 +59,7 @@ const DesignAndDevelopmentModal = ({ setOpenModal }) => {
                 left={true}
                 placeholder={'What Makes Your Services Unique?'}
                 type={'text'}
-                cn={'w-[570px] text-sm'}
+                cn={'sm:w-[570px] xs:w-[446px] w-[340px] text-sm'}
                 cnb={'rounded-[5px]'}
                 cnh={'h-[58px]'}
               />
@@ -69,7 +69,7 @@ const DesignAndDevelopmentModal = ({ setOpenModal }) => {
                   'What Features Does Your Website Need to Be Successful?'
                 }
                 type={'text'}
-                cn={'w-[570px] text-sm'}
+                cn={'sm:w-[570px] xs:w-[446px] w-[340px] text-sm'}
                 cnb={'rounded-[5px]'}
                 cnh={'h-[58px]'}
               />
@@ -79,7 +79,7 @@ const DesignAndDevelopmentModal = ({ setOpenModal }) => {
                   'What’s your competitors site or do you have any reference site you like?'
                 }
                 type={'text'}
-                cn={'w-[570px] text-sm'}
+                cn={'sm:w-[570px] xs:w-[446px] w-[340px] text-sm'}
                 cnb={'rounded-[5px]'}
                 cnh={'h-[58px]'}
               />
@@ -89,14 +89,14 @@ const DesignAndDevelopmentModal = ({ setOpenModal }) => {
                   'Do You Have Any Existing Style Guides and Guidelines?'
                 }
                 type={'text'}
-                cn={'w-[570px] text-sm'}
+                cn={'sm:w-[570px] xs:w-[446px] w-[340px] text-sm'}
                 cnb={'rounded-[5px]'}
                 cnh={'h-[58px]'}
               />
             </div>
 
             <div className="grid gap-9 mt-10">
-              <div className="grid">
+              <div className="grid justify-start">
                 <LabelsTwo
                   name={'Would You Like Us to Provide domain hosting?'}
                 />
@@ -125,7 +125,7 @@ const DesignAndDevelopmentModal = ({ setOpenModal }) => {
                   </div>
                 </div>
               </div>
-              <div className="grid">
+              <div className="grid justify-start">
                 <LabelsTwo
                   name={
                     'Would You Like Us to Provide Ongoing Support and Maintenance?'
@@ -156,7 +156,7 @@ const DesignAndDevelopmentModal = ({ setOpenModal }) => {
                   </div>
                 </div>
               </div>
-              <div className="grid">
+              <div className="grid justify-start">
                 <LabelsTwo
                   name={
                     'Do you need a virtual meeting for this project discussion?'

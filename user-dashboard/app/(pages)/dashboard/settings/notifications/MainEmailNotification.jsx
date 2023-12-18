@@ -2,7 +2,7 @@
 
 const MainEmailNotification = ({ emailNotifications }) => {
   return (
-    <div className="grid justify-start items-center p-10 bg-white gap-7">
+    <div className="grid justify-start items-center sm:p-10 p-7 bg-white gap-7">
       {emailNotifications?.map((item, i) => (
         <div key={i} className="flex gap-3 items-center">
           <div className="h-4">

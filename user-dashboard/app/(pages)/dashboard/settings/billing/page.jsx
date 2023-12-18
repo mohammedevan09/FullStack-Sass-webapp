@@ -13,7 +13,7 @@ const page = () => {
     },
   ]
   return (
-    <div className="w-full grid pl-24 items-center my-20">
+    <div className="w-full grid items-center sm:my-20 xs:my-10 my-5">
       <MainBilling billingData={billingData} />
     </div>
   )

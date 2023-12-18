@@ -20,10 +20,10 @@ const HourlyPlansModal = ({ setOpenModal }) => {
     },
   ]
   return (
-    <div className="fixed z-40 left-0 top-0 right-0 bottom-0 modal-b-blur h-screen w-screen overflow-y-scroll">
+    <div className="fixed z-[100] left-0 top-0 right-0 bottom-0 modal-b-blur h-screen w-screen overflow-y-scroll overflow-x-hidden">
       <div className="flex justify-center items-center my-20">
         <div className="grid bg-white pt-16 pb-4 px-24 rounded-[20px]">
-          <h3 className="text-2xl font-semibold tracking-tight mx-auto">
+          <h3 className="sm:text-2xl text-xl font-semibold tracking-tight mx-auto">
             Provide project details & questionnaire
           </h3>
           <div className="w-full h-[0px] border border-neutral-400 mt-5 mb-14"></div>
@@ -35,7 +35,7 @@ const HourlyPlansModal = ({ setOpenModal }) => {
                 id={'project-title'}
                 placeholder={'Ex: Andrea’s personal web development'}
                 type={'text'}
-                cn={'w-[570px] text-sm'}
+                cn={'sm:w-[570px] xs:w-[446px] w-[340px] text-sm'}
                 cnb={'rounded-[5px]'}
                 cnh={'h-[58px]'}
               />
@@ -50,6 +50,7 @@ const HourlyPlansModal = ({ setOpenModal }) => {
                 id={'Describe-the-projects'}
                 placeholder={'Example: its an salon business in new York etc.'}
                 type={'text'}
+                cn={'sm:w-[570px] xs:w-[446px] w-[340px] text-sm'}
                 cnb={'rounded-[5px]'}
                 cnh={'h-[81.66px]'}
               />

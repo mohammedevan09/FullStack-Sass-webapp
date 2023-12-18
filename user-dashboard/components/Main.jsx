@@ -120,7 +120,7 @@ const Main = () => {
           </div>
         </div>
       </div>
-      <div className="xl:w-[1000px] lg:w-full w-screen  bg-white rounded-[20.37px] px-7 py-8 sm:my-14 my-10 overflow-x-scroll">
+      <div className="lg:w-full w-screen  bg-white rounded-[20.37px] px-7 py-8 sm:my-14 my-10 overflow-x-scroll">
         <table className="w-full">
           <tbody>
             <tr className="text-zinc-700 lg:text-xl text-lg font-semibold tracking-tight text-left">

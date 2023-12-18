@@ -9,7 +9,7 @@ const MainBilling = ({ billingData }) => {
   const [openEditModal, setOpenEditModal] = useState(false)
   return (
     <>
-      <div className="bg-white w-[768px] p-4 rounded-lg shadow">
+      <div className="bg-white lg:w-[768px] sm:-w-[500px] w-full p-4 rounded-lg shadow">
         {billingData?.map((item, i) => (
           <div key={i} className="flex  items-start justify-start gap-3">
             <div>{item?.cardIcon}</div>

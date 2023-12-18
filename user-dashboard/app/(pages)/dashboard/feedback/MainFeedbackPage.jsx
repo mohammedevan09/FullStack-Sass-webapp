@@ -21,20 +21,20 @@ const MainFeedbackPage = () => {
   const router = useRouter()
   return (
     <div className="flex justify-center items-center w-full">
-      <div className="grid items-center justify-center py-8 bg-white px-9 rounded-[15px] my-28">
-        <h1 className="w-[580px] text-center text-[32px] font-semibold mx-auto">
+      <div className="grid items-center justify-center sm:py-8 py-4 bg-white xs:px-9 px-2 rounded-[15px] my-28">
+        <h1 className="lg:w-[580px] sm:w-[380px] w-[320px] text-center lg:text-[32px] sm:text-2xl text-xl font-semibold mx-auto">
           We’re always open to improve our partner’s experience & our services
         </h1>
-        <h3 className="text-xl my-7 w-[510px] mx-auto text-center">
+        <h3 className="lg:text-xl sm:text-base text-sm lg:my-7 my-5 lg:w-[510px] sm:w-[370px] w-[310px] mx-auto text-center">
           Fillout the form & let us know how we can improve the services & our
           partner portal experience
         </h3>
-        <div className="text-slate-700 text-xl font-semibold grid gap-3">
+        <div className="text-slate-700 lg:text-xl sm:text-lg xs:text-base text-sm font-semibold grid gap-3">
           <label htmlFor="issue">Select an issues</label>
           <select
             name="issue"
             id="issue"
-            className="w-[800px] outline-none border border-gray-300 p-3 rounded-[5px]"
+            className="lg:w-[800px] sm:w-[500px] w-[340px] outline-none border border-gray-300 p-3 rounded-[5px]"
           >
             <option value="" disabled selected>
               Select an issues
@@ -52,12 +52,12 @@ const MainFeedbackPage = () => {
             name="Details"
             id="Details"
             cols="30"
-            rows="5"
+            rows="4"
             className="border border-gray-300 outline-none rounded-[5px] p-3"
           ></textarea>
         </div>
         <button
-          className="w-full text-center text-white text-base font-semibold bg-blue-800 py-4 rounded-lg leading-7 mt-8"
+          className="w-full text-center text-white text-base font-semibold bg-blue-800 md:py-4 py-2 rounded-lg leading-7 mt-8"
           onClick={() => router.push('/dashboard/feedback/thanks')}
         >
           Send Feedback

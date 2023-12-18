@@ -39,11 +39,11 @@ const OpenTicketModal = ({ setOpenModal, setOpenSubModal }) => {
   ]
 
   return (
-    <div className="fixed z-40 left-0 top-0 right-0 bottom-0 modal-b-blur h-screen w-screen overflow-y-scroll">
+    <div className="fixed z-[100] left-0 top-0 right-0 bottom-0 modal-b-blur h-screen w-screen overflow-y-scroll overflow-x-hidden">
       <div className="flex justify-center items-center my-20">
         <div className="grid bg-white py-16 px-40 rounded-[20px]">
-          <div className="grid gap-5 mb-20">
-            <h2 className="text-2xl font-semibold mx-auto">
+          <div className="grid gap-5 mb-20 justify-center">
+            <h2 className="sm:text-2xl text-xl font-semibold mx-auto text-center">
               Provide Ticket details & questionnaire
             </h2>
             <div className="border border-neutral-400"></div>
@@ -56,7 +56,7 @@ const OpenTicketModal = ({ setOpenModal, setOpenSubModal }) => {
                 id={'project-title'}
                 placeholder={'Ex: Andrea’s personal web development'}
                 type={'text'}
-                cn={'w-[570px] text-sm'}
+                cn={'sm:w-[570px] xs:w-[446px] w-[340px] text-sm'}
                 cnb={'rounded-[5px]'}
                 cnh={'h-[58px]'}
               />
@@ -69,7 +69,7 @@ const OpenTicketModal = ({ setOpenModal, setOpenSubModal }) => {
               <textarea
                 id={'Describe-the-projects'}
                 placeholder={'Example: its an salon business in new York etc.'}
-                className="outline-none h-[191px] rounded-[5px] w-[570px] text-sm border border-zinc-400 p-5"
+                className="outline-none sm:h-[191px] h-[150px] rounded-[5px] sm:w-[570px] xs:w-[446px] w-[340px] text-sm border border-zinc-400 p-5"
                 type={'text'}
               />
             </div>
@@ -124,7 +124,10 @@ const OpenTicketModal = ({ setOpenModal, setOpenSubModal }) => {
           </div>
           <button
             className="w-full p-4 bg-blue-800 rounded-[9px] text-white text-lg font-semibold leading-7 mt-12"
-            onClick={() => setOpenSubModal(true)}
+            onClick={() => {
+              setOpenSubModal(true)
+              setOpenModal(false)
+            }}
           >
             Submit Ticket
           </button>

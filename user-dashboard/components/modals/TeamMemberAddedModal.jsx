@@ -14,7 +14,7 @@ const TeamMemberAddedModal = ({
           <div className="text-gray-900 text-lg font-medium leading-7 mx-auto text-center">
             Team member hs been added!
           </div>
-          <div className="text-gray-500 text-sm font-normal leading-tight">
+          <div className="text-gray-500 text-sm font-normal leading-tight text-center">
             A confirmation email has been sent to your team member!
           </div>
         </div>

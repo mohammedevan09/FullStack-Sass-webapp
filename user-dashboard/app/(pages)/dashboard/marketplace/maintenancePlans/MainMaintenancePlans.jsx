@@ -2,12 +2,14 @@
 
 import GetACustomProposalModal from '@/components/modals/marketplaceModal/GetACustomProposalModal'
 import MaintenancePlansModal from '@/components/modals/marketplaceModal/MaintenancePlansModal'
+import ThanksSubModal from '@/components/modals/marketplaceModal/ThanksSubModal'
 import { CheckSignIcon } from '@/staticData/Icon'
 import { useState } from 'react'
 
 const MainMaintenancePlans = ({ pricing }) => {
   const [openModalCustom, setOpenModalCustom] = useState(false)
   const [openModal, setOpenModal] = useState(false)
+  const [openSubModal, setOpenSubModal] = useState(false)
   return (
     <div className="grid justify-center items-center bg-white px-11 pt-12 rounded-[15px] mb-20 2xl:w-[1111px] w-full 2xl:max-w-full max-w-[950px]">
       <div className="lg:flex grid lg:justify-center items-center gap-8">
@@ -72,6 +74,14 @@ const MainMaintenancePlans = ({ pricing }) => {
         <GetACustomProposalModal
           openModal={openModalCustom}
           setOpenModal={setOpenModalCustom}
+          openSubModal={openSubModal}
+          setOpenSubModal={setOpenSubModal}
+        />
+      )}
+      {openSubModal && (
+        <ThanksSubModal
+          setOpenModal={setOpenModal}
+          setOpenSubModal={setOpenSubModal}
         />
       )}
       {openModal && <MaintenancePlansModal setOpenModal={setOpenModal} />}

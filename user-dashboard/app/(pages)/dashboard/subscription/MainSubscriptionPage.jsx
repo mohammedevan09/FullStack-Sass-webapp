@@ -107,10 +107,14 @@ const MainSubscriptionPage = ({ projects }) => {
                   </div>
                 </td>
                 <td className="lg:py-7 py-4 text-center">
-                  <div className="w-[200px]">{item?.lastWebsiteUpdate}</div>
+                  <div className="w-[200px] mx-auto">
+                    {item?.lastWebsiteUpdate}
+                  </div>
                 </td>
                 <td className="lg:py-7 py-4 text-center">
-                  <div className="w-[200px]">{item?.subscriptionRenew}</div>
+                  <div className="w-[200px] mx-auto">
+                    {item?.subscriptionRenew}
+                  </div>
                 </td>
                 <td className="lg:py-7 py-4 text-center">
                   <button

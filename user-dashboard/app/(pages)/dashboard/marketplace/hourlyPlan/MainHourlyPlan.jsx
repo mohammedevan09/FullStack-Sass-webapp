@@ -2,6 +2,7 @@
 
 import GetACustomProposalModal from '@/components/modals/marketplaceModal/GetACustomProposalModal'
 import HourlyPlansModal from '@/components/modals/marketplaceModal/HourlyPlansModal'
+import ThanksSubModal from '@/components/modals/marketplaceModal/ThanksSubModal'
 import { CheckSignIcon2, CheckSignIcon3 } from '@/staticData/Icon'
 import { useState } from 'react'
 
@@ -43,6 +44,7 @@ const MainHourlyPlan = () => {
 
   const [openModalCustom, setOpenModalCustom] = useState(false)
   const [openModal, setOpenModal] = useState(false)
+  const [openSubModal, setOpenSubModal] = useState(false)
 
   const [active, setActive] = useState(0)
   return (
@@ -131,6 +133,14 @@ const MainHourlyPlan = () => {
         <GetACustomProposalModal
           openModal={openModalCustom}
           setOpenModal={setOpenModalCustom}
+          openSubModal={openSubModal}
+          setOpenSubModal={setOpenSubModal}
+        />
+      )}
+      {openSubModal && (
+        <ThanksSubModal
+          setOpenModal={setOpenModal}
+          setOpenSubModal={setOpenSubModal}
         />
       )}
 

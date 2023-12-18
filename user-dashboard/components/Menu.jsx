@@ -105,7 +105,7 @@ const Menu = () => {
 
   return (
     <div
-      className={`lg:w-[260px] w-[230px] text-center h-screen xl:static absolute z-50 left-0 transition-all duration-500 ease-linear ${
+      className={`lg:w-[260px] w-[230px] text-center h-screen xl:static absolute z-20 left-0 transition-all duration-500 ease-linear ${
         openMenu ? 'left-0' : 'left-[-120%]'
       }`}
     >
