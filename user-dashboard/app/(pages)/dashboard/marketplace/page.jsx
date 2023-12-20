@@ -42,7 +42,7 @@ const page = () => {
             </div>
             <Link
               href={item?.links}
-              className="w-[189px] h-[43px] bg-blue-800 rounded-[5px] text-white text-base font-semibold text-center flex items-center justify-center mx-auto"
+              className="w-[189px] h-[43px] btn-hover rounded-[5px] text-base font-semibold text-center flex items-center justify-center mx-auto"
             >
               Browse packages
             </Link>

@@ -1,6 +1,9 @@
+'use client'
+
 import Input from '../../Input'
 import Labels from '../../Labels'
 import WrappingModal from '../WrappingModal'
+import { motion } from 'framer-motion'
 
 const AddNewTeamMemberModal = ({
   setSuccessModal,
@@ -71,7 +74,8 @@ const AddNewTeamMemberModal = ({
           </div>
         </div>
         <div className="w-full grid gap-2">
-          <button
+          <motion.button
+            whileHover={{ scale: 1.03 }}
             className="w-full text-center text-white text-base font-semibold bg-blue-800 py-4 rounded-lg leading-7"
             onClick={(e) => {
               e.preventDefault()
@@ -80,8 +84,9 @@ const AddNewTeamMemberModal = ({
             }}
           >
             Add Member
-          </button>
-          <button
+          </motion.button>
+          <motion.button
+            whileHover={{ scale: 1.15 }}
             className="w-full text-center bg-none text-base font-semibold text-blue-800 py-4 rounded-lg leading-7"
             onClick={(e) => {
               e.preventDefault()
@@ -89,7 +94,7 @@ const AddNewTeamMemberModal = ({
             }}
           >
             Cancel
-          </button>
+          </motion.button>
         </div>
       </div>
     </WrappingModal>

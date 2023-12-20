@@ -4,6 +4,7 @@ import Input from '@/components/Input'
 import { LabelsTwo } from '@/components/Labels'
 import { FilterByIdIcon, SearchByIdIcon } from '@/staticData/Icon'
 import WrappingModal from '../WrappingModal'
+import { motion } from 'framer-motion'
 
 const OpenTicketModal = ({ setOpenModal, setOpenSubModal, openModal }) => {
   const projectData = [
@@ -122,7 +123,8 @@ const OpenTicketModal = ({ setOpenModal, setOpenSubModal, openModal }) => {
             </div>
           ))}
         </div>
-        <button
+        <motion.button
+          whileHover={{ scale: 1.03 }}
           className="w-full p-4 bg-blue-800 rounded-[9px] text-white text-lg font-semibold leading-7 mt-12"
           onClick={() => {
             setOpenSubModal(true)
@@ -130,13 +132,14 @@ const OpenTicketModal = ({ setOpenModal, setOpenSubModal, openModal }) => {
           }}
         >
           Submit Ticket
-        </button>
-        <button
+        </motion.button>
+        <motion.button
+          whileHover={{ scale: 1.15 }}
           className="w-full p-4 text-blue-800 rounded-[9px] bg-white text-lg font-semibold leading-7 mt-1"
           onClick={() => setOpenModal(false)}
         >
           Cancel
-        </button>
+        </motion.button>
       </div>
     </WrappingModal>
   )

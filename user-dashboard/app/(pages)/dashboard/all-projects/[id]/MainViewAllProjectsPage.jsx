@@ -3,9 +3,9 @@
 import { BackButtonIcon, FilterByIdIcon } from '@/staticData/Icon'
 import { dropData2 } from '@/staticData/MainData'
 import Image from 'next/image'
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
+import { motion } from 'framer-motion'
 
 const MainViewAllProjectsPage = ({ params }) => {
   const projectTracking = [
@@ -69,12 +69,13 @@ const MainViewAllProjectsPage = ({ params }) => {
 
   return (
     <div className="sm:my-14 my-8 sm:px-4 xs:px-3 px-1">
-      <button
+      <motion.button
+        whileHover={{ scale: 1.1 }}
         onClick={() => router.back()}
         className="flex justify-start items-center w-[120px] gap-1 mb-10 font-semibold text-xl -ml-1"
       >
         <BackButtonIcon /> Go Back
-      </button>
+      </motion.button>
       <div className="xs:flex grid justify-between xs:items-start items-end">
         <div>
           <h1 className="md:text-2xl sm:text-xl text-base font-semibold">

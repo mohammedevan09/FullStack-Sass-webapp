@@ -11,11 +11,7 @@ const MainLogin = () => {
   //   const [email, setEmail] = useState('')
   //   const [password, setPassword] = useState('')
   return (
-    <div
-      className={`h-screen w-screen grid justify-center items-center ${
-        isSignUp && 'my-10'
-      }`}
-    >
+    <div className={`grid justify-center items-center my-10 overflow-x-hidden`}>
       <div className="grid gap-6">
         <div className="w-20 mx-auto">
           <Image
@@ -30,16 +26,16 @@ const MainLogin = () => {
           <div className="grid justify-center items-center">
             <div className="text-xl font-medium mx-auto ">Welcome,</div>
             <div className="flex gap-2">
-              <span className="text-[35px] font-bold ">
+              <span className="sm:text-[35px] text-[24px] font-bold ">
                 To the WPS partner portal
               </span>
-              <span className="w-[49px] mx-auto">
+              <span className="sm:w-[49px] xs:w-[38px] w-[32px] mx-auto">
                 <Image
                   src={'/images/hello.png'}
                   width={500}
                   height={500}
                   alt="wp sprint"
-                  className="h-[49px]"
+                  className="sm:h-[49px] xs:h-[38px] w-[32px]"
                 />
               </span>
             </div>
@@ -48,8 +44,8 @@ const MainLogin = () => {
         <div className="w-full flex justify-center items-center rounded-[20px] text-2xl font-medium mb-6">
           <button
             className={`${
-              !isSignUp ? 'bg-white' : 'bg-gray-800 text-white'
-            } rounded-tl-[20px] rounded-bl-[20px] border-2 border-stone-900 w-[265px] h-[72px] transition-all duration-75 ease-linear`}
+              !isSignUp ? 'bg-white' : 'bg-gray-800 text-white '
+            } sm:rounded-tl-[20px] rounded-tl-[15px] sm:rounded-bl-[20px] rounded-bl-[15px] border-2 border-stone-900 sm:w-[265px] xs:w-[220px] w-[170px] sm:h-[72px] xs:h-[60px] h-[55px] transition-all duration-75 ease-linear`}
             onClick={(e) => {
               e.preventDefault()
               setIsSignUp(false)
@@ -60,7 +56,7 @@ const MainLogin = () => {
           <button
             className={`${
               isSignUp ? 'bg-white' : 'bg-gray-800 text-white'
-            } rounded-tr-[20px] rounded-br-[20px] border-2 border-stone-900 w-[265px] h-[72px] transition-all duration-75`}
+            } sm:rounded-tr-[20px] rounded-tr-[15px] sm:rounded-br-[20px] rounded-br-[15px] border-2 border-stone-900 sm:w-[265px] xs:w-[220px] w-[170px] sm:h-[72px] xs:h-[60px] h-[55px] transition-all duration-75`}
             onClick={(e) => {
               e.preventDefault()
               setIsSignUp(true)
@@ -79,7 +75,7 @@ export default MainLogin
 
 export const SignIn = () => {
   return (
-    <div className="w-full px-7 py-14 bg-white rounded-[20px] shadow gap-6 grid">
+    <div className="w-full sm:px-7 px-4 sm:py-14 py-10 bg-white rounded-[20px] shadow gap-6 grid">
       <div className="w-full grid justify-center items-center gap-6">
         <Input
           type="text"
@@ -101,7 +97,7 @@ export const SignIn = () => {
         <div className="text-gray-950 font-normal">Forgot password?</div>
       </div>
       <div className="w-full">
-        <button className="w-full text-center text-white text-base font-semibold bg-blue-800 py-4 rounded-lg leading-7">
+        <button className="w-full text-center btn-hover text-base font-semibold py-4 rounded-lg leading-7">
           Sign In
         </button>
       </div>
@@ -128,7 +124,7 @@ export const SignUp = () => {
       </div>
 
       <div className="w-full">
-        <button className="w-full text-center text-white text-base font-semibold bg-blue-800 py-4 rounded-lg leading-7">
+        <button className="w-full text-center btn-hover text-base font-semibold py-4 rounded-lg leading-7">
           Sign Up
         </button>
       </div>

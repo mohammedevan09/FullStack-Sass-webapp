@@ -191,7 +191,7 @@ const Menu = () => {
             </motion.div>
             <motion.button
               whileHover={{ scale: 1.1 }}
-              className="py-2 px-5 bg-blue-800 rounded-lg text-white btn-hover text-base font-normal flex justify-center items-center mx-auto gap-3"
+              className="py-2 px-5 bg-blue-800 rounded-lg text-white text-base font-normal flex justify-center items-center mx-auto gap-3"
             >
               <LogoutIcon /> <div>Logout</div>
             </motion.button>

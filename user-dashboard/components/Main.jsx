@@ -172,7 +172,7 @@ const Main = () => {
                 </td>
                 <td className="lg:py-7 py-4 text-center">
                   <button
-                    className="w-[100px] h-[34px] bg-blue-800 rounded-[10px] text-white text-center"
+                    className="w-[100px] h-[34px] btn-hover rounded-[10px] text-center"
                     onClick={() =>
                       router.push(`/dashboard/all-projects/${item?.orderId}`)
                     }

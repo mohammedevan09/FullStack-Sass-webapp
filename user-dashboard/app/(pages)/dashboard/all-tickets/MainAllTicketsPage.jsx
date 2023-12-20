@@ -137,9 +137,9 @@ const MainAllTicketsPage = ({ projects }) => {
 
                 <td className="lg:py-7 py-4 text-center">
                   <button
-                    className="w-[100px] h-[34px] bg-blue-800 rounded-[10px] text-white text-center mx-4"
+                    className="w-[100px] h-[34px] btn-hover rounded-[10px] text-center mx-4"
                     onClick={() =>
-                      router.push(`/dashboard/all-projects/${item?.orderId}`)
+                      router.push(`/dashboard/all-tickets/${item?.orderId}`)
                     }
                   >
                     Open

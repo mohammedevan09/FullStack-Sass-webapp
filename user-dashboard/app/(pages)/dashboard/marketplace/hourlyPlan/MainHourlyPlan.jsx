@@ -5,6 +5,7 @@ import HourlyPlansModal from '@/components/modals/marketplaceModal/HourlyPlansMo
 import ThanksSubModal from '@/components/modals/marketplaceModal/ThanksSubModal'
 import { CheckSignIcon2, CheckSignIcon3 } from '@/staticData/Icon'
 import { useState } from 'react'
+import { motion } from 'framer-motion'
 
 const MainHourlyPlan = () => {
   const services = [
@@ -105,12 +106,13 @@ const MainHourlyPlan = () => {
               </div>
             ))}
           </div>
-          <button
+          <motion.button
+            whileHover={{ scale: 1.03 }}
             className="w-full sm:py-4 py-3 text-white text-base font-semibold bg-blue-800 sm:rounded-lg rounded-md my-5"
             onClick={() => setOpenModal(true)}
           >
             Try 2 Days For Free
-          </button>
+          </motion.button>
         </div>
       </div>
       <div className="sm:flex grid sm:justify-between sm:items-center items-start lg:p-16 py-12 px-0">
@@ -123,7 +125,7 @@ const MainHourlyPlan = () => {
           </p>
         </div>
         <button
-          className="px-5 py-3 Get a custom proposal rounded-lg shadow border-2 border-zinc-800  font-semibold sm:mt-0 mt-8"
+          className="px-5 py-3 Get a custom proposal rounded-lg shadow border-2 border-zinc-800  font-semibold sm:mt-0 mt-8hover:text-blue-800 hover:border-blue-800"
           onClick={() => setOpenModalCustom(true)}
         >
           Get a custom proposal

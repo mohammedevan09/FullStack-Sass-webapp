@@ -10,6 +10,7 @@ import { dropData4 } from '@/staticData/MainData'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
+import { motion } from 'framer-motion'
 
 const MainViewSubscriptionPage = ({ params }) => {
   const projectTracking = [
@@ -70,12 +71,14 @@ const MainViewSubscriptionPage = ({ params }) => {
 
   return (
     <div className="sm:my-14 my-8 sm:px-4 xs:px-3 px-1">
-      <Link
-        href={'/dashboard/subscription'}
-        className="flex justify-start items-center w-[120px] gap-1 mb-10 font-semibold text-xl -ml-1"
-      >
-        <BackButtonIcon /> Go Back
-      </Link>
+      <motion.button whileHover={{ scale: 1.1 }}>
+        <Link
+          href={'/dashboard/subscription'}
+          className="flex justify-start items-center w-[120px] gap-1 mb-10 font-semibold text-xl -ml-1"
+        >
+          <BackButtonIcon /> Go Back
+        </Link>
+      </motion.button>
       <div className="sm:flex grid justify-between items-start sm:mb-14 mb-8">
         <div>
           <h1 className="text-2xl font-semibold">
@@ -129,7 +132,10 @@ const MainViewSubscriptionPage = ({ params }) => {
             Download Maintenance Report of:{' '}
             <span className="font-semibold">Januray</span>
           </h6>
-          <button className="w-[163px] h-[51px] bg-blue-800 rounded-[15px] text-white text-xl font-medium flex items-center justify-center gap-1 sm:mx-0 mx-auto">
+          <button
+            className="w-[163px] h-[51px] btn-hover
+           rounded-[15px] text-xl font-medium flex items-center justify-center gap-1 sm:mx-0 mx-auto"
+          >
             <DownloadIcon /> Download
           </button>
         </div>

@@ -135,7 +135,7 @@ const MainProposalsPage = () => {
                 </td>
                 <td className="py-7 text-center">
                   <button
-                    className="md:w-44 w-36 h-[34px] bg-blue-800 rounded-[10px] text-white text-center mx-auto"
+                    className="md:w-44 w-36 h-[34px] btn-hover rounded-[10px] text-center mx-auto"
                     onClick={(e) => {
                       e.preventDefault()
                       router.push(`/dashboard/proposals/${item?.id}`)

@@ -45,7 +45,7 @@ const MainMaintenancePlans = ({ pricing }) => {
                 ))}
               </div>
               <button
-                className="w-[139px] h-9 bg-blue-800 rounded-lg shadow border border-blue-800 justify-center items-center inline-flex hover:bg-white hover:text-blue-800 text-white mx-auto"
+                className="w-[139px] h-9 btn-hover rounded-lg shadow border justify-center items-center inline-flex mx-auto"
                 onClick={() => setOpenModal(true)}
               >
                 Get started
@@ -64,7 +64,7 @@ const MainMaintenancePlans = ({ pricing }) => {
           </p>
         </div>
         <button
-          className="px-5 py-3 Get a custom proposal rounded-lg shadow border-2 border-zinc-800  font-semibold lg:mt-0 mt-8"
+          className="px-5 py-3 Get a custom proposal rounded-lg shadow border-2 border-zinc-800  font-semibold lg:mt-0 mt-8 hover:text-blue-800 hover:border-blue-800"
           onClick={() => setOpenModalCustom(true)}
         >
           Get a custom proposal

@@ -19,8 +19,8 @@ const Input = ({
       id={id}
       type={type}
       placeholder={placeholder}
-      className={`${cn ? cn : 'w-[472.44px]'} ${
-        cnh ? cnh : 'h-[65px]'
+      className={`${cn ? cn : 'sm:w-[472.44px] xs:w-[410.44px] w-[340px]'} ${
+        cnh ? cnh : 'sm:h-[65px] xs:h-[58px] h-[55px]'
       } border border-zinc-400 ${cnb || 'rounded-[9px]'} ${
         left
           ? 'placeholder:text-left text-left px-4'
@@ -43,8 +43,8 @@ export const PasswordInput = ({
   const [showPass, setShowPass] = useState()
   return (
     <div
-      className={`${cn ? cn : 'w-[472.44px]'} ${
-        cnh ? cnh : 'h-[65px]'
+      className={`${cn ? cn : 'sm:w-[472.44px] xs:w-[410.44px] w-[340px]'} ${
+        cnh ? cnh : 'sm:h-[65px] xs:h-[58px] h-[55px]'
       } border border-zinc-400 rounded-[9px] text-center flex justify-center items-center relative`}
     >
       <input

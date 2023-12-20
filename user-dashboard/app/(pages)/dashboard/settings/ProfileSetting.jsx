@@ -2,6 +2,7 @@
 
 import Input, { PasswordInput } from '@/components/Input'
 import Labels from '@/components/Labels'
+import { motion } from 'framer-motion'
 
 const ProfileSetting = () => {
   return (
@@ -66,9 +67,12 @@ const ProfileSetting = () => {
         </div>
 
         <div className="w-full">
-          <button className="w-full text-center text-white text-base font-semibold bg-blue-800 md:py-4 py-2 rounded-lg leading-7">
+          <motion.button
+            whileHover={{ scale: 1.03 }}
+            className="w-full text-center btn-hover text-base font-semibold md:py-4 py-2 rounded-lg leading-7"
+          >
             Save
-          </button>
+          </motion.button>
         </div>
       </div>
     </div>

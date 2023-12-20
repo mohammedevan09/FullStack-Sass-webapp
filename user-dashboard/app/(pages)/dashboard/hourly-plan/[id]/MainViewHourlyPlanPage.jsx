@@ -11,6 +11,7 @@ import { dropData3 } from '@/staticData/MainData'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
+import { motion } from 'framer-motion'
 
 const MainViewHourlyPlanPage = ({ params }) => {
   const [dropOpen, setDropOpen] = useState(false)
@@ -120,12 +121,14 @@ const MainViewHourlyPlanPage = ({ params }) => {
   }, [dropRef])
   return (
     <div className="sm:my-14 my-8 sm:px-4 xs:px-3 px-1">
-      <Link
-        href={'/dashboard/hourly-plan'}
-        className="flex justify-start items-center w-[120px] gap-1 mb-10 font-semibold text-xl -ml-1"
-      >
-        <BackButtonIcon /> Go Back
-      </Link>
+      <motion.button whileHover={{ scale: 1.1 }}>
+        <Link
+          href={'/dashboard/hourly-plan'}
+          className="flex justify-start items-center w-[120px] gap-1 mb-10 font-semibold text-xl -ml-1"
+        >
+          <BackButtonIcon /> Go Back
+        </Link>
+      </motion.button>
       <div className="sm:flex grid justify-between items-start mb-14">
         <div>
           <h1 className="text-2xl font-semibold">

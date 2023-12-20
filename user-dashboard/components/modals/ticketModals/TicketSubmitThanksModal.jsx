@@ -1,4 +1,7 @@
+'use client'
+
 import { CheckIcon, OpenInboxIcon } from '@/staticData/Icon'
+import { motion } from 'framer-motion'
 
 const TicketSubmitThanksModal = ({ setOpenSubModal, setOpenModal }) => {
   return (
@@ -14,7 +17,8 @@ const TicketSubmitThanksModal = ({ setOpenSubModal, setOpenModal }) => {
           </div>
         </div>
         <div className="mb-5 mx-auto">
-          <button
+          <motion.button
+            whileHover={{ scale: 1.08 }}
             className="w-[181px] h-11 px-[18px] py-2.5 bg-white rounded-lg shadow border border-indigo-800 text-indigo-800 text-base font-medium flex items-center justify-center gap-2"
             onClick={(e) => {
               e.preventDefault()
@@ -23,7 +27,7 @@ const TicketSubmitThanksModal = ({ setOpenSubModal, setOpenModal }) => {
             }}
           >
             <OpenInboxIcon /> See All Tickets
-          </button>
+          </motion.button>
         </div>
       </div>
     </div>

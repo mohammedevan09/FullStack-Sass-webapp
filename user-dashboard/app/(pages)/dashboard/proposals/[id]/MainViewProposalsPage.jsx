@@ -10,17 +10,20 @@ import {
 } from '@/staticData/Icon'
 import Link from 'next/link'
 import { useState } from 'react'
+import { motion } from 'framer-motion'
 
 const MainViewProposalsPage = ({ params }) => {
   const [openModal, setOpenModal] = useState(false)
   return (
     <div className="lg:w-[942px] w-full">
-      <Link
-        href={'/dashboard/proposals'}
-        className="flex justify-start items-center w-[120px] gap-1 my-10 font-semibold text-xl -ml-1"
-      >
-        <BackButtonIcon /> Go Back
-      </Link>
+      <motion.button whileHover={{ scale: 1.1 }}>
+        <Link
+          href={'/dashboard/proposals'}
+          className="flex justify-start items-center w-[120px] gap-1 my-10 font-semibold text-xl -ml-1"
+        >
+          <BackButtonIcon /> Go Back
+        </Link>
+      </motion.button>
       <div className="sm:my-16 my-4 bg-white rounded-[15px]">
         <div className="grid sm:py-10 py-5 justify-center items-center w-full gap-3">
           <h1 className="sm:text-2xl text-xl font-semibold">
@@ -97,7 +100,7 @@ const MainViewProposalsPage = ({ params }) => {
         </div>
       </div>
       <button
-        className="w-[223px] h-[51px] bg-blue-800 rounded-[15px] text-white text-xl font-medium flex items-center justify-center mx-auto mb-24 gap-2"
+        className="w-[223px] h-[51px] btn-hover rounded-[15px] text-xl font-medium flex items-center justify-center mx-auto mb-24 gap-2"
         onClick={() => setOpenModal(true)}
       >
         <CheckSignIcon4 /> Accept proposal

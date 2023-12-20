@@ -4,6 +4,7 @@ import { CreditCardSvg, MastercardIcon } from '@/staticData/Icon'
 import Labels from '../../Labels'
 import Input from '../../Input'
 import WrappingModal from '../WrappingModal'
+import { motion } from 'framer-motion'
 
 const EditPaymentMethodModal = ({ setOpenModal, openModal }) => {
   return (
@@ -77,7 +78,8 @@ const EditPaymentMethodModal = ({ setOpenModal, openModal }) => {
           </div>
         </div>
         <div className="flex justify-center items-center w-full gap-3 mt-10">
-          <button
+          <motion.button
+            whileHover={{ scale: 1.05 }}
             className="w-1/2 py-2 px-3 text-base font-medium rounded-lg shadow border border-gray-300"
             onClick={(e) => {
               e.preventDefault()
@@ -85,8 +87,9 @@ const EditPaymentMethodModal = ({ setOpenModal, openModal }) => {
             }}
           >
             Cancel
-          </button>
-          <button
+          </motion.button>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
             className="w-1/2 py-2 px-3 text-base font-medium rounded-lg shadow bg-blue-800 text-white"
             onClick={(e) => {
               e.preventDefault()
@@ -94,7 +97,7 @@ const EditPaymentMethodModal = ({ setOpenModal, openModal }) => {
             }}
           >
             Add Card
-          </button>
+          </motion.button>
         </div>
       </div>
     </WrappingModal>

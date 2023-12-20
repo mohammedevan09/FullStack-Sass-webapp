@@ -18,6 +18,9 @@
 
 .btn-hover {
   border: 1px solid #1310c6 !important;
+  background-color: #1310c6;
+  color: white;
+  transition: all 0.2s ease-in-out;
 }
 
 .btn-hover:hover,
@@ -25,6 +28,7 @@
   background-color: white;
   color: #1310c6;
   fill: #1310c6;
+  font-weight: bold;
 }
 
 .btn-hover:hover rect {

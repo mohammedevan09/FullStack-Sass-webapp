@@ -57,7 +57,7 @@ const MainFeedbackPage = () => {
           ></textarea>
         </div>
         <button
-          className="w-full text-center text-white text-base font-semibold bg-blue-800 md:py-4 py-2 rounded-lg leading-7 mt-8"
+          className="w-full text-center text-base font-semibold btn-hover md:py-4 py-2 rounded-lg leading-7 mt-8"
           onClick={() => router.push('/dashboard/feedback/thanks')}
         >
           Send Feedback

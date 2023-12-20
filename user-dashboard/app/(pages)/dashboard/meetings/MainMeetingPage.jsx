@@ -45,7 +45,7 @@ const MainMeetingPage = ({ meetings }) => {
                 </td>
                 <td className="lg:py-6 py-3 text-center">
                   <div className="grid gap-1 justify-center">
-                    <button className="lg:w-[172px] w-[164px] h-[42px] bg-blue-800 rounded-[5px] flex justify-center items-center text-white gap-2 text-base mx-auto">
+                    <button className="lg:w-[172px] w-[164px] h-[42px] btn-hover rounded-[5px] flex justify-center items-center gap-2 text-base mx-auto">
                       Join Meetings <JoinMeetingIcon />
                     </button>
                     <button className="text-red-600 text-[13px] font-normal underline">

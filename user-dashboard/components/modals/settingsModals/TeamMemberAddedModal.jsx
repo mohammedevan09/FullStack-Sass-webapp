@@ -1,5 +1,8 @@
+'use client'
+
 import { CheckIcon } from '@/staticData/Icon'
 import React from 'react'
+import { motion } from 'framer-motion'
 
 const TeamMemberAddedModal = ({
   successModal,
@@ -19,7 +22,8 @@ const TeamMemberAddedModal = ({
           </div>
         </div>
         <div className="mb-5 mx-auto">
-          <button
+          <motion.button
+            whileHover={{ scale: 1.08 }}
             className="w-[181px] h-11 px-[18px] py-2.5 bg-white rounded-lg shadow border border-blue-800 text-blue-800 text-base font-medium"
             onClick={(e) => {
               e.preventDefault()
@@ -28,7 +32,7 @@ const TeamMemberAddedModal = ({
             }}
           >
             Ok Thanks!
-          </button>
+          </motion.button>
         </div>
       </div>
     </div>

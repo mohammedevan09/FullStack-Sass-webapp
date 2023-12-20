@@ -4,6 +4,7 @@ import { OpenInboxIcon } from '@/staticData/Icon'
 import { setActiveMenu } from '@/store/reducers/activeReducer'
 import { useRouter } from 'next/navigation'
 import { useDispatch } from 'react-redux'
+import { motion } from 'framer-motion'
 
 const MainFeedbackThanksPage = () => {
   const router = useRouter()
@@ -25,12 +26,13 @@ const MainFeedbackThanksPage = () => {
           Your feedback has been submitted.
         </h3>
         <div className="sm:my-4 my-2 mx-auto">
-          <button
+          <motion.button
+            whileHover={{ scale: 1.08 }}
             className="w-[210px] h-11 px-[18px] py-2.5 bg-white rounded-lg shadow border border-indigo-800 text-indigo-800 text-base font-medium flex items-center justify-center gap-2"
             onClick={handleClick}
           >
             <OpenInboxIcon /> Go to Dashboard
-          </button>
+          </motion.button>
         </div>
       </div>
     </div>

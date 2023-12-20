@@ -1,6 +1,9 @@
+'use client'
+
 import Input from '@/components/Input'
 import { LabelsTwo } from '@/components/Labels'
 import WrappingModal from '../WrappingModal'
+import { motion } from 'framer-motion'
 
 const GetACustomProposalModal = ({
   setOpenSubModal,
@@ -88,7 +91,8 @@ const GetACustomProposalModal = ({
           </div>
         </div>
         <div className="grid items-center gap-3 mt-14">
-          <button
+          <motion.button
+            whileHover={{ scale: 1.03 }}
             className="w-full p-4 bg-blue-800 rounded-[9px] text-white text-lg font-semibold leading-7"
             onClick={(e) => {
               e.stopPropagation()
@@ -96,13 +100,14 @@ const GetACustomProposalModal = ({
             }}
           >
             Send me a custom proposal
-          </button>
-          <button
+          </motion.button>
+          <motion.button
+            whileHover={{ scale: 1.15 }}
             className="w-full p-4 text-blue-800 rounded-[9px] bg-white text-lg font-semibold leading-7"
             onClick={() => setOpenModal(false)}
           >
             Cancel
-          </button>
+          </motion.button>
         </div>
       </div>
     </WrappingModal>
