@@ -4,7 +4,7 @@ const activeSlice = createSlice({
   name: 'Active',
   initialState: {
     currentActiveMenu: null,
-    openMenu: true,
+    openMenu: false,
   },
   reducers: {
     setActiveMenu: (state, action) => {

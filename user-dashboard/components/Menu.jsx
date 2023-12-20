@@ -25,7 +25,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setActiveMenu, setOpenMenu } from '@/store/reducers/activeReducer'
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { menuAnimation } from './Animation'
 
 const Menu = () => {
   const [isSmallScreen, setIsSmallScreen] = useState(false)
