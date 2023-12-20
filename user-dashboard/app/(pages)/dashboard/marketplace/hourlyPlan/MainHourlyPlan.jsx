@@ -144,7 +144,9 @@ const MainHourlyPlan = () => {
         />
       )}
 
-      {openModal && <HourlyPlansModal setOpenModal={setOpenModal} />}
+      {openModal && (
+        <HourlyPlansModal setOpenModal={setOpenModal} openModal={openModal} />
+      )}
     </div>
   )
 }

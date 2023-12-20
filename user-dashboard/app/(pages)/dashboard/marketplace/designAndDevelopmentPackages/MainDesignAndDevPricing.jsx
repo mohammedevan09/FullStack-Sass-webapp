@@ -81,9 +81,15 @@ const MainDesignAndDevPricing = ({ pricing }) => {
         <ThanksSubModal
           setOpenModal={setOpenModal}
           setOpenSubModal={setOpenSubModal}
+          openModal={openSubModal}
         />
       )}
-      {openModal && <DesignAndDevelopmentModal setOpenModal={setOpenModal} />}
+      {openModal && (
+        <DesignAndDevelopmentModal
+          setOpenModal={setOpenModal}
+          openModal={openModal}
+        />
+      )}
     </div>
   )
 }

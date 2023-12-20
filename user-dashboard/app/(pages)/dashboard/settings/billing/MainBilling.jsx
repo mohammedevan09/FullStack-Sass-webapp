@@ -1,7 +1,7 @@
 'use client'
 
-import AddPaymentMethod from '@/components/modals/AddPaymentMethod'
-import EditPaymentMethodModal from '@/components/modals/EditPaymentMethodModal'
+import AddPaymentMethod from '@/components/modals/settingsModals/AddPaymentMethod'
+import EditPaymentMethodModal from '@/components/modals/settingsModals/EditPaymentMethodModal'
 import { useState } from 'react'
 
 const MainBilling = ({ billingData }) => {

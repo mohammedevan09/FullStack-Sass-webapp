@@ -84,7 +84,12 @@ const MainMaintenancePlans = ({ pricing }) => {
           setOpenSubModal={setOpenSubModal}
         />
       )}
-      {openModal && <MaintenancePlansModal setOpenModal={setOpenModal} />}
+      {openModal && (
+        <MaintenancePlansModal
+          setOpenModal={setOpenModal}
+          openModal={openModal}
+        />
+      )}
     </div>
   )
 }

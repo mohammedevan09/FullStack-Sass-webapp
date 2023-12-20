@@ -1,7 +1,7 @@
 'use client'
 
-import AddNewTeamMemberModal from '@/components/modals/AddNewTeamMemberModal'
-import TeamMemberAddedModal from '@/components/modals/TeamMemberAddedModal'
+import AddNewTeamMemberModal from '@/components/modals/settingsModals/AddNewTeamMemberModal'
+import TeamMemberAddedModal from '@/components/modals/settingsModals/TeamMemberAddedModal'
 import { useState } from 'react'
 
 const MainTeam = ({ teamData }) => {

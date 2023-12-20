@@ -154,6 +154,7 @@ const MainAllTicketsPage = ({ projects }) => {
         <OpenTicketModal
           setOpenModal={setOpenModal}
           setOpenSubModal={setOpenSubModal}
+          openModal={openModal}
         />
       )}
       {openSubModal && (

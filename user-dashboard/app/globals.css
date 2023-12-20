@@ -3,6 +3,10 @@
 @tailwind utilities;
 
 @layer {
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     @apply bg-slate-200;
   }
@@ -10,6 +14,21 @@
   input {
     outline: none;
   }
+}
+
+.btn-hover {
+  border: 1px solid #1310c6 !important;
+}
+
+.btn-hover:hover,
+.btn-hover:hover path {
+  background-color: white;
+  color: #1310c6;
+  fill: #1310c6;
+}
+
+.btn-hover:hover rect {
+  fill: white;
 }
 
 .bg-blue-800 {

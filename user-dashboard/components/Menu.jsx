@@ -24,6 +24,8 @@ import {
 import { useDispatch, useSelector } from 'react-redux'
 import { setActiveMenu, setOpenMenu } from '@/store/reducers/activeReducer'
 import { useEffect, useState } from 'react'
+import { motion } from 'framer-motion'
+import { menuAnimation } from './Animation'
 
 const Menu = () => {
   const [isSmallScreen, setIsSmallScreen] = useState(false)
@@ -131,62 +133,68 @@ const Menu = () => {
         <div className="grid justify-between gap-14 items-start h-screen overflow-y-scroll">
           <div className="lg:mx-[51px] md:mx-[20px] mx-[10px] grid justify-center items-start gap-8 mt-5">
             {MenuData?.map((item, i) => (
+              <motion.div whileHover={{ scale: 1.1 }} key={i}>
+                <Link
+                  href={item?.link}
+                  className="flex justify-start items-center gap-4"
+                  onClick={() => dispatch(setActiveMenu(i))}
+                >
+                  <div
+                    className={`flex-col justify-center items-center flex ${
+                      currentActiveMenu === i
+                        ? currentActiveMenu === 7
+                          ? 'menu-color-stroke'
+                          : 'menu-color'
+                        : ''
+                    }
+`}
+                  >
+                    {item?.icon}
+                  </div>
+                  <div
+                    className={`md:text-xl text-[16px] ${
+                      currentActiveMenu === i
+                        ? 'text-blue-800 font-medium'
+                        : 'text-slate-500 font-normal'
+                    }`}
+                  >
+                    {item?.name}
+                  </div>
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+          <div className="text-center mb-36">
+            <motion.div whileHover={{ scale: 1 }}>
               <Link
-                href={item?.link}
-                key={i}
-                className="flex justify-start items-center gap-4"
-                onClick={() => dispatch(setActiveMenu(i))}
+                href={'/dashboard/settings'}
+                className="mb-4 flex justify-center items-center gap-1 cursor-pointer"
+                onClick={() => dispatch(setActiveMenu(11))}
               >
                 <div
-                  className={`flex-col justify-center items-center flex ${
-                    currentActiveMenu === i
-                      ? currentActiveMenu === 7
-                        ? 'menu-color-stroke'
-                        : 'menu-color'
-                      : ''
-                  }
-`}
+                  className={`flex-col justify-center items-center inline-flex hover:menu-color ${
+                    currentActiveMenu === 11 && 'menu-color'
+                  }`}
                 >
-                  {item?.icon}
+                  <SettingsIcon />
                 </div>
                 <div
-                  className={`md:text-xl text-[16px] ${
-                    currentActiveMenu === i
+                  className={`text-xl ${
+                    currentActiveMenu === 11
                       ? 'text-blue-800 font-medium'
                       : 'text-slate-500 font-normal'
                   }`}
                 >
-                  {item?.name}
+                  Settings
                 </div>
               </Link>
-            ))}
-          </div>
-          <div className="text-center mb-40">
-            <Link
-              href={'/dashboard/settings'}
-              className="mb-4 flex justify-center items-center gap-1 cursor-pointer"
-              onClick={() => dispatch(setActiveMenu(11))}
+            </motion.div>
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              className="py-2 px-5 bg-blue-800 rounded-lg text-white btn-hover text-base font-normal flex justify-center items-center mx-auto gap-3"
             >
-              <div
-                className={`flex-col justify-center items-center inline-flex ${
-                  currentActiveMenu === 11 && 'menu-color'
-                }`}
-              >
-                <SettingsIcon />
-              </div>
-              <div
-                className={`text-xl ${
-                  currentActiveMenu === 11
-                    ? 'text-blue-800 font-medium'
-                    : 'text-slate-500 font-normal'
-                }`}
-              >
-                Settings
-              </div>
-            </Link>
-            <button className="py-2 px-5 bg-blue-800 rounded-lg text-white text-base font-normal flex justify-center items-center mx-auto gap-3">
               <LogoutIcon /> <div>Logout</div>
-            </button>
+            </motion.button>
           </div>
         </div>{' '}
       </div>
