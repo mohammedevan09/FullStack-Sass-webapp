@@ -15,7 +15,7 @@ const MainAffiliatePage = ({ affiliates, referrals, commissions }) => {
           <h1 className="sm:text-4xl text-3xl font-semibold mb-11">
             Affiliate Commissions
           </h1>
-          <div className="pt-8 pb-10 sm:px-10 px-5 sm:text-base text-sm bg-white rounded-[5px] grid sm:gap-6 gap-3">
+          <div className="pt-8 pb-10 sm:px-10 px-5 sm:text-base text-sm bg-white rounded-[5px] grid sm:gap-6 gap-3 max-w-[97vw]">
             <p>
               Get your unique referral link and earn a commission for each order
               your referred clients place with us.
