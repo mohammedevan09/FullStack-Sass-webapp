@@ -1,6 +1,7 @@
 'use client'
 
 import {
+  AffiliateIcon,
   CloseMenuIcon,
   FeedbackIcon,
   HowToGuideIcon,
@@ -89,6 +90,11 @@ const Menu = () => {
       icon: <FeedbackIcon color="#6C7893" />,
       link: '/dashboard/feedback',
     },
+    {
+      name: 'Affiliate',
+      icon: <AffiliateIcon color="#6C7893" />,
+      link: '/dashboard/affiliate',
+    },
   ]
 
   useEffect(() => {
@@ -130,7 +136,7 @@ const Menu = () => {
         </div>
         <hr className="h-px bg-gray-200 border-0 dark:bg-gray-300" />
         <div className="grid justify-between gap-14 items-start h-screen overflow-y-scroll">
-          <div className="lg:mx-[51px] md:mx-[20px] mx-[10px] grid justify-center items-start gap-8 mt-5">
+          <div className="lg:mx-[51px] md:mx-[20px] mx-[10px] grid justify-center items-start sm:gap-8 gap-6 mt-5">
             {MenuData?.map((item, i) => (
               <motion.div whileHover={{ scale: 1.1 }} key={i}>
                 <Link
@@ -163,23 +169,23 @@ const Menu = () => {
               </motion.div>
             ))}
           </div>
-          <div className="text-center mb-36">
+          <div className="text-center mb-44">
             <motion.div whileHover={{ scale: 1 }}>
               <Link
                 href={'/dashboard/settings'}
                 className="mb-4 flex justify-center items-center gap-1 cursor-pointer"
-                onClick={() => dispatch(setActiveMenu(11))}
+                onClick={() => dispatch(setActiveMenu(12))}
               >
                 <div
                   className={`flex-col justify-center items-center inline-flex hover:menu-color ${
-                    currentActiveMenu === 11 && 'menu-color'
+                    currentActiveMenu === 12 && 'menu-color'
                   }`}
                 >
                   <SettingsIcon />
                 </div>
                 <div
-                  className={`text-xl ${
-                    currentActiveMenu === 11
+                  className={`md:text-xl text-lg ${
+                    currentActiveMenu === 12
                       ? 'text-blue-800 font-medium'
                       : 'text-slate-500 font-normal'
                   }`}

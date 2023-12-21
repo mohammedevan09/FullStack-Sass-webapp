@@ -20,7 +20,7 @@
   border: 1px solid #1310c6 !important;
   background-color: #1310c6;
   color: white;
-  transition: all 0.2s ease-in-out;
+  transition: all 0.1s ease-in-out;
 }
 
 .btn-hover:hover,
@@ -62,8 +62,8 @@
   border-radius: 20px;
   background: linear-gradient(
     103deg,
-    rgba(19, 16, 198, 0.51) 0%,
-    rgba(19, 16, 198, 0.17) 100%
+    rgba(3, 0, 180, 0.88) 0%,
+    rgba(96, 16, 198, 0.54) 100%
   );
   mix-blend-mode: multiply;
   backdrop-filter: blur(26.5px);

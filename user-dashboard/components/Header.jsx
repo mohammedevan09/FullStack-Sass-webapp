@@ -190,7 +190,7 @@ const Header = () => {
             </div>
           )}
         </div>
-        <div className="relative sm:w-[150px] w-[82px] z-50">
+        <div className="relative sm:w-[150px] w-[82px] z-10">
           <div
             className="dropdown-shadow sm:w-[150px] w-[82px] bg-white py-1 sm:px-3 px-2 font-semibold absolute rounded-lg sm:text-lg text-xs"
             ref={dropRef}
