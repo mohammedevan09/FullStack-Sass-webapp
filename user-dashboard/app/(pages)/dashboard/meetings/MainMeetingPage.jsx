@@ -15,7 +15,7 @@ const MainMeetingPage = ({ meetings }) => {
       <div className="flex justify-between items-center">
         <h2 className="sm:text-2xl text-xl font-semibold">Upcoming Meetings</h2>
       </div>
-      <div className="xl:w-[1000px] lg:w-full w-screen py-6 overflow-x-scroll">
+      <div className="xl:w-[1200px] lg:w-full w-screen py-6 overflow-x-scroll">
         <table className="w-full border-separate md:border-spacing-y-8 sm:border-spacing-y-6 border-spacing-y-3">
           <thead className="w-full">
             <tr className="text-xl font-semibold tracking-tight text-left">
@@ -32,7 +32,7 @@ const MainMeetingPage = ({ meetings }) => {
                 key={i}
                 className="sm:text-base text-sm my-5 font-semibold py-6 px-5 bg-white tr-radius"
               >
-                <td className="lg:pb-10 pb-3 pl-2">
+                <td className="lg:pb-10 pb-3 sm:pl-8 pl-4">
                   <div className="flex justify-start items-center gap-3 sm:w-[350px] w-[320px] sm:text-xl text-lg font-medium">
                     {item?.name}
                   </div>

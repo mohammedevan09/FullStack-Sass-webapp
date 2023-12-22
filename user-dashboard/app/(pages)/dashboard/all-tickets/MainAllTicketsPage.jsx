@@ -90,7 +90,7 @@ const MainAllTicketsPage = ({ projects }) => {
           </div>
         </div>
       </div>
-      <div className="xl:w-[1000px] lg:w-full w-screen bg-white rounded-[20.37px] px-7 py-8 sm:my-14 my-10 overflow-x-scroll">
+      <div className="lg:w-full w-screen bg-white rounded-[20.37px] px-7 py-8 sm:my-14 my-10 overflow-x-scroll">
         <table className="w-full">
           <tbody>
             <tr className="text-zinc-700 lg:text-xl text-lg font-semibold tracking-tight text-left">
@@ -103,7 +103,7 @@ const MainAllTicketsPage = ({ projects }) => {
             {projects?.map((item, i) => (
               <tr key={i}>
                 <td className="lg:py-7 py-4">
-                  <div className="text-zinc-700 lg:text-xl text-[16px] font-normal flex justify-start items-center gap-3 md:w-full w-[80px]">
+                  <div className="text-zinc-700 lg:text-xl text-[16px] font-normal flex justify-start items-center gap-3 w-[90px]">
                     #{item?.orderId}
                   </div>
                 </td>

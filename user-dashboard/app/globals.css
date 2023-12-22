@@ -16,6 +16,19 @@
   }
 }
 
+.top {
+  transform: translate(0);
+}
+.show {
+  transform: translate(0);
+  background-color: white;
+}
+
+.hide {
+  transform: translateY(-90px);
+  background-color: white;
+}
+
 .btn-hover {
   border: 1px solid #1310c6 !important;
   background-color: #1310c6;

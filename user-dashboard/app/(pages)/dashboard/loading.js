@@ -40,7 +40,9 @@ const loading = () => {
     //   </div>
     //   <span class="sr-only">Loading...</span>
     // </div>
-    <div className="bg-blue-800">Loading test........</div>
+    <div className="bg-blue-800 text-white text-[35px]">
+      Loading test........
+    </div>
   )
 }
 

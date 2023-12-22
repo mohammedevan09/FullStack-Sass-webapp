@@ -26,11 +26,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setActiveMenu, setOpenMenu } from '@/store/reducers/activeReducer'
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
+import { useRouter } from 'next/navigation'
 
 const Menu = () => {
   const [isSmallScreen, setIsSmallScreen] = useState(false)
 
   const dispatch = useDispatch()
+  const router = useRouter()
 
   const { currentActiveMenu, openMenu } = useSelector((state) => state?.active)
 
@@ -112,7 +114,7 @@ const Menu = () => {
 
   return (
     <div
-      className={`lg:w-[260px] w-[230px] text-center h-screen xl:static absolute z-20 left-0 transition-all duration-500 ease-linear ${
+      className={`lg:w-[260px] w-[230px] text-center h-screen xl:static absolute z-[99999] left-0 transition-all duration-500 ease-linear ${
         openMenu ? 'left-0' : 'left-[-120%]'
       }`}
     >
@@ -125,7 +127,8 @@ const Menu = () => {
             width={300}
             height={300}
             alt="logo"
-            className="md:h-[33px] h-[29px]"
+            className="md:h-[33px] h-[29px] cursor-pointer"
+            onClick={() => router.push('/dashboard')}
           />
           <div
             className="absolute lg:right-2 md:right-[-4px] right-[-8px] rounded-full p-1 xl:hidden block cursor-pointer"

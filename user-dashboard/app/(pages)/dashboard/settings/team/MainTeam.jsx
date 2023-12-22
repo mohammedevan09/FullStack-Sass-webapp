@@ -10,7 +10,7 @@ const MainTeam = ({ teamData }) => {
 
   return (
     <>
-      <div className="bg-white rounded-[20.37px] px-7 py-8 my-14 lg:w-[825px] sm:w-[750px] w-screen overflow-x-scroll">
+      <div className="bg-white rounded-[20.37px] px-7 py-8 sm:my-14 my-6 sm:w-full w-screen overflow-x-scroll">
         <table className="w-full">
           <tbody>
             <tr className="text-zinc-700 sm:text-xl text-lg font-semibold tracking-tight text-left">
@@ -35,9 +35,11 @@ const MainTeam = ({ teamData }) => {
                   </div>
                 </td>
                 <td className="lg:py-7 py-3 text-center">
-                  <div className="sm:w-[170px] w-[150px]">{item?.access}</div>
+                  <div className="sm:w-[250px] w-[200px] mx-auto">
+                    {item?.access}
+                  </div>
                 </td>
-                <td className="lg:py-7 py-3 text-center">
+                <td className="lg:py-7 py-3 text-center sm:w-[250px] w-[200px]">
                   <button className="sm:w-[100px] w-[70px] sm:h-[34px] h-8 bg-red-600 rounded-[10px] text-white text-center">
                     Remove
                   </button>

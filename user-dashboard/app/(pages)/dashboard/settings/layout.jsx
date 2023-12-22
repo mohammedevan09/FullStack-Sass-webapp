@@ -27,7 +27,7 @@ const layout = ({ children }) => {
   ]
 
   return (
-    <div className="grid w-full justify-center">
+    <div className="grid w-full">
       <div className="text-gray-800 text-2xl font-bold md:mt-20 sm:mt-10 mt-6 mb-8 sm:px-4 xs:px-3 px-1">
         Settings
       </div>

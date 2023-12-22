@@ -29,7 +29,7 @@ const page = () => {
     },
   ]
   return (
-    <div className="w-full grid justify-start items-center sm:my-20 xs:my-10 my-5 sm:px-4 xs:px-3 px-1">
+    <div className="w-full grid items-center sm:my-20 xs:my-10 my-5 sm:px-4 xs:px-3 px-1">
       <h2 className="text-black text-lg font-medium leading-relaxed sm:mb-7 mb-4">
         Email Notifications
       </h2>

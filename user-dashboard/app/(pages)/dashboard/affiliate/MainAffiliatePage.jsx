@@ -10,7 +10,7 @@ const MainAffiliatePage = ({ affiliates, referrals, commissions }) => {
   const [openSubModal, setOpenSubModal] = useState(false)
   return (
     <>
-      <section className="grid justify-center items-center sm:my-16 my-8 sm:px-4 xs:px-3 px-1">
+      <section className="grid w-full items-center sm:my-16 my-8 sm:px-4 xs:px-3 px-1">
         <main className="grid">
           <h1 className="sm:text-4xl text-3xl font-semibold mb-11">
             Affiliate Commissions
@@ -33,7 +33,7 @@ const MainAffiliatePage = ({ affiliates, referrals, commissions }) => {
               </button>
             </div>
           </div>
-          <div className="xl:w-[1000px] lg:w-full w-full bg-white rounded-[5px] px-7 py-2 my-8 overflow-x-scroll">
+          <div className="lg:w-full w-full bg-white rounded-[5px] px-7 py-2 my-8 overflow-x-scroll">
             <table className="w-full border-separate border-spacing-y-3">
               <tbody>
                 <tr className="text-base tracking-tight text-left">
@@ -62,7 +62,7 @@ const MainAffiliatePage = ({ affiliates, referrals, commissions }) => {
         </main>
         <main className="grid">
           <h2 className="text-2xl font-medium">Referrals</h2>
-          <div className="xl:w-[1000px] lg:w-full w-full bg-white rounded-[5px] px-7 py-2 mt-3 mb-8 overflow-x-scroll">
+          <div className="lg:w-full w-full bg-white rounded-[5px] px-7 py-2 mt-3 mb-8 overflow-x-scroll">
             <table className="w-full border-separate border-spacing-y-3">
               <tbody>
                 <tr className="text-base tracking-tight text-left">
@@ -89,7 +89,7 @@ const MainAffiliatePage = ({ affiliates, referrals, commissions }) => {
         </main>
         <main className="grid">
           <h2 className="text-2xl font-medium">Commissions</h2>
-          <div className="xl:w-[1000px] lg:w-full w-full bg-white rounded-[5px] px-7 py-2 my-3 overflow-x-scroll">
+          <div className="lg:w-full w-full bg-white rounded-[5px] px-7 py-2 my-3 overflow-x-scroll">
             <table className="w-full border-separate border-spacing-y-3">
               <tbody>
                 <tr className="text-base tracking-tight text-left">

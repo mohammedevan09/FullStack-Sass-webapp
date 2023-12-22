@@ -7,7 +7,7 @@ const MainSettingsLayoutPage = ({ allSettings }) => {
   const pathname = usePathname()
   return (
     <>
-      <div className="flex sm:justify-center justify-left items-center sm:w-[500px] w-full my-3 sm:gap-16 gap-6 text-black sm:text-xl text-lg sm:px-4 xs:px-3 px-1">
+      <div className="flex justify-start items-center w-full my-3 sm:gap-16 gap-6 text-black sm:text-xl text-lg sm:px-4 xs:px-3 px-1">
         {allSettings?.map((item, i) => (
           <div
             key={i}

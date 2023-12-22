@@ -9,7 +9,7 @@ const page = () => {
     },
   ]
   return (
-    <div className="w-full grid justify-center items-center sm:my-20 xs:my-10 my-5">
+    <div className="w-full grid items-center sm:my-20 xs:my-10 my-3 sm:px-4 xs:px-3 px-1">
       {' '}
       <MainTeam teamData={teamData} />
     </div>

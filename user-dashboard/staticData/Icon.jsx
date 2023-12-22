@@ -32,8 +32,8 @@ export const CloseMenuIcon = ({ size }) => {
 export const HomeIcon = ({ color }) => {
   return (
     <svg
-      width="19"
-      height="21"
+      width="22"
+      height="22"
       viewBox="0 0 19 21"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -188,8 +188,8 @@ export const MeetingIcon = ({ color }) => {
 export const HowToGuideIcon = ({ color }) => {
   return (
     <svg
-      width="24"
-      height="24"
+      width="22"
+      height="22"
       viewBox="0 0 35 35"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

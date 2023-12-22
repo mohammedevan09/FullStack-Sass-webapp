@@ -17,7 +17,7 @@ const ThanksAcceptProposalModal = ({ setOpenModal }) => {
     dispatch(setActiveMenu(7))
   }
   return (
-    <div className="flex justify-center items-center fixed z-40 w-screen h-screen left-0 top-0 right-0 bottom-0 modal-b-blur">
+    <div className="flex justify-center items-center fixed z-[9999999999] w-screen h-screen left-0 top-0 right-0 bottom-0 modal-b-blur">
       <div className="grid gap-7 justify-center items-center bg-white rounded-[20px] shadow pt-10 pb-5 px-10">
         <div className="mb-2">
           <CheckIcon />

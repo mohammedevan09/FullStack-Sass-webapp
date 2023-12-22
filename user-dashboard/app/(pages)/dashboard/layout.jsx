@@ -11,11 +11,11 @@ const layout = ({ children }) => {
       <div className="relative mx-auto">
         <div className="flex justify-center items-start gap-24">
           <Menu />
-          <div className="grid w-full xl:justify-center overflow-x-hidden">
+          <div className="grid w-full justify-center overflow-x-hidden">
             <Header />
-            {/* <div className="sm:mx-4 xs:mx-3 mx-1">*/}
-            {children}
-            {/* </div> */}
+            <div className="mt-24 2xl:w-[1200px] lg:w-[1000px] w-screen">
+              {children}
+            </div>
           </div>
         </div>
       </div>

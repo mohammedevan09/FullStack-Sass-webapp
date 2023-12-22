@@ -19,7 +19,7 @@ const ThanksSubModal = ({ setOpenModal, setOpenSubModal }) => {
     }
   }
   return (
-    <div className="fixed z-[100] left-0 top-0 right-0 bottom-0 modal-b-blur h-screen w-screen overflow-hidden flex justify-center items-center">
+    <div className="fixed z-[9999999999] left-0 top-0 right-0 bottom-0 modal-b-blur h-screen w-screen overflow-hidden flex justify-center items-center">
       <div className="flex justify-center items-center">
         <div className="grid gap-7 justify-center items-center bg-white rounded-[20px] shadow pt-10 pb-5 px-10 overflow-x-hidden">
           <div className="mb-3">
