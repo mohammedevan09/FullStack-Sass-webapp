@@ -25,6 +25,9 @@ const UserSchema = new mongoose.Schema(
     company_website: {
       type: String,
     },
+    position: {
+      type: String,
+    },
     role: {
       type: String,
       enum: ['user', 'admin'],
