@@ -1,4 +1,4 @@
-import ResetPassword from './resetPassword'
+import ResetPassword from './ResetPassword'
 
 const page = () => {
   return <ResetPassword />
