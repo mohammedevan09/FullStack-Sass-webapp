@@ -10,23 +10,27 @@ export const dropdownData = [
   {
     title: 'Profile',
     icon: <DropProfileIcon />,
+    link: '/dashboard/settings',
   },
   {
     title: 'Team',
     icon: <DropTeamIcon />,
+    link: '/dashboard/settings/team',
   },
   {
     title: 'Billing',
     icon: <DropBillingIcon />,
+    link: '/dashboard/settings/billing',
   },
   {
     title: 'Notification',
     icon: <DropNotificationIcon />,
+    link: '/dashboard/settings/notifications',
   },
 ]
 
 export const dropData2 = [
-  { title: 'Mark As Complete' },
+  { title: 'Mark as complete' },
   { title: 'Request Revision' },
 ]
 
@@ -52,6 +56,18 @@ export const filterByStatusData = [
   },
   {
     title: 'Item 4',
+  },
+]
+
+export const filterByTypeData = [
+  {
+    title: 'Projects',
+  },
+  {
+    title: 'Subscription',
+  },
+  {
+    title: 'Hourly Plan',
   },
 ]
 
@@ -106,6 +122,24 @@ export const statisticsData = [
       />
     ),
   },
+]
+
+export const someIconImages = [
+  <Image src={'/iconImages/pending.png'} height={200} width={200} alt="icon" />,
+  <Image
+    src={'/iconImages/running.png'}
+    height={200}
+    width={200}
+    alt="icon"
+    className="mx-auto"
+  />,
+  <Image
+    src={'/iconImages/complete.png'}
+    height={200}
+    width={200}
+    alt="icon"
+    className="mx-auto w-[33px]"
+  />,
 ]
 
 export const ordersData = [
@@ -176,6 +210,39 @@ export const projectData = [
   },
 ]
 
+export const subscriptionData = [
+  {
+    orderId: '1030',
+    name: 'abcd.com web maintenance',
+    lastWebsiteUpdate: '02/12/2023',
+    subscriptionRenew: '02/12/2023',
+  },
+  {
+    orderId: '1030',
+    name: 'abcd.com web maintenance',
+    lastWebsiteUpdate: '02/12/2023',
+    subscriptionRenew: '02/12/2023',
+  },
+  {
+    orderId: '1030',
+    name: 'abcd.com web maintenance',
+    lastWebsiteUpdate: '02/12/2023',
+    subscriptionRenew: '02/12/2023',
+  },
+  {
+    orderId: '1030',
+    name: 'abcd.com web maintenance',
+    lastWebsiteUpdate: '02/12/2023',
+    subscriptionRenew: '02/12/2023',
+  },
+  {
+    orderId: '1030',
+    name: 'abcd.com web maintenance',
+    lastWebsiteUpdate: '02/12/2023',
+    subscriptionRenew: '02/12/2023',
+  },
+]
+
 export const hourlyData = [
   {
     orderId: '1234',
@@ -211,5 +278,28 @@ export const hourlyData = [
     totalHours: '40 Hrs',
     spentHours: '40 Hrs',
     remainingHours: '40 Hrs',
+  },
+]
+
+export const fakeMessageData = [
+  {
+    name: 'Henry Kevil',
+    message: 'What about the project?',
+    image: '/images/verify.png',
+  },
+  {
+    name: 'Jack Johnson',
+    message: 'I have working and it is working fine.',
+    image: '/images/demo.jpg',
+  },
+  {
+    name: 'Henry Kevil',
+    message: 'OH that is a good news!',
+    image: '/images/verify.png',
+  },
+  {
+    name: 'Jack Johnson',
+    message: 'We will give you the update later.',
+    image: '/images/demo.jpg',
   },
 ]

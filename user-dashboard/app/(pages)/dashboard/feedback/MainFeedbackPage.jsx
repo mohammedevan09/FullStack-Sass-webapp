@@ -5,16 +5,10 @@ import { useRouter } from 'next/navigation'
 const MainFeedbackPage = () => {
   const options = [
     {
-      title: 'Issue 1',
+      title: 'Feedback about serviced',
     },
     {
-      title: 'Issue 2',
-    },
-    {
-      title: 'Issue 3',
-    },
-    {
-      title: 'Others',
+      title: 'Feedback about partner portal',
     },
   ]
 

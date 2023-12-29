@@ -7,7 +7,7 @@ import {
   RemainingHoursIcon,
   SpentHourIcon,
 } from '@/staticData/Icon'
-import { dropData3 } from '@/staticData/MainData'
+import { dropData3, fakeMessageData } from '@/staticData/MainData'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
@@ -123,7 +123,7 @@ const MainViewHourlyPlanPage = ({ params }) => {
     <div className="sm:my-14 my-8 sm:px-4 xs:px-3 px-1">
       <motion.button whileHover={{ scale: 1.1 }}>
         <Link
-          href={'/dashboard/hourly-plan'}
+          href={'/dashboard/all-projects'}
           className="flex justify-start items-center w-[120px] gap-1 mb-10 font-semibold text-xl -ml-1"
         >
           <BackButtonIcon /> Go Back
@@ -267,7 +267,7 @@ const MainViewHourlyPlanPage = ({ params }) => {
       </div>
       <h1 className="text-2xl font-semibold pt-10 pb-5">Inbox & Messaging</h1>
       <div className="grid items-start pt-8 pb-5 md:px-10 px-3 bg-white rounded-[20px] w-full">
-        <div className="md:flex grid md:justify-between justify-center items-start w-full md:gap-0 gap-5">
+        <div className="md:flex grid justify-between items-start w-full md:gap-0 gap-5">
           <div className="grid md:justify-start justify-center">
             <h1 className="lg:text-2xl sm:text-xl text-base font-semibold">
               New Website design & development in Wordpress
@@ -293,6 +293,34 @@ const MainViewHourlyPlanPage = ({ params }) => {
               <h4 className="sm:text-base text-sm">Project manager</h4>
             </div>
           </div>
+        </div>
+        <div className="h-[1px] w-full bg-zinc-600 mb-6 md:mt-0 mt-6" />
+        <div className="grid gap-4 w-full">
+          {fakeMessageData?.map((item, i) => (
+            <div className="flex gap-2 w-full" key={i}>
+              <div className="w-[50px]">
+                <Image
+                  src={item?.image}
+                  width={200}
+                  height={200}
+                  alt="person"
+                  className="h-[50px] object-cover"
+                />
+              </div>
+              <div className="w-full grid">
+                <h1 className="font-semibold">{item?.name}</h1>
+                <h2>{item?.message}</h2>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="w-full border-zinc-300 border-2 rounded-md p-2 mt-6">
+          <input
+            type="text"
+            className="w-full pb-2"
+            placeholder="Write a message #"
+          />
+          {/* <div className="h-[1px] w-full bg-zinc-200" /> */}
         </div>
       </div>
     </div>

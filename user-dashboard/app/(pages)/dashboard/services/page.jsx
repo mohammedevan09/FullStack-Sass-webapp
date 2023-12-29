@@ -10,17 +10,17 @@ const page = () => {
     {
       title: 'Design & Development',
       icon: <DesignAndDevelopmentIcon />,
-      links: '/dashboard/marketplace/designAndDevelopmentPackages',
+      links: '/dashboard/services/designAndDevelopmentPackages',
     },
     {
       title: 'Website Maintenance',
       icon: <WebsiteMaintenanceIcon />,
-      links: '/dashboard/marketplace/maintenancePlans',
+      links: '/dashboard/services/maintenancePlans',
     },
     {
       title: 'Hourly Developer plans',
       icon: <HourlyDevPlansIcon />,
-      links: '/dashboard/marketplace/hourlyPlan',
+      links: '/dashboard/services/hourlyPlan',
     },
   ]
   return (

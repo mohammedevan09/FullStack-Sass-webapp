@@ -5,13 +5,15 @@ import {
   DropUpIcon,
   MenuIcon,
   MessageIcon,
+  MessageIcon2,
   NotificationBellIcon,
   NotificationIcon,
   SearchIcon,
   StoreIcon,
 } from '@/staticData/Icon'
 import { dropdownData, notificationDropDownData } from '@/staticData/MainData'
-import { setOpenMenu } from '@/store/reducers/activeReducer'
+import { setActiveMenu, setOpenMenu } from '@/store/reducers/activeReducer'
+import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
 
@@ -25,6 +27,7 @@ const Header = () => {
   const [isSmallScreen, setIsSmallScreen] = useState(false)
 
   const dispatch = useDispatch()
+  const router = useRouter()
 
   const dropRef = useRef()
   const notificationRef = useRef()
@@ -129,7 +132,7 @@ const Header = () => {
                         className="flex items-center justify-start gap-2 border-b border-stone-300 pb-2"
                       >
                         <div>
-                          <NotificationBellIcon />
+                          <MessageIcon2 />
                         </div>
                         <div className="grid sm:gap-3 gap-2">
                           <div className="grid sm:gap-[2px]">
@@ -141,12 +144,12 @@ const Header = () => {
                             </div>
                           </div>
                           <div className="flex gap-3 underline sm:text-[14px] text-xs">
-                            <span className="text-blue-800 font-normal">
+                            <button className="text-blue-800 font-normal">
                               See Details
-                            </span>
-                            <span className="text-zinc-900 font-normal">
+                            </button>
+                            <button className="text-zinc-900 font-normal">
                               Mark as read
-                            </span>
+                            </button>
                           </div>
                         </div>
                       </div>
@@ -196,12 +199,12 @@ const Header = () => {
                             </div>
                           </div>
                           <div className="flex gap-3 underline sm:text-[14px] text-xs">
-                            <span className="text-blue-800 font-normal">
+                            <button className="text-blue-800 font-normal">
                               See Details
-                            </span>
-                            <span className="text-zinc-900 font-normal">
+                            </button>
+                            <button className="text-zinc-900 font-normal">
                               Mark as read
-                            </span>
+                            </button>
                           </div>
                         </div>
                       </div>
@@ -237,7 +240,13 @@ const Header = () => {
               >
                 {dropdownData?.map((item, i) => (
                   <div key={i}>
-                    <button className="flex justify-center items-center gap-1 hover:underline">
+                    <button
+                      className="flex justify-center items-center gap-1 hover:underline"
+                      onClick={() => {
+                        router.push(item?.link)
+                        dispatch(setActiveMenu(12))
+                      }}
+                    >
                       {item?.icon} {item?.title}
                     </button>
                   </div>

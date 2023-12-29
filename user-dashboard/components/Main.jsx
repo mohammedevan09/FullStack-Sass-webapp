@@ -1,9 +1,9 @@
 'use client'
 
-import { OrderIcon } from '@/staticData/Icon'
 import {
   ordersData,
   projectData,
+  someIconImages,
   statisticsData,
   ticketsData,
 } from '@/staticData/MainData'
@@ -27,7 +27,7 @@ const Main = () => {
         <div className="flex items-end sm:my-12 my-6">
           <div className="grid">
             <span className="text-gray-800 text-xl font-medium ">
-              HI, Olivia S
+              Hi, Olivia S
             </span>
 
             <span className="text-gray-800 text-[35px] font-bold ">
@@ -54,7 +54,7 @@ const Main = () => {
                 key={i}
                 className="flex justify-center items-center 2xl:gap-12 gap-6 2xl:w-[360px] lg:w-[270px] sm:w-[220px] w-full 2xl:h-[171px] lg:h-[140px] h-[120px] gradient"
               >
-                <div className="2xl:w-[58px] md:w-[40px] w-[34px]">
+                <div className="2xl:w-[58px] md:w-[40px] sm:w-[34px] w-[46px]">
                   {item?.image}
                 </div>
                 <div className="grid lg:gap-5 gap-2">
@@ -79,8 +79,8 @@ const Main = () => {
                 key={i}
                 className="grid justify-start items-center 2xl:w-[360px] lg:w-[270px] sm:w-[220px] w-full 2xl:h-[171px] h-[140px] bg-white rounded-[20px] px-5 py-6"
               >
-                <div className="w-[43px] h-10 p-2.5 flex-col justify-start items-start gap-2.5 inline-flex bg-[#C8E5FB]">
-                  <OrderIcon />
+                <div className="w-[37px] h-10 p-0.5 flex-col justify-center items-start gap-2.5 inline-flex bg-[#C8E5FB]">
+                  {someIconImages[i]}
                 </div>
                 <div className="grid sm:gap-2 gap-1">
                   <h3 className="text-black lg:text-[22px] text-[20px] font-semibold">
@@ -104,8 +104,8 @@ const Main = () => {
                 key={i}
                 className="grid justify-start items-center 2xl:w-[360px] lg:w-[270px] sm:w-[220px] w-full 2xl:h-[171px] h-[140px] bg-white rounded-[20px] px-5 py-6"
               >
-                <div className="w-[43px] h-10 p-2.5 flex-col justify-start items-start gap-2.5 inline-flex bg-[#C8E5FB]">
-                  <OrderIcon />
+                <div className="w-[37px] h-10 p-0.5 flex-col justify-center items-start gap-2.5 inline-flex bg-[#C8E5FB]">
+                  {someIconImages[i]}
                 </div>
                 <div className="grid sm:gap-2 gap-1">
                   <h3 className="text-black lg:text-[22px] text-[20px] font-semibold">

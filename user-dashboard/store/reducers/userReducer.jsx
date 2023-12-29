@@ -4,17 +4,25 @@ const userSlice = createSlice({
   name: 'User',
   initialState: {
     userInfo: {},
-    token: null,
   },
   reducers: {
     setUsers: (state, action) => {
       return { ...state, userInfo: action.payload }
     },
     setToken: (state, action) => {
-      return { ...state, token: action.payload }
+      return {
+        ...state,
+        userInfo: { ...state.userInfo, token: action.payload },
+      }
+    },
+    setEmailVerified: (state, action) => {
+      return {
+        ...state,
+        userInfo: { ...state.userInfo, email_verified: action.payload },
+      }
     },
   },
 })
 
-export const { setUsers, setToken } = userSlice.actions
+export const { setUsers, setToken, setEmailVerified } = userSlice.actions
 export default userSlice.reducer

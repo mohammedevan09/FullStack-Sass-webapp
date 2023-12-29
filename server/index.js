@@ -2,18 +2,38 @@ import express from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import mongoose from 'mongoose'
+import userRouter from './router/userRouter.js'
+import { errorHandler, notFound } from './middleware/errorHandler.js'
+import cookieParser from 'cookie-parser'
+import morgan from 'morgan'
 dotenv.config()
 
 const app = express()
 const port = process.env.PORT
 
-app.use(cors())
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL,
+    credentials: true,
+  })
+)
+app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(morgan('dev'))
 
-app.get('/', (req, res) => {
-  res.send('Hello World')
+app.get('/', (req, res, next) => {
+  try {
+    res.send('Api test successful!')
+  } catch (error) {
+    next(error)
+  }
 })
+
+app.use('/api/user', userRouter)
+
+app.use(notFound)
+app.use(errorHandler)
 
 //connection
 mongoose

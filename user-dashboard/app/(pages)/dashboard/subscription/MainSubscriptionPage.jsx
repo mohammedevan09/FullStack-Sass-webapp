@@ -35,7 +35,7 @@ const MainSubscriptionPage = ({ projects }) => {
     <>
       <div className="sm:px-4 xs:px-3 px-1">
         <Link
-          href={'/dashboard/marketplace/maintenancePlans'}
+          href={'/dashboard/services/maintenancePlans'}
           className="sm:mt-16 mt-10 sm:mb-14 mb-8 sm:py-3 py-1 sm:w-[190px] w-[150px] flex items-center justify-center sm:gap-2 gap-1 rounded-lg shadow border-2 border-blue-800 text-blue-800 lg:text-xl text-lg font-medium"
         >
           <AddProjectIcon /> Add Plan

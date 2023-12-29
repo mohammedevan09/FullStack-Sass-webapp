@@ -4,7 +4,7 @@ import Header from '@/components/Header'
 const layout = ({ children }) => {
   return (
     <>
-      <div className="bg-blue-800 w-full text-center text-white lg:text-xl sm:text-sm text-xs font-semibold leading-tight lg:py-5 sm:py-3 py-2 sticky top-0 z-[9999999]">
+      <div className="bg-blue-800 w-full text-center text-white lg:text-lg sm:text-sm text-xs font-semibold leading-tight sm:py-3 py-2 sticky top-0 z-[9999999]">
         10% flat discount for any project. From 25 September to October 25!
         COUPON : #CRAZY10
       </div>

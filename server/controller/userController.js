@@ -1,0 +1,255 @@
+import bcrypt from 'bcrypt'
+import generateToken from '../config/jwtToken.js'
+import generateRefreshToken from '../config/refreshToken.js'
+import User from '../model/userModal.js'
+import Token from '../model/tokenModal.js'
+import jwt from 'jsonwebtoken'
+import sendEmail from '../utils/sendEmail.js'
+import crypto from 'crypto'
+
+export const createUser = async (req, res, next) => {
+  const { email, password: pass } = req.body
+  try {
+    const findUser = await User.findOne({ email })
+
+    if (!findUser) {
+      const salt = await bcrypt.genSalt(10)
+      const hashedPass = await bcrypt.hash(pass, salt)
+
+      const newUser = await User.create({ ...req.body, password: hashedPass })
+
+      const newRefreshToken = generateRefreshToken(newUser?._id)
+
+      const registeredUser = await User.findByIdAndUpdate(
+        newUser?.id,
+        {
+          refreshToken: newRefreshToken,
+        },
+        { new: true }
+      )
+
+      const { password, refreshToken, ...userWithoutPassAndToken } =
+        registeredUser._doc
+
+      res.cookie('refreshToken', newRefreshToken, {
+        httpOnly: true,
+        maxAge: 90 * 24 * 60 * 60 * 1000,
+      })
+
+      return res.status(200).json({
+        ...userWithoutPassAndToken,
+        token: generateToken(newUser?._id),
+      })
+    } else {
+      return res.status(401).send('User Already Exists')
+    }
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const loginUser = async (req, res, next) => {
+  const { email, password: pass } = req.body
+  const findUser = await User.findOne({ email })
+  try {
+    if (findUser) {
+      const comparedPass = await bcrypt.compare(pass, findUser.password)
+      if (comparedPass) {
+        const newRefreshToken = generateRefreshToken(findUser?._id)
+        const loggedUser = await User.findByIdAndUpdate(
+          findUser.id,
+          {
+            refreshToken: newRefreshToken,
+          },
+          { new: true }
+        )
+
+        const { password, refreshToken, ...userWithoutPassAndToken } =
+          loggedUser._doc
+
+        res.cookie('refreshToken', newRefreshToken, {
+          httpOnly: true,
+          maxAge: 90 * 24 * 60 * 60 * 1000,
+        })
+
+        return res.status(200).json({
+          ...userWithoutPassAndToken,
+          token: generateToken(findUser?._id),
+        })
+      } else {
+        return res.status(400).send('Password did not match!')
+      }
+    } else {
+      return res.status(401).send('Invalid Credentials')
+    }
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const googleLoginUser = async (req, res, next) => {
+  const { email } = req.body
+  const findUser = await User.findOne({ email })
+  try {
+    if (findUser) {
+      const refreshTokenNew = generateRefreshToken(findUser?._id)
+      const loggedUser = await User.findByIdAndUpdate(
+        findUser.id,
+        {
+          refreshToken: refreshTokenNew,
+          ...req.body,
+        },
+        { new: true }
+      )
+
+      const { password, refreshToken, ...logUserWithoutPassAndToken } =
+        loggedUser._doc
+
+      res.cookie('refreshToken', refreshTokenNew, {
+        httpOnly: true,
+        maxAge: 90 * 24 * 60 * 60 * 1000,
+      })
+
+      return res.status(200).json({
+        ...logUserWithoutPassAndToken,
+        token: generateToken(findUser?._id),
+      })
+    } else {
+      const newUser = await User.create({ ...req.body })
+
+      const newRefreshToken = generateRefreshToken(newUser?._id)
+
+      const registeredUser = await User.findByIdAndUpdate(
+        newUser?.id,
+        {
+          refreshToken: newRefreshToken,
+        },
+        { new: true }
+      )
+
+      const { password, refreshToken, ...newUserWithoutPassAndToken } =
+        registeredUser._doc
+
+      res.cookie('refreshToken', newRefreshToken, {
+        httpOnly: true,
+        maxAge: 90 * 24 * 60 * 60 * 1000,
+      })
+
+      return res.status(200).json({
+        ...newUserWithoutPassAndToken,
+        token: generateToken(newUser?._id),
+      })
+    }
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const logoutUser = (req, res) => {
+  //   const cookie = req.cookies
+  //   console.log(cookie.refreshToken)
+  try {
+    res.clearCookie('refreshToken')
+    return res.status(200).send('Logout successful')
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const handleRefreshToken = async (req, res) => {
+  const cookie = req.cookies
+  if (!cookie.refreshToken)
+    return res.status(401).send('No Refresh token in Cookies!')
+
+  const refreshToken = cookie.refreshToken
+  //   console.log(refreshToken)
+
+  const user = await User.findOne({ refreshToken })
+  if (!user)
+    return res.status(402).send('No refresh token present in db or not matched')
+  jwt.verify(refreshToken, process.env.JWT_SECRET, (err, decoded) => {
+    if (err || user?.id !== decoded?.id) {
+      return res.status(500).send('There is something wrong with refresh token')
+    }
+    const accessToken = generateToken(user?._id)
+    return res.status(200).json({ accessToken })
+  })
+}
+
+export const updateUser = async (req, res, next) => {
+  const { _id } = req.user
+  try {
+    const update = await User.findByIdAndUpdate(
+      _id,
+      {
+        ...req.body,
+      },
+      {
+        new: true,
+      }
+    )
+
+    const { password, refreshToken, ...userWithoutPassAndToken } = update._doc
+
+    return res
+      .status(200)
+      .json({ ...userWithoutPassAndToken, token: generateToken(_id) })
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const sendVerifyEmail = async (req, res, next) => {
+  const { email, _id } = req.body
+
+  try {
+    const existedToken = await Token.findOne({ userId: _id })
+    if (existedToken) {
+      const token = await Token.findByIdAndUpdate(
+        existedToken._id,
+        {
+          token: crypto.randomBytes(32).toString('hex'),
+        },
+        { new: true }
+      )
+      const url = `${process.env.BASE_URL}login/email_verify/${_id}?token=${token.token}`
+      await sendEmail(email, 'Verify Email', url)
+    } else {
+      const token = await Token.create({
+        userId: _id,
+        token: crypto.randomBytes(32).toString('hex'),
+      })
+      const url = `${process.env.BASE_URL}login/email_verify/${_id}?token=${token.token}`
+      await sendEmail(email, 'Verify Email', url)
+    }
+    return res.status(200).send('Email Send successfully!')
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const verifyEmail = async (req, res, next) => {
+  try {
+    const user = await User.findOne({ _id: req.params.id })
+    if (!user) return res.status(400).send({ message: 'Invalid link' })
+
+    const token = await Token.findOne({
+      userId: user._id,
+      token: req.params.token,
+    })
+    if (!token) return res.status(400).send({ message: 'Invalid link' })
+
+    await User.findByIdAndUpdate(
+      { _id: user?.id },
+      {
+        email_verified: true,
+      },
+      { new: true }
+    )
+    await Token.deleteOne({ _id: token._id })
+
+    return res.status(200).send({ message: 'Email verified successfully' })
+  } catch (error) {
+    next(error)
+  }
+}

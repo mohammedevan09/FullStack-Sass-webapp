@@ -13,20 +13,22 @@ const UserSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: true,
     },
-    Number: {
+    number: {
       type: String,
-      required: true,
+      default: '',
     },
     company_name: {
       type: String,
+      default: '',
     },
     company_website: {
       type: String,
+      default: '',
     },
     position: {
       type: String,
+      default: '',
     },
     role: {
       type: String,
@@ -37,10 +39,11 @@ const UserSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    refreshToken: {
-      type: String,
+    email_verified: {
+      type: Boolean,
+      default: false,
     },
-    accessToken: {
+    refreshToken: {
       type: String,
     },
   },

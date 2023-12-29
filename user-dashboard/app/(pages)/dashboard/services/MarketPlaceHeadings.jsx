@@ -5,7 +5,7 @@ const MarketPlaceHeadings = () => {
   return (
     <>
       <Link
-        href={'/dashboard/marketplace'}
+        href={'/dashboard/services'}
         className="flex justify-start items-center w-[200px] gap-1 sm:my-10 my-5 font-semibold text-xl -ml-1"
       >
         <BackButtonIcon /> See Other Plans

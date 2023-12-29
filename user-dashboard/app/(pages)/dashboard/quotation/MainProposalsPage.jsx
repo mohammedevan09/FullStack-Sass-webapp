@@ -135,10 +135,10 @@ const MainProposalsPage = () => {
                 </td>
                 <td className="py-7 text-center">
                   <button
-                    className="md:w-44 w-36 h-[34px] btn-hover rounded-[10px] text-center mx-auto"
+                    className="md:w-44 w-36 h-[34px] btn-hover rounded-[5px] text-center mx-auto text-lg"
                     onClick={(e) => {
                       e.preventDefault()
-                      router.push(`/dashboard/proposals/${item?.id}`)
+                      router.push(`/dashboard/quotation/${item?.id}`)
                     }}
                   >
                     Open Proposal

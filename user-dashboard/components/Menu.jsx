@@ -27,14 +27,18 @@ import { setActiveMenu, setOpenMenu } from '@/store/reducers/activeReducer'
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { useRouter } from 'next/navigation'
+import LogoutModal from './modals/menuModals/LogoutModal'
 
 const Menu = () => {
   const [isSmallScreen, setIsSmallScreen] = useState(false)
+  const [logoutModal, setLogoutModal] = useState(false)
 
   const dispatch = useDispatch()
   const router = useRouter()
 
   const { currentActiveMenu, openMenu } = useSelector((state) => state?.active)
+
+  const { userInfo } = useSelector((state) => state?.user)
 
   const MenuData = [
     {
@@ -43,34 +47,34 @@ const Menu = () => {
       link: '/dashboard',
     },
     {
-      name: 'Marketplace',
+      name: 'Services',
       icon: <MarketPlaceIcon color="#6C7893" />,
-      link: '/dashboard/marketplace',
+      link: '/dashboard/services',
     },
     {
       name: 'All Projects',
       icon: <AllProjectsIcon color="#6C7893" />,
       link: '/dashboard/all-projects',
     },
-    {
-      name: 'Hourly Plan',
-      icon: <HourlyPlanIcon color="#6C7893" />,
-      link: '/dashboard/hourly-plan',
-    },
-    {
-      name: 'Subscription',
-      icon: <SubscriptionIcon color="#6C7893" />,
-      link: '/dashboard/subscription',
-    },
+    // {
+    //   name: 'Hourly Plan',
+    //   icon: <HourlyPlanIcon color="#6C7893" />,
+    //   link: '/dashboard/hourly-plan',
+    // },
+    // {
+    //   name: 'Subscription',
+    //   icon: <SubscriptionIcon color="#6C7893" />,
+    //   link: '/dashboard/subscription',
+    // },
     {
       name: 'All Tickets',
       icon: <AllTicketsIcon color="#6C7893" />,
       link: '/dashboard/all-tickets',
     },
     {
-      name: 'Proposals',
+      name: 'Quotation',
       icon: <ProposalsIcon color="#6C7893" />,
-      link: '/dashboard/proposals',
+      link: '/dashboard/quotation',
     },
     {
       name: 'Invoice',
@@ -98,6 +102,14 @@ const Menu = () => {
       link: '/dashboard/affiliate',
     },
   ]
+
+  useEffect(() => {
+    if (userInfo && userInfo?.email_verified === false) {
+      router?.push('/login/email_verify')
+    } else if (!userInfo?._id) {
+      router?.push('/login')
+    }
+  }, [userInfo, router])
 
   useEffect(() => {
     const handleResize = () => {
@@ -200,11 +212,18 @@ const Menu = () => {
             <motion.button
               whileHover={{ scale: 1.1 }}
               className="py-2 px-5 bg-blue-800 rounded-lg text-white text-base font-normal flex justify-center items-center mx-auto gap-3"
+              onClick={() => setLogoutModal(true)}
             >
               <LogoutIcon /> <div>Logout</div>
             </motion.button>
           </div>
-        </div>{' '}
+          {logoutModal && (
+            <LogoutModal
+              openModal={logoutModal}
+              setOpenModal={setLogoutModal}
+            />
+          )}
+        </div>
       </div>
     </div>
   )

@@ -6,19 +6,23 @@ import {
   BackButtonIcon,
   CheckSignIcon4,
   DollarSignButtonIcon,
+  NegotiateIcon,
   TimeSignButtonIcon,
 } from '@/staticData/Icon'
 import Link from 'next/link'
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import NegotiateModal from '@/components/modals/proposalsModals/NegotiateModal'
 
 const MainViewProposalsPage = ({ params }) => {
   const [openModal, setOpenModal] = useState(false)
+  const [negotiateModal, setNegotiateModal] = useState(false)
+
   return (
     <div className="lg:w-[942px] w-full">
       <motion.button whileHover={{ scale: 1.1 }}>
         <Link
-          href={'/dashboard/proposals'}
+          href={'/dashboard/quotation'}
           className="flex justify-start items-center w-[120px] gap-1 my-10 font-semibold text-xl -ml-1"
         >
           <BackButtonIcon /> Go Back
@@ -99,12 +103,20 @@ const MainViewProposalsPage = ({ params }) => {
           </button>
         </div>
       </div>
-      <button
-        className="w-[223px] h-[51px] btn-hover rounded-[15px] text-xl font-medium flex items-center justify-center mx-auto mb-24 gap-2"
-        onClick={() => setOpenModal(true)}
-      >
-        <CheckSignIcon4 /> Accept proposal
-      </button>
+      <div className="grid gap-5">
+        <button
+          className="w-[223px] h-[51px] btn-hover rounded-[15px] text-xl font-medium flex items-center justify-center mx-auto gap-2"
+          onClick={() => setOpenModal(true)}
+        >
+          <CheckSignIcon4 /> Accept proposal
+        </button>
+        <button
+          className="w-[223px] h-[51px] border-2 border-blue-800 rounded-[15px] text-blue-800 text-xl font-medium flex items-center justify-center mx-auto mb-24 gap-2"
+          onClick={() => setNegotiateModal(true)}
+        >
+          <NegotiateIcon /> Negotiate
+        </button>
+      </div>
       <div className="grid justify-center items-center mb-32 gap-3">
         <AnyQuestionsIcon />
         <h3 className="text-2xl font-semibold sm:mx-[14rem] xs:mx-8 mx-6 text-center">
@@ -112,6 +124,13 @@ const MainViewProposalsPage = ({ params }) => {
         </h3>
       </div>
       {openModal && <ThanksAcceptProposalModal setOpenModal={setOpenModal} />}
+      {negotiateModal && (
+        <NegotiateModal
+          setOpenModal={setNegotiateModal}
+          openModal={negotiateModal}
+          setOpenSubModal={setOpenModal}
+        />
+      )}
     </div>
   )
 }
