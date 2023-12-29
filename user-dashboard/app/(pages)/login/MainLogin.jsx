@@ -25,26 +25,26 @@ const MainLogin = () => {
 
   const { userInfo } = useSelector((state) => state?.user)
 
-  // useEffect(() => {
-  //   if (userInfo && userInfo?._id) {
-  //     if (userInfo?.email_verified === false) {
-  //       router.push(`/login/email_verify`)
-  //     } else if (
-  //       userInfo?.company_name === '' ||
-  //       userInfo?.company_website === '' ||
-  //       userInfo?.position === '' ||
-  //       userInfo?.number === ''
-  //     ) {
-  //       router.push('/login/add-details')
-  //     } else {
-  //       router.push('/dashboard')
-  //     }
-  //   }
-  // }, [userInfo, router])
-
   const handleForgotPassLink = () => {
     console.log('hello')
   }
+
+  useEffect(() => {
+    if (userInfo && userInfo?._id) {
+      if (userInfo?.email_verified === false) {
+        router.push(`/login/email_verify`)
+      } else if (
+        userInfo?.company_name === '' ||
+        userInfo?.company_website === '' ||
+        userInfo?.position === '' ||
+        userInfo?.number === ''
+      ) {
+        router.push('/login/add-details')
+      } else {
+        router.push('/dashboard')
+      }
+    }
+  }, [userInfo, router])
 
   return (
     <div className={`grid justify-center items-center my-10 overflow-x-hidden`}>
