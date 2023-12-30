@@ -17,12 +17,6 @@ const MainAddDetails = () => {
 
   const { userInfo } = useSelector((state) => state?.user)
 
-  useEffect(() => {
-    if (!userInfo?._id) {
-      router.push('/login')
-    }
-  }, [userInfo, router])
-
   const {
     register,
     handleSubmit,
@@ -54,107 +48,101 @@ const MainAddDetails = () => {
       }
     }
   }
+
+  useEffect(() => {
+    if (!userInfo?._id) {
+      router.push('/login')
+    }
+  }, [userInfo, router])
+
   return (
-    <div className={`grid justify-center items-center my-10 overflow-x-hidden`}>
-      <div className="grid gap-6">
-        <div className="w-20 mx-auto">
-          <Image
-            src={'/images/wpsprint.png'}
-            width={500}
-            height={500}
-            alt="wp sprint"
-            className="h-[63.68px]"
-          />
-        </div>
-        <div className="flex items-center justify-center mb-6 text-gray-800">
-          <div className="grid justify-center items-center">
-            <div className="text-xl font-medium mx-auto ">Welcome,</div>
-            <span className="sm:text-[35px] text-[24px] font-bold text-center px-2">
-              One More Step And You Are Good To Go🚀
-            </span>
-          </div>
-        </div>
-
-        <div className="w-full sm:px-7 px-4 sm:pt-14 pt-10 sm:pb-8 pb-6 bg-white rounded-[20px] shadow gap-6 grid">
-          <div className="w-full grid justify-center items-center sm:gap-6 gap-4">
-            <div className="grid gap-1">
-              <Input
-                type="number"
-                placeholder="Phone Number"
-                validationRules={{
-                  ...register('number', {
-                    required: {
-                      value: true,
-                      message: 'Phone number is required',
-                    },
-                    minLength: {
-                      value: 6,
-                      message: 'Phone no. length must be at least 6 characters',
-                    },
-                    maxLength: {
-                      value: 13,
-                      message:
-                        'Phone no. length must be at least 13 characters',
-                    },
-                  }),
-                }}
-              />
-              {errors.number?.message && (
-                <p className="text-red-500 text-sm font-bold">
-                  {errors.number?.message}
-                </p>
-              )}
-            </div>
-            <div className="grid gap-1">
-              <Input
-                type="text"
-                placeholder="Company Name (Optional)"
-                validationRules={{
-                  ...register('company_name'),
-                }}
-              />
-            </div>
-            <div className="grid gap-1">
-              <Input
-                type="text"
-                placeholder="Company Website (Optional)"
-                validationRules={{
-                  ...register('company_website'),
-                }}
-              />
-            </div>
-            <div className="grid gap-1">
-              <Input
-                type="text"
-                placeholder="Position/Designation/Job title (Optional)"
-                validationRules={{
-                  ...register('position'),
-                }}
-              />
-            </div>
-          </div>
-
-          <div className="w-full grip gap-3">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              type="submit"
-              className="w-full text-center bg-blue-800 text-white text-base font-semibold py-4 rounded-lg leading-7"
-              onClick={handleSubmit(handleClick)}
-            >
-              Next
-            </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.2 }}
-              type="submit"
-              className="w-full text-center text-blue-800 font-semibold pt-4 rounded-lg leading-7 text-xl"
-              onClick={() => router.push('/dashboard')}
-            >
-              Skip
-            </motion.button>
-          </div>
+    <>
+      <div className="flex items-center justify-center mb-6 text-gray-800">
+        <div className="grid justify-center items-center">
+          <div className="text-xl font-medium mx-auto ">Welcome,</div>
+          <span className="sm:text-[35px] text-[24px] font-bold text-center px-2">
+            One More Step And You Are Good To Go🚀
+          </span>
         </div>
       </div>
-    </div>
+      <div className="w-full sm:px-7 px-4 sm:pt-14 pt-10 sm:pb-8 pb-6 bg-white rounded-[20px] shadow gap-6 grid">
+        <div className="w-full grid justify-center items-center sm:gap-6 gap-4">
+          <div className="grid gap-1">
+            <Input
+              type="number"
+              placeholder="Phone Number"
+              validationRules={{
+                ...register('number', {
+                  required: {
+                    value: true,
+                    message: 'Phone number is required',
+                  },
+                  minLength: {
+                    value: 6,
+                    message: 'Phone no. length must be at least 6 characters',
+                  },
+                  maxLength: {
+                    value: 13,
+                    message: 'Phone no. length must be at least 13 characters',
+                  },
+                }),
+              }}
+            />
+            {errors.number?.message && (
+              <p className="text-red-500 text-sm font-bold">
+                {errors.number?.message}
+              </p>
+            )}
+          </div>
+          <div className="grid gap-1">
+            <Input
+              type="text"
+              placeholder="Company Name (Optional)"
+              validationRules={{
+                ...register('company_name'),
+              }}
+            />
+          </div>
+          <div className="grid gap-1">
+            <Input
+              type="text"
+              placeholder="Company Website (Optional)"
+              validationRules={{
+                ...register('company_website'),
+              }}
+            />
+          </div>
+          <div className="grid gap-1">
+            <Input
+              type="text"
+              placeholder="Position/Designation/Job title (Optional)"
+              validationRules={{
+                ...register('position'),
+              }}
+            />
+          </div>
+        </div>
+
+        <div className="w-full grip gap-3">
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            type="submit"
+            className="w-full text-center bg-blue-800 text-white text-base font-semibold py-4 rounded-lg leading-7"
+            onClick={handleSubmit(handleClick)}
+          >
+            Next
+          </motion.button>
+          <motion.button
+            whileHover={{ scale: 1.2 }}
+            type="submit"
+            className="w-full text-center text-blue-800 font-semibold pt-4 rounded-lg leading-7 text-xl"
+            onClick={() => router.push('/dashboard')}
+          >
+            Skip
+          </motion.button>
+        </div>
+      </div>
+    </>
   )
 }
 

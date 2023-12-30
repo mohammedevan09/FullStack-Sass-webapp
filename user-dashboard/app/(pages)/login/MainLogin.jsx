@@ -26,7 +26,7 @@ const MainLogin = () => {
   const { userInfo } = useSelector((state) => state?.user)
 
   const handleForgotPassLink = () => {
-    console.log('hello')
+    router.push('/login/forgot-password')
   }
 
   useEffect(() => {
@@ -47,71 +47,60 @@ const MainLogin = () => {
   }, [userInfo, router])
 
   return (
-    <div className={`grid justify-center items-center my-10 overflow-x-hidden`}>
-      <div className="grid gap-6">
-        <div className="w-20 mx-auto">
-          <Image
-            src={'/images/wpsprint.png'}
-            width={500}
-            height={500}
-            alt="wp sprint"
-            className="h-[63.68px]"
-          />
-        </div>
-        <div className="flex items-center justify-center mb-6 text-gray-800">
-          <div className="grid justify-center items-center">
-            <div className="text-xl font-medium mx-auto ">Welcome,</div>
-            <div className="flex gap-2">
-              <span className="sm:text-[35px] text-[24px] font-bold ">
-                To the WPS partner portal
-              </span>
-              <span className="sm:w-[59px] xs:w-[38px] w-[32px] mx-auto">
-                <Image
-                  src={'/images/hello.png'}
-                  width={500}
-                  height={500}
-                  alt="wp sprint"
-                  className="sm:h-[40px] xs:h-[38px] w-[32px]"
-                />
-              </span>
-            </div>
+    <>
+      <div className="flex items-center justify-center mb-6 text-gray-800">
+        <div className="grid justify-center items-center">
+          <div className="text-xl font-medium mx-auto ">Welcome,</div>
+          <div className="flex gap-2">
+            <span className="sm:text-[35px] text-[24px] font-bold ">
+              To the WPS partner portal
+            </span>
+            <span className="sm:w-[59px] xs:w-[38px] w-[32px] mx-auto">
+              <Image
+                src={'/images/hello.png'}
+                width={500}
+                height={500}
+                alt="wp sprint"
+                className="sm:h-[40px] xs:h-[38px] w-[32px]"
+              />
+            </span>
           </div>
         </div>
-        <div className="w-full flex justify-center items-center rounded-[20px] text-2xl font-medium mb-6">
-          <button
-            className={`${
-              !isSignUp ? 'bg-white' : 'bg-gray-800 text-white '
-            } sm:rounded-tl-[20px] rounded-tl-[15px] sm:rounded-bl-[20px] rounded-bl-[15px] border-2 border-stone-900 sm:w-[265px] xs:w-[220px] w-[170px] sm:h-[72px] xs:h-[60px] h-[55px] transition-all duration-75 ease-linear`}
-            onClick={(e) => {
-              e.preventDefault()
-              setIsSignUp(false)
-            }}
-          >
-            Sign in
-          </button>
-          <button
-            className={`${
-              isSignUp ? 'bg-white' : 'bg-gray-800 text-white'
-            } sm:rounded-tr-[20px] rounded-tr-[15px] sm:rounded-br-[20px] rounded-br-[15px] border-2 border-stone-900 sm:w-[265px] xs:w-[220px] w-[170px] sm:h-[72px] xs:h-[60px] h-[55px] transition-all duration-75`}
-            onClick={(e) => {
-              e.preventDefault()
-              setIsSignUp(true)
-            }}
-          >
-            Sign up
-          </button>
-        </div>
-        {isSignUp ? (
-          <SignUp router={router} dispatch={dispatch} />
-        ) : (
-          <SignIn
-            router={router}
-            dispatch={dispatch}
-            forgotPassLink={handleForgotPassLink}
-          />
-        )}
       </div>
-    </div>
+      <div className="w-full flex justify-center items-center rounded-[20px] text-2xl font-medium mb-6">
+        <button
+          className={`${
+            !isSignUp ? 'bg-white' : 'bg-gray-800 text-white '
+          } sm:rounded-tl-[20px] rounded-tl-[15px] sm:rounded-bl-[20px] rounded-bl-[15px] border-2 border-stone-900 sm:w-[265px] xs:w-[220px] w-[170px] sm:h-[72px] xs:h-[60px] h-[55px] transition-all duration-75 ease-linear`}
+          onClick={(e) => {
+            e.preventDefault()
+            setIsSignUp(false)
+          }}
+        >
+          Sign in
+        </button>
+        <button
+          className={`${
+            isSignUp ? 'bg-white' : 'bg-gray-800 text-white'
+          } sm:rounded-tr-[20px] rounded-tr-[15px] sm:rounded-br-[20px] rounded-br-[15px] border-2 border-stone-900 sm:w-[265px] xs:w-[220px] w-[170px] sm:h-[72px] xs:h-[60px] h-[55px] transition-all duration-75`}
+          onClick={(e) => {
+            e.preventDefault()
+            setIsSignUp(true)
+          }}
+        >
+          Sign up
+        </button>
+      </div>
+      {isSignUp ? (
+        <SignUp router={router} dispatch={dispatch} />
+      ) : (
+        <SignIn
+          router={router}
+          dispatch={dispatch}
+          forgotPassLink={handleForgotPassLink}
+        />
+      )}
+    </>
   )
 }
 

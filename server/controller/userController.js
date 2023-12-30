@@ -213,14 +213,24 @@ export const sendVerifyEmail = async (req, res, next) => {
         { new: true }
       )
       const url = `${process.env.BASE_URL}login/email_verify/${_id}?token=${token.token}`
-      await sendEmail(email, 'Verify Email', url)
+      await sendEmail(
+        email,
+        'Verify Email',
+        url,
+        'Welcome, Please verify your email by clicking the button!'
+      )
     } else {
       const token = await Token.create({
         userId: _id,
         token: crypto.randomBytes(32).toString('hex'),
       })
       const url = `${process.env.BASE_URL}login/email_verify/${_id}?token=${token.token}`
-      await sendEmail(email, 'Verify Email', url)
+      await sendEmail(
+        email,
+        'Verify Email',
+        url,
+        'Welcome, Please verify your email by clicking the button!'
+      )
     }
     return res.status(200).send('Email Send successfully!')
   } catch (error) {
@@ -249,6 +259,75 @@ export const verifyEmail = async (req, res, next) => {
     await Token.deleteOne({ _id: token._id })
 
     return res.status(200).send({ message: 'Email verified successfully' })
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const forgotPassword = async (req, res, next) => {
+  const { email } = req.body
+  try {
+    const oldUser = await User.findOne({ email })
+    if (!oldUser) {
+      return res.status(404).json({ status: 'User Not Exists!!' })
+    }
+    const secret = process.env.JWT_SECRET + oldUser?.password
+    const token = jwt.sign({ email: oldUser.email, id: oldUser._id }, secret, {
+      expiresIn: '5m',
+    })
+    const link = `${process.env.BASE_URL}login/forgot-password/${oldUser._id}?token=${token}`
+    await sendEmail(
+      email,
+      'Reset Password',
+      link,
+      'Welcome, Please reset your password by clicking here!',
+      'Reset Password'
+    )
+
+    res.status(200).send('Password reset email send!')
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const resetPassword = async (req, res, next) => {
+  const { id, token } = req.params
+  const { password: pass } = req.body
+  console.log(pass)
+  const oldUser = await User.findOne({ _id: id })
+  if (!oldUser) {
+    return res.status(404).json({ status: 'User Not Exists!!' })
+  }
+  const secret = process.env.JWT_SECRET + oldUser.password
+  try {
+    const verify = jwt.verify(token, secret)
+    // console.log(verify)
+    const salt = await bcrypt.genSalt(10)
+    const hashedPass = await bcrypt.hash(pass, salt)
+    const newRefreshToken = generateRefreshToken(verify?.id)
+    const loggedUser = await User.findByIdAndUpdate(
+      {
+        _id: verify?.id,
+      },
+      {
+        password: hashedPass,
+        refreshToken: newRefreshToken,
+      },
+      { new: true }
+    )
+
+    const { password, refreshToken, ...userWithoutPassAndToken } =
+      loggedUser._doc
+
+    res.cookie('refreshToken', newRefreshToken, {
+      httpOnly: true,
+      maxAge: 90 * 24 * 60 * 60 * 1000,
+    })
+
+    return res.status(200).json({
+      ...userWithoutPassAndToken,
+      token: generateToken(verify?.id),
+    })
   } catch (error) {
     next(error)
   }

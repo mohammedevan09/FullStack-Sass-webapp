@@ -35,8 +35,6 @@ const Input = ({
 }
 
 export const PasswordInput = ({
-  value,
-  setValue,
   placeholder,
   id,
   cn,
@@ -55,8 +53,6 @@ export const PasswordInput = ({
         type={showPass ? 'text' : 'password'}
         placeholder={placeholder}
         className=" placeholder:text-center text-center font-medium placeholder:font-normal"
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
         {...validationRules}
       />
       <div

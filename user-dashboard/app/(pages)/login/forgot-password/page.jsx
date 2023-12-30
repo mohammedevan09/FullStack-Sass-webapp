@@ -1,5 +1,7 @@
+import MainForgetPassword from './MainForgetPassword'
+
 const page = () => {
-  return <div>page</div>
+  return <MainForgetPassword />
 }
 
 export default page

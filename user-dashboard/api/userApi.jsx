@@ -70,3 +70,21 @@ export const verifyYourEmail = async (id, token) => {
   })
   return data
 }
+
+export const forgotPasswordApi = async (sendData) => {
+  const data = await axios.post(`${host}/api/user/forgot-password`, sendData, {
+    withCredentials: true,
+  })
+  return data
+}
+
+export const resetPasswordApi = async (id, token, sendData) => {
+  const data = await axios.post(
+    `${host}/api/user/reset-password/${id}/${token}`,
+    sendData,
+    {
+      withCredentials: true,
+    }
+  )
+  return data
+}
