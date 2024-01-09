@@ -87,7 +87,7 @@ const Header = () => {
     return () => {
       window.removeEventListener('scroll', controlNavbar)
     }
-  }, [lastScrollY])
+  }, [lastScrollY, isSmallScreen])
 
   return (
     <header className={`sticky z-30`}>
