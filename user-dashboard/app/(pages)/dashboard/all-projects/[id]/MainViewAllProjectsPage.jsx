@@ -6,8 +6,11 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
+import MainEditor from '@/components/text-editor/MainEditor'
 
 const MainViewAllProjectsPage = ({ params }) => {
+  const [text, setText] = useState('')
+
   const projectTracking = [
     {
       track: 'To do',
@@ -66,6 +69,10 @@ const MainViewAllProjectsPage = ({ params }) => {
       document.removeEventListener('click', handleClick)
     }
   }, [dropRef])
+
+  const handleMessageSend = () => {
+    console.log(text)
+  }
 
   return (
     <div className="sm:my-14 my-8 sm:px-4 xs:px-3 px-1">
@@ -192,7 +199,7 @@ const MainViewAllProjectsPage = ({ params }) => {
             </div>
           </div>
         </div>
-        <div className="h-[1px] w-full bg-zinc-600 mb-6 md:mt-0 mt-6" />
+        <div className="h-[1px] w-full bg-zinc-300 mb-6 md:mt-0 mt-6" />
         <div className="grid gap-4 w-full">
           {fakeMessageData?.map((item, i) => (
             <div className="flex gap-2 w-full" key={i}>
@@ -202,7 +209,7 @@ const MainViewAllProjectsPage = ({ params }) => {
                   width={200}
                   height={200}
                   alt="person"
-                  className="h-[50px] object-cover"
+                  className="h-[50px] object-cover rounded-full"
                 />
               </div>
               <div className="w-full grid">
@@ -212,14 +219,11 @@ const MainViewAllProjectsPage = ({ params }) => {
             </div>
           ))}
         </div>
-        <div className="w-full border-zinc-300 border-2 rounded-md p-2 mt-6">
-          <input
-            type="text"
-            className="w-full pb-2"
-            placeholder="Write a message #"
-          />
-          {/* <div className="h-[1px] w-full bg-zinc-200" /> */}
-        </div>
+        <MainEditor
+          text={text}
+          setText={setText}
+          handleMessageSend={handleMessageSend}
+        />
       </div>
     </div>
   )

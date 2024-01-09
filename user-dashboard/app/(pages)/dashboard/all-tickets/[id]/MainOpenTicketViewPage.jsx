@@ -5,8 +5,15 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { fakeMessageData } from '@/staticData/MainData'
+import MainEditor from '@/components/text-editor/MainEditor'
+import { useState } from 'react'
 
 const MainOpenTicketViewPage = ({ params }) => {
+  const [text, setText] = useState('')
+
+  const handleMessageSend = () => {
+    console.log(text)
+  }
   return (
     <div className="sm:my-14 my-8 sm:px-4 xs:px-3 px-1">
       <motion.button whileHover={{ scale: 1.1 }}>
@@ -93,14 +100,11 @@ const MainOpenTicketViewPage = ({ params }) => {
             </div>
           ))}
         </div>
-        <div className="w-full border-zinc-300 border-2 rounded-md p-2 mt-6">
-          <input
-            type="text"
-            className="w-full pb-2"
-            placeholder="Write a message #"
-          />
-          {/* <div className="h-[1px] w-full bg-zinc-200" /> */}
-        </div>
+        <MainEditor
+          text={text}
+          setText={setText}
+          handleMessageSend={handleMessageSend}
+        />
       </div>
     </div>
   )

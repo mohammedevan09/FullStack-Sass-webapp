@@ -1,0 +1,78 @@
+.editor-btn > button {
+  padding: 5px;
+}
+
+.tiptap > h2 {
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.is-active {
+  font-weight: 700;
+  background-color: #2874ff52;
+  border-radius: 12px;
+}
+
+.is-active > svg,
+.is-active2:hover > svg {
+  fill: black !important;
+}
+
+.tiptap > ul {
+  list-style-type: disc;
+  list-style-position: inside;
+}
+
+.tiptap li p {
+  display: inline;
+}
+
+.tiptap a {
+  color: rgb(0, 132, 255);
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.tiptap pre {
+  background: #0d0d0d;
+  color: #fff;
+  font-family: JetBrainsMono, monospace;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+}
+
+.tiptap pre code {
+  color: inherit;
+  padding: 0;
+  background: none;
+  font-size: 0.8rem;
+}
+
+.ProseMirror {
+  padding: 8px 16px;
+  order: 1;
+  height: auto;
+  overflow-y: scroll;
+  word-break: break-all;
+}
+
+.ProseMirror-focused {
+  outline: none;
+}
+
+.tiptap p.is-editor-empty:first-child::before {
+  color: #adb5bd;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+.tiptap p.is-empty::before {
+  color: #adb5bd;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
