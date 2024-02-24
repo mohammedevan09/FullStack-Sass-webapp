@@ -2,10 +2,13 @@ import express from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import mongoose from 'mongoose'
-import userRouter from './router/userRouter.js'
-import { errorHandler, notFound } from './middleware/errorHandler.js'
 import cookieParser from 'cookie-parser'
 import morgan from 'morgan'
+
+import userRouter from './router/userRouter.js'
+import orderRouter from './router/orderRouter.js'
+import { errorHandler, notFound } from './middleware/errorHandler.js'
+
 dotenv.config()
 
 const app = express()
@@ -31,6 +34,7 @@ app.get('/', (req, res, next) => {
 })
 
 app.use('/api/user', userRouter)
+app.use('/api/order', orderRouter)
 
 app.use(notFound)
 app.use(errorHandler)

@@ -209,13 +209,13 @@ const MainViewHourlyPlanPage = ({ params }) => {
                   </div>
                 </td>
                 <td className="lg:py-7 py-4">
-                  <div className="text-zinc-700 sm:text-xl text-lg w-[150px] grid justify-center items-center gap-2 font-medium">
+                  <div className="text-zinc-700 sm:text-xl text-lg w-[150px] grid justify-center items-center gap-2 font-medium mx-auto">
                     <div className="mx-auto">{item?.date}</div>
                     <div className="mx-auto">{item?.times}</div>
                   </div>
                 </td>
                 <td className="lg:py-7 py-4">
-                  <div className="text-zinc-700 sm:text-xl text-lg w-[150px] grid justify-center font-medium items-center gap-2">
+                  <div className="text-zinc-700 sm:text-xl text-lg w-[150px] grid justify-center font-medium items-center gap-2 mx-auto">
                     <div className="mx-auto">{item?.loggedHours}</div>
                     <div className='className="mx-auto"'>
                       {item?.loggedMinutes}
