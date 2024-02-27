@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import Order from './orderModal'
+import Order from '../orderModal.js'
 
 const websiteDesignAndDevSchema = new mongoose.Schema(
   {
@@ -64,12 +64,6 @@ const websiteDesignAndDevSchema = new mongoose.Schema(
       type: String,
       enum: ['pending', 'paid', 'failed'],
       default: 'pending',
-    },
-
-    userId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-      required: true,
     },
   },
   {

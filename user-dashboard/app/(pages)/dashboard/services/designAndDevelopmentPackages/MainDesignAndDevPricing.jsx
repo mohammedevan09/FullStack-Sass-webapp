@@ -1,5 +1,6 @@
 'use client'
 
+import CheckoutModal from '@/components/modals/checkoutModals/checkoutModal'
 import DesignAndDevelopmentModal from '@/components/modals/marketplaceModal/DesignAndDevelopmentModal'
 import GetACustomProposalModal from '@/components/modals/marketplaceModal/GetACustomProposalModal'
 import ThanksSubModal from '@/components/modals/marketplaceModal/ThanksSubModal'
@@ -10,6 +11,8 @@ const MainDesignAndDevPricing = ({ pricing }) => {
   const [openModalCustom, setOpenModalCustom] = useState(false)
   const [openModal, setOpenModal] = useState(false)
   const [openSubModal, setOpenSubModal] = useState(false)
+  const [checkOutModal, setCheckOutModal] = useState(false)
+
   return (
     <div className="grid justify-center items-center bg-white px-11 pt-12 rounded-[15px] mb-20 2xl:w-[1111px] w-full 2xl:max-w-full max-w-[950px]">
       <div className="lg:flex grid lg:justify-center items-center gap-8">
@@ -86,8 +89,16 @@ const MainDesignAndDevPricing = ({ pricing }) => {
       )}
       {openModal && (
         <DesignAndDevelopmentModal
+          setCheckOutModal={setCheckOutModal}
           setOpenModal={setOpenModal}
           openModal={openModal}
+        />
+      )}
+
+      {checkOutModal && (
+        <CheckoutModal
+          setOpenModal={setCheckOutModal}
+          openModal={checkOutModal}
         />
       )}
     </div>

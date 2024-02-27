@@ -94,7 +94,7 @@ const MainHourlyPlan = () => {
                       {item?.title}
                     </h3>
                     <h4 className="text-zinc-500 sm:text-base text-sm font-normal leading-relaxed">
-                      {item?.title}
+                      {item?.price}
                     </h4>
                   </div>
                 </div>

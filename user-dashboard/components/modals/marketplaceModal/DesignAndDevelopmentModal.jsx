@@ -3,7 +3,15 @@ import { LabelsTwo } from '@/components/Labels'
 import WrappingModal from '../WrappingModal'
 import { motion } from 'framer-motion'
 
-const DesignAndDevelopmentModal = ({ openModal, setOpenModal }) => {
+const DesignAndDevelopmentModal = ({
+  openModal,
+  setOpenModal,
+  setCheckOutModal,
+}) => {
+  const handleCheckOutButton = () => {
+    setOpenModal(false)
+    setCheckOutModal(true)
+  }
   return (
     <WrappingModal modalOpen={openModal}>
       <div
@@ -196,8 +204,8 @@ const DesignAndDevelopmentModal = ({ openModal, setOpenModal }) => {
           <motion.button
             whileHover={{ scale: 1.03 }}
             className="w-full p-4 bg-blue-800 rounded-[9px] text-white text-lg font-semibold leading-7"
-            // onClick={() => setOpenSubModal(true)}
-            onClick={() => setOpenModal(false)}
+            // onClick={() => setOpenModal(false)}
+            onClick={() => handleCheckOutButton()}
           >
             Checkout Now
           </motion.button>

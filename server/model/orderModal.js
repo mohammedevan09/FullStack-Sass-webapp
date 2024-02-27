@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 
 const orderSchema = new mongoose.Schema(
   {
-    user: {
+    userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true,
@@ -17,7 +17,9 @@ const orderSchema = new mongoose.Schema(
       complete: [{ title: String }],
     },
     status: {
-      enum: ['Pending', 'Running', 'Done'],
+      type: String,
+      enum: ['pending', 'running', 'done'],
+      default: 'pending',
     },
   },
   { timestamps: true }
