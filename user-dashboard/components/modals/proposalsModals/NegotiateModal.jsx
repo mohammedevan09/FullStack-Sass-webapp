@@ -2,7 +2,7 @@
 
 import { LabelsTwo } from '@/components/Labels'
 import WrappingModal from '../WrappingModal'
-import Input from '@/components/Input'
+import { Input2 } from '@/components/Input'
 import { motion } from 'framer-motion'
 
 const NegotiateModal = ({ openModal, setOpenModal, setOpenSubModal }) => {
@@ -17,15 +17,7 @@ const NegotiateModal = ({ openModal, setOpenModal, setOpenSubModal }) => {
         <div className="grid gap-5">
           <div className="grid">
             <LabelsTwo htmlFor={'Amount'} name={'Amount'} />
-            <Input
-              left={true}
-              id={'Amount'}
-              placeholder={'Ex: $5000'}
-              type={'number'}
-              cn={'sm:w-[570px] xs:w-[446px] w-[340px] text-sm'}
-              cnb={'rounded-[5px]'}
-              cnh={'h-[58px]'}
-            />
+            <Input2 id={'Amount'} placeholder={'Ex: $5000'} type={'number'} />
           </div>
           <div className="grid">
             <LabelsTwo htmlFor={'Message'} name={'Message'} />

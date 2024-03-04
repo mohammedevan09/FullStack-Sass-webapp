@@ -1,6 +1,7 @@
 'use client'
 
 import { forgotPasswordApi } from '@/api/userApi'
+import ErrorMessage from '@/components/ErrorMessage'
 import Input from '@/components/Input'
 import { motion } from 'framer-motion'
 import { useRouter } from 'next/navigation'
@@ -64,11 +65,7 @@ const MainForgetPassword = () => {
                   }),
                 }}
               />
-              {errors.email?.message && (
-                <p className="text-red-500 text-sm mx-auto text-center font-bold">
-                  {errors.email?.message}
-                </p>
-              )}
+              <ErrorMessage errors={errors?.email} />
             </div>
           </div>
         </div>

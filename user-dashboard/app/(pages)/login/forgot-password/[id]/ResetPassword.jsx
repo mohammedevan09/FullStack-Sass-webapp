@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation'
 import { resetPasswordApi } from '@/api/userApi'
 import { useDispatch } from 'react-redux'
 import { setUsers } from '@/store/reducers/userReducer'
+import ErrorMessage from '@/components/ErrorMessage'
 
 const ResetPassword = ({ params, searchParams }) => {
   const router = useRouter()
@@ -71,11 +72,7 @@ const ResetPassword = ({ params, searchParams }) => {
                   }),
                 }}
               />
-              {errors.password?.message && (
-                <p className="text-red-500 text-sm font-bold">
-                  {errors.password?.message}
-                </p>
-              )}
+              <ErrorMessage errors={errors?.password} />
             </div>
             <div className="grid gap-1">
               <PasswordInput
@@ -94,11 +91,8 @@ const ResetPassword = ({ params, searchParams }) => {
                   }),
                 }}
               />
-              {errors.confirmPassword?.message && (
-                <p className="text-red-500 text-sm font-bold">
-                  {errors.confirmPassword?.message}
-                </p>
-              )}
+
+              <ErrorMessage errors={errors?.confirmPassword} />
             </div>
           </div>
         </div>

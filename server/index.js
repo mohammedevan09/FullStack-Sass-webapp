@@ -8,6 +8,7 @@ import morgan from 'morgan'
 import userRouter from './router/userRouter.js'
 import orderRouter from './router/orderRouter.js'
 import { errorHandler, notFound } from './middleware/errorHandler.js'
+import { stripeWebhook } from './controller/orderController.js'
 
 dotenv.config()
 
@@ -21,18 +22,25 @@ app.use(
   })
 )
 app.use(cookieParser())
-app.use(express.json())
+app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
 app.use(morgan('dev'))
 
 app.get('/', (req, res, next) => {
   try {
-    res.send('Api test successful!')
+    return res.send('Api test successful!')
   } catch (error) {
     next(error)
   }
 })
 
+app.post(
+  '/api/order/webhook',
+  express.raw({ type: 'application/json' }),
+  stripeWebhook
+)
+
+app.use(express.json())
 app.use('/api/user', userRouter)
 app.use('/api/order', orderRouter)
 

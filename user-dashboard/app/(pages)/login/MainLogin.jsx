@@ -16,6 +16,7 @@ import toast from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
 import { useGoogleLogin } from '@react-oauth/google'
 import axios from 'axios'
+import ErrorMessage from '@/components/ErrorMessage'
 
 const MainLogin = () => {
   const [isSignUp, setIsSignUp] = useState(false)
@@ -161,11 +162,8 @@ export const SignIn = ({ router, dispatch, forgotPassLink }) => {
               }),
             }}
           />
-          {errors.email?.message && (
-            <p className="text-red-500 text-sm font-bold">
-              {errors.email?.message}
-            </p>
-          )}
+
+          <ErrorMessage errors={errors?.email} />
         </div>
         <div className="grid gap-1">
           <PasswordInput
@@ -183,11 +181,7 @@ export const SignIn = ({ router, dispatch, forgotPassLink }) => {
               }),
             }}
           />
-          {errors.password?.message && (
-            <p className="text-red-500 text-sm font-bold">
-              {errors.password?.message}
-            </p>
-          )}
+          <ErrorMessage errors={errors?.password} />
         </div>
       </div>
       <div className="flex justify-between items-center font-medium">
@@ -276,11 +270,7 @@ export const SignUp = ({ router, dispatch }) => {
               }),
             }}
           />
-          {errors.fullName?.message && (
-            <p className="text-red-500 text-sm font-bold">
-              {errors.fullName?.message}
-            </p>
-          )}
+          <ErrorMessage errors={errors.fullName} />
         </div>
         <div className="grid gap-1">
           <Input
@@ -300,11 +290,8 @@ export const SignUp = ({ router, dispatch }) => {
               }),
             }}
           />
-          {errors.email?.message && (
-            <p className="text-red-500 text-sm font-bold">
-              {errors.email?.message}
-            </p>
-          )}
+
+          <ErrorMessage errors={errors?.email} />
         </div>
         <div className="grid gap-1">
           <Input
@@ -327,11 +314,7 @@ export const SignUp = ({ router, dispatch }) => {
               }),
             }}
           />
-          {errors.number?.message && (
-            <p className="text-red-500 text-sm font-bold">
-              {errors.number?.message}
-            </p>
-          )}
+          <ErrorMessage errors={errors?.number} />
         </div>
         <div className="grid gap-1">
           <Input
@@ -376,11 +359,7 @@ export const SignUp = ({ router, dispatch }) => {
               }),
             }}
           />
-          {errors.password?.message && (
-            <p className="text-red-500 text-sm font-bold">
-              {errors.password?.message}
-            </p>
-          )}
+          <ErrorMessage errors={errors?.password} />
         </div>
       </div>
 

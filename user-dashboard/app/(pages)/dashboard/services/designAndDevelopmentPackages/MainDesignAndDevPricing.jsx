@@ -1,6 +1,5 @@
 'use client'
 
-import CheckoutModal from '@/components/modals/checkoutModals/checkoutModal'
 import DesignAndDevelopmentModal from '@/components/modals/marketplaceModal/DesignAndDevelopmentModal'
 import GetACustomProposalModal from '@/components/modals/marketplaceModal/GetACustomProposalModal'
 import ThanksSubModal from '@/components/modals/marketplaceModal/ThanksSubModal'
@@ -11,7 +10,12 @@ const MainDesignAndDevPricing = ({ pricing }) => {
   const [openModalCustom, setOpenModalCustom] = useState(false)
   const [openModal, setOpenModal] = useState(false)
   const [openSubModal, setOpenSubModal] = useState(false)
-  const [checkOutModal, setCheckOutModal] = useState(false)
+  const [pricingData, setPricingData] = useState({})
+
+  const handleModal = (i) => {
+    setPricingData(i)
+    setOpenModal(true)
+  }
 
   return (
     <div className="grid justify-center items-center bg-white px-11 pt-12 rounded-[15px] mb-20 2xl:w-[1111px] w-full 2xl:max-w-full max-w-[950px]">
@@ -23,7 +27,7 @@ const MainDesignAndDevPricing = ({ pricing }) => {
               className="grid justify-center items-center pricing-shadow px-6 py-10"
             >
               <h1 className="text-gray-900 text-5xl font-semibold leading-[60px] mx-auto">
-                {item?.price}
+                ${item?.price}
               </h1>
               <div className="text-center sm:pt-4 pt-2">
                 <h3 className="mx-auto text-gray-900 text-xl font-semibold leading-[30px]">
@@ -48,7 +52,7 @@ const MainDesignAndDevPricing = ({ pricing }) => {
               </div>
               <button
                 className="w-[139px] h-9 btn-hover rounded-lg shadow border justify-center items-center inline-flex mx-auto"
-                onClick={() => setOpenModal(true)}
+                onClick={() => handleModal(item)}
               >
                 Get started
               </button>
@@ -89,16 +93,9 @@ const MainDesignAndDevPricing = ({ pricing }) => {
       )}
       {openModal && (
         <DesignAndDevelopmentModal
-          setCheckOutModal={setCheckOutModal}
+          pricingData={pricingData}
           setOpenModal={setOpenModal}
           openModal={openModal}
-        />
-      )}
-
-      {checkOutModal && (
-        <CheckoutModal
-          setOpenModal={setCheckOutModal}
-          openModal={checkOutModal}
         />
       )}
     </div>

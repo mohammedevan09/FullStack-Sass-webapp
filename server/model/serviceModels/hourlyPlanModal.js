@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import Order from '../orderModal.js'
 
-const websiteDesignAndDevSchema = new mongoose.Schema(
+const hourlyPlanSchema = new mongoose.Schema(
   {
     title: {
       type: String,
@@ -41,36 +41,17 @@ const websiteDesignAndDevSchema = new mongoose.Schema(
         },
       },
     ],
+
+    paymentStatus: {
+      type: String,
+      enum: ['pending', 'paid', 'failed'],
+      default: 'pending',
+    },
   },
   {
     timestamps: true,
   }
 )
 
-const WebsiteDesignAndDev = Order.discriminator(
-  'WebsiteDesignAndDev',
-  websiteDesignAndDevSchema
-)
-export default WebsiteDesignAndDev
-
-// services: {
-//   type: String,
-// },
-// targetAudience: {
-//   type: String,
-// },
-// uniqueSellingPoints: {
-//   type: String,
-// },
-
-// websiteFeatures: {
-//   type: String,
-// },
-
-// competitorWebsites: {
-//   type: String,
-// },
-
-// styleGuide: {
-//   type: String,
-// },
+const HourlyPlan = Order.discriminator('HourlyPlan', hourlyPlanSchema)
+export default HourlyPlan

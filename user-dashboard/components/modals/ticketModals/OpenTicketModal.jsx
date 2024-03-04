@@ -1,6 +1,6 @@
 'use client'
 
-import Input from '@/components/Input'
+import { Input2 } from '@/components/Input'
 import { LabelsTwo } from '@/components/Labels'
 import { FilterByIdIcon, SearchByIdIcon } from '@/staticData/Icon'
 import WrappingModal from '../WrappingModal'
@@ -52,14 +52,10 @@ const OpenTicketModal = ({ setOpenModal, setOpenSubModal, openModal }) => {
         <div className="grid gap-5">
           <div className="grid">
             <LabelsTwo htmlFor={'project-title'} name={'Ticket Title'} />
-            <Input
-              left={true}
+            <Input2
               id={'project-title'}
               placeholder={'Ex: Andrea’s personal web development'}
               type={'text'}
-              cn={'sm:w-[570px] xs:w-[446px] w-[340px] text-sm'}
-              cnb={'rounded-[5px]'}
-              cnh={'h-[58px]'}
             />
           </div>
           <div className="grid">
@@ -108,7 +104,6 @@ const OpenTicketModal = ({ setOpenModal, setOpenSubModal, openModal }) => {
                 className={`border-2 rounded-full border-[${item?.color}] flex`}
               >
                 <input
-                  left={true}
                   type="radio"
                   id={item?.title}
                   name="priority"

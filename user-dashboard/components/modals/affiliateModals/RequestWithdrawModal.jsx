@@ -2,7 +2,7 @@
 
 import { LabelsTwo } from '@/components/Labels'
 import WrappingModal from '../WrappingModal'
-import Input from '@/components/Input'
+import { Input2 } from '@/components/Input'
 import { motion } from 'framer-motion'
 
 const RequestWithdrawModal = ({ openModal, setOpenModal, setOpenSubModal }) => {
@@ -16,14 +16,10 @@ const RequestWithdrawModal = ({ openModal, setOpenModal, setOpenSubModal }) => {
         <div className="grid gap-5">
           <div className="grid">
             <LabelsTwo htmlFor={'email'} name={'Your Paypal email Account'} />
-            <Input
-              left={true}
+            <Input2
               id={'email'}
               placeholder={'example@youremail.com'}
               type={'email'}
-              cn={'sm:w-[570px] xs:w-[446px] w-[340px] text-sm'}
-              cnb={'rounded-[5px]'}
-              cnh={'h-[58px]'}
             />
           </div>
         </div>

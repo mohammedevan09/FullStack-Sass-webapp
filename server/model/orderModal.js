@@ -7,14 +7,30 @@ const orderSchema = new mongoose.Schema(
       ref: 'User',
       required: true,
     },
-    orderId: {
-      type: mongoose.Schema.Types.ObjectId,
-      required: true,
-    },
     projectTrackingBoard: {
       todo: [{ title: String }],
       inProgress: [{ title: String }],
       complete: [{ title: String }],
+    },
+    amount: {
+      type: Number,
+      required: true,
+    },
+    phone: {
+      type: Number,
+      // required: true,
+    },
+    payment_method_types: {
+      type: String,
+      enum: ['card', 'paypal'],
+    },
+    payment_intent: {
+      type: String,
+    },
+    payment_status: {
+      type: String,
+      enum: ['pending', 'paid', 'cancel'],
+      default: 'pending',
     },
     status: {
       type: String,

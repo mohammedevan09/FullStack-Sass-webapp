@@ -10,6 +10,7 @@ import { useEffect } from 'react'
 import { updateUserApi } from '@/api/userApi'
 import toast from 'react-hot-toast'
 import { setUsers } from '@/store/reducers/userReducer'
+import ErrorMessage from '@/components/ErrorMessage'
 
 const MainAddDetails = () => {
   const router = useRouter()
@@ -88,11 +89,8 @@ const MainAddDetails = () => {
                 }),
               }}
             />
-            {errors.number?.message && (
-              <p className="text-red-500 text-sm font-bold">
-                {errors.number?.message}
-              </p>
-            )}
+
+            <ErrorMessage errors={errors?.number} />
           </div>
           <div className="grid gap-1">
             <Input

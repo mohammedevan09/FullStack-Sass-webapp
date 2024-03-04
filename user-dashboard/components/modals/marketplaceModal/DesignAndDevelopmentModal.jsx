@@ -1,224 +1,236 @@
-import Input from '@/components/Input'
+'use client'
+
+import { Input2 } from '@/components/Input'
 import { LabelsTwo } from '@/components/Labels'
 import WrappingModal from '../WrappingModal'
 import { motion } from 'framer-motion'
+import { useState } from 'react'
+import CheckoutModal from '../checkoutModals/CheckoutModal'
+import { useForm } from 'react-hook-form'
+import { ErrorMessageTwo } from '@/components/ErrorMessage'
+import YesNoRadioInput from '@/components/YesNoRadioInput'
 
 const DesignAndDevelopmentModal = ({
+  pricingData,
   openModal,
   setOpenModal,
-  setCheckOutModal,
 }) => {
-  const handleCheckOutButton = () => {
-    setOpenModal(false)
-    setCheckOutModal(true)
-  }
-  return (
-    <WrappingModal modalOpen={openModal}>
-      <div
-        className={`grid bg-white sm:pt-16 pt-8 pb-4 sm:px-24 xs:px-6 px-2 rounded-[20px] overflow-x-hidden`}
-      >
-        <h3 className="xs:text-2xl text-xl font-semibold tracking-tight mx-auto">
-          Provide project details & questionnaire
-        </h3>
-        <div className="w-full h-[0px] border border-neutral-400 mt-5 mb-14"></div>
-        <div className="grid gap-5">
-          <div className="grid justify-center">
-            <LabelsTwo htmlFor={'project-title'} name={'Project Title'} />
-            <Input
-              left={true}
-              id={'project-title'}
-              placeholder={'Ex: Andrea’s personal web development'}
-              type={'text'}
-              cn={'sm:w-[570px] xs:w-[446px] w-[340px] text-sm'}
-              cnb={'rounded-[5px]'}
-              cnh={'h-[58px]'}
-            />
-          </div>
-          <div className="grid justify-center">
-            <LabelsTwo
-              htmlFor={'Describe-the-projects'}
-              name={'Describe the Business/projects.'}
-            />
-            <Input
-              left={true}
-              id={'Describe-the-projects'}
-              placeholder={'Example: its an salon business in new York etc.'}
-              type={'text'}
-              cn={'sm:w-[570px] xs:w-[446px] w-[340px] text-sm'}
-              cnb={'rounded-[5px]'}
-              cnh={'h-[81.66px]'}
-            />
-          </div>
-          <div className="grid justify-center gap-5">
-            <Input
-              left={true}
-              placeholder={'What Services Do You Offer?.'}
-              type={'text'}
-              cn={'sm:w-[570px] xs:w-[446px] w-[340px] text-sm'}
-              cnb={'rounded-[5px]'}
-              cnh={'h-[58px]'}
-            />
-            <Input
-              left={true}
-              placeholder={'Who Is Your Target Audience?'}
-              type={'text'}
-              cn={'sm:w-[570px] xs:w-[446px] w-[340px] text-sm'}
-              cnb={'rounded-[5px]'}
-              cnh={'h-[58px]'}
-            />
-            <Input
-              left={true}
-              placeholder={'What Makes Your Services Unique?'}
-              type={'text'}
-              cn={'sm:w-[570px] xs:w-[446px] w-[340px] text-sm'}
-              cnb={'rounded-[5px]'}
-              cnh={'h-[58px]'}
-            />
-            <Input
-              left={true}
-              placeholder={
-                'What Features Does Your Website Need to Be Successful?'
-              }
-              type={'text'}
-              cn={'sm:w-[570px] xs:w-[446px] w-[340px] text-sm'}
-              cnb={'rounded-[5px]'}
-              cnh={'h-[58px]'}
-            />
-            <Input
-              left={true}
-              placeholder={
-                'What’s your competitors site or do you have any reference site you like?'
-              }
-              type={'text'}
-              cn={'sm:w-[570px] xs:w-[446px] w-[340px] text-sm'}
-              cnb={'rounded-[5px]'}
-              cnh={'h-[58px]'}
-            />
-            <Input
-              left={true}
-              placeholder={
-                'Do You Have Any Existing Style Guides and Guidelines?'
-              }
-              type={'text'}
-              cn={'sm:w-[570px] xs:w-[446px] w-[340px] text-sm'}
-              cnb={'rounded-[5px]'}
-              cnh={'h-[58px]'}
-            />
-          </div>
+  const [checkOutModal, setCheckOutModal] = useState(false)
+  const [finalForm, setFinalForm] = useState({})
 
-          <div className="grid gap-9 mt-10">
-            <div className="grid justify-start">
-              <LabelsTwo
-                name={'Would You Like Us to Provide domain hosting?'}
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+    setValue,
+  } = useForm({
+    defaultValues: {
+      title: '',
+      description: '',
+      type: pricingData?.type,
+      websiteFeatures: [
+        { title: 'Services', value: '' },
+        { title: 'Target Audience', value: '' },
+        { title: 'Unique Selling Points', value: '' },
+        { title: 'Website Features', value: '' },
+        { title: 'Competitor Websites', value: '' },
+        { title: 'Style Guide', value: '' },
+      ],
+      additionalOptions: [
+        { title: 'Domain Hosting', value: false },
+        { title: 'Ongoing Support', value: false },
+        { title: 'Virtual Meeting', value: false },
+      ],
+      amount: pricingData?.price,
+    },
+
+    mode: 'onChange',
+  })
+
+  const handleRadioChange = (name, value) => {
+    setValue(name, value === 'true')
+  }
+
+  const handleCheckOutButton = async (formData) => {
+    if (isValid) {
+      const filteredWebsiteFeatures = formData.websiteFeatures.filter(
+        (item) => item.value.trim() !== ''
+      )
+
+      setFinalForm({
+        ...formData,
+        websiteFeatures: filteredWebsiteFeatures,
+      })
+      setCheckOutModal(true)
+    }
+  }
+
+  return (
+    <>
+      <WrappingModal modalOpen={openModal}>
+        <div
+          className={`grid bg-white sm:pt-16 pt-8 pb-4 sm:px-24 xs:px-6 px-2 rounded-[20px] overflow-x-hidden`}
+        >
+          <h3 className="xs:text-2xl text-xl font-semibold tracking-tight mx-auto">
+            Provide project details & questionnaire
+          </h3>
+          <div className="w-full h-[0px] border border-neutral-400 mt-5 mb-14"></div>
+          <div className="grid gap-5">
+            <div className="grid justify-center">
+              <LabelsTwo htmlFor={'project-title'} name={'Project Title'} />
+              <Input2
+                id={'project-title'}
+                placeholder={'Ex: Andrea’s personal web development'}
+                type={'text'}
+                validationRules={{
+                  ...register('title', {
+                    required: {
+                      value: true,
+                      message: 'Title is required',
+                    },
+                  }),
+                }}
               />
-              <div className="flex gap-7">
-                <div className="flex gap-2 items-center">
-                  <input
-                    left={true}
-                    type="radio"
-                    id="yes-domain"
-                    name="domain"
-                    value="yes-domain"
-                    className="w-5 h-5"
-                  />
-                  <label htmlFor="yes-domain">Yes</label>
-                </div>
-                <div className="flex gap-2 items-center">
-                  <input
-                    left={true}
-                    type="radio"
-                    id="no-domain"
-                    name="domain"
-                    value="no-domain"
-                    className="w-5 h-5"
-                  />
-                  <label htmlFor="no-domain">No</label>
-                </div>
-              </div>
+              <ErrorMessageTwo errors={errors?.title} />
             </div>
-            <div className="grid justify-start">
+            <div className="grid justify-center">
               <LabelsTwo
+                htmlFor={'Describe-the-projects'}
+                name={'Describe the Business/projects.'}
+              />
+              <Input2
+                id={'Describe-the-projects'}
+                placeholder={'Example: its an salon business in new York etc.'}
+                type={'text'}
+                cnh={'h-[81.66px]'}
+                validationRules={{
+                  ...register('description', {
+                    required: {
+                      value: true,
+                      message: 'Description is required',
+                    },
+                  }),
+                }}
+              />
+              <ErrorMessageTwo errors={errors?.description} />
+            </div>
+            <div className="grid justify-center gap-5">
+              <Input2
+                placeholder={'What Services Do You Offer?.'}
+                type={'text'}
+                validationRules={{
+                  ...register('websiteFeatures[0].value'),
+                }}
+              />
+              <Input2
+                placeholder={'Who Is Your Target Audience?'}
+                type={'text'}
+                validationRules={{
+                  ...register('websiteFeatures[1].value'),
+                }}
+              />
+              <Input2
+                placeholder={'What Makes Your Services Unique?'}
+                type={'text'}
+                validationRules={{
+                  ...register('websiteFeatures[2].value'),
+                }}
+              />
+              <Input2
+                placeholder={
+                  'What Features Does Your Website Need to Be Successful?'
+                }
+                type={'text'}
+                validationRules={{
+                  ...register('websiteFeatures[3].value'),
+                }}
+              />
+              <Input2
+                placeholder={
+                  'What’s your competitors site or do you have any reference site you like?'
+                }
+                type={'text'}
+                validationRules={{
+                  ...register('websiteFeatures[4].value'),
+                }}
+              />
+              <Input2
+                placeholder={
+                  'Do You Have Any Existing Style Guides and Guidelines?'
+                }
+                type={'text'}
+                validationRules={{
+                  ...register('websiteFeatures[5].value'),
+                }}
+              />
+            </div>
+
+            <div className="grid gap-9 mt-10">
+              <YesNoRadioInput
+                name={'Would You Like Us to Provide domain hosting?'}
+                radioFor={'domain&hosting'}
+                yesClick={() =>
+                  handleRadioChange('additionalOptions[0].value', 'true')
+                }
+                noClick={() =>
+                  handleRadioChange('additionalOptions[0].value', 'false')
+                }
+              />
+              <YesNoRadioInput
                 name={
                   'Would You Like Us to Provide Ongoing Support and Maintenance?'
                 }
+                radioFor={'ongoingS&M'}
+                yesClick={() =>
+                  handleRadioChange('additionalOptions[1].value', 'true')
+                }
+                noClick={() =>
+                  handleRadioChange('additionalOptions[1].value', 'false')
+                }
               />
-              <div className="flex gap-7">
-                <div className="flex gap-2 items-center">
-                  <input
-                    left={true}
-                    type="radio"
-                    id="yes-ongoing"
-                    name="ongoing"
-                    value="yes-ongoing"
-                    className="w-5 h-5"
-                  />
-                  <label htmlFor="yes-ongoing">Yes</label>
-                </div>
-                <div className="flex gap-2 items-center">
-                  <input
-                    left={true}
-                    type="radio"
-                    id="no-ongoing"
-                    name="ongoing"
-                    value="no-ongoing"
-                    className="w-5 h-5"
-                  />
-                  <label htmlFor="no-ongoing">No</label>
-                </div>
-              </div>
-            </div>
-            <div className="grid justify-start">
-              <LabelsTwo
+
+              <YesNoRadioInput
                 name={
                   'Do you need a virtual meeting for this project discussion?'
                 }
+                radioFor={'virtual-meeting'}
+                yesClick={() =>
+                  handleRadioChange('additionalOptions[2].value', 'true')
+                }
+                noClick={() =>
+                  handleRadioChange('additionalOptions[2].value', 'false')
+                }
               />
-              <div className="flex gap-7">
-                <div className="flex gap-2 items-center">
-                  <input
-                    left={true}
-                    type="radio"
-                    id="yes-meeting"
-                    name="virtual-meeting"
-                    value="yes-meeting"
-                    className="w-5 h-5"
-                  />
-                  <label htmlFor="yes-meeting">Yes</label>
-                </div>
-                <div className="flex gap-2 items-center">
-                  <input
-                    left={true}
-                    type="radio"
-                    id="no-meeting"
-                    name="virtual-meeting"
-                    value="no-meeting"
-                    className="w-5 h-5"
-                  />
-                  <label htmlFor="no-meeting">No</label>
-                </div>
-              </div>
             </div>
           </div>
+          <div className="grid items-center gap-3 mt-14">
+            <motion.button
+              whileHover={{ scale: 1.03 }}
+              className="w-full p-4 bg-blue-800 rounded-[9px] text-white text-lg font-semibold leading-7 "
+              onClick={handleSubmit(handleCheckOutButton)}
+            >
+              Checkout Now
+            </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.15 }}
+              className="w-full p-4 text-blue-800 rounded-[9px] bg-white text-lg font-semibold leading-7"
+              onClick={() => setOpenModal(false)}
+            >
+              Cancel
+            </motion.button>
+          </div>
         </div>
-        <div className="grid items-center gap-3 mt-14">
-          <motion.button
-            whileHover={{ scale: 1.03 }}
-            className="w-full p-4 bg-blue-800 rounded-[9px] text-white text-lg font-semibold leading-7"
-            // onClick={() => setOpenModal(false)}
-            onClick={() => handleCheckOutButton()}
-          >
-            Checkout Now
-          </motion.button>
-          <motion.button
-            whileHover={{ scale: 1.15 }}
-            className="w-full p-4 text-blue-800 rounded-[9px] bg-white text-lg font-semibold leading-7"
-            onClick={() => setOpenModal(false)}
-          >
-            Cancel
-          </motion.button>
-        </div>
-      </div>
-    </WrappingModal>
+      </WrappingModal>
+
+      {checkOutModal && (
+        <CheckoutModal
+          formData={finalForm}
+          setParentModal={setOpenModal}
+          setOpenModal={setCheckOutModal}
+          openModal={checkOutModal}
+        />
+      )}
+    </>
   )
 }
 

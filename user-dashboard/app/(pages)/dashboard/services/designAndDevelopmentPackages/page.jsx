@@ -4,7 +4,7 @@ import MarketPlaceHeadings from '../MarketPlaceHeadings'
 const page = () => {
   const pricing = [
     {
-      price: '$500',
+      price: 500,
       title: 'Small Website',
       subtitle: 'Transparent ROI',
       services: [
@@ -14,10 +14,10 @@ const page = () => {
         { title: '1 Month Free maintenance' },
         { title: 'WordPress training video' },
       ],
-      link: '',
+      type: 'small',
     },
     {
-      price: '$800',
+      price: 800,
       title: 'Medium Website',
       subtitle: 'Transparent ROI',
       services: [
@@ -27,9 +27,10 @@ const page = () => {
         { title: '1 Month Free maintenance' },
         { title: 'WordPress training video' },
       ],
+      type: 'medium',
     },
     {
-      price: '$1500',
+      price: 1500,
       title: 'Large Website',
       subtitle: 'Transparent ROI',
       services: [
@@ -39,6 +40,7 @@ const page = () => {
         { title: '1 Month Free maintenance' },
         { title: 'WordPress training video' },
       ],
+      type: 'large',
     },
   ]
   return (
