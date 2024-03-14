@@ -20,6 +20,9 @@ const orderSchema = new mongoose.Schema(
       type: Number,
       // required: true,
     },
+    customerId: {
+      type: String,
+    },
     payment_method_types: {
       type: String,
       enum: ['card', 'paypal'],

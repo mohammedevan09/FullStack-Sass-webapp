@@ -225,7 +225,7 @@ const DesignAndDevelopmentModal = ({
       {checkOutModal && (
         <CheckoutModal
           formData={finalForm}
-          setParentModal={setOpenModal}
+          paymentLink={'websiteDesignAndDev/create-checkout-session'}
           setOpenModal={setCheckOutModal}
           openModal={checkOutModal}
         />

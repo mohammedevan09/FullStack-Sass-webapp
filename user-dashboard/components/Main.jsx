@@ -52,7 +52,7 @@ const Main = () => {
             {statisticsData?.map((item, i) => (
               <div
                 key={i}
-                className="flex justify-center items-center 2xl:gap-12 gap-6 2xl:w-[360px] lg:w-[270px] sm:w-[220px] w-full 2xl:h-[171px] lg:h-[140px] h-[120px] gradient"
+                className="flex justify-center items-center 2xl:gap-12 gap-6 2xl:w-[360px] lg:w-[270px] w-full 2xl:h-[171px] lg:h-[140px] h-[120px] gradient"
               >
                 <div className="2xl:w-[58px] md:w-[40px] sm:w-[34px] w-[46px]">
                   {item?.image}
@@ -77,7 +77,7 @@ const Main = () => {
             {ordersData?.map((item, i) => (
               <div
                 key={i}
-                className="grid justify-start items-center 2xl:w-[360px] lg:w-[270px] sm:w-[220px] w-full 2xl:h-[171px] h-[140px] bg-white rounded-[20px] px-5 py-6"
+                className="grid justify-start items-center 2xl:w-[360px] lg:w-[270px] w-full 2xl:h-[171px] h-[140px] bg-white rounded-[20px] px-5 py-6"
               >
                 <div className="w-[37px] h-10 p-0.5 flex-col justify-center items-start gap-2.5 inline-flex bg-[#C8E5FB]">
                   {someIconImages[i]}
@@ -102,7 +102,7 @@ const Main = () => {
             {ticketsData?.map((item, i) => (
               <div
                 key={i}
-                className="grid justify-start items-center 2xl:w-[360px] lg:w-[270px] sm:w-[220px] w-full 2xl:h-[171px] h-[140px] bg-white rounded-[20px] px-5 py-6"
+                className="grid justify-start items-center 2xl:w-[360px] lg:w-[270px] w-full 2xl:h-[171px] h-[140px] bg-white rounded-[20px] px-5 py-6"
               >
                 <div className="w-[37px] h-10 p-0.5 flex-col justify-center items-start gap-2.5 inline-flex bg-[#C8E5FB]">
                   {someIconImages[i]}

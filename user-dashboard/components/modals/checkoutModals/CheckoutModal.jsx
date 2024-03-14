@@ -10,12 +10,7 @@ import toast from 'react-hot-toast'
 import { useSelector } from 'react-redux'
 import { useRouter } from 'next/navigation'
 
-const CheckoutModal = ({
-  setOpenModal,
-  openModal,
-  setParentModal,
-  formData,
-}) => {
+const CheckoutModal = ({ setOpenModal, openModal, paymentLink, formData }) => {
   const [active, setActive] = useState('stripe')
   const router = useRouter()
 
@@ -38,7 +33,10 @@ const CheckoutModal = ({
 
   const handleCheckout = async () => {
     try {
-      const data = await paymentProceed({ userId: userInfo?._id, ...formData })
+      const data = await paymentProceed(paymentLink, {
+        userId: userInfo?._id,
+        ...formData,
+      })
       router.push(data?.url)
     } catch (error) {
       toast.error('Checkout failed!')

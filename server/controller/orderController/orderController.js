@@ -2,12 +2,10 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 import Stripe from 'stripe'
-import WebsiteDesignAndDev from '../model/serviceModels/websiteDesignAndDevModal.js'
-import Order from '../model/orderModal.js'
+import WebsiteDesignAndDev from '../../model/orderModals/websiteDesignAndDevModal.js'
+import Order from '../../model/orderModals/orderModal.js'
 
-const stripe = Stripe(
-  'sk_test_51O1iu1Hh9TFIH4ulMplylfg61wJSrO95aMroqomPhJmV0gE3fad1ZTspFI95GXP6C6apj0wpkStKeNW9rqGELi7j00zmxx1TFe'
-)
+const stripe = Stripe(process.env.SECURITY_KEY)
 
 const clientURL = process.env.CLIENT_URL
 
@@ -56,10 +54,12 @@ export const createWebsiteDesignAndDev = async (req, res) => {
 }
 
 const createOrder = async (customer, data, res) => {
+  // console.log(customer, data)
   try {
     const updateOrder = await Order?.findByIdAndUpdate(
       { _id: customer?.metadata?.orderId },
       {
+        customerId: customer?.id,
         payment_intent: data?.payment_intent,
         payment_status: data?.payment_status,
         payment_method_types: data?.payment_method_types[0],

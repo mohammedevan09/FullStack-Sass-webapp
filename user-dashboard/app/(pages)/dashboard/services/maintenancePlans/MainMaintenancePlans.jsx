@@ -10,6 +10,12 @@ const MainMaintenancePlans = ({ pricing }) => {
   const [openModalCustom, setOpenModalCustom] = useState(false)
   const [openModal, setOpenModal] = useState(false)
   const [openSubModal, setOpenSubModal] = useState(false)
+  const [pricingData, setPricingData] = useState({})
+
+  const handleModal = (i) => {
+    setPricingData(i)
+    setOpenModal(true)
+  }
   return (
     <div className="grid justify-center items-center bg-white px-11 pt-12 rounded-[15px] mb-20 2xl:w-[1111px] w-full 2xl:max-w-full max-w-[950px]">
       <div className="lg:flex grid lg:justify-center items-center gap-8">
@@ -20,8 +26,7 @@ const MainMaintenancePlans = ({ pricing }) => {
               className="grid justify-center items-center pricing-shadow px-6 py-10"
             >
               <h1 className="text-gray-900 text-5xl font-semibold leading-[60px] mx-auto">
-                {item?.price}
-                <span className="text-3xl">mo</span>
+                ${item?.price}/<span className="text-3xl">mo</span>
               </h1>
               <div className="text-center sm:pt-4 pt-2">
                 <h3 className="mx-auto text-gray-900 text-xl font-semibold leading-[30px]">
@@ -46,7 +51,7 @@ const MainMaintenancePlans = ({ pricing }) => {
               </div>
               <button
                 className="w-[139px] h-9 btn-hover rounded-lg shadow border justify-center items-center inline-flex mx-auto"
-                onClick={() => setOpenModal(true)}
+                onClick={() => handleModal(item)}
               >
                 Get started
               </button>
@@ -88,6 +93,7 @@ const MainMaintenancePlans = ({ pricing }) => {
         <MaintenancePlansModal
           setOpenModal={setOpenModal}
           openModal={openModal}
+          pricingData={pricingData}
         />
       )}
     </div>

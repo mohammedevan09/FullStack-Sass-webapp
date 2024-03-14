@@ -6,9 +6,11 @@ import cookieParser from 'cookie-parser'
 import morgan from 'morgan'
 
 import userRouter from './router/userRouter.js'
-import orderRouter from './router/orderRouter.js'
+import orderRouter from './router/orderRouter/orderRouter.js'
 import { errorHandler, notFound } from './middleware/errorHandler.js'
-import { stripeWebhook } from './controller/orderController.js'
+import { stripeWebhook } from './controller/orderController/orderController.js'
+import normalServiceRoutes from './router/servicesRouter/normalServiceRoutes.js'
+import serviceRouter from './router/servicesRouter/serviceRoutes.js'
 
 dotenv.config()
 
@@ -42,6 +44,8 @@ app.post(
 
 app.use(express.json())
 app.use('/api/user', userRouter)
+app.use('/api/service', serviceRouter)
+app.use('/api/service/normalServiceRoutes', normalServiceRoutes)
 app.use('/api/order', orderRouter)
 
 app.use(notFound)

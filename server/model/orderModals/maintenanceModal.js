@@ -1,13 +1,9 @@
 import mongoose from 'mongoose'
 import Order from '../orderModal.js'
 
-const hourlyPlanSchema = new mongoose.Schema(
+const maintenanceSchema = new mongoose.Schema(
   {
     title: {
-      type: String,
-      required: true,
-    },
-    description: {
       type: String,
       required: true,
     },
@@ -15,6 +11,10 @@ const hourlyPlanSchema = new mongoose.Schema(
       type: String,
       enum: ['small', 'medium', 'large'],
       required: true,
+    },
+
+    subscriptionId: {
+      type: String,
     },
 
     websiteFeatures: [
@@ -41,17 +41,15 @@ const hourlyPlanSchema = new mongoose.Schema(
         },
       },
     ],
-
-    paymentStatus: {
-      type: String,
-      enum: ['pending', 'paid', 'failed'],
-      default: 'pending',
-    },
   },
   {
     timestamps: true,
   }
 )
 
-const HourlyPlan = Order.discriminator('HourlyPlan', hourlyPlanSchema)
-export default HourlyPlan
+const Maintenance = Order.discriminator('Maintenance', maintenanceSchema)
+export default Maintenance
+
+// websiteLoginURL: { type: String },
+// userNameOrEmail: { type: String },
+// password: { type: String },
