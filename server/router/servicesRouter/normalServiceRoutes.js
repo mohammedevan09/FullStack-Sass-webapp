@@ -1,13 +1,20 @@
 import express from 'express'
 import {
   createNormalService,
+  deleteNormalServiceById,
+  getAllNormalServices,
+  getNormalServiceById,
+  getNormalServiceByUserId,
   updateNormalService,
 } from '../../controller/servicesController/normalServiceController.js'
-import { uploadPhoto } from '../../middleware/uploadPhoto.js'
 
 const router = express.Router()
 
-router.post('/', uploadPhoto.array('images', 1), createNormalService)
-router.put('/update', uploadPhoto.array('images', 1), updateNormalService)
+router.post('/', createNormalService)
+router.put('/:id', updateNormalService)
+router.get('/', getAllNormalServices)
+router.get('/:id', getNormalServiceById)
+router.get('/userId/:id', getNormalServiceByUserId)
+router.delete('/:id', deleteNormalServiceById)
 
 export default router

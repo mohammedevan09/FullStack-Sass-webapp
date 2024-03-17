@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import Order from './orderModal.js'
+import Order from './orderModel.js'
 
 const websiteDesignAndDevSchema = new mongoose.Schema(
   {

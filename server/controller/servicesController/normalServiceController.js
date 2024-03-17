@@ -1,23 +1,9 @@
-import fs from 'fs'
-import NormalService from '../../model/serviceModels/normalServicePlanModal.js'
-import {
-  cloudinaryUploadImg,
-  deleteImageByUrl,
-} from '../../utils/cloudinary.js'
+import NormalService from '../../model/serviceModels/normalServicePlanModel.js'
+import { sendResponse } from '../../utils/sendResponse.js'
 
 export const createNormalService = async (req, res, next) => {
   try {
-    // console.log(req.files, req.body)
-    const { path } = req.files[0]
-    const uploader = await cloudinaryUploadImg(path)
-
-    const newNormalService = await NormalService.create({
-      ...JSON.parse(req.body?.data),
-      icon: uploader?.url,
-    })
-
-    fs.unlink(path, (err) => {})
-
+    const newNormalService = await NormalService.create(req.body)
     return res.status(200).json(newNormalService)
   } catch (error) {
     next(error)
@@ -26,23 +12,55 @@ export const createNormalService = async (req, res, next) => {
 
 export const updateNormalService = async (req, res, next) => {
   try {
-    let update
-    const { path } = req.files[0]
-
-    const uploader = await cloudinaryUploadImg(path)
-    update = await NormalService.findByIdAndUpdate(
-      { _id: JSON.parse(req.body?.data)?._id },
-      {
-        ...JSON.parse(req.body?.data),
-        icon: uploader?.url,
-      },
+    const update = await NormalService.findByIdAndUpdate(
+      { _id: req.params.id },
+      { ...req.body },
       { new: true }
     )
+    return sendResponse(res, update)
+  } catch (error) {
+    next(error)
+  }
+}
 
-    await deleteImageByUrl(JSON.parse(req.body?.data)?.icon)
-    fs.unlink(path, (err) => {})
+export const getAllNormalServices = async (req, res, next) => {
+  try {
+    const services = await NormalService.find()
+    return res.status(200).json(services)
+  } catch (error) {
+    next(error)
+  }
+}
 
-    return res.status(200).json(update)
+export const getNormalServiceById = async (req, res, next) => {
+  try {
+    const services = await NormalService.findById({ _id: req.params.id })
+    return sendResponse(res, services)
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const getNormalServiceByUserId = async (req, res, next) => {
+  try {
+    const services = await NormalService.find({ creatorId: req.params.id })
+    return sendResponse(res, services)
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const deleteNormalServiceById = async (req, res, next) => {
+  try {
+    const deletedService = await NormalService.findByIdAndDelete({
+      _id: req.params.id,
+    })
+
+    if (deletedService) {
+      return sendResponse(res, { message: 'Deleted Successfully' })
+    } else {
+      return sendResponse(res)
+    }
   } catch (error) {
     next(error)
   }

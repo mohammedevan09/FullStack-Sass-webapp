@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import Service from '../serviceModal.js'
+import Service, { pricingSchema } from './serviceModel.js'
 
 const subscriptionServiceModal = new mongoose.Schema({
   title: {
@@ -10,24 +10,7 @@ const subscriptionServiceModal = new mongoose.Schema({
     type: String,
     required: true,
   },
-  services: [
-    {
-      amount: {
-        type: Number,
-        required: true,
-      },
-      name: {
-        type: String,
-        required: true,
-      },
-      subName: {
-        type: String,
-        required: true,
-      },
-      availableService: [],
-      unavailableService: [],
-    },
-  ],
+  pricing: [pricingSchema],
 })
 
 const SubscriptionService = Service.discriminator(

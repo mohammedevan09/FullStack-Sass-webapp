@@ -31,18 +31,16 @@ export const uploadPhoto = multer({
   limits: { fileSize: 10000000 },
 })
 
-// export const svgIconResize = async (req, res, next) => {
-//   if (!req.files) return next()
-//   await Promise.all(
-//     req.files.map(async (file) => {
-//       const outputPath = path.join(__dirname, '../public/images')
-//       await sharp(file.path)
-//         .resize(300, 300)
-//         .toFormat('jpeg')
-//         .jpeg({ quality: 90 })
-//         .toFile(path.join(outputPath, file.filename + '.jpeg'))
-//       // fs.unlinkSync(file.path)
-//     })
-//   )
-//   next()
-// }
+export const imgResize = async (req, res, next) => {
+  if (!req.files) return next()
+  await Promise.all(
+    req.files.map(async (file) => {
+      await sharp(file.path)
+        .toFormat('jpeg')
+        .jpeg({ quality: 90 })
+        .toFile(`public/images/products/${file.filename}`)
+      fs.unlinkSync(`public/images/products/${file.filename}`)
+    })
+  )
+  next()
+}

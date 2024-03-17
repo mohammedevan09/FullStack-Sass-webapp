@@ -9,8 +9,11 @@ import userRouter from './router/userRouter.js'
 import orderRouter from './router/orderRouter/orderRouter.js'
 import { errorHandler, notFound } from './middleware/errorHandler.js'
 import { stripeWebhook } from './controller/orderController/orderController.js'
-import normalServiceRoutes from './router/servicesRouter/normalServiceRoutes.js'
 import serviceRouter from './router/servicesRouter/serviceRoutes.js'
+import normalServiceRoutes from './router/servicesRouter/normalServiceRoutes.js'
+import subscriptionServiceRoutes from './router/servicesRouter/subscriptionServiceRoutes.js'
+import hourlyServiceRoutes from './router/servicesRouter/hourlyServiceRoutes.js'
+import formRouter from './router/formRouter.js'
 
 dotenv.config()
 
@@ -45,7 +48,10 @@ app.post(
 app.use(express.json())
 app.use('/api/user', userRouter)
 app.use('/api/service', serviceRouter)
-app.use('/api/service/normalServiceRoutes', normalServiceRoutes)
+app.use('/api/service/normalService', normalServiceRoutes)
+app.use('/api/service/subscriptionService', subscriptionServiceRoutes)
+app.use('/api/service/hourlyService', hourlyServiceRoutes)
+app.use('/api/form', formRouter)
 app.use('/api/order', orderRouter)
 
 app.use(notFound)

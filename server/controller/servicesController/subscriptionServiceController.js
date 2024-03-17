@@ -1,23 +1,9 @@
-import fs from 'fs'
-import {
-  cloudinaryUploadImg,
-  deleteImageByUrl,
-} from '../../utils/cloudinary.js'
-import SubscriptionService from '../../model/serviceModels/subscriptionServiceModal.js'
+import SubscriptionService from '../../model/serviceModels/subscriptionServiceModel.js'
+import { sendResponse } from '../../utils/sendResponse.js'
 
 export const createSubscriptionService = async (req, res, next) => {
   try {
-    // console.log(req.files, req.body)
-    const { path } = req.files[0]
-    const uploader = await cloudinaryUploadImg(path)
-
-    const newSubscriptionService = await SubscriptionService.create({
-      ...JSON.parse(req.body?.data),
-      icon: uploader?.url,
-    })
-
-    fs.unlink(path, (err) => {})
-
+    const newSubscriptionService = await SubscriptionService.create(req.body)
     return res.status(200).json(newSubscriptionService)
   } catch (error) {
     next(error)
@@ -26,23 +12,57 @@ export const createSubscriptionService = async (req, res, next) => {
 
 export const updateSubscriptionService = async (req, res, next) => {
   try {
-    let update
-    const { path } = req.files[0]
-
-    const uploader = await cloudinaryUploadImg(path)
-    update = await SubscriptionService.findByIdAndUpdate(
-      { _id: JSON.parse(req.body?.data)?._id },
-      {
-        ...JSON.parse(req.body?.data),
-        icon: uploader?.url,
-      },
+    const update = await SubscriptionService.findByIdAndUpdate(
+      { _id: req.params.id },
+      { ...req.body },
       { new: true }
     )
+    return sendResponse(res, update)
+  } catch (error) {
+    next(error)
+  }
+}
 
-    await deleteImageByUrl(JSON.parse(req.body?.data)?.icon)
-    fs.unlink(path, (err) => {})
+export const getAllSubscriptionServices = async (req, res, next) => {
+  try {
+    const services = await SubscriptionService.find()
+    return res.status(200).json(services)
+  } catch (error) {
+    next(error)
+  }
+}
 
-    return res.status(200).json(update)
+export const getSubscriptionServiceById = async (req, res, next) => {
+  try {
+    const services = await SubscriptionService.findById({ _id: req.params.id })
+    return sendResponse(res, services)
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const getSubscriptionServiceByUserId = async (req, res, next) => {
+  try {
+    const services = await SubscriptionService.find({
+      creatorId: req.params.id,
+    })
+    return sendResponse(res, services)
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const deleteSubscriptionServiceById = async (req, res, next) => {
+  try {
+    const deletedService = await SubscriptionService.findByIdAndDelete({
+      _id: req.params.id,
+    })
+
+    if (deletedService) {
+      return sendResponse(res, { message: 'Deleted Successfully' })
+    } else {
+      return sendResponse(res)
+    }
   } catch (error) {
     next(error)
   }

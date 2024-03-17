@@ -2,8 +2,8 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 import Stripe from 'stripe'
-import WebsiteDesignAndDev from '../../model/orderModals/websiteDesignAndDevModal.js'
-import Order from '../../model/orderModals/orderModal.js'
+import WebsiteDesignAndDev from '../../model/orderModels/websiteDesignAndDevModel.js'
+import Order from '../../model/orderModels/orderModel.js'
 
 const stripe = Stripe(process.env.SECURITY_KEY)
 
