@@ -6,7 +6,7 @@ const Labels = ({ htmlFor, name, optional, textSize, className = '' }) => {
         textSize || 'text-base'
       } font-semibold tracking-tight mb-1 ${className}`}
     >
-      {name}{' '}
+      {name}
       {optional && (
         <span className="text-gray-500 text-xs italic">(Optional)</span>
       )}

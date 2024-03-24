@@ -76,3 +76,8 @@ export const projectData = [
     progress: 'Development',
   },
 ]
+
+export const takeActionData = [
+  { title: 'Edit details' },
+  { title: 'Delete service' },
+]

@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 3001",
+    "dev": "next dev",
     "build": "next build",
-    "start": "next start -p 3001",
+    "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
@@ -19,11 +19,15 @@
     "@tiptap/pm": "^2.1.13",
     "@tiptap/react": "^2.1.13",
     "@tiptap/starter-kit": "^2.1.13",
+    "axios": "^1.6.8",
     "framer-motion": "^10.17.6",
     "next": "14.0.4",
     "react": "^18",
     "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^18",
+    "react-form-stepper": "^2.0.3",
+    "react-hook-form": "^7.51.1",
+    "react-hot-toast": "^2.4.1",
     "react-redux": "^9.0.4",
     "redux-persist": "^6.0.0"
   },

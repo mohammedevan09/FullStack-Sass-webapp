@@ -16,21 +16,12 @@ export const hourlyPricing = new mongoose.Schema(
     },
   },
   {
-    _id: false,
     versionKey: false,
   }
 )
 
 const hourlyServiceModal = new mongoose.Schema({
-  title: {
-    type: String,
-    required: true,
-  },
-  subtitle: {
-    type: String,
-    required: true,
-  },
-  availableService: [],
+  availableService: [String],
   pricing: [hourlyPricing],
 })
 

@@ -11,6 +11,14 @@ const ServiceSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    heading: {
+      type: String,
+      required: true,
+    },
+    subheading: {
+      type: String,
+      required: true,
+    },
     icon: {
       type: String,
     },
@@ -43,11 +51,10 @@ export const pricingSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    availableService: [],
-    unavailableService: [],
+    availableService: [String],
+    unavailableService: [String],
   },
   {
-    _id: false,
     versionKey: false,
   }
 )

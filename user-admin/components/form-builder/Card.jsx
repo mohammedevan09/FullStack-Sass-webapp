@@ -1,5 +1,3 @@
-import { HomeIcon } from '@/staticData/Icon'
-
 export const cardsData = [
   {
     id: 0,

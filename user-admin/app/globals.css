@@ -94,6 +94,36 @@ th {
   transition: all 0.4s ease-in-out;
 }
 
+.svg-shadow {
+  box-shadow: 4px 4px 12px 0px rgb(173 171 255 / 51%);
+}
+
+.pricing-shadow {
+  box-shadow: 0px 0px 45px 0px rgba(19, 16, 198, 0.28);
+}
+
+/* stepper styles */
+.stepper-css {
+  background-color: #c7d8ff !important;
+}
+
+.completed.stepper-css {
+  background-color: #100095 !important;
+}
+
+.active.stepper-css {
+  background-color: #8594ff !important;
+}
+
+#RFS-Connector {
+  border-color: rgb(0, 9, 138) !important;
+}
+
+span#RFS-Label {
+  font-weight: 600 !important;
+  color: #001326 !important;
+}
+
 /* width */
 ::-webkit-scrollbar {
   width: 6px;

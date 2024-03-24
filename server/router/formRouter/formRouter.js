@@ -6,7 +6,7 @@ import {
   getAllForms,
   getFormById,
   getFormByUserId,
-} from '../controller/formController.js'
+} from '../../controller/formController/formController.js'
 
 const router = express.Router()
 

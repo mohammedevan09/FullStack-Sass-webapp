@@ -3,61 +3,181 @@
 import Input from '@/components/Input'
 import { motion } from 'framer-motion'
 import WrappingModal from '../WrappingModal'
+import Image from 'next/image'
+import Labels from '@/components/Labels'
+import ErrorMessage from '@/components/ErrorMessage'
+import { useEffect, useRef } from 'react'
 
-const EditNewService = ({ openModal, setOpenModal }) => {
+const EditNewService = ({
+  openModal,
+  setOpenModal,
+  register,
+  serviceData,
+  setServiceData,
+  handleSubmit,
+  setImage,
+  image,
+  errors,
+  reset,
+  isDirty,
+  isValid,
+}) => {
+  const editClickRef = useRef()
+
+  const onImageChange = (e) => {
+    e.preventDefault()
+    if (e.target.files && e.target.files[0]) {
+      let img = e.target.files[0]
+      setImage([img])
+    }
+  }
+
+  const handleEditClick = (data) => {
+    if ((isDirty && isValid) || image) {
+      setServiceData(data)
+      setOpenModal(false)
+    }
+  }
+
   return (
     <WrappingModal modalOpen={openModal}>
-      <div className="grid bg-white pt-10 pb-4 px-8 rounded-[20px]">
+      <div className="grid bg-white pt-10 pb-4 px-8 rounded-[20px] sm:w-[500px] w-[360px]">
         <h3 className="sm:text-2xl text-xl font-semibold tracking-tight mx-auto mb-8">
           Edit new Service
         </h3>
         <div className="grid gap-5">
           <div className="grid">
+            <Labels htmlFor={'name'} name={'Name'} />
+            <Input
+              id={'name'}
+              placeholder={'Service Name'}
+              type={'text'}
+              cn={'w-full'}
+              cnb={'rounded-[6px]'}
+              cnh={'h-[50px]'}
+              validationRules={{
+                ...register('name', {
+                  required: {
+                    value: true,
+                    message: 'Name is required',
+                  },
+                }),
+              }}
+            />
+            <ErrorMessage errors={errors?.name} />
+          </div>
+
+          <div className="grid justify-center items-center">
+            {!image ? (
+              <label
+                htmlFor={'svgImage'}
+                className="sm:text-xl text-lg font-bold tracking-tight mx-auto flex items-center gap-2 cursor-pointer my-2"
+              >
+                <Image
+                  src={serviceData?.icon}
+                  width={60}
+                  height={60}
+                  className="h-20 w-20"
+                  alt="svg"
+                />
+              </label>
+            ) : (
+              <label
+                htmlFor={'svgImage'}
+                className="sm:text-xl text-lg font-bold tracking-tight mx-auto flex items-center gap-2 cursor-pointer my-2"
+              >
+                <Image
+                  src={URL.createObjectURL(image[0])}
+                  width={60}
+                  height={60}
+                  className="h-20 w-20"
+                  alt="svg"
+                />
+              </label>
+            )}
+
+            <label
+              htmlFor={'svgImage'}
+              className="sm:text-xl text-lg font-bold tracking-tight mx-auto flex items-center gap-2 cursor-pointer my-2"
+            >
+              {`Edit Icon (SVG)`}
+              <Image
+                src={'/images/uploadSvg.png'}
+                width={50}
+                height={50}
+                className="h-9 w-9"
+                alt="svg"
+              />
+            </label>
+          </div>
+          <input
+            type="file"
+            className="hidden"
+            id="svgImage"
+            accept=".svg"
+            onChange={onImageChange}
+          />
+          <div className="grid">
+            <Labels htmlFor={'page-heading'} name={'Page heading'} />
             <Input
               id={'page-heading'}
               placeholder={'Page Heading'}
               type={'text'}
-              cn={'sm:w-[472.44px] xs:w-[406px] w-[340px] text-sm'}
-              cnb={'rounded-[9px]'}
-              cnh={'h-[58px]'}
+              cn={'w-full'}
+              cnb={'rounded-[6px]'}
+              cnh={'h-[50px]'}
+              validationRules={{
+                ...register('heading', {
+                  required: {
+                    value: true,
+                    message: 'Heading is required',
+                  },
+                }),
+              }}
             />
+            <ErrorMessage errors={errors?.heading} />
           </div>
+
           <div className="grid">
-            <Input
-              id={'price'}
-              placeholder={'Price'}
-              type={'number'}
-              cn={'w-[150px] text-sm'}
-              cnb={'rounded-[9px]'}
-              cnh={'h-[58px]'}
-            />
-          </div>
-          <div className="grid">
+            <Labels htmlFor={'page-sub-heading'} name={'Page sub heading'} />
             <Input
               id={'page-sub-heading'}
               placeholder={'Page Sub Heading'}
               type={'text'}
-              cn={'sm:w-[472.44px] xs:w-[406px] w-[340px] text-sm'}
-              cnb={'rounded-[9px]'}
-              cnh={'h-[58px]'}
+              cn={'w-full'}
+              cnb={'rounded-[6px]'}
+              cnh={'h-[50px]'}
+              validationRules={{
+                ...register('subheading', {
+                  required: {
+                    value: true,
+                    message: 'Sub Heading is required',
+                  },
+                }),
+              }}
             />
+            <ErrorMessage errors={errors?.subheading} />
           </div>
         </div>
-        <div className="grid items-center gap-3 mt-14">
-          <motion.button
-            whileHover={{ scale: 1.03 }}
-            className="w-full p-4 bg-blue-800 rounded-[9px] text-white text-lg font-semibold leading-7"
-            // onClick={() => setOpenSubModal(true)}
-            onClick={() => setOpenModal(false)}
-          >
-            Save Service
-          </motion.button>
+        <div className="flex items-center gap-3 mt-14 mb-3">
           <motion.button
             whileHover={{ scale: 1.15 }}
-            className="w-full p-4 text-blue-800 rounded-[9px] text-lg font-semibold leading-7"
-            onClick={() => setOpenModal(false)}
+            className="w-full py-2 text-blue-800 rounded-[9px] font-semibold leading-7 text-xl"
+            onClick={() => {
+              setImage(null)
+              reset()
+              editClickRef.current.click()
+            }}
           >
-            Cancel
+            Reset
+          </motion.button>
+          <motion.button
+            whileHover={{ scale: 1.03 }}
+            className="w-full py-2 bg-blue-800 rounded-[9px] text-white text-lg font-semibold leading-7"
+            ref={editClickRef}
+            onClick={handleSubmit(handleEditClick)}
+          >
+            Save changes
           </motion.button>
         </div>
       </div>

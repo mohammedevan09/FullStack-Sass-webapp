@@ -1,6 +1,8 @@
 import express from 'express'
-import { getAllServices } from '../../controller/servicesController/serviceController.js'
-import { uploadImages } from '../../controller/servicesController/uploadImage.js'
+import {
+  getAllServices,
+  uploadImages,
+} from '../../controller/servicesController/serviceController.js'
 import { imgResize, uploadPhoto } from '../../middleware/uploadPhoto.js'
 
 const router = express.Router()

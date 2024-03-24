@@ -5,8 +5,9 @@ import { Draggable, Droppable } from 'react-beautiful-dnd'
 import { DndContext } from './DndContext'
 import { cardsData } from './Card'
 import FormLabelEditModal from '../modals/othersModal/FormLabelEditModal'
+import { InputFieldEditIcon } from '@/staticData/Icon'
 
-const DndExample = () => {
+const FormExample = () => {
   const [data, setData] = useState([])
   const [openModal, setOpenModal] = useState(false)
   const [newName, setNewName] = useState('')
@@ -109,17 +110,9 @@ const DndExample = () => {
                                       >
                                         {component?.name}
                                       </label>
-                                      <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 24 24"
-                                        fill={'gray'}
-                                        height={'17'}
-                                        width={'17'}
+                                      <InputFieldEditIcon
                                         onClick={() => editClick(component)}
-                                        className="cursor-pointer"
-                                      >
-                                        <path d="M3 4H21V6H3V4ZM9 11H21V13H9V11ZM3 18H21V20H3V18Z"></path>
-                                      </svg>
+                                      />
                                     </div>
                                     {component?.type === 'radio' ? (
                                       <div className="flex gap-4 text-sm font-medium mt-2">
@@ -226,4 +219,4 @@ const DndExample = () => {
   )
 }
 
-export default DndExample
+export default FormExample

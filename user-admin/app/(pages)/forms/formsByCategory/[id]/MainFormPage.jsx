@@ -2,7 +2,7 @@
 
 import Input from '@/components/Input'
 import Labels from '@/components/Labels'
-import DndExample from '@/components/form-builder/DndExample'
+import FormExample from '@/components/form-builder/FormExample'
 import MainEditor from '@/components/text-editor/MainEditor'
 import { useState } from 'react'
 
@@ -45,7 +45,7 @@ const MainFormPage = () => {
       <h2 className="font-bold sm:text-xl text-base text-gray-600">
         Drag and drop fields into your form here…
       </h2>
-      <DndExample />
+      <FormExample />
     </div>
   )
 }

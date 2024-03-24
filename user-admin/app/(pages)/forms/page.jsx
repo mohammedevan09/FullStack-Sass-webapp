@@ -1,7 +1,10 @@
-import MainFormPage from './MainFormPage'
+import { getAllFormCategory } from '@/api/formApi'
+import FormCategory from './FormCategory'
 
-const page = () => {
-  return <MainFormPage />
+const page = async () => {
+  const formCategories = await getAllFormCategory()
+
+  return <FormCategory formCategories={formCategories} />
 }
 
 export default page

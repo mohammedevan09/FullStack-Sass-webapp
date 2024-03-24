@@ -13,7 +13,8 @@ import serviceRouter from './router/servicesRouter/serviceRoutes.js'
 import normalServiceRoutes from './router/servicesRouter/normalServiceRoutes.js'
 import subscriptionServiceRoutes from './router/servicesRouter/subscriptionServiceRoutes.js'
 import hourlyServiceRoutes from './router/servicesRouter/hourlyServiceRoutes.js'
-import formRouter from './router/formRouter.js'
+import formCategory from './router/formRouter/formCategoryRouter.js'
+import formRouter from './router/formRouter/formRouter.js'
 
 dotenv.config()
 
@@ -22,7 +23,8 @@ const port = process.env.PORT
 
 app.use(
   cors({
-    origin: process.env.CLIENT_URL,
+    // origin: process.env.CLIENT_URL,
+    origin: '*',
     credentials: true,
   })
 )
@@ -47,10 +49,11 @@ app.post(
 
 app.use(express.json())
 app.use('/api/user', userRouter)
-app.use('/api/service', serviceRouter)
-app.use('/api/service/normalService', normalServiceRoutes)
-app.use('/api/service/subscriptionService', subscriptionServiceRoutes)
-app.use('/api/service/hourlyService', hourlyServiceRoutes)
+app.use('/api/services', serviceRouter)
+app.use('/api/services/normalService', normalServiceRoutes)
+app.use('/api/services/subscriptionService', subscriptionServiceRoutes)
+app.use('/api/services/hourlyService', hourlyServiceRoutes)
+app.use('/api/formCategory', formCategory)
 app.use('/api/form', formRouter)
 app.use('/api/order', orderRouter)
 

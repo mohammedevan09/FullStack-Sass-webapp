@@ -40,13 +40,6 @@ const Menu = () => {
       name: 'Services',
       icon: <MarketPlaceIcon color="#ffffff" />,
       link: '/services',
-      subItem: [
-        {
-          name: 'Category',
-          link: '/services/category',
-          icon: <MarketPlaceIcon color="#ffffff" />,
-        },
-      ],
     },
     {
       name: 'Orders',
@@ -112,20 +105,20 @@ const Menu = () => {
       <div
         className={`fixed bg-blue-800 rounded-tr-[20px] rounded-br-[20px] pb-5`}
       >
-        <div className="md:w-[151px] sm:w-[120px] w-[100px] lg:py-5 py-3 mx-auto divide-slate-700 flex justify-center items-center">
+        <div className="md:w-[131px] sm:w-[110px] w-[100px] lg:py-5 py-3 mx-auto divide-slate-700 flex justify-center items-center">
           <Image
             src={'/images/logo.png'}
             width={300}
             height={300}
             alt="logo"
-            className="md:h-[33px] sm:h-[29px] h-[22px] cursor-pointer"
+            className="h-auto cursor-pointer"
             onClick={() => router.push('')}
           />
           <div
             className="absolute lg:right-2 md:right-[-4px] right-[-8px] rounded-full p-1 xl:hidden block cursor-pointer"
             onClick={() => dispatch(setOpenMenu(false))}
           >
-            <CloseMenuIcon size={isSmallScreen ? '19' : '24'} />
+            <CloseMenuIcon size={isSmallScreen ? '19' : '22'} />
           </div>
         </div>
         <hr className="h-px bg-gray-200 border-0 dark:bg-gray-300" />

@@ -167,8 +167,6 @@ export const extensions = [
   }),
 ]
 
-// const content = `<h1>hello <h2/>`
-
 const MainEditor = ({ setText }) => {
   return (
     <div className="text-sm border border-gray-300 rounded-[4px]">
