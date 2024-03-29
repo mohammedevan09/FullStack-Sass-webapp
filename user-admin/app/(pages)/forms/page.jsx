@@ -1,3 +1,5 @@
+'use server'
+
 import { getAllFormCategory } from '@/api/formApi'
 import FormCategory from './FormCategory'
 

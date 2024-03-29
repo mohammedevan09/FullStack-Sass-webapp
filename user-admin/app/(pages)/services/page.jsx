@@ -1,3 +1,5 @@
+'use server'
+
 import { getAllService } from '@/api/serviceApi'
 import MainServiceList from './MainServiceList'
 

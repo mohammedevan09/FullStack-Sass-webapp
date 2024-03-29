@@ -1,3 +1,5 @@
+'use server'
+
 import { getServiceById } from '@/api/serviceApi'
 import MainHourlyService from './MainHourlyService'
 

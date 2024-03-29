@@ -67,8 +67,8 @@ const MainServicePage = ({ service, forms }) => {
       <div className="mb-10 sm:px-4 xs:px-3 px-1">
         <div className="sm:mt-14 mt-8 mb-8">
           <BackButton title={'Go Back'} link={'/services'} />
-          <div className="sm:flex grid justify-between xs:items-start items-end">
-            <div>
+          <div className="sm:flex grid justify-between xs:items-start items-end gap-1">
+            <div className="sm:w-[60%] w-full">
               <ServiceBasicInfo service={serviceData} image={image} />
               <ReactSelect
                 setValue={setValue}
