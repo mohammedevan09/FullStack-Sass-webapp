@@ -1,5 +1,3 @@
-'use server'
-
 import { getFormById } from '@/api/formApi'
 import MainFormPage from './MainFormPage'
 

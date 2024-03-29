@@ -1,5 +1,3 @@
-'use server'
-
 import { getAllForm, getFormCategoryById } from '@/api/formApi'
 import MainFormsByCategory from './MainFormsByCategory'
 
@@ -9,7 +7,13 @@ const page = async ({ searchParams }) => {
     categoryId: searchParams?.id,
   })
 
-  return <MainFormsByCategory formCategory={formCategory} forms={forms} />
+  return (
+    <MainFormsByCategory
+      formCategory={formCategory}
+      forms={forms}
+      searchParams={searchParams}
+    />
+  )
 }
 
 export default page

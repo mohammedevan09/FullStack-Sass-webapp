@@ -4,7 +4,7 @@ import Link from 'next/link'
 import '../../../../components/text-editor/tiptapstyle.css'
 import BackButton from '@/components/others/BackButton'
 
-const MainFormsByCategory = ({ formCategory, forms }) => {
+const MainFormsByCategory = ({ formCategory, forms, searchParams }) => {
   return (
     <div className="lg:w-full w-screen px-7 pt-8 overflow-x-scroll">
       <BackButton title={'Go Back'} link={'/forms'} />
@@ -16,7 +16,7 @@ const MainFormsByCategory = ({ formCategory, forms }) => {
           </h2>
         </div>{' '}
         <Link
-          href={`/forms/formsByCategory/new?categoryId=${forms[0]?.formCategoryId}`}
+          href={`/forms/formsByCategory/new?categoryId=${searchParams?.id}`}
           className="w-[130px] h-[34px] btn-hover rounded-[5px] text-center flex items-center justify-center"
         >
           Create New +

@@ -1,5 +1,3 @@
-'use server'
-
 import { getServiceById } from '@/api/serviceApi'
 import { getAllForm } from '@/api/formApi'
 import MainServicePage from '../../_components/servicePage/MainServicePage'
