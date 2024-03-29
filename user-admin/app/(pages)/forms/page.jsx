@@ -1,10 +1,14 @@
-// import { getAllFormCategory } from '@/api/formApi'
-// import FormCategory from './FormCategory'
+import { getAllFormCategory } from '@/api/formApi'
+import FormCategory from './FormCategory'
 
 const page = async () => {
-  // const formCategories = await getAllFormCategory()
+  const formCategories = await getAllFormCategory()
 
-  return <>{/* <FormCategory formCategories={formCategories} /> */}</>
+  return (
+    <>
+      <FormCategory formCategories={formCategories} />
+    </>
+  )
 }
 
 export default page

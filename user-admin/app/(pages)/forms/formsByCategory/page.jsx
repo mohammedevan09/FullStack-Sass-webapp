@@ -8,11 +8,13 @@ const page = async ({ searchParams }) => {
   })
 
   return (
-    <MainFormsByCategory
+    <>
+      {/* <MainFormsByCategory
       formCategory={formCategory}
       forms={forms}
       searchParams={searchParams}
-    />
+      /> */}
+    </>
   )
 }
 
