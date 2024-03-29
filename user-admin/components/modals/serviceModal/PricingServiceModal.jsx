@@ -1,3 +1,5 @@
+'use client'
+
 import { Input2 } from '@/components/Input'
 import WrappingModal from '../WrappingModal'
 import { motion } from 'framer-motion'
@@ -71,7 +73,7 @@ const PricingServiceModal = ({
   useEffect(() => {
     setValue(`pricing[${pricingLength}].availableService`, availableService)
     setValue(`pricing[${pricingLength}].unavailableService`, unavailableService)
-  }, [availableService, unavailableService])
+  }, [availableService, unavailableService, pricingLength, setValue])
 
   return (
     <WrappingModal modalOpen={pricingModal}>
