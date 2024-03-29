@@ -1,3 +1,5 @@
+'use client'
+
 import JsonToText from '@/lib/JsonToText'
 import { FormsByCategoryIdIcon } from '@/staticData/Icon'
 import Link from 'next/link'
