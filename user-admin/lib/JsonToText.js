@@ -1,4 +1,5 @@
-import { useMemo } from 'react'
+'use client'
+
 import { generateHTML } from '@tiptap/html'
 import Document from '@tiptap/extension-document'
 import Paragraph from '@tiptap/extension-paragraph'

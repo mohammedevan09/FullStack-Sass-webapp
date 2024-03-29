@@ -2,9 +2,8 @@
 
 import BackButton from '@/components/others/BackButton'
 import TakeAction from '@/components/others/TakeAction'
-import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import toast from 'react-hot-toast'
 import ServiceHeading from '../ServiceHeading'
 import PricingCard from '../PricingCard'
