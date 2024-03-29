@@ -10,9 +10,15 @@ import MainEditor from '@/components/text-editor/MainEditor'
 import JsonToText from '@/lib/JsonToText'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
+import { createFormApi } from '@/api/formApi'
+import { useRouter } from 'next/navigation'
 
 const MainFormPage = ({ form, searchParams }) => {
   // console.log(form)
+  const router = useRouter()
+
+  const [data, setData] = useState([])
   const [text, setText] = useState('')
   const [openDeleteModal, setOpenDeleteModal] = useState(false)
 
@@ -27,6 +33,27 @@ const MainFormPage = ({ form, searchParams }) => {
     },
     mode: 'onChange',
   })
+
+  const handleSave = async (formData) => {
+    if (isValid) {
+      try {
+        const newFormData = await createFormApi({
+          ...formData,
+          formCategoryId: searchParams?.categoryId,
+          userId: '65feab9abe1333c4b6c5bfd1',
+          description: text,
+          fields: [...data[0]?.fields],
+        })
+        router.push(
+          `/forms/formsByCategory/${newFormData?._id}?categoryId=${newFormData?.formCategoryId}`
+        )
+        reset()
+        toast.success('Form created successfully!')
+      } catch (error) {
+        toast.error('Sorry, Form creation failed!')
+      }
+    }
+  }
 
   return (
     <>
@@ -93,14 +120,11 @@ const MainFormPage = ({ form, searchParams }) => {
             Drag and drop fields into your form here…
           </h2>
           <FormExample
-            handleSubmit={handleSubmit}
-            text={text}
+            handleSave={handleSubmit(handleSave)}
             form={form}
-            searchParams={searchParams}
-            isDirty={isDirty}
-            isValid={isValid}
+            data={data}
+            setData={setData}
             isSubmitting={isSubmitting}
-            reset={reset}
           />
         </div>
       </div>

@@ -1,3 +1,5 @@
+'use client'
+
 const Labels = ({ htmlFor, name, optional, textSize, className = '' }) => {
   return (
     <label

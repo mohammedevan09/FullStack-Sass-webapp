@@ -7,23 +7,8 @@ import { cardsData } from './FormsData'
 import FormLabelEditModal from '../modals/FormModal/FormLabelEditModal'
 import { InputFieldEditIcon, NoteIcon } from '@/staticData/Icon'
 import Labels from '../Labels'
-import toast from 'react-hot-toast'
-import { createFormApi } from '@/api/formApi'
-import { useRouter } from 'next/navigation'
 
-const FormExample = ({
-  handleSubmit,
-  text,
-  form,
-  searchParams,
-  isDirty,
-  isValid,
-  isSubmitting,
-  reset,
-}) => {
-  const router = useRouter()
-
-  const [data, setData] = useState([])
+const FormExample = ({ form, isSubmitting, data, setData, handleSave }) => {
   const [openModal, setOpenModal] = useState(false)
   const [newField, setNewField] = useState('')
   const [editingLabel, setEditingLabel] = useState(null)
@@ -122,27 +107,6 @@ const FormExample = ({
     })
   }
 
-  const handleSave = async (formData) => {
-    if (isValid) {
-      try {
-        const newFormData = await createFormApi({
-          ...formData,
-          formCategoryId: searchParams?.categoryId,
-          userId: '65feab9abe1333c4b6c5bfd1',
-          description: text,
-          fields: [...data[0]?.fields],
-        })
-        router.push(
-          `/forms/formsByCategory/${newFormData?._id}?categoryId=${newFormData?.formCategoryId}`
-        )
-        reset()
-        toast.success('Form created successfully!')
-      } catch (error) {
-        toast.error('Sorry, Form creation failed!')
-      }
-    }
-  }
-
   return (
     <>
       <DndContext onDragEnd={onDragEnd}>
@@ -236,7 +200,7 @@ const FormExample = ({
                               <button
                                 className="bg-blue-800 p-2 rounded text-lg font-semibold w-full text-white btn-hover relative bottom-0 disabled:opacity-50 disabled:cursor-not-allowed"
                                 disabled={isSubmitting}
-                                onClick={handleSubmit(handleSave)}
+                                onClick={handleSave}
                               >
                                 Save form
                               </button>
