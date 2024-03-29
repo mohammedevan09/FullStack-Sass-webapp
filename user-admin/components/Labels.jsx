@@ -8,7 +8,7 @@ const Labels = ({ htmlFor, name, optional, textSize, className = '' }) => {
     >
       {name}
       {optional && (
-        <span className="text-gray-500 text-xs italic">(Optional)</span>
+        <span className="text-gray-500 text-xs italic"> (Optional)</span>
       )}
     </label>
   )

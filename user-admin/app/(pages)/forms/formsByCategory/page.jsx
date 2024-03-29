@@ -1,9 +1,13 @@
-import { getFormCategoryById } from '@/api/formApi'
+import { getAllForm, getFormCategoryById } from '@/api/formApi'
 import MainFormsByCategory from './MainFormsByCategory'
 
 const page = async ({ searchParams }) => {
-  const forms = await getFormCategoryById(searchParams?.id)
-  return <MainFormsByCategory forms={forms} />
+  const formCategory = await getFormCategoryById(searchParams?.id)
+  const forms = await getAllForm({
+    categoryId: searchParams?.id,
+  })
+
+  return <MainFormsByCategory formCategory={formCategory} forms={forms} />
 }
 
 export default page

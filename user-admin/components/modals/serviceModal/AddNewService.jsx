@@ -1,6 +1,6 @@
 'use client'
 
-import Input from '@/components/Input'
+import Input, { Input2 } from '@/components/Input'
 import { motion } from 'framer-motion'
 import WrappingModal from '../WrappingModal'
 import { use, useState } from 'react'
@@ -39,7 +39,7 @@ const AddNewService = ({ openModal, setOpenModal }) => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isSubmitting },
     setValue,
   } = useForm({
     defaultValues: {
@@ -127,7 +127,8 @@ const AddNewService = ({ openModal, setOpenModal }) => {
             onClick={handleSubmit(handleServiceClick)}
             disabled={
               (!isValid && activeStep === 1) ||
-              (images?.length <= 0 && activeStep === 1)
+              (images?.length <= 0 && activeStep === 1) ||
+              isSubmitting
             }
           >
             {activeStep === 1 ? 'Add Service' : 'Next'}
@@ -178,13 +179,10 @@ export const Step2 = ({ onImageChange, images, register }) => {
       <div className="grid gap-5">
         <div className="grid">
           <Labels htmlFor={'name'} name={'Name'} />
-          <Input
+          <Input2
             id={'name'}
             placeholder={'Service Name'}
             type={'text'}
-            cn={'w-full'}
-            cnb={'rounded-[6px]'}
-            cnh={'h-[50px]'}
             validationRules={{
               ...register('name', {
                 required: {
@@ -234,13 +232,10 @@ export const Step2 = ({ onImageChange, images, register }) => {
         />
         <div className="grid">
           <Labels htmlFor={'page-heading'} name={'Page heading'} />
-          <Input
+          <Input2
             id={'page-heading'}
             placeholder={'Page Heading'}
             type={'text'}
-            cn={'w-full'}
-            cnb={'rounded-[6px]'}
-            cnh={'h-[50px]'}
             validationRules={{
               ...register('heading', {
                 required: {
@@ -254,13 +249,10 @@ export const Step2 = ({ onImageChange, images, register }) => {
 
         <div className="grid">
           <Labels htmlFor={'page-sub-heading'} name={'Page sub heading'} />
-          <Input
+          <Input2
             id={'page-sub-heading'}
             placeholder={'Page Sub Heading'}
             type={'text'}
-            cn={'w-full'}
-            cnb={'rounded-[6px]'}
-            cnh={'h-[50px]'}
             validationRules={{
               ...register('subheading', {
                 required: {

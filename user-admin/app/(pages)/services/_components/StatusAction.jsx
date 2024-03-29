@@ -9,13 +9,14 @@ const StatusAction = ({ service, handleSubmit, setValue, setServiceData }) => {
 
   const handleClick = (data) => {
     if (data?.pricing?.length >= 3) {
-      if (data?.isActive) {
-        setValue('isActive', false)
+      if (!data?.isActive && (!data?.form || data?.form == '')) {
+        setStatusModal(false)
+        return toast.error('Form is required!')
       } else {
-        setValue('isActive', true)
+        setServiceData({ ...data, isActive: !data?.isActive })
+        setValue('isActive', !data?.isActive, { shouldDirty: true })
+        setStatusModal(false)
       }
-      setServiceData(data)
-      setStatusModal(false)
     } else {
       toast.error('Atleast 3 pricing details required for active this service!')
     }

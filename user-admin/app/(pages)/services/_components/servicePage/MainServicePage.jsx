@@ -3,19 +3,21 @@
 import BackButton from '@/components/others/BackButton'
 import TakeAction from '@/components/others/TakeAction'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
-import ServiceHeading from '../../_components/ServiceHeading'
-import PricingCard from '../../_components/PricingCard'
+import ServiceHeading from '../ServiceHeading'
+import PricingCard from '../PricingCard'
 import PricingServiceModal from '@/components/modals/serviceModal/PricingServiceModal'
 import { useForm } from 'react-hook-form'
-import ServiceBasicInfo from '../../_components/ServiceBasicInfo'
-import StatusAction from '../../_components/StatusAction'
+import ServiceBasicInfo from '../ServiceBasicInfo'
+import StatusAction from '../StatusAction'
 import EditNewService from '@/components/modals/serviceModal/EditNewService'
 import DeleteService from '@/components/modals/serviceModal/DeleteService'
+import ReactSelect from '@/components/ReactSelect'
+import { updateService, uploadSvgIcon } from '@/api/serviceApi'
 
-const MainNormalService = ({ service }) => {
+const MainServicePage = ({ service, forms }) => {
   const [serviceData, setServiceData] = useState(service)
   const [editModal, setEditModal] = useState(false)
   const [deleteModal, setDeleteModal] = useState(false)
@@ -26,6 +28,8 @@ const MainNormalService = ({ service }) => {
   )
 
   const router = useRouter()
+  const pathname = usePathname()
+  // console.log(pathname)
 
   const {
     register,
@@ -34,29 +38,29 @@ const MainNormalService = ({ service }) => {
     setValue,
     reset,
   } = useForm({
-    defaultValues: {
-      _id: service?._id,
-      creatorId: service?.creatorId,
-      name: service?.name,
-      heading: service?.heading,
-      subheading: service?.subheading,
-      isActive: service?.isActive,
-      icon: service?.icon,
-      pricing:
-        service?.pricing.map((item) => ({
-          amount: item.amount || 0,
-          name: item.name || '',
-          subName: item.subName || '',
-          availableService: item.availableService || [],
-          unavailableService: item.unavailableService || [],
-        })) || [],
-    },
-
+    defaultValues: service,
     mode: 'onChange',
   })
 
-  const handleClick = (data) => {
-    console.log(data, isValid, isDirty)
+  const handleClick = async (data) => {
+    // console.log(data, isValid, isDirty)
+    if (image) {
+      toast.loading('Creating new service!', { duration: 1000 })
+      const formData = new FormData()
+      image.forEach((img) => {
+        formData.append(`images`, img)
+      })
+      const updatedImage = await uploadSvgIcon(data?._id, formData)
+      setValue('icon', updatedImage?.icon)
+      setImage(null)
+      toast.success('Your service has been updated!')
+    }
+    if (isDirty && isDirty) {
+      const updatedData = await updateService(pathname, data)
+      setServiceData(updatedData)
+      setImage(null)
+      reset()
+    }
   }
 
   return (
@@ -65,7 +69,14 @@ const MainNormalService = ({ service }) => {
         <div className="sm:mt-14 mt-8 mb-8">
           <BackButton title={'Go Back'} link={'/services'} />
           <div className="sm:flex grid justify-between xs:items-start items-end">
-            <ServiceBasicInfo service={serviceData} image={image} />
+            <div>
+              <ServiceBasicInfo service={serviceData} image={image} />
+              <ReactSelect
+                setValue={setValue}
+                data={forms}
+                placeholder={'Select form'}
+              />
+            </div>
             <div className="flex  gap-2 justify-start items-start sm:mt-0 mt-4">
               <StatusAction
                 service={serviceData}
@@ -113,6 +124,7 @@ const MainNormalService = ({ service }) => {
             </div>
           )}
         </div>
+
         <button
           className="text-lg py-3 px-4 rounded font-semibold transition hover:bg-white hover:text-blue-600 hover:border-blue-600 border text-white bg-blue-600 w-full disabled:opacity-50 disabled:cursor-not-allowed"
           onClick={handleSubmit(handleClick)}
@@ -152,13 +164,15 @@ const MainNormalService = ({ service }) => {
       )}
       {deleteModal && (
         <DeleteService
+          router={router}
           serviceData={serviceData}
           openModal={deleteModal}
           setOpenModal={setDeleteModal}
+          pathname={pathname}
         />
       )}
     </>
   )
 }
 
-export default MainNormalService
+export default MainServicePage

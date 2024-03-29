@@ -3,219 +3,306 @@
 import { useEffect, useState } from 'react'
 import { Draggable, Droppable } from 'react-beautiful-dnd'
 import { DndContext } from './DndContext'
-import { cardsData } from './Card'
-import FormLabelEditModal from '../modals/othersModal/FormLabelEditModal'
-import { InputFieldEditIcon } from '@/staticData/Icon'
+import { cardsData } from './FormsData'
+import FormLabelEditModal from '../modals/FormModal/FormLabelEditModal'
+import { InputFieldEditIcon, NoteIcon } from '@/staticData/Icon'
+import Labels from '../Labels'
+import toast from 'react-hot-toast'
+import { createFormApi } from '@/api/formApi'
+import { useRouter } from 'next/navigation'
 
-const FormExample = () => {
+const FormExample = ({
+  handleSubmit,
+  text,
+  form,
+  searchParams,
+  isDirty,
+  isValid,
+  isSubmitting,
+  reset,
+}) => {
+  const router = useRouter()
+
   const [data, setData] = useState([])
   const [openModal, setOpenModal] = useState(false)
-  const [newName, setNewName] = useState('')
+  const [newField, setNewField] = useState('')
   const [editingLabel, setEditingLabel] = useState(null)
 
   const onDragEnd = (result) => {
     const { source, destination } = result
     if (!destination) return
-    if (source.droppableId !== destination.droppableId) {
-      const newData = [...JSON.parse(JSON.stringify(data))]
-      const oldDroppableIndex = newData.findIndex(
-        (x) => x.id == source.droppableId.split('droppable')[1]
+
+    const newData = [...data]
+    const sourceIndex = source.index
+    const destinationIndex = destination.index
+
+    if (source.droppableId === destination.droppableId) {
+      // If dragging within the same Droppable
+      const droppableIndex = parseInt(
+        source.droppableId.replace('droppable', '')
       )
-      const newDroppableIndex = newData.findIndex(
-        (x) => x.id == destination.droppableId.split('droppable')[1]
-      )
-      const [item] = newData[oldDroppableIndex].components.splice(
-        source.index,
-        1
-      )
-      newData[newDroppableIndex].components.splice(destination.index, 0, item)
-      setData([...newData])
+      const items = [...newData[droppableIndex].fields]
+      const [removed] = items.splice(sourceIndex, 1)
+      items.splice(destinationIndex, 0, removed)
+      newData[droppableIndex].fields = items
     } else {
-      const newData = [...JSON.parse(JSON.stringify(data))]
-      const droppableIndex = newData.findIndex(
-        (x) => x.id == source.droppableId.split('droppable')[1]
+      // If dragging from one Droppable to another
+      const sourceDroppableIndex = parseInt(
+        source.droppableId.replace('droppable', '')
       )
-      const [item] = newData[droppableIndex].components.splice(source.index, 1)
-      newData[droppableIndex].components.splice(destination.index, 0, item)
-      setData([...newData])
+      const destDroppableIndex = parseInt(
+        destination.droppableId.replace('droppable', '')
+      )
+
+      const sourceItems = [...newData[sourceDroppableIndex].fields]
+      const destItems = [...newData[destDroppableIndex].fields]
+
+      const [removed] = sourceItems.splice(sourceIndex, 1)
+      destItems.splice(destinationIndex, 0, removed)
+
+      newData[sourceDroppableIndex].fields = sourceItems
+      newData[destDroppableIndex].fields = destItems
     }
+    setData(newData)
   }
+
   useEffect(() => {
-    setData(cardsData)
-  }, [])
+    const updatedCardData = [
+      {
+        ...cardsData[0],
+        fields: form?.fields || [],
+      },
+      {
+        ...cardsData[1],
+        fields: (cardsData[1]?.fields || []).filter(
+          (field) => !form?.fields?.some((f) => f.id === field.id)
+        ),
+      },
+    ]
+    setData(updatedCardData)
+  }, [form])
 
   // console.log(data)
 
   const editClick = (comp) => {
-    setNewName(comp?.name)
+    setNewField(comp)
     setOpenModal(true)
     setEditingLabel(comp)
   }
 
-  const handleNewLabel = () => {
+  const handleNewField = () => {
     setData((prevData) => {
-      const components = prevData[0]?.components || []
-      const updatedComponents = components.map((d) => {
-        if (d?.id === editingLabel?.id) {
-          return { ...d, name: newName }
+      const fields = prevData[0]?.fields || []
+      const updatedFields = fields.map((inp) => {
+        if (inp?.label === editingLabel?.label) {
+          let updatedField = {
+            ...inp,
+            label: newField?.label,
+            placeholder: newField?.placeholder,
+          }
+
+          if (newField?.optional !== undefined) {
+            updatedField = {
+              ...updatedField,
+              optional: newField?.optional,
+            }
+          }
+          if (newField?.options && newField.options.length > 0) {
+            updatedField = {
+              ...updatedField,
+              options: newField?.options,
+            }
+          }
+          return updatedField
         }
-        return d
+        return inp
       })
-
-      prevData[0] = { ...prevData[0], components: updatedComponents }
-
+      prevData[0] = { ...prevData[0], fields: updatedFields }
       return prevData
     })
   }
 
+  const handleSave = async (formData) => {
+    if (isValid) {
+      try {
+        const newFormData = await createFormApi({
+          ...formData,
+          formCategoryId: searchParams?.categoryId,
+          userId: '65feab9abe1333c4b6c5bfd1',
+          description: text,
+          fields: [...data[0]?.fields],
+        })
+        router.push(
+          `/forms/formsByCategory/${newFormData?._id}?categoryId=${newFormData?.formCategoryId}`
+        )
+        reset()
+        toast.success('Form created successfully!')
+      } catch (error) {
+        toast.error('Sorry, Form creation failed!')
+      }
+    }
+  }
+
   return (
-    <DndContext onDragEnd={onDragEnd}>
-      <div className="flex gap-4 justify-between my-2 flex-col lg:flex-row">
-        {data.map((val, index) => {
-          return (
-            <Droppable key={index} droppableId={`droppable${index}`}>
-              {(provided) => (
-                <div
-                  className="w-full"
-                  {...provided.droppableProps}
-                  ref={provided.innerRef}
-                >
-                  {val?.id === 0 ? (
-                    <>
-                      <div className="p-5 w-full bg-white  border-gray-400 rounded-[9px]">
-                        {val?.components?.length === 0 ? (
-                          <h2 className="text-gray-400 text-sm text-center h-24 flex justify-center items-center">
-                            No fields yet...
-                          </h2>
-                        ) : (
-                          <>
-                            {' '}
-                            {val.components?.map((component, index) => (
-                              <Draggable
-                                key={component.id}
-                                draggableId={component.id.toString()}
-                                index={index}
-                              >
-                                {(provided) => (
-                                  <div
-                                    className="my-5 grid"
-                                    {...provided.dragHandleProps}
-                                    {...provided.draggableProps}
-                                    ref={provided.innerRef}
-                                  >
-                                    <div className="flex justify-between">
-                                      <label
-                                        htmlFor={component?.id}
-                                        className="text-sm font-semibold tracking-tight mb-1"
-                                      >
-                                        {component?.name}
-                                      </label>
-                                      <InputFieldEditIcon
-                                        onClick={() => editClick(component)}
-                                      />
-                                    </div>
-                                    {component?.type === 'radio' ? (
-                                      <div className="flex gap-4 text-sm font-medium mt-2">
-                                        <div className="flex gap-1 items-center">
-                                          <input
-                                            type={component?.type}
-                                            id="yes-custom"
-                                            name="custom-form"
-                                            value="yes"
-                                            className="w-4 h-4"
-                                          />
-                                          <label htmlFor="yes-custom">
-                                            Yes
-                                          </label>
-                                        </div>
-                                        <div className="flex gap-1 items-center">
-                                          <input
-                                            type={component?.type}
-                                            id="no-custom"
-                                            name="custom-form"
-                                            value="no"
-                                            className="w-4 h-4"
-                                          />
-                                          <label htmlFor="no-custom">No</label>
-                                        </div>
+    <>
+      <DndContext onDragEnd={onDragEnd}>
+        <div className="flex gap-4 justify-between my-2 flex-col lg:flex-row">
+          {data.map((val, index) => {
+            return (
+              <Droppable key={index} droppableId={`droppable${index}`}>
+                {(provided, snapshot) => (
+                  <div
+                    className="w-full"
+                    {...provided.droppableProps}
+                    ref={provided.innerRef}
+                  >
+                    {val?.id === 0 ? (
+                      <>
+                        <div className="p-5 w-full bg-white  border-gray-400 rounded-[9px]">
+                          {val?.fields?.length === 0 ? (
+                            <>
+                              <h2 className="text-gray-400 text-lg text-center h-24 flex justify-center items-center">
+                                No fields yet...
+                              </h2>
+                            </>
+                          ) : (
+                            <>
+                              {' '}
+                              {val.fields?.map((field, index) => (
+                                <Draggable
+                                  key={field?.id}
+                                  draggableId={field?.id.toString()}
+                                  index={index}
+                                >
+                                  {(provided) => (
+                                    <div
+                                      className="my-5 grid"
+                                      {...provided.dragHandleProps}
+                                      {...provided.draggableProps}
+                                      ref={provided.innerRef}
+                                    >
+                                      <div className="flex justify-between">
+                                        <Labels
+                                          htmlFor={field?.id}
+                                          name={field?.label}
+                                          optional={field?.optional}
+                                        />
+
+                                        <InputFieldEditIcon
+                                          onClick={() => editClick(field)}
+                                        />
                                       </div>
-                                    ) : (
-                                      <input
-                                        type={component?.type}
-                                        className={`w-full border border-[#cdcdcd] font-medium placeholder:font-normal rounded-[4px] bg-[none] text-sm text-left px-4 ${
-                                          component?.className || 'h-[38px]'
-                                        }`}
-                                        id={component?.id}
-                                        placeholder={component?.placeholder}
-                                      />
-                                    )}
-                                  </div>
-                                )}
-                              </Draggable>
-                            ))}
-                            <div className="flex justify-center items-center gap-3 w-full">
-                              <button className="bg-blue-800 p-2 rounded text-lg font-semibold w-full text-white btn-hover">
+                                      {field?.type === 'radio' ||
+                                      field?.type === 'checkbox' ? (
+                                        <div
+                                          className={`grid gap-4 text-sm font-medium mt-2`}
+                                        >
+                                          {field?.options?.map((opt, idx) => {
+                                            return (
+                                              <div
+                                                className="flex gap-1 items-center"
+                                                key={idx}
+                                              >
+                                                <input
+                                                  type={field?.type}
+                                                  id={`${opt?.value}-${index}`}
+                                                  name={`custom-form-${index}`}
+                                                  value={opt?.label}
+                                                  className="w-4 h-4"
+                                                />
+                                                <label
+                                                  htmlFor={`${opt?.value}-${index}`}
+                                                >
+                                                  {opt?.label}
+                                                </label>
+                                              </div>
+                                            )
+                                          })}
+                                        </div>
+                                      ) : (
+                                        <input
+                                          type={field?.type}
+                                          className={`w-full border border-[#cdcdcd] font-medium placeholder:font-normal rounded-[4px] bg-[none] text-sm text-left px-4 ${
+                                            field?.className || 'h-[38px]'
+                                          }`}
+                                          id={field?.id}
+                                          placeholder={field?.placeholder}
+                                        />
+                                      )}
+                                    </div>
+                                  )}
+                                </Draggable>
+                              ))}
+                              <button
+                                className="bg-blue-800 p-2 rounded text-lg font-semibold w-full text-white btn-hover relative bottom-0 disabled:opacity-50 disabled:cursor-not-allowed"
+                                disabled={isSubmitting}
+                                onClick={handleSubmit(handleSave)}
+                              >
                                 Save form
                               </button>
-                            </div>
-                          </>
-                        )}
-                        {provided.placeholder}
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <div className="p-5 w-full bg-white  border-gray-400 rounded-[9px]">
-                        <h2 className="text-center font-bold mb-6 text-gray-700">
-                          {val.title}
-                        </h2>
-                        {val.components?.map((component, index) => (
-                          <Draggable
-                            key={component.id}
-                            draggableId={component.id.toString()}
-                            index={index}
-                          >
-                            {(provided) => (
-                              <div
-                                className="mx-1 my-3 font-bold text-sm text-gray-500 flex items-center gap-2"
-                                {...provided.dragHandleProps}
-                                {...provided.draggableProps}
-                                ref={provided.innerRef}
-                              >
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 24 24"
-                                  height={'17'}
-                                  width={'17'}
-                                  fill={'grey'}
+                            </>
+                          )}
+                          {provided.placeholder}
+                        </div>
+                        <div className="flex items-center mt-1 mb-4 font-medium text-gray-600">
+                          <NoteIcon /> Title and description will be in the form
+                          by default.
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div className="p-5 w-full bg-white  border-gray-400 rounded-[9px]">
+                          <h2 className="text-center font-bold mb-6 text-gray-700">
+                            {val.title}
+                          </h2>
+                          {val.fields?.map((field, index) => (
+                            <Draggable
+                              key={field?.id}
+                              draggableId={field?.id.toString()}
+                              index={index}
+                            >
+                              {(provided) => (
+                                <div
+                                  className="mx-1 my-3 font-bold text-sm text-gray-500 flex items-center gap-2"
+                                  {...provided.dragHandleProps}
+                                  {...provided.draggableProps}
+                                  ref={provided.innerRef}
                                 >
-                                  <path d={component?.path}></path>
-                                </svg>
-                                {component?.name}
-                              </div>
-                            )}
-                          </Draggable>
-                        ))}
-                        {provided.placeholder}
-                      </div>
-                    </>
-                  )}
-                </div>
-              )}
-            </Droppable>
-          )
-        })}
-      </div>
-      {openModal && (
-        <FormLabelEditModal
-          openModal={openModal}
-          setOpenModal={setOpenModal}
-          handleNewLabel={handleNewLabel}
-          newName={newName}
-          setNewName={setNewName}
-        />
-      )}
-    </DndContext>
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 24 24"
+                                    height={'17'}
+                                    width={'17'}
+                                    fill={'grey'}
+                                  >
+                                    <path d={field?.path}></path>
+                                  </svg>
+                                  {field?.label}
+                                </div>
+                              )}
+                            </Draggable>
+                          ))}
+                          {provided.placeholder}
+                        </div>
+                      </>
+                    )}
+                  </div>
+                )}
+              </Droppable>
+            )
+          })}
+        </div>
+        {openModal && (
+          <FormLabelEditModal
+            openModal={openModal}
+            setOpenModal={setOpenModal}
+            handleNewField={handleNewField}
+            newField={newField}
+            setNewField={setNewField}
+          />
+        )}
+      </DndContext>
+    </>
   )
 }
 

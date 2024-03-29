@@ -33,7 +33,7 @@ const StatusModal = ({ serviceData, handleClick, openModal, setOpenModal }) => {
           <motion.button
             whileHover={{ scale: 1.03 }}
             className="w-full py-2 bg-blue-600 rounded-[9px] text-white text-lg font-semibold leading-7"
-            onClick={() => handleClick()}
+            onClick={handleClick}
           >
             {!serviceData?.isActive ? 'Active' : 'Inactive'}
           </motion.button>

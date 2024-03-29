@@ -26,8 +26,24 @@ export const updateForm = async (req, res, next) => {
 
 export const getAllForms = async (req, res, next) => {
   try {
-    const form = await Form.find()
-    return res.status(200).json(form)
+    let { page = 1, limit, categoryId } = req.query
+    page = parseInt(page)
+    limit = parseInt(limit)
+
+    let query = {}
+
+    if (categoryId) {
+      query.formCategoryId = categoryId
+    }
+
+    const forms = await Form.find(query)
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .exec()
+
+    console.log(forms?.length)
+
+    return res.status(200).json(forms)
   } catch (error) {
     next(error)
   }

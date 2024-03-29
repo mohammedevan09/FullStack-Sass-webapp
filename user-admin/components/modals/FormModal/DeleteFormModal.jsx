@@ -1,30 +1,26 @@
 'use client'
 
-import Input from '@/components/Input'
+import Input, { Input2 } from '@/components/Input'
 import WrappingModal from '../WrappingModal'
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
-import { deleteService } from '@/api/serviceApi'
+import { useRouter } from 'next/navigation'
+import { deleteFormById } from '@/api/formApi'
 
-const DeleteService = ({
-  openModal,
-  setOpenModal,
-  serviceData,
-  pathname,
-  router,
-}) => {
+const DeleteFormModal = ({ openModal, setOpenModal, form, searchParams }) => {
+  const router = useRouter()
   const [value, setValue] = useState('')
 
   const handleClick = async () => {
-    if (value === serviceData?.name) {
+    if (value === form?.name) {
       try {
-        await deleteService(pathname)
-        router.push(`/services`)
-        toast.success(`Your service ${serviceData?.name} is deleted!`)
+        await deleteFormById(form?._id)
+        router.push(`/forms/formsByCategory?id=${searchParams?.categoryId}`)
+        toast.success(`Your form ${form?.name} is deleted!`)
         setOpenModal(false)
       } catch (error) {
-        toast.error('Sorry cannot delete!')
+        setOpenModal(false)
       }
     }
   }
@@ -40,17 +36,14 @@ const DeleteService = ({
             htmlFor={'name'}
             className={`text-base font-semibold tracking-tight mb-1`}
           >
-            Type the service name{' '}
-            <span className="font-bold text-rose-600">{serviceData?.name}</span>{' '}
-            to delete
+            Type the form name{' '}
+            <span className="font-bold text-rose-600">{form?.name}</span> to
+            delete
           </label>
-          <Input
+          <Input2
             id={'name'}
             placeholder={'Service Name'}
             type={'text'}
-            cn={'w-full'}
-            cnb={'rounded-[6px]'}
-            cnh={'h-[50px]'}
             validationRules={{
               onChange: (e) => setValue(e.target.value),
             }}
@@ -71,9 +64,9 @@ const DeleteService = ({
             whileHover={{ scale: 1.03 }}
             className="w-full py-2 bg-rose-600 rounded-[9px] text-white text-lg font-semibold leading-7 disabled:opacity-50 disabled:cursor-not-allowed"
             onClick={() => handleClick()}
-            disabled={value !== serviceData?.name}
+            disabled={value !== form?.name}
           >
-            Delete service
+            Delete form
           </motion.button>
         </div>
       </div>
@@ -81,4 +74,4 @@ const DeleteService = ({
   )
 }
 
-export default DeleteService
+export default DeleteFormModal

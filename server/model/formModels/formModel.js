@@ -6,6 +6,10 @@ const inputFieldsSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    id: {
+      type: Number,
+      required: true,
+    },
     type: {
       type: String,
       required: true,
@@ -15,6 +19,7 @@ const inputFieldsSchema = new mongoose.Schema(
       default: '',
     },
     validation: {},
+    optional: Boolean,
     options: [
       {
         label: {
@@ -27,7 +32,6 @@ const inputFieldsSchema = new mongoose.Schema(
     ],
   },
   {
-    _id: false,
     versionKey: false,
   }
 )
@@ -39,12 +43,17 @@ const formSchema = new mongoose.Schema(
       ref: 'User',
       required: true,
     },
+    formCategoryId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'FormCategory',
+      required: true,
+    },
     name: {
       type: String,
       required: true,
     },
     description: {
-      type: String,
+      type: Object,
       required: true,
     },
     fields: [inputFieldsSchema],

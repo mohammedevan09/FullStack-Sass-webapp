@@ -1,12 +1,12 @@
 'use client'
 
-import Input from '@/components/Input'
+import { Input2 } from '@/components/Input'
 import { motion } from 'framer-motion'
 import WrappingModal from '../WrappingModal'
 import Image from 'next/image'
 import Labels from '@/components/Labels'
 import ErrorMessage from '@/components/ErrorMessage'
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
 
 const EditNewService = ({
   openModal,
@@ -48,13 +48,10 @@ const EditNewService = ({
         <div className="grid gap-5">
           <div className="grid">
             <Labels htmlFor={'name'} name={'Name'} />
-            <Input
+            <Input2
               id={'name'}
               placeholder={'Service Name'}
               type={'text'}
-              cn={'w-full'}
-              cnb={'rounded-[6px]'}
-              cnh={'h-[50px]'}
               validationRules={{
                 ...register('name', {
                   required: {
@@ -119,13 +116,10 @@ const EditNewService = ({
           />
           <div className="grid">
             <Labels htmlFor={'page-heading'} name={'Page heading'} />
-            <Input
+            <Input2
               id={'page-heading'}
               placeholder={'Page Heading'}
               type={'text'}
-              cn={'w-full'}
-              cnb={'rounded-[6px]'}
-              cnh={'h-[50px]'}
               validationRules={{
                 ...register('heading', {
                   required: {
@@ -140,13 +134,10 @@ const EditNewService = ({
 
           <div className="grid">
             <Labels htmlFor={'page-sub-heading'} name={'Page sub heading'} />
-            <Input
+            <Input2
               id={'page-sub-heading'}
               placeholder={'Page Sub Heading'}
               type={'text'}
-              cn={'w-full'}
-              cnb={'rounded-[6px]'}
-              cnh={'h-[50px]'}
               validationRules={{
                 ...register('subheading', {
                   required: {

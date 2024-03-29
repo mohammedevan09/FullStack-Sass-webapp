@@ -35,6 +35,26 @@ const Input = ({
   )
 }
 
+export const Input2 = ({
+  type,
+  placeholder,
+  id,
+  validationRules,
+  className,
+}) => {
+  return (
+    <>
+      <input
+        id={id}
+        type={type}
+        placeholder={placeholder}
+        className={`w-full h-[50px] border  border-zinc-400 font-medium placeholder:font-normal rounded-md placeholder:text-center text-center ${className}`}
+        {...validationRules}
+      />
+    </>
+  )
+}
+
 export const PasswordInput = ({
   placeholder,
   id,

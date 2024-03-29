@@ -29,7 +29,7 @@ export const MenuBar = ({ setText }) => {
 
   useEffect(() => {
     const handleUpdate = () => {
-      const contentHTML = editor.getHTML()
+      const contentHTML = editor.getJSON()
       setText(contentHTML)
     }
 
@@ -167,13 +167,13 @@ export const extensions = [
   }),
 ]
 
-const MainEditor = ({ setText }) => {
+const MainEditor = ({ setText, defaultText }) => {
   return (
     <div className="text-sm border border-gray-300 rounded-[4px]">
       <EditorProvider
         slotBefore={<MenuBar setText={setText} />}
         extensions={extensions}
-        //   content={content}
+        content={defaultText}
       />
     </div>
   )

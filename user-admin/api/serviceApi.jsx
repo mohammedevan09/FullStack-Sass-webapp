@@ -14,6 +14,18 @@ export const uploadSvgIcon = async (id, formData) => {
   return data?.data
 }
 
+export const updateService = async (link, sendData) => {
+  const data = await axios.put(`${host}/api${link}`, sendData)
+
+  return data?.data
+}
+
+export const deleteService = async (link, sendData) => {
+  const data = await axios.delete(`${host}/api${link}`)
+
+  return data?.data
+}
+
 export const getAllService = async () => {
   try {
     const data = await axios.get(`${host}/api/services`)

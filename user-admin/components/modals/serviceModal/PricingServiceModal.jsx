@@ -1,4 +1,4 @@
-import Input from '@/components/Input'
+import { Input2 } from '@/components/Input'
 import WrappingModal from '../WrappingModal'
 import { motion } from 'framer-motion'
 import Labels from '@/components/Labels'
@@ -82,12 +82,10 @@ const PricingServiceModal = ({
         <div className="grid gap-5">
           <div className="grid">
             <Labels name={'Price (In dollars)'} />
-            <Input
+            <Input2
               placeholder={'Ex - $50 / $100 / $500'}
               type={'number'}
-              cn={'w-full'}
-              cnb={'rounded-[6px] text-lg px-3'}
-              cnh={'h-[50px]'}
+              className={'text-lg px-3'}
               validationRules={{
                 ...register(`pricing[${pricingLength}].amount`, {
                   required: true,
@@ -98,12 +96,9 @@ const PricingServiceModal = ({
           </div>
           <div className="grid">
             <Labels name={'Pricing type'} />
-            <Input
+            <Input2
               placeholder={'Ex - Basic/Standard/Premium'}
               type={'text'}
-              cn={'w-full'}
-              cnb={'rounded-[6px]'}
-              cnh={'h-[50px]'}
               validationRules={{
                 ...register(`pricing[${pricingLength}].name`, {
                   required: true,
@@ -113,12 +108,9 @@ const PricingServiceModal = ({
           </div>
           <div className="grid">
             <Labels name={'Pricing Sub Name'} />
-            <Input
+            <Input2
               placeholder={'Ex - Transparent ROI'}
               type={'text'}
-              cn={'w-full'}
-              cnb={'rounded-[6px]'}
-              cnh={'h-[50px]'}
               validationRules={{
                 ...register(`pricing[${pricingLength}].subName`, {
                   required: true,

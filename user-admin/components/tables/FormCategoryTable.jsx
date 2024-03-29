@@ -4,16 +4,16 @@ import React from 'react'
 const FormCategoryTable = ({ formCategoryData, title }) => {
   const router = useRouter()
   return (
-    <div className="lg:w-full w-screen px-7 pt-8 overflow-x-scroll">
-      <caption className="sm:text-xl text-lg font-semibold inline border-b-2 border-zinc-600 pb-2">
+    <div className="lg:w-full w-screen px-7 pt-6 overflow-x-scroll">
+      <h1 className="sm:text-xl text-lg font-semibold inline border-b-2 border-zinc-600 pb-2">
         {title}
-      </caption>
+      </h1>
       {formCategoryData?.length === 0 ? (
-        <h2 className="sm:text-xl text-lg pt-6 text-gray-500 text-center">
+        <h2 className="sm:text-xl text-lg pt-4 text-gray-500 text-center">
           {title} is empty!
         </h2>
       ) : (
-        <table className="w-full sm:mt-10 mt-8">
+        <table className="w-full mt-6">
           <thead>
             <tr className="text-zinc-700 lg:text-xl text-lg font-semibold tracking-tight text-left">
               <th>ID</th>

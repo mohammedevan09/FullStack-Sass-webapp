@@ -6,9 +6,9 @@ const ServiceTables = ({ serviceData, title, link }) => {
   const router = useRouter()
   return (
     <div className="lg:w-full w-screen px-7 pt-8 overflow-x-scroll">
-      <caption className="sm:text-xl text-lg font-semibold inline border-b-2 border-zinc-600 pb-2">
+      <h1 className="sm:text-xl text-lg font-semibold inline border-b-2 border-zinc-600 pb-2">
         {title}
-      </caption>
+      </h1>
       {serviceData?.length === 0 ? (
         <h2 className="sm:text-xl text-lg pt-6 text-gray-500 text-center">
           {title} is empty!

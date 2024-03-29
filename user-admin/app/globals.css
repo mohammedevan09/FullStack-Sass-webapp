@@ -124,6 +124,17 @@ span#RFS-Label {
   color: #001326 !important;
 }
 
+/* React select */
+
+.css-b62m3t-container {
+  width: 100%;
+}
+
+.css-nne2zq-menu {
+  border: none !important;
+  box-shadow: none !important;
+}
+
 /* width */
 ::-webkit-scrollbar {
   width: 6px;

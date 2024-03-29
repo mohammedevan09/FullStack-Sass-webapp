@@ -15,12 +15,6 @@ const FormCategorySchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    forms: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Form',
-      },
-    ],
   },
   {
     timestamps: true,

@@ -37,9 +37,6 @@ export const getFormCategoryById = async (req, res, next) => {
   try {
     const formCategory = await FormCategory.findById({
       _id: req.params.id,
-    }).populate({
-      path: 'forms',
-      select: '_id name description userId',
     })
     return sendResponse(res, formCategory)
   } catch (error) {

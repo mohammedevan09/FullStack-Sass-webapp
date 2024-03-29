@@ -16,6 +16,7 @@
     "@tiptap/extension-list-item": "^2.1.13",
     "@tiptap/extension-placeholder": "^2.1.13",
     "@tiptap/extension-text-style": "^2.1.13",
+    "@tiptap/html": "^2.2.4",
     "@tiptap/pm": "^2.1.13",
     "@tiptap/react": "^2.1.13",
     "@tiptap/starter-kit": "^2.1.13",
@@ -29,6 +30,7 @@
     "react-hook-form": "^7.51.1",
     "react-hot-toast": "^2.4.1",
     "react-redux": "^9.0.4",
+    "react-select": "^5.8.0",
     "redux-persist": "^6.0.0"
   },
   "devDependencies": {
