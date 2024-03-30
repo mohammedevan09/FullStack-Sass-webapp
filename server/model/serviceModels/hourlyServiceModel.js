@@ -26,4 +26,5 @@ const hourlyServiceModal = new mongoose.Schema({
 })
 
 const HourlyService = Service.discriminator('HourlyService', hourlyServiceModal)
+
 export default HourlyService
