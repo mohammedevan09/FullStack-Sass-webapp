@@ -44,7 +44,7 @@ const MainServicePage = ({ service, forms }) => {
   const handleClick = async (data) => {
     // console.log(data, isValid, isDirty)
     if (image) {
-      toast.loading('Creating new service!', { duration: 1000 })
+      toast.loading('Processing, please wait!', { duration: 1000 })
       const formData = new FormData()
       image.forEach((img) => {
         formData.append(`images`, img)
@@ -52,12 +52,14 @@ const MainServicePage = ({ service, forms }) => {
       const updatedImage = await uploadSvgIcon(data?._id, formData)
       setValue('icon', updatedImage?.icon)
       setImage(null)
-      toast.success('Your service has been updated!')
+      toast.success('Your service icon is updated!')
+      reset()
     }
     if (isDirty && isDirty) {
       const updatedData = await updateService(pathname, data)
       setServiceData(updatedData)
       setImage(null)
+      toast.success('Your service updated successfully!')
       reset()
     }
   }

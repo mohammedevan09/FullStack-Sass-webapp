@@ -18,7 +18,8 @@ const StatusAction = ({ service, handleSubmit, setValue, setServiceData }) => {
         setStatusModal(false)
       }
     } else {
-      toast.error('Atleast 3 pricing details required for active this service!')
+      toast.error('At least 3 pricing details required!')
+      setStatusModal(false)
     }
   }
 

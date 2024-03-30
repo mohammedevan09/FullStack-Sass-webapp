@@ -35,8 +35,8 @@ const EditNewService = ({
   const handleEditClick = (data) => {
     if ((isDirty && isValid) || image) {
       setServiceData(data)
-      setOpenModal(false)
     }
+    setOpenModal(false)
   }
 
   return (
