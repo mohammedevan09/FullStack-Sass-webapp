@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import Service from './serviceModel.js'
 
-export const hourlyPricing = new mongoose.Schema(
+const hourlyPricing = new mongoose.Schema(
   {
     amount: {
       type: Number,
@@ -11,7 +11,7 @@ export const hourlyPricing = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    serviceType: {
+    name: {
       type: String,
     },
   },
