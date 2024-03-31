@@ -4,12 +4,10 @@ import { Input2 } from '@/components/Input'
 import WrappingModal from '../WrappingModal'
 import { motion } from 'framer-motion'
 import Labels from '@/components/Labels'
-import { useEffect, useState } from 'react'
-import PricingServices from '@/app/(pages)/services/_components/PricingServices'
 
-const PricingServiceModal = ({
-  pricingModal,
+const EditHourlyPricingService = ({
   setPricingModal,
+  pricingModal,
   handleSubmit,
   register,
   pricingLength,
@@ -18,45 +16,6 @@ const PricingServiceModal = ({
   setServiceData,
   isValid,
 }) => {
-  const [availableService, setAvailableService] = useState(
-    serviceData?.pricing[pricingLength]?.availableService || []
-  )
-  const [unavailableService, setUnavailableService] = useState(
-    serviceData?.pricing[pricingLength]?.unavailableService || []
-  )
-
-  // console.log(availableService, unavailableService)
-
-  const handleAddAvailableService = (e) => {
-    e.preventDefault()
-    const inputService = e.target.elements.service.value.trim()
-    if (inputService) {
-      setAvailableService([...availableService, inputService])
-      e.target.elements.service.value = ''
-    }
-  }
-
-  const handleDeleteAvailableService = (index) => {
-    const updatedService = [...availableService]
-    updatedService.splice(index, 1)
-    setAvailableService(updatedService)
-  }
-
-  const handleAddUnavailableService = (e) => {
-    e.preventDefault()
-    const inputService = e.target.elements.service.value.trim()
-    if (inputService) {
-      setUnavailableService([...unavailableService, inputService])
-      e.target.elements.service.value = ''
-    }
-  }
-
-  const handleDeleteUnavailableService = (index) => {
-    const updatedService = [...unavailableService]
-    updatedService.splice(index, 1)
-    setUnavailableService(updatedService)
-  }
-
   const handleAddPricing = (data) => {
     setServiceData(data)
     setPricingModal(false)
@@ -69,11 +28,6 @@ const PricingServiceModal = ({
     setServiceData({ ...data, pricing: updatedPricing })
     setPricingModal(false)
   }
-
-  useEffect(() => {
-    setValue(`pricing[${pricingLength}].availableService`, availableService)
-    setValue(`pricing[${pricingLength}].unavailableService`, unavailableService)
-  }, [availableService, unavailableService, pricingLength, setValue])
 
   return (
     <WrappingModal modalOpen={pricingModal}>
@@ -97,7 +51,20 @@ const PricingServiceModal = ({
             />
           </div>
           <div className="grid">
-            <Labels name={'Pricing type'} />
+            <Labels name={'Type hours'} />
+            <Input2
+              placeholder={'Ex - 30/50/80/100/200'}
+              type={'number'}
+              className={'text-lg px-3'}
+              validationRules={{
+                ...register(`pricing[${pricingLength}].hours`, {
+                  required: true,
+                }),
+              }}
+            />
+          </div>
+          <div className="grid">
+            <Labels name={'Pricing Name'} />
             <Input2
               placeholder={'Ex - Basic/Standard/Premium'}
               type={'text'}
@@ -108,30 +75,6 @@ const PricingServiceModal = ({
               }}
             />
           </div>
-          <div className="grid">
-            <Labels name={'Pricing Sub Name'} />
-            <Input2
-              placeholder={'Ex - Transparent ROI'}
-              type={'text'}
-              validationRules={{
-                ...register(`pricing[${pricingLength}].subName`, {
-                  required: true,
-                }),
-              }}
-            />
-          </div>
-          <PricingServices
-            pricingServices={availableService}
-            handleAddPricingService={handleAddAvailableService}
-            handleDeletePricingService={handleDeleteAvailableService}
-            available={true}
-          />
-          <PricingServices
-            pricingServices={unavailableService}
-            handleAddPricingService={handleAddUnavailableService}
-            handleDeletePricingService={handleDeleteUnavailableService}
-            available={false}
-          />
         </div>
         <div className="grid grid-cols-2 items-center gap-3 mt-14">
           <motion.button
@@ -169,4 +112,4 @@ const PricingServiceModal = ({
   )
 }
 
-export default PricingServiceModal
+export default EditHourlyPricingService

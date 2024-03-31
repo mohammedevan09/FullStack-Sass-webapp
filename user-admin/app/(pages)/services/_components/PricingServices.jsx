@@ -18,7 +18,6 @@ const PricingServices = ({
           placeholder={`Add ${available ? 'available' : 'unavailable'} service`}
           className="w-full px-3"
         />
-
         <button type="submit" className="bg-blue-600 text-white px-4 py-1">
           Add
         </button>
@@ -28,7 +27,7 @@ const PricingServices = ({
           <div key={index} className="flex items-start gap-2 justify-between">
             <div className="flex gap-2">
               {available ? <CheckSignIcon /> : <CrossSignIcon />}{' '}
-              <p className="break-all">{service}</p>
+              <p className="break-words">{service}</p>
             </div>
             <button
               onClick={() => handleDeletePricingService(index)}

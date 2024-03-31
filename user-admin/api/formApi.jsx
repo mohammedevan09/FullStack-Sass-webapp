@@ -34,6 +34,12 @@ export const createFormApi = async (sendData) => {
   return data?.data
 }
 
+export const updateFormApi = async (sendData, id) => {
+  const data = await axios.put(`${host}/api/form/${id}`, sendData)
+
+  return data?.data
+}
+
 export const getAllForm = async (searchParams) => {
   try {
     const data = await axios.get(`${host}/api/form`, {

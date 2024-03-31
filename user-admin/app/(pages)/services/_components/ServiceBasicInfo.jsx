@@ -4,7 +4,7 @@ import React from 'react'
 const ServiceBasicInfo = ({ service, image }) => {
   return (
     <div>
-      <h1 className="md:text-3xl sm:text-2xl text-lg font-semibold">
+      <h1 className="md:text-3xl sm:text-2xl text-xl font-semibold">
         {service?.name}{' '}
       </h1>
       <div className="bg-white py-3 px-4 rounded-lg svg-shadow mt-3">

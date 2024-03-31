@@ -86,7 +86,9 @@ const FormLabelEditModal = ({
                   className="mb-0"
                 />
                 <button
-                  className="py-1 font-semibold px-4 bg-white border border-black rounded-md"
+                  className={`py-1 font-semibold px-4 text-white rounded-full ${
+                    newField?.optional ? 'bg-blue-400' : 'bg-red-400'
+                  }`}
                   onClick={(e) => {
                     e.preventDefault()
                     setNewField((prev) => {

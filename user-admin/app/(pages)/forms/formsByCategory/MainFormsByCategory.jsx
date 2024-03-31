@@ -32,9 +32,9 @@ const MainFormsByCategory = ({ formCategory, forms, searchParams }) => {
               <FormsByCategoryIdIcon />
               <div className="grid">
                 <p className="font-semibold text-base">{item?.name}</p>
-                <p className="text-sm text-gray-600 tiptap">
+                <span className="text-sm text-gray-600 tiptap">
                   {JsonToText(item?.description, false)}
-                </p>
+                </span>
               </div>
             </div>
             <Link

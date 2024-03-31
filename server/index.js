@@ -12,7 +12,7 @@ import { stripeWebhook } from './controller/orderController/orderController.js'
 import serviceRouter from './router/servicesRouter/serviceRoutes.js'
 import normalServiceRoutes from './router/servicesRouter/normalServiceRoutes.js'
 import subscriptionServiceRoutes from './router/servicesRouter/subscriptionServiceRoutes.js'
-// import hourlyServiceRoutes from './router/servicesRouter/hourlyServiceRoutes.js'
+import hourlyServiceRoutes from './router/servicesRouter/hourlyServiceRoutes.js'
 import formCategory from './router/formRouter/formCategoryRouter.js'
 import formRouter from './router/formRouter/formRouter.js'
 
@@ -52,7 +52,7 @@ app.use('/api/user', userRouter)
 app.use('/api/services', serviceRouter)
 app.use('/api/services/normalService', normalServiceRoutes)
 app.use('/api/services/subscriptionService', subscriptionServiceRoutes)
-// app.use('/api/services/hourlyService', hourlyServiceRoutes)
+app.use('/api/services/hourlyService', hourlyServiceRoutes)
 app.use('/api/formCategory', formCategory)
 app.use('/api/form', formRouter)
 app.use('/api/order', orderRouter)

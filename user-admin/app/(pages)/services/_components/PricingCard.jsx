@@ -17,10 +17,10 @@ const PricingCard = ({ item, editPricingModal, setPricingLength, index }) => {
           ${item?.amount}
         </h1>
         <div className="text-center sm:pt-4 pt-2">
-          <h3 className="mx-auto text-gray-900 text-xl font-semibold leading-[30px]">
+          <h3 className="mx-auto text-gray-900 text-xl font-semibold leading-[30px] break-words">
             {item?.name}
           </h3>
-          <h3 className="text-gray-500 text-base font-normal">
+          <h3 className="text-gray-500 text-base font-normal break-words">
             {item?.subName}
           </h3>
         </div>
@@ -29,7 +29,7 @@ const PricingCard = ({ item, editPricingModal, setPricingLength, index }) => {
         {item?.availableService?.map((subItem, index) => (
           <div key={index} className="flex justify-start items-start gap-3">
             <CheckSignIcon />
-            <div className="text-gray-500 sm:text-base text-sm font-normal break-all">
+            <div className="text-gray-500 sm:text-base text-sm font-normal break-words">
               {subItem}
             </div>
           </div>
@@ -37,7 +37,7 @@ const PricingCard = ({ item, editPricingModal, setPricingLength, index }) => {
         {item?.unavailableService?.map((subItem, index) => (
           <div key={index} className="flex justify-start items-start gap-3">
             <CrossSignIcon />
-            <div className="text-gray-500 sm:text-base text-sm font-normal break-all">
+            <div className="text-gray-500 sm:text-base text-sm font-normal break-words">
               {subItem}
             </div>
           </div>

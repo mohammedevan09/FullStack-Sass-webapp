@@ -2,6 +2,9 @@
 
 import { useMemo, useState } from 'react'
 import Select from 'react-select'
+import makeAnimated from 'react-select/animated'
+
+const animatedComponents = makeAnimated()
 
 const ReactSelect = ({ data, placeholder, setValue }) => {
   const [val, setVal] = useState('')
@@ -82,16 +85,23 @@ const ReactSelect = ({ data, placeholder, setValue }) => {
       fontWeight: '600',
     }),
   }
+
+  const newPlaceholder = formattedData?.find((f) => f?.value === placeholder)
+
   return (
     <div className="flex items-center justify-between w-full border-b border-white mt-4">
       <Select
-        placeholder={placeholder || 'Anywhere'}
         isClearable
         options={formattedData}
+        components={animatedComponents}
         value={val}
         onChange={onChange}
         styles={customStyles}
-        closeMenuOnSelect={false}
+        closeMenuOnSelect={true}
+        placeholder={
+          (newPlaceholder && `Form running- ${newPlaceholder?.label}`) ||
+          'Select form'
+        }
         //   getOptionLabel={(option) => option.name}
         //   getOptionValue={(option) => option.id}
         //   className="react-select-container genresDD"

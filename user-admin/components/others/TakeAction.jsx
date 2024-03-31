@@ -21,7 +21,7 @@ const TakeAction = ({ setEditModal, setDeleteModal }) => {
 
   return (
     <div className="relative">
-      <div className="bg-white grid justify-start items-center px-4 py-1 rounded-md">
+      <div className="bg-white grid justify-start items-center px-4 py-1 rounded-md min-w-[150px]">
         <button
           className="flex justify-center items-center gap-1 text-base font-semibold"
           onClick={(e) => {

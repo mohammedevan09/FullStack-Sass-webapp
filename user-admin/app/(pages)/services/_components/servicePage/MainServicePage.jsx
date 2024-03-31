@@ -28,12 +28,11 @@ const MainServicePage = ({ service, forms }) => {
 
   const router = useRouter()
   const pathname = usePathname()
-  // console.log(pathname)
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid, isDirty },
+    formState: { errors, isValid, isDirty, isSubmitting },
     setValue,
     reset,
   } = useForm({
@@ -52,6 +51,7 @@ const MainServicePage = ({ service, forms }) => {
       const updatedImage = await uploadSvgIcon(data?._id, formData)
       setValue('icon', updatedImage?.icon)
       setImage(null)
+      setServiceData({ ...serviceData, icon: updatedImage?.icon })
       toast.success('Your service icon is updated!')
       reset()
     }
@@ -69,13 +69,13 @@ const MainServicePage = ({ service, forms }) => {
       <div className="mb-10 sm:px-4 xs:px-3 px-1">
         <div className="sm:mt-14 mt-8 mb-8">
           <BackButton title={'Go Back'} link={'/services'} />
-          <div className="sm:flex grid justify-between xs:items-start items-end gap-1">
-            <div className="sm:w-[60%] w-full">
+          <div className="md:flex grid md:justify-between xs:items-start items-end gap-2">
+            <div className="md:w-[50%] w-full">
               <ServiceBasicInfo service={serviceData} image={image} />
               <ReactSelect
                 setValue={setValue}
                 data={forms}
-                placeholder={'Select form'}
+                placeholder={serviceData?.form}
               />
             </div>
             <div className="flex  gap-2 justify-start items-start sm:mt-0 mt-4">
@@ -93,10 +93,10 @@ const MainServicePage = ({ service, forms }) => {
           </div>
         </div>
         <div className="mb-10">
-          <div className="flex justify-between items-center">
+          <div className="md:flex grid justify-between items-end mb-5 gap-2">
             <ServiceHeading service={serviceData} />
             <button
-              className="text-base py-1 px-4 rounded font-semibold hover:scale-105 transition text-white bg-blue-600"
+              className="text-base py-1 px-4 rounded font-semibold hover:scale-105 transition text-white bg-blue-600 min-w-[180px] w-[181px]"
               onClick={() => {
                 setPricingModal(true)
                 setPricingLength(serviceData?.pricing?.length || 0)
@@ -129,7 +129,7 @@ const MainServicePage = ({ service, forms }) => {
         <button
           className="text-lg py-3 px-4 rounded font-semibold transition hover:bg-white hover:text-blue-600 hover:border-blue-600 border text-white bg-blue-600 w-full disabled:opacity-50 disabled:cursor-not-allowed"
           onClick={handleSubmit(handleClick)}
-          disabled={!isDirty && !image}
+          disabled={(!isDirty && !image) || isSubmitting}
         >
           Save setting
         </button>

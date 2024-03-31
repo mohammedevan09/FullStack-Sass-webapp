@@ -7,8 +7,22 @@ import { cardsData } from './FormsData'
 import FormLabelEditModal from '../modals/FormModal/FormLabelEditModal'
 import { InputFieldEditIcon, NoteIcon } from '@/staticData/Icon'
 import Labels from '../Labels'
+import { useRouter } from 'next/navigation'
+import toast from 'react-hot-toast'
+import { createFormApi, updateFormApi } from '@/api/formApi'
 
-const FormExample = ({ form, isSubmitting, data, setData, handleSave }) => {
+const FormExample = ({
+  form,
+  isSubmitting,
+  handleSubmit,
+  text,
+  isValid,
+  reset,
+  searchParams,
+}) => {
+  const router = useRouter()
+
+  const [data, setData] = useState([])
   const [openModal, setOpenModal] = useState(false)
   const [newField, setNewField] = useState('')
   const [editingLabel, setEditingLabel] = useState(null)
@@ -107,6 +121,42 @@ const FormExample = ({ form, isSubmitting, data, setData, handleSave }) => {
     })
   }
 
+  const handleSave = async (formData) => {
+    if (isValid) {
+      let newFormData
+      try {
+        if (form?._id) {
+          newFormData = await updateFormApi(
+            {
+              ...formData,
+              formCategoryId: searchParams?.categoryId,
+              userId: '65feab9abe1333c4b6c5bfd1',
+              description: text,
+              fields: [...data[0]?.fields],
+            },
+            form?._id
+          )
+        } else {
+          newFormData = await createFormApi({
+            ...formData,
+            formCategoryId: searchParams?.categoryId,
+            userId: '65feab9abe1333c4b6c5bfd1',
+            description: text,
+            fields: [...data[0]?.fields],
+          })
+          router.push(
+            `/forms/formsByCategory/${newFormData?._id}?categoryId=${newFormData?.formCategoryId}`
+          )
+        }
+        reset()
+        toast.success('Form saved successfully!')
+      } catch (error) {
+        console.log(error)
+        toast.error('Sorry, Form saving failed!')
+      }
+    }
+  }
+
   return (
     <>
       <DndContext onDragEnd={onDragEnd}>
@@ -200,7 +250,7 @@ const FormExample = ({ form, isSubmitting, data, setData, handleSave }) => {
                               <button
                                 className="bg-blue-800 p-2 rounded text-lg font-semibold w-full text-white btn-hover relative bottom-0 disabled:opacity-50 disabled:cursor-not-allowed"
                                 disabled={isSubmitting}
-                                onClick={handleSave}
+                                onClick={handleSubmit(handleSave)}
                               >
                                 Save form
                               </button>
