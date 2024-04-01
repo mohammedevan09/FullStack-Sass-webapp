@@ -1,4 +1,4 @@
-import HourlyService from '../../model/serviceModels/HourlyServiceModel.js'
+import HourlyService from '../../model/serviceModels/hourlyServiceModel.js'
 import { sendResponse } from '../../utils/sendResponse.js'
 
 export const createHourlyService = async (req, res, next) => {
@@ -16,7 +16,7 @@ export const updateHourlyService = async (req, res, next) => {
       { _id: req.params.id },
       { ...req.body },
       { new: true }
-    )
+    ).populate('form')
     return sendResponse(res, update)
   } catch (error) {
     next(error)
@@ -34,7 +34,9 @@ export const getAllHourlyServices = async (req, res, next) => {
 
 export const getHourlyServiceById = async (req, res, next) => {
   try {
-    const services = await HourlyService.findById({ _id: req.params.id })
+    const services = await HourlyService.findById({
+      _id: req.params.id,
+    }).populate('form')
     return sendResponse(res, services)
   } catch (error) {
     next(error)
@@ -43,7 +45,9 @@ export const getHourlyServiceById = async (req, res, next) => {
 
 export const getHourlyServiceByUserId = async (req, res, next) => {
   try {
-    const services = await HourlyService.find({ creatorId: req.params.id })
+    const services = await HourlyService.find({
+      creatorId: req.params.id,
+    }).populate('form')
     return sendResponse(res, services)
   } catch (error) {
     next(error)

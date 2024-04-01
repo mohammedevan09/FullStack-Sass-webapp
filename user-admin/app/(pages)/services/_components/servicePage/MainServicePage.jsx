@@ -75,7 +75,7 @@ const MainServicePage = ({ service, forms }) => {
               <ReactSelect
                 setValue={setValue}
                 data={forms}
-                placeholder={serviceData?.form}
+                placeholder={serviceData?.form?._id}
               />
             </div>
             <div className="flex  gap-2 justify-start items-start sm:mt-0 mt-4">

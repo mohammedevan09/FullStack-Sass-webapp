@@ -129,7 +129,7 @@ export const SignIn = ({ router, dispatch, forgotPassLink }) => {
           return toast.error(data?.response?.data)
         } else if (data?.response?.status === 401) {
           return toast.error('Invalid Credentials')
-        } else {
+        } else if (data) {
           dispatch(setUsers(data))
           router.push('/dashboard', { scroll: true })
           toast.success('Logged in successfully!')

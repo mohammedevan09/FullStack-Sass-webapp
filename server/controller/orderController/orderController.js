@@ -1,59 +1,7 @@
-import dotenv from 'dotenv'
-dotenv.config()
-
-import Stripe from 'stripe'
-import WebsiteDesignAndDev from '../../model/orderModels/websiteDesignAndDevModel.js'
 import Order from '../../model/orderModels/orderModel.js'
+import { sendResponse } from '../../utils/sendResponse.js'
 
-const stripe = Stripe(process.env.SECURITY_KEY)
-
-const clientURL = process.env.CLIENT_URL
-
-export const createWebsiteDesignAndDev = async (req, res) => {
-  const createOrder = await WebsiteDesignAndDev.create({
-    ...req.body,
-    payment_status: 'pending',
-    status: 'pending',
-  })
-
-  const customer = await stripe.customers.create({
-    metadata: {
-      orderId: createOrder?._id.toString(),
-    },
-  })
-
-  const line_items = [
-    {
-      price_data: {
-        currency: 'usd',
-        product_data: {
-          name: req.body?.title,
-          images: [
-            'https://i.postimg.cc/NfPBTwRn/Pngtree-contact-our-male-customer-service-5412873.png',
-          ],
-        },
-        unit_amount: req.body?.amount * 100,
-      },
-      quantity: 1,
-    },
-  ]
-
-  const session = await stripe.checkout.sessions.create({
-    payment_method_types: ['card'],
-    phone_number_collection: {
-      enabled: true,
-    },
-    customer: customer.id,
-    line_items,
-    mode: 'payment',
-    success_url: `${clientURL}/dashboard/services/designAndDevelopmentPackages`,
-    cancel_url: `${clientURL}/`,
-  })
-
-  res.send({ url: session?.url })
-}
-
-const createOrder = async (customer, data, res) => {
+export const createStripeOrder = async (customer, data, res) => {
   // console.log(customer, data)
   try {
     const updateOrder = await Order?.findByIdAndUpdate(
@@ -79,39 +27,29 @@ const createOrder = async (customer, data, res) => {
   }
 }
 
-export const stripeWebhook = (req, res) => {
-  const endpointSecret = process.env.ENDPOINT_SECRET
+export const getAllOrder = async (req, res, next) => {
+  try {
+    const orders = await Order.find()
 
-  const sig = req.headers['stripe-signature']
+    console.log(orders)
 
-  let data
-  let eventType
+    const categorizedOrders = orders.reduce((acc, curr) => {
+      const { __t } = curr
+      if (!acc[__t]) {
+        acc[__t] = []
+      }
+      acc[__t].push(curr)
+      return acc
+    }, {})
 
-  if (endpointSecret) {
-    let event
-
-    try {
-      event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret)
-      // console.log('Webhook verified', event)
-    } catch (err) {
-      res.status(400).send(`Webhook Error: ${err.message}`)
-      return
+    const formattedOrders = {
+      Normal: categorizedOrders.NormalServiceOrder || [],
+      Subscription: categorizedOrders.SubscriptionServiceOrder || [],
+      Hourly: categorizedOrders.HourlyServiceOrder || [],
     }
 
-    data = event.data.object
-    eventType = event.type
-  } else {
-    data = req.body.data.object
-    eventType = req.body.type
-  }
-
-  // Handle the event
-  if (eventType === 'checkout.session.completed') {
-    stripe.customers
-      .retrieve(data.customer)
-      .then((customer) => {
-        createOrder(customer, data, res)
-      })
-      .catch((err) => console.log(err.message))
+    return sendResponse(res, formattedOrders)
+  } catch (error) {
+    next(error)
   }
 }

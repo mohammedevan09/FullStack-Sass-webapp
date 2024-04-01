@@ -1,3 +1,5 @@
+'use client'
+
 import { CheckSignIcon, RemoveIcon } from '@/staticData/Icon'
 import { useEffect, useState } from 'react'
 

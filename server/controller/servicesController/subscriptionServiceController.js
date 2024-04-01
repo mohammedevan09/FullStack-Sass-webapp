@@ -16,7 +16,7 @@ export const updateSubscriptionService = async (req, res, next) => {
       { _id: req.params.id },
       { ...req.body },
       { new: true }
-    )
+    ).populate('form')
     return sendResponse(res, update)
   } catch (error) {
     next(error)
@@ -34,7 +34,9 @@ export const getAllSubscriptionServices = async (req, res, next) => {
 
 export const getSubscriptionServiceById = async (req, res, next) => {
   try {
-    const services = await SubscriptionService.findById({ _id: req.params.id })
+    const services = await SubscriptionService.findById({
+      _id: req.params.id,
+    }).populate('form')
     return sendResponse(res, services)
   } catch (error) {
     next(error)
@@ -45,7 +47,7 @@ export const getSubscriptionServiceByUserId = async (req, res, next) => {
   try {
     const services = await SubscriptionService.find({
       creatorId: req.params.id,
-    })
+    }).populate('form')
     return sendResponse(res, services)
   } catch (error) {
     next(error)

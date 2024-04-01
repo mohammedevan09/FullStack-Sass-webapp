@@ -16,7 +16,7 @@ export const updateNormalService = async (req, res, next) => {
       { _id: req.params.id },
       { ...req.body },
       { new: true }
-    )
+    ).populate('form')
     return sendResponse(res, update)
   } catch (error) {
     next(error)
@@ -34,7 +34,9 @@ export const getAllNormalServices = async (req, res, next) => {
 
 export const getNormalServiceById = async (req, res, next) => {
   try {
-    const services = await NormalService.findById({ _id: req.params.id })
+    const services = await NormalService.findById({
+      _id: req.params.id,
+    }).populate('form')
     return sendResponse(res, services)
   } catch (error) {
     next(error)
@@ -43,7 +45,9 @@ export const getNormalServiceById = async (req, res, next) => {
 
 export const getNormalServiceByUserId = async (req, res, next) => {
   try {
-    const services = await NormalService.find({ creatorId: req.params.id })
+    const services = await NormalService.find({
+      creatorId: req.params.id,
+    }).populate('form')
     return sendResponse(res, services)
   } catch (error) {
     next(error)
