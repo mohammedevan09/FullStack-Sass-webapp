@@ -3,13 +3,16 @@
 import { useForm } from 'react-hook-form'
 import WrappingModal from '../WrappingModal'
 import { motion } from 'framer-motion'
-import ErrorMessage from '@/components/ErrorMessage'
-import Labels from '@/components/Labels'
-import { Input2 } from '@/components/Input'
+import ErrorMessage from '@/components/others/ErrorMessage'
+import Labels from '@/components/others/Labels'
+import { Input2 } from '@/components/others/Input'
 import toast from 'react-hot-toast'
 import { createFormCategoryApi } from '@/api/formApi'
+import { useSelector } from 'react-redux'
 
 const FormCategoryModal = ({ openModal, setOpenModal }) => {
+  const { userInfo } = useSelector((state) => state?.user)
+
   const {
     register,
     handleSubmit,
@@ -18,7 +21,7 @@ const FormCategoryModal = ({ openModal, setOpenModal }) => {
     defaultValues: {
       name: '',
       description: '',
-      creatorId: '65f6b9344508e0f80ff0b62e',
+      creatorId: userInfo?._id,
     },
 
     mode: 'onChange',

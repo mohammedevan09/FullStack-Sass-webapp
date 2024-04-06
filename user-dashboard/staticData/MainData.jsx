@@ -44,21 +44,6 @@ export const dropData4 = [
   { title: 'Renew The Plan' },
 ]
 
-export const filterByStatusData = [
-  {
-    title: 'Item 1',
-  },
-  {
-    title: 'Item 2',
-  },
-  {
-    title: 'Item 3',
-  },
-  {
-    title: 'Item 4',
-  },
-]
-
 export const filterByTypeData = [
   {
     title: 'Projects',

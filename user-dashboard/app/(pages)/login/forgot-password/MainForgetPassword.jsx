@@ -1,8 +1,8 @@
 'use client'
 
 import { forgotPasswordApi } from '@/api/userApi'
-import ErrorMessage from '@/components/ErrorMessage'
-import Input from '@/components/Input'
+import ErrorMessage from '@/components/others/ErrorMessage'
+import Input from '@/components/others/Input'
 import { motion } from 'framer-motion'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'

@@ -30,7 +30,7 @@ const HourlyAvailableService = ({ serviceData, setServiceData, setValue }) => {
       ...serviceData,
       availableService,
     })
-  }, [availableService])
+  }, [availableService, setValue, setServiceData])
 
   return (
     <>

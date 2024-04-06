@@ -6,12 +6,6 @@ module.exports = {
     './app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
-    extend: {
-      colors: {
-        iconNotActive: '#6C7893',
-        iconActive: '#1310C6',
-      },
-    },
     screens: {
       xs: '450px',
       sm: '640px',

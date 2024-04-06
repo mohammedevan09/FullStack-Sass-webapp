@@ -81,3 +81,26 @@ export const takeActionData = [
   { title: 'Edit details' },
   { title: 'Delete service' },
 ]
+
+export const fakeMessageData = [
+  {
+    name: 'Henry Kevil',
+    message: 'What about the project?',
+    image: '/images/verify.png',
+  },
+  {
+    name: 'Jack Johnson',
+    message: 'I have working and it is working fine.',
+    image: '/images/demo.jpg',
+  },
+  {
+    name: 'Henry Kevil',
+    message: 'OH that is a good news!',
+    image: '/images/verify.png',
+  },
+  {
+    name: 'Jack Johnson',
+    message: 'We will give you the update later.',
+    image: '/images/demo.jpg',
+  },
+]

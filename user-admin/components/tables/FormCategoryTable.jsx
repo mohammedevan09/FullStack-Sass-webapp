@@ -26,12 +26,12 @@ const FormCategoryTable = ({ formCategoryData, title }) => {
           <tbody className="lg:text-base text-sm font-medium text-zinc-800">
             {formCategoryData?.map((item, i) => (
               <tr key={i}>
-                <td className="lg:py-7 py-4">
+                <td className="lg:py-5 py-4">
                   <div className="flex justify-start items-center gap-3 w-[90px]">
                     #{item?._id?.slice(0, 8)}..
                   </div>
                 </td>
-                <td className="lg:py-7 py-4 pl-1">
+                <td className="lg:py-5 py-4 pl-1">
                   <div className="flex justify-start items-center gap-3 md:min-w-full min-w-[250px]">
                     {item?.name?.length >= 60 ? (
                       <>{item?.name?.substring(0, 60)}...</>
@@ -41,12 +41,12 @@ const FormCategoryTable = ({ formCategoryData, title }) => {
                   </div>
                 </td>
 
-                <td className="lg:py-7 py-4 px-2 w-[110px]">
+                <td className="lg:py-5 py-4 px-2 w-[110px]">
                   <div className="flex justify-start items-center gap-3 min-w-[110px]">
                     #{item?.creatorId}
                   </div>
                 </td>
-                <td className="lg:py-7 py-4 text-center">
+                <td className="lg:py-5 py-4 text-center">
                   <button
                     className="w-[120px] h-[34px] btn-hover rounded-[5px] text-center"
                     onClick={() =>

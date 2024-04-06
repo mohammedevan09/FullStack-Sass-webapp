@@ -145,12 +145,51 @@ export const googleLoginUser = async (req, res, next) => {
   }
 }
 
-export const logoutUser = (req, res) => {
+export const logoutUser = (req, res, next) => {
   //   const cookie = req.cookies
   //   console.log(cookie.refreshToken)
   try {
     res.clearCookie('refreshToken')
     return res.status(200).send('Logout successful')
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const adminLogin = async (req, res, next) => {
+  const { email, password: pass } = req.body
+  const findUser = await User.findOne({ email, role: 'admin' })
+  try {
+    if (findUser) {
+      const comparedPass = bcrypt.compare(pass, findUser.password)
+      if (comparedPass) {
+        const newRefreshToken = generateRefreshToken(findUser?._id)
+        const loggedUser = await User.findByIdAndUpdate(
+          findUser.id,
+          {
+            refreshToken: newRefreshToken,
+          },
+          { new: true }
+        )
+
+        const { password, refreshToken, ...userWithoutPassAndToken } =
+          loggedUser._doc
+
+        res.cookie('refreshToken', newRefreshToken, {
+          httpOnly: true,
+          maxAge: 90 * 24 * 60 * 60 * 1000,
+        })
+
+        return res.status(200).json({
+          ...userWithoutPassAndToken,
+          token: generateToken(findUser?._id),
+        })
+      } else {
+        return res.status(400).send('Password did not match!')
+      }
+    } else {
+      return res.status(401).send('No admin found')
+    }
   } catch (error) {
     next(error)
   }

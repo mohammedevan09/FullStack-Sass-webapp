@@ -20,15 +20,17 @@ export const updateService = async (link, sendData) => {
   return data?.data
 }
 
-export const deleteService = async (link, sendData) => {
+export const deleteService = async (link) => {
   const data = await axios.delete(`${host}/api${link}`)
 
   return data?.data
 }
 
-export const getAllService = async () => {
+export const getAllService = async (queryData) => {
   try {
-    const data = await axios.get(`${host}/api/services`)
+    const data = await axios.get(`${host}/api/services`, {
+      params: queryData,
+    })
     return data?.data
   } catch (error) {
     return error

@@ -20,25 +20,16 @@ const orderSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    phone: {
-      type: String,
+    totalAmount: {
+      type: Number,
+      required: true,
     },
     pricingId: {
       type: mongoose.Schema.Types.ObjectId,
       // ref: 'Service',
       required: true,
     },
-    additionalInfo: [
-      {
-        title: {
-          type: String,
-          required: true,
-        },
-        value: {
-          type: mongoose.Schema.Types.Mixed,
-        },
-      },
-    ],
+    additionalInfo: {},
     projectTrackingBoard: {
       todo: [{ title: String }],
       inProgress: [{ title: String }],
@@ -57,24 +48,17 @@ const orderSchema = new mongoose.Schema(
     },
     payment_status: {
       type: String,
-      enum: ['pending', 'paid', 'cancel'],
+      enum: ['pending', 'done', 'canceled'],
       default: 'pending',
     },
     status: {
       type: String,
-      enum: ['pending', 'running', 'done'],
+      enum: ['pending', 'running', 'done', 'canceled'],
       default: 'pending',
     },
   },
   { timestamps: true }
 )
-
-orderSchema.virtual('pricing', {
-  ref: 'Service',
-  localField: 'pricingId',
-  foreignField: 'pricing._id',
-  justOne: true,
-})
 
 const Order = mongoose.model('Order', orderSchema)
 export default Order

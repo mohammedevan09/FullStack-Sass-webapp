@@ -4,22 +4,38 @@ import { cloudinaryUploadImg } from '../../utils/cloudinary.js'
 
 export const getAllServices = async (req, res, next) => {
   try {
-    const services = await Service.find()
+    let query = {}
 
-    const categorizedServices = services.reduce((acc, curr) => {
-      const { __t } = curr
-      if (!acc[__t]) {
-        acc[__t] = []
-      }
-      acc[__t].push(curr)
+    if (req.query.isActive) {
+      query.isActive = req.query.isActive === 'true'
+    }
+    if (req.query.__t) {
+      query.__t = req.query.__t
+    }
+
+    const page = parseInt(req.query.page) || 1
+    const limit = parseInt(req.query.limit) || 5
+    const skip = (page - 1) * limit
+
+    const services = await Service.aggregate([
+      { $match: query },
+      { $sort: { createdAt: -1 } },
+      { $group: { _id: '$__t', services: { $push: '$$ROOT' } } },
+      {
+        $project: {
+          _id: 0,
+          serviceType: '$_id',
+          services: {
+            $slice: ['$services', skip, limit],
+          },
+        },
+      },
+    ])
+
+    const formattedServices = services.reduce((acc, curr) => {
+      acc[curr.serviceType] = curr.services
       return acc
     }, {})
-
-    const formattedServices = {
-      Normal: categorizedServices.NormalService || [],
-      Subscription: categorizedServices.SubscriptionService || [],
-      Hourly: categorizedServices.HourlyService || [],
-    }
 
     return res.status(200).json(formattedServices)
   } catch (error) {

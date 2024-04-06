@@ -1,17 +1,17 @@
-import {
-  hourlyData,
-  projectData,
-  subscriptionData,
-} from '@/staticData/MainData'
 import MainAllProjects from './MainAllProjects'
+import { getAllOrders } from '@/api/orderApi'
 
-const page = () => {
+const page = async ({ searchParams }) => {
+  const orders = await getAllOrders(
+    searchParams?.userId ? searchParams : { userId: 'none' }
+  )
+
   return (
     <>
       <MainAllProjects
-        projects={projectData}
-        subscriptions={subscriptionData}
-        hourlyData={hourlyData}
+        projects={orders?.NormalServiceOrder || []}
+        subscriptions={orders?.SubscriptionServiceOrder || []}
+        hourlyData={orders?.HourlyServiceOrder || []}
       />
     </>
   )

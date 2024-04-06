@@ -1,13 +1,13 @@
 'use client'
 
-import ErrorMessage from '@/components/ErrorMessage'
-import Input from '@/components/Input'
-import Labels from '@/components/Labels'
+import ErrorMessage from '@/components/others/ErrorMessage'
+import Input from '@/components/others/Input'
+import Labels from '@/components/others/Labels'
 import FormExample from '@/components/form-builder/FormExample'
 import DeleteFormModal from '@/components/modals/FormModal/DeleteFormModal'
 import BackButton from '@/components/others/BackButton'
 import MainEditor from '@/components/text-editor/MainEditor'
-import JsonToText from '@/lib/JsonToText'
+import JsonToText from '@/utils/JsonToText'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
@@ -19,7 +19,7 @@ const MainFormPage = ({ form, searchParams }) => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid, isDirty, isSubmitting },
+    formState: { errors, isValid, isSubmitting },
     reset,
   } = useForm({
     defaultValues: {
@@ -88,6 +88,7 @@ const MainFormPage = ({ form, searchParams }) => {
             <MainEditor
               setText={setText}
               defaultText={JsonToText(form.description)}
+              className={'[&>*:nth-child(2)]:min-h-[140px!important]'}
             />
           </div>
         </div>

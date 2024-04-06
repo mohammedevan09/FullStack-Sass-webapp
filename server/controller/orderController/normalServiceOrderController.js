@@ -68,3 +68,19 @@ export const getNormalServiceOrderById = async (req, res, next) => {
     next(error)
   }
 }
+
+export const updateNormalServiceOrderById = async (req, res, next) => {
+  try {
+    const order = await NormalServiceOrder.findByIdAndUpdate(
+      {
+        _id: req.params.id,
+      },
+      req.body,
+      { new: true }
+    ).populate('serviceId')
+
+    return sendOneOrderResponse(res, order)
+  } catch (error) {
+    next(error)
+  }
+}

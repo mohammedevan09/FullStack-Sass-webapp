@@ -1,3 +1,4 @@
+import mongoose from 'mongoose'
 import Order from '../../model/orderModels/orderModel.js'
 import { sendResponse } from '../../utils/sendResponse.js'
 
@@ -11,7 +12,9 @@ export const createStripeOrder = async (customer, data, res) => {
         payment_intent: data?.payment_intent,
         payment_status: data?.payment_status,
         payment_method_types: data?.payment_method_types[0],
-        phone: data?.customer_details?.phone,
+        additionalInfo: {
+          phone: data?.customer_details?.phone,
+        },
         status: 'running',
       },
       { new: true }
@@ -29,24 +32,38 @@ export const createStripeOrder = async (customer, data, res) => {
 
 export const getAllOrder = async (req, res, next) => {
   try {
-    const orders = await Order.find()
+    let query = {}
 
-    console.log(orders)
+    if (req.query.__t) {
+      query.__t = req.query.__t
+    }
+    if (req.query.userId) {
+      query.userId = new mongoose.Types.ObjectId(req.query.userId)
+    }
 
-    const categorizedOrders = orders.reduce((acc, curr) => {
-      const { __t } = curr
-      if (!acc[__t]) {
-        acc[__t] = []
-      }
-      acc[__t].push(curr)
+    const page = parseInt(req.query.page) || 1
+    const limit = parseInt(req.query.limit) || 5
+    const skip = (page - 1) * limit
+
+    const orders = await Order.aggregate([
+      { $match: query },
+      { $sort: { createdAt: -1 } },
+      { $group: { _id: '$__t', orders: { $push: '$$ROOT' } } },
+      {
+        $project: {
+          _id: 0,
+          serviceType: '$_id',
+          orders: {
+            $slice: ['$orders', skip, limit],
+          },
+        },
+      },
+    ])
+
+    const formattedOrders = orders.reduce((acc, curr) => {
+      acc[curr.serviceType] = curr.orders.length > 0 ? curr.orders : []
       return acc
     }, {})
-
-    const formattedOrders = {
-      Normal: categorizedOrders.NormalServiceOrder || [],
-      Subscription: categorizedOrders.SubscriptionServiceOrder || [],
-      Hourly: categorizedOrders.HourlyServiceOrder || [],
-    }
 
     return sendResponse(res, formattedOrders)
   } catch (error) {

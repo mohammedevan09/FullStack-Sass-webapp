@@ -1,14 +1,14 @@
 'use client'
 
-import { Input2 } from '@/components/Input'
-import { LabelsTwo } from '@/components/Labels'
+import { Input2 } from '@/components/others/Input'
+import { LabelsTwo } from '@/components/others/Labels'
 import WrappingModal from '../WrappingModal'
 import { motion } from 'framer-motion'
 import { useState } from 'react'
-import CheckoutModal from '../checkoutModals/CheckoutModal'
+import CheckoutModal from './CheckoutModal'
 import { useForm } from 'react-hook-form'
-import { ErrorMessageTwo } from '@/components/ErrorMessage'
-import YesNoRadioInput from '@/components/YesNoRadioInput'
+import { ErrorMessageTwo } from '@/components/others/ErrorMessage'
+import YesNoRadioInput from '@/components/others/YesNoRadioInput'
 
 const DesignAndDevelopmentModal = ({
   pricingData,

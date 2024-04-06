@@ -1,7 +1,7 @@
 'use client'
 
-import { Input2 } from '@/components/Input'
-import { LabelsTwo } from '@/components/Labels'
+import { Input2 } from '@/components/others/Input'
+import { LabelsTwo } from '@/components/others/Labels'
 import { FilterByIdIcon, SearchByIdIcon } from '@/staticData/Icon'
 import WrappingModal from '../WrappingModal'
 import { motion } from 'framer-motion'

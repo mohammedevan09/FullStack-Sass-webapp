@@ -1,11 +1,18 @@
 import mongoose from 'mongoose'
-import Order from '../orderModal.js'
+import Order from './orderModel.js'
 
-const maintenanceSchema = new mongoose.Schema({
+const subscriptionServiceOrderSchema = new mongoose.Schema({
   subscriptionRenew: {
+    type: mongoose.Schema.Types.Mixed,
+  },
+  subscriptionType: {
     type: String,
+    required: true,
   },
 })
 
-const Maintenance = Order.discriminator('Maintenance', maintenanceSchema)
-export default Maintenance
+const SubscriptionServiceOrder = Order.discriminator(
+  'SubscriptionServiceOrder',
+  subscriptionServiceOrderSchema
+)
+export default SubscriptionServiceOrder

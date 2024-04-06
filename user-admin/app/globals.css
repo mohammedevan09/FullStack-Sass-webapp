@@ -152,7 +152,17 @@ span#RFS-Label {
   border-radius: 5px;
 }
 
+.login-scroll::-webkit-scrollbar-thumb {
+  background: #ffffffc4;
+  border-radius: 10px;
+}
+
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #9597ff;
+}
+
+input[type='password']::-ms-reveal,
+input[type='password']::-ms-clear {
+  display: none;
 }

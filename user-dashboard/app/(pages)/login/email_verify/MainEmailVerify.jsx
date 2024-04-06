@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
+import { redirect, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { motion } from 'framer-motion'
@@ -38,9 +38,9 @@ const MainEmailVerify = () => {
 
   useEffect(() => {
     if (userInfo && userInfo?.email_verified === true) {
-      router?.push('/dashboard')
+      redirect('/dashboard')
     } else if (!userInfo?._id) {
-      router?.push('/login')
+      redirect('/login')
     }
   }, [userInfo, router])
 

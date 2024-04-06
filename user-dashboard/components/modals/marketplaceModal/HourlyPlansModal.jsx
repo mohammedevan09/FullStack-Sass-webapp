@@ -1,10 +1,10 @@
 'use client'
 
-import Input, { Input2 } from '@/components/Input'
-import { LabelsTwo } from '@/components/Labels'
+import Input, { Input2 } from '@/components/others/Input'
+import { LabelsTwo } from '@/components/others/Labels'
 import WrappingModal from '../WrappingModal'
 import { motion } from 'framer-motion'
-import YesNoRadioInput from '@/components/YesNoRadioInput'
+import YesNoRadioInput from '@/components/others/YesNoRadioInput'
 
 const HourlyPlansModal = ({ setOpenModal, openModal }) => {
   const services = [

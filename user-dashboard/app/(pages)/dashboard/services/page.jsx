@@ -1,52 +1,41 @@
-import {
-  DesignAndDevelopmentIcon,
-  HourlyDevPlansIcon,
-  WebsiteMaintenanceIcon,
-} from '@/staticData/Icon'
-import Link from 'next/link'
+import { getAllService } from '@/api/serviceApi'
+import ServiceCard from './_components/ServiceCard'
 
-const page = () => {
-  const services = [
-    {
-      title: 'Design & Development',
-      icon: <DesignAndDevelopmentIcon />,
-      links: '/dashboard/services/designAndDevelopmentPackages',
-    },
-    {
-      title: 'Website Maintenance',
-      icon: <WebsiteMaintenanceIcon />,
-      links: '/dashboard/services/maintenancePlans',
-    },
-    {
-      title: 'Hourly Developer plans',
-      icon: <HourlyDevPlansIcon />,
-      links: '/dashboard/services/hourlyPlan',
-    },
-  ]
+const page = async () => {
+  const services = await getAllService({ isActive: true })
+
   return (
-    <div className="grid justify-center items-center lg:gap-24 sm:gap-12 gap-8 lg:mt-44 sm:mt-20 mt-8">
-      <h1 className="sm:w-[492px] w-full text-center sm:text-[32px] text-[26px] font-semibold mx-auto">
+    <div className="grid items-center lg:gap-24 sm:gap-12 gap-8 sm:my-10 my-3">
+      <h1 className="sm:w-[492px] w-full text-center sm:text-4xl xs:text-3xl text-2xl font-bold mx-auto">
         What type of service are you looking for?
       </h1>
-      <div className="md:flex grid md:justify-center items-center 2xl:gap-20 lg:gap-10 md:gap-5 gap-7">
-        {services?.map((item, i) => (
-          <div
+      <div className="grid xl:grid-cols-3 sm:grid-cols-2 grid-cols-1 items-center lg:gap-10 md:gap-5 gap-7 w-full">
+        {services?.NormalService?.map((item, i) => (
+          <ServiceCard
+            item={item}
+            link={`/normalService/${item?._id}`}
+            i={i}
             key={i}
-            className="grid items-center justify-center py-5 lg:px-10 px-5 bg-white rounded-[15px] gap-6"
-          >
-            <div className="grid justify-center gap-1">
-              <div className="mx-auto">{item?.icon}</div>
-              <h3 className="text-xl font-semibold text-center">
-                {item?.title}
-              </h3>
-            </div>
-            <Link
-              href={item?.links}
-              className="w-[189px] h-[43px] btn-hover rounded-[5px] text-base font-semibold text-center flex items-center justify-center mx-auto"
-            >
-              Browse packages
-            </Link>
-          </div>
+            type={'Flat charge'}
+          />
+        ))}
+        {services?.SubscriptionService?.map((item, i) => (
+          <ServiceCard
+            item={item}
+            link={`/subscriptionService/${item?._id}`}
+            i={i}
+            key={i}
+            type={'Subscription'}
+          />
+        ))}
+        {services?.HourlyService?.map((item, i) => (
+          <ServiceCard
+            item={item}
+            link={`/hourlyService/${item?._id}`}
+            i={i}
+            key={i}
+            type={'Hourly'}
+          />
         ))}
       </div>
     </div>

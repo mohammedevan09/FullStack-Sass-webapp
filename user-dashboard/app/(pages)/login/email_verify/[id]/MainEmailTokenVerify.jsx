@@ -22,6 +22,7 @@ const MainEmailTokenVerify = ({ params, searchParams }) => {
       toast.error('Verification Failed')
     }
   }
+
   return (
     <>
       <div className="flex items-center justify-center mb-6 text-gray-800">

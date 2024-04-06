@@ -1,4 +1,4 @@
-import Labels from '@/components/Labels'
+import Labels from '@/components/others/Labels'
 import WrappingModal from '../WrappingModal'
 import { motion } from 'framer-motion'
 

@@ -1,17 +1,18 @@
 'use client'
 
-import Input, { Input2 } from '@/components/Input'
+import Input, { Input2 } from '@/components/others/Input'
 import { motion } from 'framer-motion'
 import WrappingModal from '../WrappingModal'
 import { use, useState } from 'react'
 import { CheckSignIcon3, CloseIcon } from '@/staticData/Icon'
 import { Step, Stepper } from 'react-form-stepper'
 import Image from 'next/image'
-import Labels from '@/components/Labels'
+import Labels from '@/components/others/Labels'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { createServiceApi, uploadSvgIcon } from '@/api/serviceApi'
 import toast from 'react-hot-toast'
+import { useSelector } from 'react-redux'
 
 const serviceTypes = [
   {
@@ -36,6 +37,8 @@ const AddNewService = ({ openModal, setOpenModal }) => {
   const [activeStep, setActiveStep] = useState(0)
   const [images, setImages] = useState([])
 
+  const { userInfo } = useSelector((state) => state?.user)
+
   const {
     register,
     handleSubmit,
@@ -46,7 +49,7 @@ const AddNewService = ({ openModal, setOpenModal }) => {
       name: '',
       heading: '',
       subheading: '',
-      creatorId: '65f6b9344508e0f80ff0b62e',
+      creatorId: userInfo?._id,
     },
 
     mode: 'onChange',

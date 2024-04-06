@@ -11,7 +11,7 @@ import ServiceBasicInfo from '../ServiceBasicInfo'
 import StatusAction from '../StatusAction'
 import EditNewService from '@/components/modals/serviceModal/EditNewService'
 import DeleteService from '@/components/modals/serviceModal/DeleteService'
-import ReactSelect from '@/components/ReactSelect'
+import ReactSelect from '@/components/others/ReactSelect'
 import { updateService, uploadSvgIcon } from '@/api/serviceApi'
 import HourlyPricing from '../HourlyPricing'
 import EditHourlyPricingService from '@/components/modals/serviceModal/EditHourlyPricingService'
@@ -58,7 +58,7 @@ const MainHourlyServicePage = ({ service, forms }) => {
       toast.success('Your service icon is updated!')
       reset()
     }
-    if (isDirty && isDirty) {
+    if (isValid && isDirty) {
       const updatedData = await updateService(pathname, data)
       setServiceData(updatedData)
       setImage(null)

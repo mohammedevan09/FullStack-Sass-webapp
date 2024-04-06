@@ -1,5 +1,5 @@
 import MainHourlyPlan from './MainHourlyPlan'
-import MarketPlaceHeadings from '../MarketPlaceHeadings'
+import MarketPlaceHeadings from '../_components/MarketPlaceHeadings'
 
 const page = () => {
   const services = [

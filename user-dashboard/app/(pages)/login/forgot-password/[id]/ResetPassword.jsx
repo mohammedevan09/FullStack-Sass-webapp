@@ -1,6 +1,6 @@
 'use client'
 
-import { PasswordInput } from '@/components/Input'
+import { PasswordInput } from '@/components/others/Input'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { motion } from 'framer-motion'
@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation'
 import { resetPasswordApi } from '@/api/userApi'
 import { useDispatch } from 'react-redux'
 import { setUsers } from '@/store/reducers/userReducer'
-import ErrorMessage from '@/components/ErrorMessage'
+import ErrorMessage from '@/components/others/ErrorMessage'
 
 const ResetPassword = ({ params, searchParams }) => {
   const router = useRouter()

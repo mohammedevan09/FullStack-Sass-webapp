@@ -4,10 +4,10 @@ import AddNewService from '@/components/modals/serviceModal/AddNewService'
 import ServiceTables from '@/components/tables/ServiceTables'
 import { AddProjectIcon, AllProjectsIcon } from '@/staticData/Icon'
 import { useState } from 'react'
+import ServiceMediumHeading from './_components/ServiceMediumHeading'
 
 const MainServiceList = ({ services }) => {
   const [openModal, setOpenModal] = useState(false)
-
   return (
     <>
       <button
@@ -20,22 +20,52 @@ const MainServiceList = ({ services }) => {
         <AllProjectsIcon color={'black'} /> Services List
       </h2>
 
-      <div className="bg-white rounded-[20px] sm:my-8 my-6">
-        <ServiceTables
-          serviceData={services?.Normal}
-          title={'Normal Services'}
-          link={'/normalService'}
-        />
-        <ServiceTables
-          serviceData={services?.Subscription}
-          title={'Subscription Services'}
-          link={'/subscriptionService'}
-        />
-        <ServiceTables
-          serviceData={services?.Hourly}
-          title={'Hourly Services'}
-          link={'/hourlyService'}
-        />
+      <div className="bg-white rounded-[20px] sm:my-8 my-6 pt-8 grid gap-4 overflow-x-hidden">
+        <div>
+          <ServiceMediumHeading
+            title={'Normal Services'}
+            link={
+              services?.NormalService && services?.NormalService?.length > 4
+                ? '/services/normalService'
+                : null
+            }
+          />
+          <ServiceTables
+            serviceData={services?.NormalService || []}
+            link={'/normalService'}
+          />
+        </div>
+        <div>
+          <ServiceMediumHeading
+            title={'Subscription Services'}
+            link={
+              services?.SubscriptionService &&
+              services?.SubscriptionService?.length > 4
+                ? '/services/subscriptionService'
+                : null
+            }
+          />
+          <ServiceTables
+            serviceData={services?.SubscriptionService || []}
+            title={'Subscription Services'}
+            link={'/subscriptionService'}
+          />
+        </div>
+        <div>
+          <ServiceMediumHeading
+            title={'Hourly Services'}
+            link={
+              services?.HourlyService && services?.HourlyService?.length > 4
+                ? '/services/hourlyService'
+                : null
+            }
+          />
+          <ServiceTables
+            serviceData={services?.HourlyService || []}
+            title={'Hourly Services'}
+            link={'/hourlyService'}
+          />
+        </div>
       </div>
 
       {openModal && (

@@ -1,6 +1,6 @@
 'use client'
 
-import Input from '@/components/Input'
+import Input from '@/components/others/Input'
 import WrappingModal from '../WrappingModal'
 import { motion } from 'framer-motion'
 import { useState } from 'react'

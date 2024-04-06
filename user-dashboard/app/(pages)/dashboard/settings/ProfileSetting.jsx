@@ -1,7 +1,7 @@
 'use client'
 
-import Input, { PasswordInput } from '@/components/Input'
-import Labels from '@/components/Labels'
+import Input, { PasswordInput } from '@/components/others/Input'
+import Labels from '@/components/others/Labels'
 import { motion } from 'framer-motion'
 
 const ProfileSetting = () => {

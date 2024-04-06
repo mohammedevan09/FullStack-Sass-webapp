@@ -1,11 +1,11 @@
 'use client'
 
-import { Input2 } from '@/components/Input'
+import { Input2 } from '@/components/others/Input'
 import { motion } from 'framer-motion'
 import WrappingModal from '../WrappingModal'
 import Image from 'next/image'
-import Labels from '@/components/Labels'
-import ErrorMessage from '@/components/ErrorMessage'
+import Labels from '@/components/others/Labels'
+import ErrorMessage from '@/components/others/ErrorMessage'
 import { useRef } from 'react'
 
 const EditNewService = ({

@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
-import Order from '../orderModal.js'
+import Order from './orderModel.js'
 
-const hourlyPlanSchema = new mongoose.Schema(
+const hourlyServiceOrderSchema = new mongoose.Schema(
   {
     totalHours: {
       type: Number,
@@ -10,10 +10,12 @@ const hourlyPlanSchema = new mongoose.Schema(
     spentHours: {
       type: Number,
       required: true,
+      default: 0,
     },
     remainHours: {
       type: Number,
       required: true,
+      default: 0,
     },
 
     hourlyTimeLogs: [
@@ -43,5 +45,8 @@ const hourlyPlanSchema = new mongoose.Schema(
   }
 )
 
-const HourlyPlan = Order.discriminator('HourlyPlan', hourlyPlanSchema)
-export default HourlyPlan
+const HourlyServiceOrder = Order.discriminator(
+  'HourlyServiceOrder',
+  hourlyServiceOrderSchema
+)
+export default HourlyServiceOrder

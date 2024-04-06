@@ -22,7 +22,7 @@ const HourlyPricing = ({ index, setPricingLength, editPricingModal, item }) => {
           <CheckSignIcon3 color={'blue'} />
         </div>
         <div className="grid sm:gap-1">
-          <div className="bg-blue-800 rounded-[20px] text-gray-200 text-[13px] py-1 text-center font-medium w-[180px]">
+          <div className="bg-blue-800 rounded-[20px] text-gray-200 text-[13px] py-1 text-center font-medium  w-[130px] px-3">
             {item?.name}
           </div>
           <h3 className="text-slate-600 sm:text-lg text-base font-semibold">

@@ -1,7 +1,7 @@
 'use client'
 
-import Input from '../../Input'
-import Labels from '../../Labels'
+import Input from '../../others/Input'
+import Labels from '../../others/Labels'
 import WrappingModal from '../WrappingModal'
 import { motion } from 'framer-motion'
 

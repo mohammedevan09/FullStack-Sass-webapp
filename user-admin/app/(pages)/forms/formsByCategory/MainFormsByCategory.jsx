@@ -1,6 +1,6 @@
 'use client'
 
-import JsonToText from '@/lib/JsonToText'
+import JsonToText from '@/utils/JsonToText'
 import { FormsByCategoryIdIcon } from '@/staticData/Icon'
 import Link from 'next/link'
 import '../../../../components/text-editor/tiptapstyle.css'
@@ -30,7 +30,7 @@ const MainFormsByCategory = ({ formCategory, forms, searchParams }) => {
           <div key={item?._id} className="flex justify-between items-start">
             <div className="flex gap-2">
               <FormsByCategoryIdIcon />
-              <div className="grid">
+              <div className="grid items-center">
                 <p className="font-semibold text-base">{item?.name}</p>
                 <span className="text-sm text-gray-600 tiptap">
                   {JsonToText(item?.description, false)}

@@ -1,14 +1,14 @@
 'use client'
 
-import { Input2 } from '@/components/Input'
-import { LabelsTwo } from '@/components/Labels'
+import { Input2 } from '@/components/others/Input'
+import { LabelsTwo } from '@/components/others/Labels'
 import WrappingModal from '../WrappingModal'
 import { motion } from 'framer-motion'
-import YesNoRadioInput from '@/components/YesNoRadioInput'
-import CheckoutModal from '../checkoutModals/CheckoutModal'
+import YesNoRadioInput from '@/components/others/YesNoRadioInput'
+import CheckoutModal from './CheckoutModal'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { ErrorMessageTwo } from '@/components/ErrorMessage'
+import { ErrorMessageTwo } from '@/components/others/ErrorMessage'
 
 const MaintenancePlansModal = ({ setOpenModal, openModal, pricingData }) => {
   const [checkOutModal, setCheckOutModal] = useState(false)

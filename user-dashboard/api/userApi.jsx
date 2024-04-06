@@ -3,14 +3,10 @@ import axios from 'axios'
 const host = process.env.NEXT_PUBLIC_HOST
 
 export const loginUserApi = async (sendData) => {
-  try {
-    const data = await axios.post(`${host}/api/user/login`, sendData, {
-      withCredentials: true,
-    })
-    return data?.data
-  } catch (error) {
-    return error
-  }
+  const data = await axios.post(`${host}/api/user/login`, sendData, {
+    withCredentials: true,
+  })
+  return data?.data
 }
 
 export const registerUserApi = async (sendData) => {

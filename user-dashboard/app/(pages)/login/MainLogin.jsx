@@ -5,18 +5,18 @@ import {
   loginUserApi,
   registerUserApi,
 } from '@/api/userApi'
-import Input, { PasswordInput } from '@/components/Input'
+import Input, { PasswordInput } from '@/components/others/Input'
 import { GoogleIcon } from '@/staticData/Icon'
 import { setUsers } from '@/store/reducers/userReducer'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
+import { redirect, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
 import { useGoogleLogin } from '@react-oauth/google'
 import axios from 'axios'
-import ErrorMessage from '@/components/ErrorMessage'
+import ErrorMessage from '@/components/others/ErrorMessage'
 
 const MainLogin = () => {
   const [isSignUp, setIsSignUp] = useState(false)
@@ -33,16 +33,16 @@ const MainLogin = () => {
   useEffect(() => {
     if (userInfo && userInfo?._id) {
       if (userInfo?.email_verified === false) {
-        router.push(`/login/email_verify`)
+        redirect(`/login/email_verify`)
       } else if (
         userInfo?.company_name === '' ||
         userInfo?.company_website === '' ||
         userInfo?.position === '' ||
         userInfo?.number === ''
       ) {
-        router.push('/login/add-details')
+        redirect('/login/add-details')
       } else {
-        router.push('/dashboard')
+        redirect('/dashboard')
       }
     }
   }, [userInfo, router])

@@ -1,8 +1,8 @@
 'use client'
 
 import { CreditCardSvg, MastercardIcon } from '@/staticData/Icon'
-import Labels from '../../Labels'
-import Input from '../../Input'
+import Labels from '../../others/Labels'
+import Input from '../../others/Input'
 import WrappingModal from '../WrappingModal'
 import { motion } from 'framer-motion'
 

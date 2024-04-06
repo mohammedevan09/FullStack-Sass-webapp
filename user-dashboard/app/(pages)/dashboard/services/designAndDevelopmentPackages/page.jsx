@@ -1,5 +1,5 @@
 import MainDesignAndDevPricing from './MainDesignAndDevPricing'
-import MarketPlaceHeadings from '../MarketPlaceHeadings'
+import MarketPlaceHeadings from '../_components/MarketPlaceHeadings'
 
 const page = () => {
   const pricing = [

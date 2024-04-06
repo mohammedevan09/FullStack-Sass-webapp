@@ -2,14 +2,15 @@
 
 import { useEffect, useState } from 'react'
 import { Draggable, Droppable } from 'react-beautiful-dnd'
-import { DndContext } from './DndContext'
+import { DndContext } from '../others/DndContext'
 import { cardsData } from './FormsData'
 import FormLabelEditModal from '../modals/FormModal/FormLabelEditModal'
 import { InputFieldEditIcon, NoteIcon } from '@/staticData/Icon'
-import Labels from '../Labels'
+import Labels from '../others/Labels'
 import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
 import { createFormApi, updateFormApi } from '@/api/formApi'
+import { useSelector } from 'react-redux'
 
 const FormExample = ({
   form,
@@ -21,6 +22,8 @@ const FormExample = ({
   searchParams,
 }) => {
   const router = useRouter()
+
+  const { userInfo } = useSelector((state) => state?.user)
 
   const [data, setData] = useState([])
   const [openModal, setOpenModal] = useState(false)
@@ -129,9 +132,7 @@ const FormExample = ({
           newFormData = await updateFormApi(
             {
               ...formData,
-              formCategoryId: searchParams?.categoryId,
-              userId: '65feab9abe1333c4b6c5bfd1',
-              description: text,
+              description: text || form?.description,
               fields: [...data[0]?.fields],
             },
             form?._id
@@ -140,7 +141,7 @@ const FormExample = ({
           newFormData = await createFormApi({
             ...formData,
             formCategoryId: searchParams?.categoryId,
-            userId: '65feab9abe1333c4b6c5bfd1',
+            userId: userInfo?._id,
             description: text,
             fields: [...data[0]?.fields],
           })
@@ -247,6 +248,7 @@ const FormExample = ({
                                   )}
                                 </Draggable>
                               ))}
+                              {provided.placeholder}
                               <button
                                 className="bg-blue-800 p-2 rounded text-lg font-semibold w-full text-white btn-hover relative bottom-0 disabled:opacity-50 disabled:cursor-not-allowed"
                                 disabled={isSubmitting}
@@ -256,7 +258,6 @@ const FormExample = ({
                               </button>
                             </>
                           )}
-                          {provided.placeholder}
                         </div>
                         <div className="flex items-center mt-1 mb-4 font-medium text-gray-600">
                           <NoteIcon /> Title and description will be in the form

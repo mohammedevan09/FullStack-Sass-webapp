@@ -62,7 +62,7 @@ export const MenuBar = ({ setText }) => {
   }
 
   return (
-    <div className="flex justify-start items-center xs:gap-3 gap-1 text-sm editor-btn px-2 py-1 border-t border-gray-300 order-4">
+    <div className="flex justify-start items-center xs:gap-3 gap-1 text-sm editor-btn px-2 py-1 order-4">
       <button
         onClick={() => editor.chain().focus().toggleBold().run()}
         disabled={!editor.can().chain().focus().toggleBold().run()}

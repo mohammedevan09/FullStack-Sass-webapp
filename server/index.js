@@ -16,6 +16,8 @@ import formRouter from './router/formRouter/formRouter.js'
 import { stripeWebhook } from './controller/stripeWebhook.js'
 import orderRouter from './router/orderRouter/orderRouter.js'
 import normalServiceOrderRouter from './router/orderRouter/normalServiceOrderRouter.js'
+import subscriptionServiceOrderRouter from './router/orderRouter/subscriptionServiceOrderRouter.js'
+import hourlyServiceOrderRouter from './router/orderRouter/hourlyServiceOrderRouter.js'
 
 dotenv.config()
 
@@ -58,6 +60,8 @@ app.use('/api/formCategory', formCategory)
 app.use('/api/form', formRouter)
 app.use('/api/order', orderRouter)
 app.use('/api/order/normalService', normalServiceOrderRouter)
+app.use('/api/order/subscriptionService', subscriptionServiceOrderRouter)
+app.use('/api/order/hourlyService', hourlyServiceOrderRouter)
 
 app.use(notFound)
 app.use(errorHandler)

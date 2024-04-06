@@ -4,6 +4,7 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import { persistStore, persistReducer } from 'redux-persist'
 import activeReducer from './reducers/activeReducer'
 import createWebStorage from 'redux-persist/lib/storage/createWebStorage'
+import userReducer from './reducers/userReducer'
 
 const createNoopStorage = () => {
   return {
@@ -32,6 +33,7 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   active: activeReducer,
+  user: userReducer,
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

@@ -1,8 +1,8 @@
 'use client'
 
-import Input from '@/components/Input'
+import Input from '@/components/others/Input'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
+import { redirect, useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { motion } from 'framer-motion'
 import { useDispatch, useSelector } from 'react-redux'
@@ -10,7 +10,7 @@ import { useEffect } from 'react'
 import { updateUserApi } from '@/api/userApi'
 import toast from 'react-hot-toast'
 import { setUsers } from '@/store/reducers/userReducer'
-import ErrorMessage from '@/components/ErrorMessage'
+import ErrorMessage from '@/components/others/ErrorMessage'
 
 const MainAddDetails = () => {
   const router = useRouter()
@@ -52,7 +52,7 @@ const MainAddDetails = () => {
 
   useEffect(() => {
     if (!userInfo?._id) {
-      router.push('/login')
+      redirect('/login')
     }
   }, [userInfo, router])
 

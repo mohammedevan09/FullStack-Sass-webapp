@@ -1,8 +1,8 @@
 'use client'
 
-import { LabelsTwo } from '@/components/Labels'
+import { LabelsTwo } from '@/components/others/Labels'
 import WrappingModal from '../WrappingModal'
-import { Input2 } from '@/components/Input'
+import { Input2 } from '@/components/others/Input'
 import { motion } from 'framer-motion'
 
 const RequestWithdrawModal = ({ openModal, setOpenModal, setOpenSubModal }) => {

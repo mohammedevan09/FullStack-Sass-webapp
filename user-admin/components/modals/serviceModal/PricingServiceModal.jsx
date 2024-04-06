@@ -1,9 +1,9 @@
 'use client'
 
-import { Input2 } from '@/components/Input'
+import { Input2 } from '@/components/others/Input'
 import WrappingModal from '../WrappingModal'
 import { motion } from 'framer-motion'
-import Labels from '@/components/Labels'
+import Labels from '@/components/others/Labels'
 import { useEffect, useState } from 'react'
 import PricingServices from '@/app/(pages)/services/_components/PricingServices'
 

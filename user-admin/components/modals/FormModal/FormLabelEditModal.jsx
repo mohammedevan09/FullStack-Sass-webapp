@@ -2,8 +2,8 @@
 
 import { motion } from 'framer-motion'
 import WrappingModal from '../WrappingModal'
-import { Input2 } from '@/components/Input'
-import Labels from '@/components/Labels'
+import { Input2 } from '@/components/others/Input'
+import Labels from '@/components/others/Labels'
 import { useState } from 'react'
 import { RemoveIcon } from '@/staticData/Icon'
 
@@ -79,26 +79,6 @@ const FormLabelEditModal = ({
                   }}
                 />
               </div>
-              <div className="flex mt-2 items-center justify-center gap-1">
-                <Labels
-                  htmlFor={'optional'}
-                  name={'Optional - '}
-                  className="mb-0"
-                />
-                <button
-                  className={`py-1 font-semibold px-4 text-white rounded-full ${
-                    newField?.optional ? 'bg-blue-400' : 'bg-red-400'
-                  }`}
-                  onClick={(e) => {
-                    e.preventDefault()
-                    setNewField((prev) => {
-                      return { ...prev, optional: !newField?.optional }
-                    })
-                  }}
-                >
-                  {newField?.optional ? 'True' : 'False'}
-                </button>
-              </div>
             </>
           ) : (
             <div className={`grid gap-5`}>
@@ -148,6 +128,22 @@ const FormLabelEditModal = ({
               </div>
             </div>
           )}
+        </div>
+        <div className="flex mt-6 items-center gap-1">
+          <Labels htmlFor={'optional'} name={'Optional - '} className="mb-0" />
+          <button
+            className={`py-[2px] font-medium px-4 text-white rounded-full text-sm ${
+              newField?.optional ? 'bg-blue-400' : 'bg-red-400'
+            }`}
+            onClick={(e) => {
+              e.preventDefault()
+              setNewField((prev) => {
+                return { ...prev, optional: !newField?.optional }
+              })
+            }}
+          >
+            {newField?.optional ? 'True' : 'False'}
+          </button>
         </div>
         <div className="flex items-center gap-3 mt-10">
           <motion.button

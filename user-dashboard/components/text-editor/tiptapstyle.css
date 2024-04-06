@@ -52,7 +52,7 @@
 .ProseMirror {
   padding: 8px 16px;
   order: 1;
-  height: auto;
+  /* height: 60px; */
   overflow-y: scroll;
   word-break: break-all;
 }

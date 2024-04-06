@@ -1,6 +1,6 @@
 const layout = ({ children }) => {
   return (
-    <div className="grid justify-center items-center w-full sm:px-4 xs:px-3 px-[6px]">
+    <div className="grid items-center w-full sm:px-4 xs:px-3 px-[6px] my-5">
       {children}
     </div>
   )

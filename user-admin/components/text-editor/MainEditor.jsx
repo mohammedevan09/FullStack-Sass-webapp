@@ -23,8 +23,9 @@ import Link from '@tiptap/extension-link'
 import { EditorProvider, useCurrentEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import { useCallback, useEffect } from 'react'
+import { initialText } from '@/app/(pages)/orders/_components/InboxAndMessaging'
 
-export const MenuBar = ({ setText }) => {
+export const MenuBar = ({ setText, subClassName, text }) => {
   const { editor } = useCurrentEditor()
 
   useEffect(() => {
@@ -33,11 +34,15 @@ export const MenuBar = ({ setText }) => {
       setText(contentHTML)
     }
 
+    if (text === initialText) {
+      editor.commands.setContent('<p></p>')
+    }
+
     editor.on('update', handleUpdate)
     return () => {
       editor.off('update', handleUpdate)
     }
-  }, [editor, setText])
+  }, [editor, setText, text])
 
   const setLink = useCallback(() => {
     const previousUrl = editor.getAttributes('link').href
@@ -61,7 +66,9 @@ export const MenuBar = ({ setText }) => {
   }
 
   return (
-    <div className="flex justify-start items-center xs:gap-3 gap-1 text-sm editor-btn xs:px-4 px-2 py-2 border-b border-gray-300">
+    <div
+      className={`flex justify-start items-center xs:gap-3 gap-1 text-sm editor-btn xs:px-4 px-2 py-2 border-b border-gray-300 ${subClassName}`}
+    >
       <button
         onClick={() => editor.chain().focus().toggleBold().run()}
         disabled={!editor.can().chain().focus().toggleBold().run()}
@@ -167,11 +174,21 @@ export const extensions = [
   }),
 ]
 
-const MainEditor = ({ setText, defaultText }) => {
+const MainEditor = ({
+  setText,
+  text,
+  defaultText,
+  className,
+  subClassName,
+}) => {
   return (
-    <div className="text-sm border border-gray-300 rounded-[4px]">
+    <div
+      className={`text-sm border border-gray-300 rounded-[4px] ${className}`}
+    >
       <EditorProvider
-        slotBefore={<MenuBar setText={setText} />}
+        slotBefore={
+          <MenuBar setText={setText} subClassName={subClassName} text={text} />
+        }
         extensions={extensions}
         content={defaultText}
       />

@@ -1,5 +1,6 @@
 import express from 'express'
 import {
+  adminLogin,
   createUser,
   forgotPassword,
   googleLoginUser,
@@ -17,6 +18,7 @@ const router = express.Router()
 
 router.post('/register', createUser)
 router.post('/login', loginUser)
+router.post('/adminLogin', adminLogin)
 router.post('/google-login', googleLoginUser)
 router.post('/send-email-verification', sendVerifyEmail)
 router.post('/forgot-password', forgotPassword)
