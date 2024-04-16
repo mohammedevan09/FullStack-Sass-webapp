@@ -67,10 +67,6 @@
   fill: #1310c6;
 }
 
-.menu-color-stroke > svg > path {
-  stroke: #1310c6;
-}
-
 .gradient {
   border-radius: 20px;
   background: linear-gradient(
@@ -96,6 +92,10 @@
 
 .pricing-shadow {
   box-shadow: 0px 0px 45px 0px rgba(19, 16, 198, 0.28);
+}
+
+.board-shadow {
+  box-shadow: 0px 8px 25px -24px #4845ff;
 }
 
 .modal-b-blur {

@@ -7,19 +7,11 @@ import {
   statisticsData,
   ticketsData,
 } from '@/staticData/MainData'
-import { setActiveMenu } from '@/store/reducers/activeReducer'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
 
 const Main = () => {
   const router = useRouter()
-  const dispatch = useDispatch()
-
-  useEffect(() => {
-    dispatch(setActiveMenu(0))
-  }, [dispatch])
 
   return (
     <>

@@ -69,7 +69,7 @@ const DeleteService = ({
           </motion.button>
           <motion.button
             whileHover={{ scale: 1.03 }}
-            className="w-full py-2 bg-rose-600 rounded-[9px] text-white text-lg font-semibold leading-7 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full py-2 px-2 bg-rose-600 rounded-[9px] text-white text-lg font-semibold leading-7 disabled:opacity-50 disabled:cursor-not-allowed"
             onClick={() => handleClick()}
             disabled={value !== serviceData?.name}
           >

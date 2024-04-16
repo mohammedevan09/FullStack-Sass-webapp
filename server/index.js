@@ -1,9 +1,11 @@
+import http, { createServer } from 'http'
 import express from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import mongoose from 'mongoose'
 import cookieParser from 'cookie-parser'
 import morgan from 'morgan'
+import { Server } from 'socket.io'
 
 import userRouter from './router/userRouter.js'
 import { errorHandler, notFound } from './middleware/errorHandler.js'
@@ -18,6 +20,7 @@ import orderRouter from './router/orderRouter/orderRouter.js'
 import normalServiceOrderRouter from './router/orderRouter/normalServiceOrderRouter.js'
 import subscriptionServiceOrderRouter from './router/orderRouter/subscriptionServiceOrderRouter.js'
 import hourlyServiceOrderRouter from './router/orderRouter/hourlyServiceOrderRouter.js'
+import orderChatRouter from './router/orderRouter/orderChatRouter.js'
 
 dotenv.config()
 
@@ -62,9 +65,18 @@ app.use('/api/order', orderRouter)
 app.use('/api/order/normalService', normalServiceOrderRouter)
 app.use('/api/order/subscriptionService', subscriptionServiceOrderRouter)
 app.use('/api/order/hourlyService', hourlyServiceOrderRouter)
+app.use('/api/order/chat', orderChatRouter)
 
 app.use(notFound)
 app.use(errorHandler)
+
+const httpServer = createServer(app)
+const io = new Server(httpServer, {
+  cors: {
+    origin: allowedOrigins,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  },
+})
 
 //connection
 mongoose
@@ -76,6 +88,33 @@ mongoose
     console.log('Disconnected', err)
   })
 
-app.listen(port, () => {
+// Socket
+global.onlineUsers = new Map()
+
+io.on('connection', (socket) => {
+  global.chatSocket = socket
+  socket.on('add-user', (data) => {
+    onlineUsers.set(`${data?.userId}-${data?.orderId}`, socket.id)
+    socket.broadcast.emit('online-users', {
+      onlineUsers: Array.from(onlineUsers.keys()),
+    })
+  })
+
+  socket.on('sendMessage', (message) => {
+    let sendUserSocket = onlineUsers.get(
+      `${message?.receiver}-${message?.orderId}`
+    )
+
+    if (sendUserSocket) {
+      socket.to(sendUserSocket).emit('message', message)
+    }
+  })
+
+  socket.on('disconnect', () => {
+    console.log(`Socket ${socket.id} disconnected`)
+  })
+})
+
+httpServer.listen(port, () => {
   console.log('server listening at localhost:' + port)
 })

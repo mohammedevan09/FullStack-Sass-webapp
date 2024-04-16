@@ -3,7 +3,7 @@ dotenv.config()
 
 import Stripe from 'stripe'
 import NormalServiceOrder from '../../model/orderModels/normalServiceOrderModel.js'
-import sendOneOrderResponse from '../../utils/sendOneOrderResponse.js'
+import { sendResponse } from '../../utils/sendResponse.js'
 
 const stripe = Stripe(process.env.SECURITY_KEY)
 
@@ -59,11 +59,14 @@ export const createNormalServiceOrder = async (req, res, next) => {
 
 export const getNormalServiceOrderById = async (req, res, next) => {
   try {
-    const order = await NormalServiceOrder.findById({
-      _id: req.params.id,
-    }).populate('serviceId')
-
-    return sendOneOrderResponse(res, order)
+    const order = await NormalServiceOrder.findById(req.params.id)
+      .populate({
+        path: 'formId',
+        model: 'Form',
+        select: 'fields',
+      })
+      .exec()
+    return sendResponse(res, order)
   } catch (error) {
     next(error)
   }
@@ -77,9 +80,19 @@ export const updateNormalServiceOrderById = async (req, res, next) => {
       },
       req.body,
       { new: true }
-    ).populate('serviceId')
+    )
 
-    return sendOneOrderResponse(res, order)
+    return sendResponse(res, order)
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const deleteNormalServiceOrderById = async (req, res, next) => {
+  try {
+    const order = await NormalServiceOrder.findByIdAndDelete(req.params.id)
+
+    return sendResponse(res, order)
   } catch (error) {
     next(error)
   }

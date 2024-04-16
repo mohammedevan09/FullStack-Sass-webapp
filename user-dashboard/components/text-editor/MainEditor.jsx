@@ -9,7 +9,6 @@ import {
   ItalicIcon,
   LinkIcon,
   RedoIcon,
-  SendMessageIcon,
   StrikeThrowIcon,
   UndoIcon,
 } from '@/staticData/Icon'
@@ -23,22 +22,27 @@ import Link from '@tiptap/extension-link'
 
 import { EditorProvider, useCurrentEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect } from 'react'
+import { initialText } from '@/app/(pages)/dashboard/all-projects/_components/InboxAndMessaging'
 
-export const MenuBar = ({ setText }) => {
+export const MenuBar = ({ setText, subClassName, text }) => {
   const { editor } = useCurrentEditor()
 
   useEffect(() => {
     const handleUpdate = () => {
-      const contentHTML = editor.getHTML()
+      const contentHTML = editor.getJSON()
       setText(contentHTML)
+    }
+
+    if (text === initialText) {
+      editor.commands.setContent('<p></p>')
     }
 
     editor.on('update', handleUpdate)
     return () => {
       editor.off('update', handleUpdate)
     }
-  }, [editor, setText])
+  }, [editor, setText, text])
 
   const setLink = useCallback(() => {
     const previousUrl = editor.getAttributes('link').href
@@ -62,7 +66,9 @@ export const MenuBar = ({ setText }) => {
   }
 
   return (
-    <div className="flex justify-start items-center xs:gap-3 gap-1 text-sm editor-btn px-2 py-1 order-4">
+    <div
+      className={`flex justify-start items-center xs:gap-3 gap-1 text-sm editor-btn xs:px-4 px-2 py-2 ${subClassName}`}
+    >
       <button
         onClick={() => editor.chain().focus().toggleBold().run()}
         disabled={!editor.can().chain().focus().toggleBold().run()}
@@ -161,53 +167,32 @@ export const extensions = [
     },
   }),
   Placeholder.configure({
-    placeholder: 'Write a message #',
+    placeholder: 'Write something...',
   }),
   Link.configure({
     openOnClick: false,
   }),
 ]
 
-// const content = `<h1>hello <h2/>`
-
-const MainEditor = ({ text, setText, handleMessageSend }) => {
-  const [iconShow, setIconShow] = useState(false)
-
-  const hasVisibleText = (html) => {
-    const parser = new DOMParser()
-    const doc = parser.parseFromString(html, 'text/html')
-    const textContent = doc.body.textContent || ''
-
-    return textContent.trim().length > 0
-  }
-
-  useEffect(() => {
-    if (hasVisibleText(text)) {
-      setIconShow(true)
-    } else {
-      setIconShow(false)
-    }
-    // console.log(hasVisibleText(text))
-  }, [text])
-
+const MainEditor = ({
+  setText,
+  text,
+  defaultText,
+  className,
+  subClassName,
+}) => {
   return (
-    <>
-      <div className="grid text-sm border border-gray-300 rounded-[4px] mt-8 relative">
-        <EditorProvider
-          slotBefore={<MenuBar setText={setText} />}
-          extensions={extensions}
-          //   content={content}
-        ></EditorProvider>
-        {iconShow && (
-          <div
-            className="w-[29px] cursor-pointer absolute z-100 right-3 top-1 p-1"
-            onClick={() => handleMessageSend()}
-          >
-            <SendMessageIcon />
-          </div>
-        )}
-      </div>
-    </>
+    <div
+      className={`text-sm border border-gray-300 rounded-[4px] ${className}`}
+    >
+      <EditorProvider
+        slotBefore={
+          <MenuBar setText={setText} subClassName={subClassName} text={text} />
+        }
+        extensions={extensions}
+        content={defaultText}
+      />
+    </div>
   )
 }
 

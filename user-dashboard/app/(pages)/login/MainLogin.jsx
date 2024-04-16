@@ -390,12 +390,12 @@ export const GoogleLoginComp = ({ dispatch, router }) => {
             },
           }
         )
-        // console.log(res.data)
 
         const data = await googleLoginUserApi({
           email_verified: res?.data?.email_verified,
           email: res?.data?.email,
           fullName: res?.data?.name,
+          profileImage: res?.data?.picture,
         })
         dispatch(setUsers(data))
         router.push('/login/add-details')

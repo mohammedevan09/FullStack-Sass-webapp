@@ -1,23 +1,22 @@
 'use client'
 
-import GetACustomProposalModal from '@/components/modals/marketplaceModal/GetACustomProposalModal'
-import ThanksSubModal from '@/components/modals/marketplaceModal/ThanksSubModal'
+import GetACustomProposalModal from '@/components/modals/serviceModals/GetACustomProposalModal'
+import ThanksSubModal from '@/components/modals/serviceModals/ThanksSubModal'
 import { useState } from 'react'
 import PricingCard from '../PricingCard'
 import { useForm } from 'react-hook-form'
-import CustomFormModal from '@/components/modals/marketplaceModal/CustomFormModal'
-import { useDispatch, useSelector } from 'react-redux'
+import CustomFormModal from '@/components/modals/serviceModals/CustomFormModal'
+import { useSelector } from 'react-redux'
 import { createOrderApi } from '@/api/orderApi'
 import toast from 'react-hot-toast'
 import { useRouter } from 'next/navigation'
 import CustomProposals from '../CustomProposals'
-import { setActiveMenu } from '@/store/reducers/activeReducer'
-import CheckoutModal from '@/components/modals/marketplaceModal/CheckoutModal'
+import CheckoutModal from '@/components/modals/serviceModals/CheckoutModal'
 import { setRenewalDate } from '@/utils/SetRenewalDate'
+import { createOrderChat } from '@/api/orderChatApi'
 
 const MainServicePricingPage = ({ service, link }) => {
   const router = useRouter()
-  const dispatch = useDispatch()
 
   const [openModalCustom, setOpenModalCustom] = useState(false)
   const [openModal, setOpenModal] = useState(false)
@@ -51,10 +50,17 @@ const MainServicePricingPage = ({ service, link }) => {
   const handleCheckOutButton = async (data) => {
     if (isValid) {
       try {
-        await createOrderApi(data, link)
+        const orderData = await createOrderApi(
+          { ...data, formId: service?.form?._id },
+          link
+        )
+        await createOrderChat({
+          participants: [userInfo?._id, service?.creatorId],
+          orderId: orderData?._id,
+          messages: [],
+        })
         toast.success('Your service order has been received!')
         router.push(`/dashboard/all-projects?userId=${userInfo?._id}`)
-        dispatch(setActiveMenu(2))
       } catch (error) {
         toast.error('Checkout order failed!')
       }

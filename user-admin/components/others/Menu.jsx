@@ -18,10 +18,10 @@ import {
   LogoutIcon,
 } from '../../staticData/Icon'
 import { useDispatch, useSelector } from 'react-redux'
-import { setActiveMenu, setOpenMenu } from '@/store/reducers/activeReducer'
+import { setOpenMenu } from '@/store/reducers/activeReducer'
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { redirect, useRouter } from 'next/navigation'
+import { redirect, useRouter, useSelectedLayoutSegment } from 'next/navigation'
 import LogoutModal from '../modals/menuModals/LogoutModal'
 
 const Menu = () => {
@@ -30,8 +30,9 @@ const Menu = () => {
 
   const dispatch = useDispatch()
   const router = useRouter()
+  const activeSegment = useSelectedLayoutSegment()
 
-  const { currentActiveMenu, openMenu } = useSelector((state) => state?.active)
+  const { openMenu } = useSelector((state) => state?.active)
   const { userInfo } = useSelector((state) => state?.user)
 
   const MenuData = [
@@ -39,51 +40,61 @@ const Menu = () => {
       name: 'Dashboard',
       icon: <HomeIcon color="#ffffff" />,
       link: '/',
+      targetSegment: null,
     },
     {
       name: 'Services',
       icon: <MarketPlaceIcon color="#ffffff" />,
       link: '/services',
+      targetSegment: 'services',
     },
     {
       name: 'Orders',
       icon: <AllProjectsIcon color="#ffffff" />,
       link: '/orders',
+      targetSegment: 'orders',
     },
     {
       name: 'Clients',
       icon: <ProposalsIcon color="#ffffff" />,
       link: '/clients',
+      targetSegment: 'clients',
     },
     {
       name: 'Team',
       icon: <TeamsIcon color="#ffffff" />,
       link: '/team',
+      targetSegment: 'team',
     },
     {
       name: 'Tickets',
       icon: <AllTicketsIcon color="#ffffff" />,
       link: '/tickets',
+      targetSegment: 'tickets',
     },
     {
       name: 'Quotation',
       icon: <ProposalsIcon color="#ffffff" />,
       link: '/quotation',
+      targetSegment: 'quotation',
     },
     {
       name: 'Invoice',
       icon: <InvoiceIcon color="#ffffff" />,
       link: '/invoice',
+      targetSegment: 'invoice',
     },
     {
       name: 'Forms',
       icon: <FormsIcon color="#ffffff" />,
       link: '/forms',
+      targetSegment: 'forms',
     },
     {
       name: 'Meetings',
       icon: <MeetingIcon color="#ffffff" />,
       link: '/meetings',
+      targetSegment: 'meetings',
     },
   ]
 
@@ -138,21 +149,17 @@ const Menu = () => {
               <motion.div whileHover={{ scale: 1.04 }} key={i}>
                 <Link
                   href={item?.link}
-                  className={`flex justify-start items-center gap-3 font-medium lg:px-[51px] md:px-[20px] px-[10px] py-3 ${
-                    currentActiveMenu === i && 'text-[#ffffff] bg-[#ffffff3b]'
+                  className={`flex justify-start items-center gap-3 font-medium lg:px-[51px] md:px-[20px] px-[10px] py-3 rounded-sm ${
+                    activeSegment === item?.targetSegment &&
+                    'text-blue-800 bg-[#ffffffcf]'
                   }`}
                   onClick={() => {
-                    dispatch(setActiveMenu(i))
                     dispatch(setOpenMenu(false))
                   }}
                 >
                   <div
                     className={`flex-col justify-center items-center flex ${
-                      currentActiveMenu === i
-                        ? currentActiveMenu === 7
-                          ? 'menu-color-stroke'
-                          : 'menu-color'
-                        : ''
+                      activeSegment === item?.targetSegment && 'menu-color'
                     }
                   `}
                   >
@@ -167,16 +174,16 @@ const Menu = () => {
                 <Link
                   href={'/dashboard/settings'}
                   className={`flex justify-center items-center gap-1 font-medium lg:px-[51px] md:px-[20px] px-[10px] py-3 mr-2 ${
-                    currentActiveMenu === 12 && 'text-blue-800 bg-[#0000ff30]'
+                    activeSegment === 'settings' &&
+                    'text-blue-800 bg-[#0000ff30]'
                   }`}
                   onClick={() => {
-                    dispatch(setActiveMenu(12))
                     dispatch(setOpenMenu(false))
                   }}
                 >
                   <div
                     className={`flex-col justify-center items-center inline-flex hover:menu-color ${
-                      currentActiveMenu === 12 && 'menu-color'
+                      activeSegment === 'settings' && 'menu-color'
                     }`}
                   >
                     <SettingsIcon />

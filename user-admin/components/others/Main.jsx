@@ -2,11 +2,8 @@
 
 import { AllProjectsIcon } from '@/staticData/Icon'
 import { projectData } from '@/staticData/MainData'
-import { setActiveMenu } from '@/store/reducers/activeReducer'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
 import DashboardSalesReport from '../charts/DashboardSalesReport'
 
 const Main = () => {
@@ -121,11 +118,6 @@ const Main = () => {
     },
   ]
   const router = useRouter()
-  const dispatch = useDispatch()
-
-  useEffect(() => {
-    dispatch(setActiveMenu(0))
-  }, [dispatch])
 
   const statisticsData = [
     {

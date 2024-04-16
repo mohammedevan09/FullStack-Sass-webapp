@@ -1,6 +1,6 @@
 'use client'
 
-import GetACustomProposalModal from '@/components/modals/marketplaceModal/GetACustomProposalModal'
+import GetACustomProposalModal from '@/components/modals/serviceModals/GetACustomProposalModal'
 import {
   AddProjectIcon,
   FilterByIdIcon,
@@ -9,7 +9,7 @@ import {
 import { useRouter } from 'next/navigation'
 import { filterByStatusData } from '@/staticData/MainData'
 import { useEffect, useRef, useState } from 'react'
-import ThanksSubModal from '@/components/modals/marketplaceModal/ThanksSubModal'
+import ThanksSubModal from '@/components/modals/serviceModals/ThanksSubModal'
 
 const MainProposalsPage = () => {
   const [openModalCustom, setOpenModalCustom] = useState(false)

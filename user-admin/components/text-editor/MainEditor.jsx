@@ -67,7 +67,7 @@ export const MenuBar = ({ setText, subClassName, text }) => {
 
   return (
     <div
-      className={`flex justify-start items-center xs:gap-3 gap-1 text-sm editor-btn xs:px-4 px-2 py-2 border-b border-gray-300 ${subClassName}`}
+      className={`flex justify-start items-center xs:gap-3 gap-1 text-sm editor-btn xs:px-4 px-2 py-2 ${subClassName}`}
     >
       <button
         onClick={() => editor.chain().focus().toggleBold().run()}

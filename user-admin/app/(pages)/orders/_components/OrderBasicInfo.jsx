@@ -1,32 +1,63 @@
-import StatusColor from '@/utils/StatusColor'
+import StatusColor, { makeCapitalize } from '@/utils/StatusColor'
 import Image from 'next/image'
 
-const OrderBasicInfo = ({ order }) => {
+const OrderBasicInfo = ({ order, service }) => {
+  const defaultColor = 'bg-blue-600'
+
+  const getColorClass = (status) => {
+    switch (status?.toLowerCase()) {
+      case 'pending':
+        return 'bg-rose-600'
+      case 'done':
+        return 'bg-green-500'
+      case 'canceled':
+        return ' bg-rose-600 text-red-600'
+      default:
+        return defaultColor
+    }
+  }
+
   return (
-    <div>
+    <div className="overflow-hidden">
       <h1 className="md:text-2xl text-xl font-semibold">{order?.title}</h1>
-      <div className="bg-white py-3 px-4 rounded-lg svg-shadow mt-3 font-medium sm:w-[400px] w-full">
-        <Image
-          src={order?.serviceId?.icon}
-          alt="icon"
-          width={60}
-          height={60}
-          className="mt-2"
-        />
-        <h6 className="text-base py-4">
-          <b>Order ID</b> - {order?._id}
-        </h6>
-        <h6 className="text-base pb-4">
-          <b>Service ID</b> - {order?.serviceId?._id}
-        </h6>
-        <h6 className="text-base pb-4">
-          <b>Total Amount</b> - ${order?.totalAmount}
-        </h6>
-        <h6 className="text-base pb-4">
-          <b>User ID</b> - {order?.userId}
-        </h6>
-        <div className="w-10 font-semibold text-sm">
-          <StatusColor status={order?.status} />
+      <div className="svg-shadow bg-white md:w-[400px] w-full rounded-lg mt-3 font-medium text-sm">
+        <div className="py-6 px-5 grid relative overflow-hidden">
+          <div className="flex gap-2 items-start">
+            <div className="min-w-[50px]">
+              <Image src={service?.icon} alt="icon" width={50} height={50} />
+            </div>
+            <div>
+              <h1 className="font-bold text-lg">{service?.name}</h1>
+              <h1 className="font-semibold text-sm">{service?.heading}</h1>
+            </div>
+          </div>
+          <div className="grid gap-2 mt-6">
+            <h6>
+              <b>Order ID</b> - #{order?._id}
+            </h6>
+            {/* <h6>
+            <b>Service ID</b> - #{service?._id}
+          </h6> */}
+            <h6>
+              <b>Total Amount</b> - ${order?.totalAmount}
+              {''}
+              <span className="text-[11px] font-semibold italic">
+                {order?.__t === 'SubscriptionServiceOrder' && '/MO'}
+              </span>
+            </h6>
+            {/* <h6>
+            <b>User ID</b> - #{order?.userId}
+          </h6> */}
+            <div className="w-full font-semibold text-sm">
+              <div
+                className={`w-[160px] h-[34px] mx-auto bg-opacity-20 absolute rotate-45 top-5 -right-10 flex justify-center items-center ${getColorClass(
+                  order?.status
+                )}`}
+              >
+                {makeCapitalize(order?.status)}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

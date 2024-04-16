@@ -89,6 +89,7 @@ export const loginUser = async (req, res, next) => {
 
 export const googleLoginUser = async (req, res, next) => {
   const { email } = req.body
+  console.log(req.body)
   const findUser = await User.findOne({ email })
   try {
     if (findUser) {

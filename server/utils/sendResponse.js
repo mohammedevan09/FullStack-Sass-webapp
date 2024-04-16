@@ -1,7 +1,7 @@
 export const sendResponse = (
   res,
   data,
-  message = 'Not found',
+  message = 'No data found!',
   status = 404
 ) => {
   if (data) {

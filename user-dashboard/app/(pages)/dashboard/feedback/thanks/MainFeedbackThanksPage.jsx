@@ -1,7 +1,6 @@
 'use client'
 
 import { OpenInboxIcon } from '@/staticData/Icon'
-import { setActiveMenu } from '@/store/reducers/activeReducer'
 import { useRouter } from 'next/navigation'
 import { useDispatch } from 'react-redux'
 import { motion } from 'framer-motion'
@@ -13,7 +12,6 @@ const MainFeedbackThanksPage = () => {
   const handleClick = (e) => {
     e.preventDefault()
     router.push('/dashboard')
-    dispatch(setActiveMenu(0))
   }
 
   return (

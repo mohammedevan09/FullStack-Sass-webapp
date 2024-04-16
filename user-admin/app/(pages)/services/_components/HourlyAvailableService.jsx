@@ -56,9 +56,12 @@ const HourlyAvailableService = ({ serviceData, setServiceData, setValue }) => {
           type="text"
           name="service"
           placeholder={`Add available service`}
-          className="w-full px-3"
+          className="w-full px-3 rounded-md"
         />
-        <button type="submit" className="bg-blue-600 text-white px-4 py-1">
+        <button
+          type="submit"
+          className="bg-blue-600 text-white font-medium rounded-sm px-4 py-1"
+        >
           Add
         </button>
       </form>

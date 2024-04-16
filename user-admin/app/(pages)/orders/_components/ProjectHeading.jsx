@@ -14,6 +14,9 @@ export const filterByStatusData = [
   {
     title: 'done',
   },
+  {
+    title: 'canceled',
+  },
 ]
 
 const ProjectHeading = ({ title }) => {

@@ -17,3 +17,8 @@ export const getAllOrders = async (queryData, id = '') => {
     return error
   }
 }
+
+export const updateOrderApi = async (sendData, link) => {
+  const data = await axios.put(`${host}/api/order/${link}`, sendData)
+  return data?.data
+}

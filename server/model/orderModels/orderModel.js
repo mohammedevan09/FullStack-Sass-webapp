@@ -29,22 +29,26 @@ const orderSchema = new mongoose.Schema(
       // ref: 'Service',
       required: true,
     },
+    formId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Form',
+      required: true,
+    },
     additionalInfo: {},
     projectTrackingBoard: {
       todo: [{ title: String }],
       inProgress: [{ title: String }],
       complete: [{ title: String }],
     },
-    customerId: {
-      type: String,
+    payment_info: {
+      customerId: String,
+      payment_intent: String,
+      subscriptionId: String,
     },
     payment_method_types: {
       type: String,
       enum: ['card', 'paypal', 'manually'],
       default: 'manually',
-    },
-    payment_intent: {
-      type: String,
     },
     payment_status: {
       type: String,

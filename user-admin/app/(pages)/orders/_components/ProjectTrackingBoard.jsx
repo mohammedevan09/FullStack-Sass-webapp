@@ -1,11 +1,13 @@
 'use client'
 
+import { updateOrderApi } from '@/api/orderApi'
 import { DndContext } from '@/components/others/DndContext'
 import { RemoveIcon } from '@/staticData/Icon'
 import { useEffect, useState } from 'react'
 import { Draggable, Droppable } from 'react-beautiful-dnd'
+import toast from 'react-hot-toast'
 
-const ProjectTrackingBoard = ({ order }) => {
+const ProjectTrackingBoard = ({ order, link }) => {
   const initialProjectTrackingBoard = [
     {
       title: 'To do',
@@ -24,9 +26,8 @@ const ProjectTrackingBoard = ({ order }) => {
     },
   ]
 
-  const [saveButton, setSaveButton] = useState(false)
-
   const [data, setData] = useState([])
+  const [saveButton, setSaveButton] = useState(false)
 
   const onDragEnd = (result) => {
     const { source, destination } = result
@@ -64,6 +65,7 @@ const ProjectTrackingBoard = ({ order }) => {
       newData[destDroppableIndex].fields = destItems
     }
     setData(newData)
+    setSaveButton(true)
   }
 
   const handleAddTodo = (e) => {
@@ -111,19 +113,39 @@ const ProjectTrackingBoard = ({ order }) => {
     setSaveButton(false)
   }
 
-  const handleSave = (e) => {
+  const handleSave = async (e) => {
     e.preventDefault()
+    try {
+      const newData = data.map((item) => {
+        return {
+          ...item,
+          fields: item.fields.map(({ title }) => ({ title })),
+        }
+      })
+      await updateOrderApi(
+        {
+          projectTrackingBoard: {
+            todo: newData[0]?.fields,
+            inProgress: newData[1]?.fields,
+            complete: newData[2]?.fields,
+          },
+        },
+        link
+      )
+      setSaveButton(false)
+      toast.success('Project Tracking board updated!')
+    } catch (error) {
+      toast.error('Sorry, Cannot update!')
+    }
   }
 
   useEffect(() => {
     setData(initialProjectTrackingBoard)
   }, [])
 
-  console.log(data)
-
   return (
     <DndContext onDragEnd={onDragEnd}>
-      <div className="py-5 px-5 bg-white rounded-[10px] grid gap-4">
+      <div className="py-5 px-5 bg-white rounded-[10px] grid gap-4 board-shadow">
         <div className="md:flex grid md:gap-4 gap-8 md:justify-between items-start  md:text-base text-sm font-medium">
           {data?.map((item, i) => {
             return (
@@ -191,6 +213,7 @@ const ProjectTrackingBoard = ({ order }) => {
                           )}
                         </Draggable>
                       ))}
+                      {provided.placeholder}
                       {item?.title === 'To do' && (
                         <form
                           onSubmit={handleAddTodo}
@@ -210,7 +233,6 @@ const ProjectTrackingBoard = ({ order }) => {
                           </button>
                         </form>
                       )}
-                      {provided.placeholder}
                     </div>
                   )}
                 </Droppable>
@@ -219,15 +241,15 @@ const ProjectTrackingBoard = ({ order }) => {
           })}
         </div>
         {saveButton && (
-          <div className="w-full flex justify-end items-center font-bold">
+          <div className="w-full flex justify-end items-center font-bold -mt-12">
             <button
-              className="text-blue-600 px-4 py-1 hover:scale-110 rounded-[4px] disabled:opacity-50 disabled:cursor-not-allowed transition"
+              className="text-blue-600 px-4 py-1 hover:scale-110 rounded-[4px] transition"
               onClick={handleCancel}
             >
-              Cancel
+              Reset
             </button>
             <button
-              className="bg-blue-600 text-white px-4 py-1 hover:scale-110 rounded-[4px] disabled:opacity-50 disabled:cursor-not-allowed transition"
+              className="bg-blue-600 text-white px-4 py-1 hover:scale-110 rounded-[4px] transition"
               onClick={handleSave}
             >
               SAVE

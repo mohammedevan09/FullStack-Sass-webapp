@@ -8,18 +8,17 @@ import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { useDispatch, useSelector } from 'react-redux'
 import { useRouter } from 'next/navigation'
-import CheckoutModal from '@/components/modals/marketplaceModal/CheckoutModal'
-import CustomFormModal from '@/components/modals/marketplaceModal/CustomFormModal'
-import GetACustomProposalModal from '@/components/modals/marketplaceModal/GetACustomProposalModal'
-import ThanksSubModal from '@/components/modals/marketplaceModal/ThanksSubModal'
+import CheckoutModal from '@/components/modals/serviceModals/CheckoutModal'
+import CustomFormModal from '@/components/modals/serviceModals/CustomFormModal'
+import GetACustomProposalModal from '@/components/modals/serviceModals/GetACustomProposalModal'
+import ThanksSubModal from '@/components/modals/serviceModals/ThanksSubModal'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
-import { setActiveMenu } from '@/store/reducers/activeReducer'
 import { createOrderApi } from '@/api/orderApi'
+import { createOrderChat } from '@/api/orderChatApi'
 
 const MainHourlyPricingPage = ({ service, link }) => {
   const router = useRouter()
-  const dispatch = useDispatch()
 
   const [openModalCustom, setOpenModalCustom] = useState(false)
   const [openModal, setOpenModal] = useState(false)
@@ -53,10 +52,17 @@ const MainHourlyPricingPage = ({ service, link }) => {
   const handleCheckOutButton = async (data) => {
     if (isValid) {
       try {
-        await createOrderApi(data, link)
+        const orderData = await createOrderApi(
+          { ...data, formId: service?.form?._id },
+          link
+        )
+        await createOrderChat({
+          participants: [userInfo?._id, service?.creatorId],
+          orderId: orderData?._id,
+          messages: [],
+        })
         toast.success('Your service order has been received!')
         router.push(`/dashboard/all-projects?userId=${userInfo?._id}`)
-        dispatch(setActiveMenu(2))
       } catch (error) {
         toast.error('Checkout order failed!')
       }

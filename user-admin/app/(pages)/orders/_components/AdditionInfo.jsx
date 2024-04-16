@@ -31,18 +31,20 @@ const AdditionInfo = ({ order }) => {
         {Object.entries({
           Description: order?.description,
           'Project Status': (
-            <div className="w-10">
+            <div className="lg:w-[137px] w-[106px]">
               <StatusColor status={order?.status} />
             </div>
           ),
           'Payment Status': (
-            <div className="w-10">
+            <div className="lg:w-[137px] w-[106px]">
               <StatusColor status={order?.payment_status} />
             </div>
           ),
           'Payment Method': makeCapitalize(order?.payment_method_types),
           'Total Amount': `$${order?.totalAmount}`,
           ...order?.additionalInfo,
+          'Service ID': `#${order?.serviceId}`,
+          'User ID': `#${order?.userId}`,
           'Created At': formatDate(order?.createdAt),
           'Updated At': formatDate(order?.updatedAt),
         })?.map(([key, value], i) => {

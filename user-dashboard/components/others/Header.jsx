@@ -12,7 +12,7 @@ import {
   StoreIcon,
 } from '@/staticData/Icon'
 import { dropdownData, notificationDropDownData } from '@/staticData/MainData'
-import { setActiveMenu, setOpenMenu } from '@/store/reducers/activeReducer'
+import { setOpenMenu } from '@/store/reducers/activeReducer'
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
@@ -244,7 +244,6 @@ const Header = () => {
                       className="flex justify-center items-center gap-1 hover:underline"
                       onClick={() => {
                         router.push(item?.link)
-                        dispatch(setActiveMenu(12))
                       }}
                     >
                       {item?.icon} {item?.title}

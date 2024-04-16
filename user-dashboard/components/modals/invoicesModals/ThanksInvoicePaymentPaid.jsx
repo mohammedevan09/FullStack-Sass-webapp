@@ -1,20 +1,16 @@
 'use client'
 
 import { CheckIcon, OpenInboxIcon } from '@/staticData/Icon'
-import { setActiveMenu } from '@/store/reducers/activeReducer'
 import { useRouter } from 'next/navigation'
-import { useDispatch } from 'react-redux'
 import { motion } from 'framer-motion'
 
 const ThanksInvoicePaymentPaid = ({ setOpenModal }) => {
   const router = useRouter()
-  const dispatch = useDispatch()
 
   const handleClick = (e) => {
     e.preventDefault()
     setOpenModal(false)
     router.push('/dashboard/all-projects')
-    dispatch(setActiveMenu(2))
   }
   return (
     <div className="flex justify-center items-center fixed z-[9999999999] w-screen h-screen left-0 top-0 right-0 bottom-0 modal-b-blur">

@@ -40,7 +40,7 @@ const SubscriptionServiceTables = ({ subscriptions }) => {
                     <StatusColor status={item?.status} />
                   </td>
                   <td className="lg:py-5 py-4 text-center">
-                    <div className="w-[160px] mx-auto">
+                    <div className="w-[170px] mx-auto">
                       {item?.subscriptionRenew}
                     </div>
                   </td>

@@ -10,15 +10,20 @@ const PricingServices = ({
     <div className="grid">
       <form
         onSubmit={handleAddPricingService}
-        className="flex h-[34px] svg-shadow rounded-sm overflow-hidden"
+        className="flex h-[34px] svg-shadow rounded-[4px] overflow-hidden"
       >
         <input
           type="text"
           name="service"
           placeholder={`Add ${available ? 'available' : 'unavailable'} service`}
-          className="w-full px-3"
+          className="w-full px-3 rounded-sm"
         />
-        <button type="submit" className="bg-blue-600 text-white px-4 py-1">
+        <button
+          type="submit"
+          className={`${
+            available ? 'bg-blue-400' : 'bg-rose-400'
+          } text-white font-medium rounded-sm px-4 py-1`}
+        >
           Add
         </button>
       </form>

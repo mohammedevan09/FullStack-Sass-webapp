@@ -21,7 +21,7 @@ const AdditionInfo = ({ order }) => {
           open ? 'rotate-[267deg]' : 'rotate-180 '
         } transition-all duration-300 ease-in-out absolute top-3 right-4`}
       >
-        <CloseMenuIcon size={24} />
+        <CloseMenuIcon size={24} color={'blue'} />
       </div>
       <div
         className={`font-medium transition-all duration-500 ease-in-out grid overflow-hidden ${
@@ -31,12 +31,12 @@ const AdditionInfo = ({ order }) => {
         {Object.entries({
           Description: order?.description,
           'Project Status': (
-            <div className="w-10">
+            <div className="lg:w-[137px] w-[106px]">
               <StatusColor status={order?.status} />
             </div>
           ),
           'Payment Status': (
-            <div className="w-10">
+            <div className="lg:w-[137px] w-[106px]">
               <StatusColor status={order?.payment_status} />
             </div>
           ),
