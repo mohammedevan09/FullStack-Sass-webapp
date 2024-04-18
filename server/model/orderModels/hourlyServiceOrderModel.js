@@ -1,44 +1,45 @@
 import mongoose from 'mongoose'
 import Order from './orderModel.js'
 
+const hourlyTimeLogSchema = new mongoose.Schema({
+  task: {
+    type: String,
+    required: true,
+  },
+  memo: {
+    type: String,
+    required: true,
+  },
+  date: {
+    type: String,
+    required: true,
+  },
+  startTime: {
+    type: String,
+    required: true,
+  },
+  endTime: {
+    type: String,
+    required: true,
+  },
+})
+
 const hourlyServiceOrderSchema = new mongoose.Schema(
   {
     totalHours: {
-      type: Number,
+      type: mongoose.Schema.Types.Mixed,
       required: true,
     },
     spentHours: {
-      type: Number,
+      type: mongoose.Schema.Types.Mixed,
       required: true,
-      default: 0,
+      default: '00 hours 00 minutes',
     },
     remainHours: {
-      type: Number,
+      type: mongoose.Schema.Types.Mixed,
       required: true,
-      default: 0,
     },
-
-    hourlyTimeLogs: [
-      {
-        title: {
-          type: String,
-          required: true,
-        },
-        description: {
-          type: String,
-          required: true,
-        },
-        time: {
-          type: mongoose.Schema.Types.Mixed,
-        },
-        date: {
-          type: mongoose.Schema.Types.Mixed,
-        },
-        loggedHours: {
-          type: mongoose.Schema.Types.Mixed,
-        },
-      },
-    ],
+    hourlyTimeLogs: [hourlyTimeLogSchema],
   },
   {
     timestamps: true,
@@ -49,4 +50,5 @@ const HourlyServiceOrder = Order.discriminator(
   'HourlyServiceOrder',
   hourlyServiceOrderSchema
 )
+
 export default HourlyServiceOrder

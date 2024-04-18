@@ -40,8 +40,6 @@ const InboxAndMessaging = ({ order, orderChat }) => {
     }
   }
 
-  console.log(chat)
-
   const handleMessageSend = async () => {
     socket.emit('sendMessage', {
       sender: userInfo?._id,

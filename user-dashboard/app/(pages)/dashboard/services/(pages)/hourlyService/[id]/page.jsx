@@ -7,10 +7,6 @@ const page = async ({ params }) => {
 
   return (
     <div className="grid items-center">
-      {/* <MarketPlaceHeadings
-        heading={service?.heading}
-        subheading={service?.subheading}
-      /> */}
       <MainHourlyPricingPage service={service} link={`hourlyService`} />
     </div>
   )

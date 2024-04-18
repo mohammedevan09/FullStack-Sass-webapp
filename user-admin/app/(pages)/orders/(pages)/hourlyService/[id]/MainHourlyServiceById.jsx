@@ -11,6 +11,7 @@ import { EditIcon } from '@/staticData/Icon'
 import { useState } from 'react'
 import EditOrderModal from '@/components/modals/orderModal/EditOrderModal'
 import HourlyInfo from '../../../_components/HourlyInfo'
+import HourlyTimeLogs from '../../../_components/HourlyTimeLogs'
 
 const MainHourlyServiceById = ({ order, service, orderChat, messageCount }) => {
   const [orderData, setOrderData] = useState(order)
@@ -22,40 +23,11 @@ const MainHourlyServiceById = ({ order, service, orderChat, messageCount }) => {
     formState: { errors, isValid, isDirty },
     setValue,
     reset,
+    watch,
   } = useForm({
     defaultValues: orderData,
     mode: 'onChange',
   })
-
-  const hourlyTimeLogs = [
-    {
-      title: 'Theme customization of beldo Co',
-      description:
-        'We’ve done all the customization of th  project in just 1 hour.',
-      date: '02/01/203',
-      times: '10AM-11AM',
-      loggedHours: '1 Hour',
-      loggedMinutes: '00 Minute',
-    },
-    {
-      title: 'Theme customization of beldo Co',
-      description:
-        'We’ve done all the customization of th  project in just 1 hour.',
-      date: '02/01/203',
-      times: '10AM-11AM',
-      loggedHours: '1 Hour',
-      loggedMinutes: '00 Minute',
-    },
-    {
-      title: 'Theme customization of beldo Co',
-      description:
-        'We’ve done all the customization of th  project in just 1 hour.',
-      date: '02/01/203',
-      times: '10AM-11AM',
-      loggedHours: '1 Hour',
-      loggedMinutes: '00 Minute',
-    },
-  ]
 
   return (
     <>
@@ -83,46 +55,15 @@ const MainHourlyServiceById = ({ order, service, orderChat, messageCount }) => {
 
         <AdditionInfo order={orderData} />
 
-        <div className="mt-8">
-          <h1 className="text-2xl font-semibold">Hourly Time logs</h1>
-
-          <div className="w-full bg-white rounded-[20.37px] px-7 py-8 mt-4 overflow-x-scroll">
-            <table className="w-full">
-              <thead>
-                <tr className="text-zinc-700 lg:text-xl text-lg font-semibold tracking-tight text-left">
-                  <th>#Tasks & Memo</th>
-                  <th className="text-center">Time & Date</th>
-                  <th className="text-center">Logged Hours</th>
-                </tr>
-              </thead>
-
-              <tbody className="lg:text-base text-sm font-medium">
-                {hourlyTimeLogs?.map((item, i) => (
-                  <tr key={i}>
-                    <td className="py-4 w-[400px]">
-                      <div className="grid justify-start items-center gap-1 w-[400px]">
-                        <div className="text-lg font-medium">{item?.title}</div>
-                        <div>{item?.description}</div>
-                      </div>
-                    </td>
-                    <td className="py-4">
-                      <div className="w-[150px] grid justify-center items-center gap-2 mx-auto">
-                        <div className="mx-auto">{item?.date}</div>
-                        <div className="mx-auto">{item?.times}</div>
-                      </div>
-                    </td>
-                    <td className="py-4">
-                      <div className="w-[150px] grid justify-center items-center gap-2 mx-auto">
-                        <div className="mx-auto">{item?.loggedHours}</div>
-                        <div className="mx-auto">{item?.loggedMinutes}</div>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
+        <HourlyTimeLogs
+          order={orderData}
+          register={register}
+          errors={errors}
+          handleSubmit={handleSubmit}
+          reset={reset}
+          watch={watch}
+          setOrderData={setOrderData}
+        />
 
         <h1 className="text-2xl font-semibold pb-5 pt-10">
           Project Traction Board

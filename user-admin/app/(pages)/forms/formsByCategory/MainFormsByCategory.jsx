@@ -39,7 +39,7 @@ const MainFormsByCategory = ({ formCategory, forms, searchParams }) => {
             </div>
             <Link
               href={`/forms/formsByCategory/${item?._id}?categoryId=${item?.formCategoryId}`}
-              className="w-[120px] h-[34px] text-blue-500 hover:text-blue-700 hover:text-lg transition-1 duration-75 font-medium rounded-[5px] text-center"
+              className="w-[120px] h-[34px] text-blue-500 hover:text-blue-700 hover:scale-105 transition-all duration-200 ease-in-out font-medium rounded-[5px] text-center"
             >
               View details
             </Link>

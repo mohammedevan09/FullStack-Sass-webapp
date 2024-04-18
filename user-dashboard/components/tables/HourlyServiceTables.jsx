@@ -44,21 +44,21 @@ const HourlyServiceTables = ({ hourlyData }) => {
                     <div
                       className={`w-[110px] h-[34px] mx-2 bg-opacity-20 rounded-[20px] bg-green-500 py-1 px-3 text-base`}
                     >
-                      {item?.totalHours} hr
+                      {item?.totalHours?.replace(/ hours \d+ minutes/, ' hr')}
                     </div>
                   </td>
                   <td className="lg:py-5 py-4 text-center">
                     <div
                       className={`w-[110px] h-[34px] mx-2 bg-opacity-20 rounded-[20px] bg-sky-500 py-1 px-3 text-base`}
                     >
-                      {item?.spentHours} hr
+                      {item?.spentHours?.replace(/ hours \d+ minutes/, ' hr')}
                     </div>
                   </td>
                   <td className="lg:py-5 py-4 text-center">
                     <div
                       className={`w-[110px] h-[34px] mx-2 bg-opacity-20 rounded-[20px] bg-rose-600 py-1 px-3 text-base`}
                     >
-                      {item?.remainHours} hr
+                      {item?.remainHours?.replace(/ hours \d+ minutes/, ' hr')}
                     </div>
                   </td>
 

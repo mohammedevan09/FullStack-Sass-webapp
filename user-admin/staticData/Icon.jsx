@@ -963,7 +963,7 @@ export const ErrorIcon = ({ color }) => {
     </svg>
   )
 }
-export const RemoveIcon = () => {
+export const RemoveIcon = ({ color }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -971,7 +971,7 @@ export const RemoveIcon = () => {
       height="18"
       viewBox="0 0 24 24"
     >
-      <g fill="#ffa3a3">
+      <g fill={color || '#ffa3a3'}>
         <path d="M8 11a1 1 0 1 0 0 2h8a1 1 0 1 0 0-2z" />
         <path
           fillRule="evenodd"

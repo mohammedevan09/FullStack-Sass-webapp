@@ -45,7 +45,8 @@ const MainHourlyPricingPage = ({ service, link }) => {
   const handleModal = (item) => {
     setValue('pricingId', item?._id)
     setValue('totalAmount', item?.amount)
-    setValue('totalHours', item?.hours)
+    setValue('totalHours', `${item?.hours} hours 00 minutes`)
+    setValue('remainHours', `${item?.hours} hours 00 minutes`)
     setPricingData(item)
   }
 

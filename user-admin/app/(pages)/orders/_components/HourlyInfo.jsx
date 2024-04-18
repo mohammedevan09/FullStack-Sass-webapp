@@ -36,7 +36,7 @@ const HourlyInfo = ({ order }) => {
           <div>{item?.icon}</div>
           <div className="grid gap-1">
             <h3 className="text-xl font-bold">{item?.title}</h3>
-            <h2 className="text-base font-semibold">{item?.value} hours</h2>
+            <h2 className="text-sm font-semibold">{item?.value}</h2>
           </div>
         </div>
       ))}

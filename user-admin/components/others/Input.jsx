@@ -48,7 +48,7 @@ export const Input2 = ({
         id={id}
         type={type}
         placeholder={placeholder}
-        className={`w-full h-[50px] border  border-zinc-400 font-medium placeholder:font-normal rounded-md placeholder:text-center text-center ${className}`}
+        className={`w-full h-[50px] border border-zinc-400 font-medium placeholder:font-normal rounded-md placeholder:text-center text-center px-2 ${className}`}
         {...validationRules}
       />
     </>
