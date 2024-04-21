@@ -10,7 +10,7 @@ import { useForm } from 'react-hook-form'
 import { EditIcon } from '@/staticData/Icon'
 import { useState } from 'react'
 import EditOrderModal from '@/components/modals/orderModal/EditOrderModal'
-import SubscriptionInfo from '../../../_components/subscriptionInfo'
+import SubscriptionInfo from '../../../_components/SubscriptionInfo'
 
 const MainSubscriptionServiceById = ({
   order,
