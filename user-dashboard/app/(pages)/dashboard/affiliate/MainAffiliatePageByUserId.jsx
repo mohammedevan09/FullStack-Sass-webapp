@@ -5,7 +5,7 @@ import ThanksWithdrawRequestModal from '@/components/modals/affiliateModals/Than
 import { CopyLinkIcon, RequestWithdrawIcon } from '@/staticData/Icon'
 import { useState } from 'react'
 
-const MainAffiliatePage = ({ affiliates, referrals, commissions }) => {
+const MainAffiliatePageUserId = ({ affiliates, referrals, commissions }) => {
   const [openModal, setOpenModal] = useState(false)
   const [openSubModal, setOpenSubModal] = useState(false)
   return (
@@ -151,4 +151,4 @@ const MainAffiliatePage = ({ affiliates, referrals, commissions }) => {
   )
 }
 
-export default MainAffiliatePage
+export default MainAffiliatePageUserId

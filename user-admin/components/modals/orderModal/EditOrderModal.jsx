@@ -3,10 +3,10 @@
 import WrappingModal from '../WrappingModal'
 import { motion } from 'framer-motion'
 import { Input2 } from '@/components/others/Input'
-import { LabelsTwo } from '@/components/others/Labels'
 import ErrorMessage from '@/components/others/ErrorMessage'
 import { updateOrderApi } from '@/api/orderApi'
 import toast from 'react-hot-toast'
+import Labels from '@/components/others/Labels'
 
 const EditOrderModal = ({
   openModal,
@@ -46,7 +46,7 @@ const EditOrderModal = ({
           <div className="w-full h-[0px] border border-neutral-300 mt-5 mb-10"></div>
           <div className="grid gap-5">
             <div className="grid">
-              <LabelsTwo htmlFor={'project-title'} name={'Project Title'} />
+              <Labels htmlFor={'project-title'} name={'Project Title'} />
               <Input2
                 id={'project-title'}
                 placeholder={'Ex: Andrea’s personal web development'}
@@ -63,7 +63,7 @@ const EditOrderModal = ({
               <ErrorMessage errors={errors?.title} />
             </div>
             <div className="grid">
-              <LabelsTwo
+              <Labels
                 htmlFor={'Describe-the-projects'}
                 name={'Describe the Business/projects.'}
               />
@@ -86,7 +86,7 @@ const EditOrderModal = ({
             {fields?.map((field, i) => {
               return (
                 <div className="grid" key={i}>
-                  <LabelsTwo htmlFor={field?._id} name={field?.label} />
+                  <Labels htmlFor={field?._id} name={field?.label} />
                   {field?.type !== 'radio' && field?.type !== 'checkbox' ? (
                     <Input2
                       id={field?._id}

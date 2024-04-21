@@ -8,6 +8,7 @@ import userReducer from './reducers/userReducer'
 import activeReducer from './reducers/activeReducer'
 
 import createWebStorage from 'redux-persist/lib/storage/createWebStorage'
+import affiliateReducer from './reducers/affiliateReducer'
 
 const createNoopStorage = () => {
   return {
@@ -37,6 +38,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
   user: userReducer,
   active: activeReducer,
+  affiliate: affiliateReducer,
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

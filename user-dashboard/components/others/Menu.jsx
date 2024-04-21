@@ -104,7 +104,7 @@ const Menu = () => {
     {
       name: 'Affiliate',
       icon: <AffiliateIcon color="#6C7893" />,
-      link: '/dashboard/affiliate',
+      link: `/dashboard/affiliate?userId=${userInfo?._id}`,
       targetSegment: 'affiliate',
     },
   ]

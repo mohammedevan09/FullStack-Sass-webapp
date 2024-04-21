@@ -1,9 +1,9 @@
-import MainAffiliatePage from './MainAffiliatePage'
+import MainAffiliatePageUserId from './MainAffiliatePageByUserId'
 
 const page = () => {
   return (
     <>
-      <MainAffiliatePage />
+      <MainAffiliatePageUserId />
     </>
   )
 }
