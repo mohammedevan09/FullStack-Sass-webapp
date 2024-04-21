@@ -1,40 +1,44 @@
 'use client'
 
-import { useForm } from 'react-hook-form'
 import WrappingModal from '../WrappingModal'
 import { motion } from 'framer-motion'
 import ErrorMessage from '@/components/others/ErrorMessage'
 import Labels from '@/components/others/Labels'
 import { Input2 } from '@/components/others/Input'
 import toast from 'react-hot-toast'
-import { createFormCategoryApi } from '@/api/formApi'
-import { useSelector } from 'react-redux'
 
-const FormCategoryModal = ({ openModal, setOpenModal }) => {
-  const { userInfo } = useSelector((state) => state?.user)
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isValid, isSubmitting },
-  } = useForm({
-    defaultValues: {
-      name: '',
-      description: '',
-      creatorId: userInfo?._id,
-    },
-
-    mode: 'onChange',
-  })
-
+const CategoryModal = ({
+  openModal,
+  setOpenModal,
+  api,
+  updateApi,
+  setCategories,
+  handleSubmit,
+  errors,
+  isSubmitting,
+  isValid,
+  register,
+  item,
+}) => {
   const handleClick = async (data) => {
     if (isValid) {
       try {
-        await createFormCategoryApi(data)
-        toast.success(`New Form category created successfully!`)
+        if (item === null) {
+          const newData = await api(data)
+          setCategories((prev) => [newData, ...prev])
+          toast.success(`New category created successfully!`)
+        } else {
+          const updatedData = await updateApi(data, item?._id)
+          setCategories((prev) =>
+            prev.map((category) =>
+              category._id === updatedData._id ? updatedData : category
+            )
+          )
+          toast.success(`New category created successfully!`)
+        }
         setOpenModal(false)
       } catch (error) {
-        toast.error(`New Service creation failed!`)
+        toast.error(`Category creating or updating failed!`)
       }
     }
   }
@@ -43,7 +47,7 @@ const FormCategoryModal = ({ openModal, setOpenModal }) => {
     <WrappingModal modalOpen={openModal}>
       <div className="grid bg-white pt-10 pb-4 px-8 rounded-[20px] sm:w-[500px] w-[360px]">
         <h3 className="sm:text-2xl text-xl font-semibold tracking-tight mx-auto mb-8">
-          Are a new form category~
+          Are a new category~
         </h3>
         <div className="grid gap-2">
           <div className="grid">
@@ -103,4 +107,4 @@ const FormCategoryModal = ({ openModal, setOpenModal }) => {
   )
 }
 
-export default FormCategoryModal
+export default CategoryModal

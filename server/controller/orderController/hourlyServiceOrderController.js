@@ -148,6 +148,7 @@ export const getHourlyServiceOrderById = async (req, res, next) => {
 
 export const updateHourlyServiceOrderById = async (req, res, next) => {
   try {
+    const { page = 1, limit = 10 } = req.query
     const order = await HourlyServiceOrder.findByIdAndUpdate(
       {
         _id: req.params.id,
@@ -155,8 +156,29 @@ export const updateHourlyServiceOrderById = async (req, res, next) => {
       req.body,
       { new: true }
     )
+      .populate({
+        path: 'formId',
+        model: 'Form',
+        select: 'fields',
+      })
+      .exec()
 
-    return sendResponse(res, order)
+    if (!order) {
+      return sendResponse(res, 'Hourly Service Order not found')
+    }
+
+    const reversedHourlyTimeLogs = order.hourlyTimeLogs.slice().reverse()
+
+    const start = (parseInt(page) - 1) * parseInt(limit)
+    const end = start + parseInt(limit)
+    const hourlyTimeLogs = reversedHourlyTimeLogs.slice(start, end)
+
+    const result = {
+      ...order.toObject(),
+      hourlyTimeLogs,
+    }
+
+    return sendResponse(res, result)
   } catch (error) {
     next(error)
   }

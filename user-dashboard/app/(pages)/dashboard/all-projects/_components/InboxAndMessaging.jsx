@@ -134,85 +134,88 @@ const InboxAndMessaging = ({ order, orderChat }) => {
         </div>
       </div>
 
-      <div
-        className="grid gap-6 w-full text-sm md:max-h-[500px] max-h-[390px] overflow-y-scroll pt-6 sm:px-6 px-4 scroll-smooth"
-        ref={messagesEndRef}
-      >
-        {chat?.messages && chat?.messages.length > 0 ? (
-          <>
-            {chat?.messages?.map((item, i) => {
-              const senderInfo = chat.participantsInfo.find(
-                (participant) => participant._id === item?.sender
-              )
-              return (
-                <div
-                  className={`flex gap-4 w-full ${
-                    senderInfo?._id === userInfo?._id && 'flex-row-reverse'
-                  }`}
-                  key={i}
-                >
-                  <div className="w-[40px] py-1">
-                    <Image
-                      src={senderInfo?.profileImage || dummyProfile}
-                      alt="img"
-                      width={50}
-                      height={50}
-                      className="h-[40px] object-cover rounded-full bg-[#7136ff36]"
-                    />
-                  </div>
-                  <div className="grid gap-[1px] justify-end">
-                    <div
-                      className={`flex ${
-                        senderInfo?._id === userInfo?._id && 'flex-row-reverse'
-                      }`}
-                    >
+      <div className="min-h-[300px]">
+        <div
+          className="grid gap-6 w-full text-sm md:max-h-[500px] max-h-[390px] overflow-y-scroll pt-6 sm:px-6 px-4 scroll-smooth"
+          ref={messagesEndRef}
+        >
+          {chat?.messages && chat?.messages.length > 0 ? (
+            <>
+              {chat?.messages?.map((item, i) => {
+                const senderInfo = chat.participantsInfo.find(
+                  (participant) => participant._id === item?.sender
+                )
+                return (
+                  <div
+                    className={`flex gap-4 w-full ${
+                      senderInfo?._id === userInfo?._id && 'flex-row-reverse'
+                    }`}
+                    key={i}
+                  >
+                    <div className="w-[40px] py-1">
+                      <Image
+                        src={senderInfo?.profileImage || dummyProfile}
+                        alt="img"
+                        width={50}
+                        height={50}
+                        className="h-[40px] object-cover rounded-full bg-[#7136ff36]"
+                      />
+                    </div>
+                    <div className="grid gap-[1px] justify-end">
                       <div
-                        className={`h-full w-1 ${
-                          senderInfo?._id === userInfo?._id
-                            ? 'bg-blue-400'
-                            : 'bg-indigo-400'
-                        } rounded-full`}
-                      ></div>
-                      <div
-                        className={`w-full grid px-3 pt-[2px] pb-[3px] bg-[#001fff1f] ${
-                          senderInfo?._id === userInfo?._id
-                            ? 'rounded-l-md'
-                            : 'rounded-r-md'
+                        className={`flex ${
+                          senderInfo?._id === userInfo?._id &&
+                          'flex-row-reverse'
                         }`}
                       >
-                        {senderInfo && (
-                          <>
-                            <h1 className="font-semibold">
-                              {senderInfo.fullName}
-                            </h1>
-                            {typeof item?.content === 'object' ? (
-                              <h2 className="text-sm tiptap">
-                                {JsonToText(item?.content, false)}
-                              </h2>
-                            ) : (
-                              <h2 className="text-sm">{item?.content}</h2>
-                            )}
-                          </>
-                        )}
+                        <div
+                          className={`h-full w-1 ${
+                            senderInfo?._id === userInfo?._id
+                              ? 'bg-blue-400'
+                              : 'bg-indigo-400'
+                          } rounded-full`}
+                        ></div>
+                        <div
+                          className={`w-full grid px-3 pt-[2px] pb-[3px] bg-[#001fff1f] ${
+                            senderInfo?._id === userInfo?._id
+                              ? 'rounded-l-md'
+                              : 'rounded-r-md'
+                          }`}
+                        >
+                          {senderInfo && (
+                            <>
+                              <h1 className="font-semibold">
+                                {senderInfo.fullName}
+                              </h1>
+                              {typeof item?.content === 'object' ? (
+                                <h2 className="text-sm tiptap">
+                                  {JsonToText(item?.content, false)}
+                                </h2>
+                              ) : (
+                                <h2 className="text-sm">{item?.content}</h2>
+                              )}
+                            </>
+                          )}
+                        </div>
+                      </div>
+                      <div
+                        className={`text-[10px] text-gray-400 font-medium ${
+                          senderInfo?._id === userInfo?._id && 'text-right'
+                        }`}
+                      >
+                        {formatChatDateAndTime(item?.createdAt)}
                       </div>
                     </div>
-                    <div
-                      className={`text-[10px] text-gray-400 font-medium ${
-                        senderInfo?._id === userInfo?._id && 'text-right'
-                      }`}
-                    >
-                      {formatChatDateAndTime(item?.createdAt)}
-                    </div>
                   </div>
-                </div>
-              )
-            })}
-          </>
-        ) : (
-          <h1 className="font-bold text-gray-300 text-xl text-center italic">
-            No chat history
-          </h1>
-        )}
+                )
+              })}
+            </>
+          ) : (
+            <h1 className="font-bold text-gray-300 text-xl text-center italic">
+              No chat history
+            </h1>
+          )}
+        </div>
       </div>
       <div className="relative sm:px-6 px-4">
         <MainEditor

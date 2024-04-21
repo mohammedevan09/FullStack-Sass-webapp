@@ -1,13 +1,12 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { EditIcon, RemoveIcon } from '@/staticData/Icon'
 import CountdownClock from './CountDownClock'
 import AddOrEditHourlyLogsModal from '@/components/modals/orderModal/AddOrEditHourlyLogsModal'
 import toast from 'react-hot-toast'
 import {
   createHourlyTimeLogsApi,
-  deleteHourlyTimeLogApi,
   updateHourlyTimeLogApi,
 } from '@/api/hourlyTimeLogsApi'
 import { updateOrderApi } from '@/api/orderApi'
@@ -47,13 +46,7 @@ const HourlyTimeLogs = ({
           `hourlyService/${order?._id}`
         )
 
-        setOrderData({
-          ...updated,
-          hourlyTimeLogs: [
-            data?.hourlyTimeLogs?.[logsLength],
-            ...order?.hourlyTimeLogs,
-          ],
-        })
+        setOrderData(updated)
       } else {
         await updateHourlyTimeLogApi(
           data?.hourlyTimeLogs?.[logsLength],
@@ -82,10 +75,7 @@ const HourlyTimeLogs = ({
           },
           `hourlyService/${order?._id}`
         )
-        setOrderData({
-          ...updated,
-          hourlyTimeLogs: data?.hourlyTimeLogs,
-        })
+        setOrderData(updated)
       }
       reset()
       setOpenModal(false)
@@ -101,7 +91,7 @@ const HourlyTimeLogs = ({
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-semibold">Hourly Time logs</h1>
           <button
-            className="px-4 py-1 bg-[#3B82F6] rounded-md text-white font-semibold"
+            className="px-4 py-1 hover:scale-105 transition-all duration-200 ease-in-out bg-[#3B82F6] rounded-md text-white font-semibold"
             onClick={(e) => {
               e.preventDefault()
               setLogsLength(order?.hourlyTimeLogs?.length)

@@ -21,6 +21,9 @@ import normalServiceOrderRouter from './router/orderRouter/normalServiceOrderRou
 import subscriptionServiceOrderRouter from './router/orderRouter/subscriptionServiceOrderRouter.js'
 import hourlyServiceOrderRouter from './router/orderRouter/hourlyServiceOrderRouter.js'
 import orderChatRouter from './router/orderRouter/orderChatRouter.js'
+import guideRouter from './router/guideRouter.js'
+import feedbackCategoryRouter from './router/feedbackRouter/feedbackCategoryRouter.js'
+import feedbackRouter from './router/feedbackRouter/feedbackRouter.js'
 
 dotenv.config()
 
@@ -66,6 +69,9 @@ app.use('/api/order/normalService', normalServiceOrderRouter)
 app.use('/api/order/subscriptionService', subscriptionServiceOrderRouter)
 app.use('/api/order/hourlyService', hourlyServiceOrderRouter)
 app.use('/api/order/chat', orderChatRouter)
+app.use('/api/guide', guideRouter)
+app.use('/api/feedbackCategory', feedbackCategoryRouter)
+app.use('/api/feedback', feedbackRouter)
 
 app.use(notFound)
 app.use(errorHandler)

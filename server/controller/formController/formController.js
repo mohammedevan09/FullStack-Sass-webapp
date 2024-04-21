@@ -41,8 +41,6 @@ export const getAllForms = async (req, res, next) => {
       .limit(limit)
       .exec()
 
-    console.log(forms?.length)
-
     return res.status(200).json(forms)
   } catch (error) {
     next(error)

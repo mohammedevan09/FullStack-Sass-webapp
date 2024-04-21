@@ -27,6 +27,24 @@ export const getFormCategoryById = async (id) => {
   }
 }
 
+export const updateFormCategoryApi = async (sendData, id) => {
+  try {
+    const data = await axios.put(`${host}/api/formCategory/${id}`, sendData)
+    return data?.data
+  } catch (error) {
+    return error
+  }
+}
+
+export const deleteFormCategoryById = async (id) => {
+  try {
+    const data = await axios.delete(`${host}/api/formCategory/${id}`)
+    return data?.data
+  } catch (error) {
+    return error
+  }
+}
+
 // Forms
 export const createFormApi = async (sendData) => {
   const data = await axios.post(`${host}/api/form`, sendData)

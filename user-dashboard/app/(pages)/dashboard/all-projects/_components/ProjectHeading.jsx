@@ -14,6 +14,9 @@ export const filterByStatusData = [
   {
     title: 'done',
   },
+  {
+    title: 'canceled',
+  },
 ]
 
 const ProjectHeading = ({ title }) => {
@@ -49,7 +52,7 @@ const ProjectHeading = ({ title }) => {
         </div>
         <div className="flex">
           <div
-            className="relative w-[165px] bg-white rounded-[5px]"
+            className="relative w-[175px] bg-white rounded-[5px]"
             ref={dropRef}
           >
             <div className="py-1 px-3 bg-opacity-40 absolute text-base backdrop-blur-[40px] w-full bg-white rounded-[5px]">

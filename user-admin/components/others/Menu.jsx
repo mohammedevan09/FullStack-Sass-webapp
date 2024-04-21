@@ -16,6 +16,9 @@ import {
   TeamsIcon,
   FormsIcon,
   LogoutIcon,
+  HowToGuideIcon,
+  FeedbackIcon,
+  AffiliateIcon,
 } from '../../staticData/Icon'
 import { useDispatch, useSelector } from 'react-redux'
 import { setOpenMenu } from '@/store/reducers/activeReducer'
@@ -95,6 +98,24 @@ const Menu = () => {
       icon: <MeetingIcon color="#ffffff" />,
       link: '/meetings',
       targetSegment: 'meetings',
+    },
+    {
+      name: 'How To Guide',
+      icon: <HowToGuideIcon color="#ffffff" />,
+      link: '/how-to-guide',
+      targetSegment: 'how-to-guide',
+    },
+    {
+      name: 'Feedback',
+      icon: <FeedbackIcon color="#ffffff" />,
+      link: '/feedback',
+      targetSegment: 'feedback',
+    },
+    {
+      name: 'Affiliate',
+      icon: <AffiliateIcon color="#ffffff" />,
+      link: '/affiliate',
+      targetSegment: 'affiliate',
     },
   ]
 

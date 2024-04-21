@@ -43,6 +43,8 @@ const AdditionInfo = ({ order }) => {
           'Payment Method': makeCapitalize(order?.payment_method_types),
           'Total Amount': `$${order?.totalAmount}`,
           ...order?.additionalInfo,
+          'Service ID': `#${order?.serviceId}`,
+          'User ID': `#${order?.userId}`,
           'Created At': formatDate(order?.createdAt),
           'Updated At': formatDate(order?.updatedAt),
         })?.map(([key, value], i) => {

@@ -1,8 +1,16 @@
 'use client'
 
+import { EditIcon, RemoveIcon } from '@/staticData/Icon'
 import { useRouter } from 'next/navigation'
 
-const FormCategoryTable = ({ formCategoryData, title }) => {
+const FormCategoryTable = ({
+  formCategoryData,
+  title,
+  setEditModel,
+  setRemoveModal,
+  setItem,
+  link,
+}) => {
   const router = useRouter()
   return (
     <div className="lg:w-full w-screen px-7 pt-6 overflow-x-scroll">
@@ -21,6 +29,7 @@ const FormCategoryTable = ({ formCategoryData, title }) => {
               <th>Name</th>
               <th>Creator ID</th>
               <th className="text-center">Action</th>
+              <th className="text-center">Manage</th>
             </tr>
           </thead>
           <tbody className="lg:text-base text-sm font-medium text-zinc-800">
@@ -32,7 +41,7 @@ const FormCategoryTable = ({ formCategoryData, title }) => {
                   </div>
                 </td>
                 <td className="lg:py-5 py-4 pl-1">
-                  <div className="flex justify-start items-center gap-3 md:min-w-full min-w-[250px]">
+                  <div className="flex justify-start items-center gap-3 w-[300px]">
                     {item?.name?.length >= 60 ? (
                       <>{item?.name?.substring(0, 60)}...</>
                     ) : (
@@ -40,20 +49,39 @@ const FormCategoryTable = ({ formCategoryData, title }) => {
                     )}
                   </div>
                 </td>
-
                 <td className="lg:py-5 py-4 px-2 w-[110px]">
                   <div className="flex justify-start items-center gap-3 min-w-[110px]">
                     #{item?.creatorId}
                   </div>
                 </td>
+                <td className="py-4 text-center">
+                  <div className="w-[120px] mx-auto flex gap-4 justify-center">
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault()
+                        setItem(item)
+                        setEditModel(true)
+                      }}
+                    >
+                      <EditIcon color={'#2525ff'} />
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault()
+                        setItem(item)
+                        setRemoveModal(true)
+                      }}
+                    >
+                      <RemoveIcon color={'#ff2a2a'} />
+                    </button>
+                  </div>
+                </td>
                 <td className="lg:py-5 py-4 text-center">
                   <button
                     className="w-[120px] h-[34px] btn-hover rounded-[5px] text-center"
-                    onClick={() =>
-                      router.push(`/forms/formsByCategory?id=${item?._id}`)
-                    }
+                    onClick={() => router.push(`${link}${item?._id}`)}
                   >
-                    Manage
+                    Open
                   </button>
                 </td>
               </tr>

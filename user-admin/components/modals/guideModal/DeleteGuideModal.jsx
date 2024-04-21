@@ -6,21 +6,22 @@ import { motion } from 'framer-motion'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { useRouter } from 'next/navigation'
-import { deleteFormById } from '@/api/formApi'
+import { deleteGuideApi } from '@/api/guideApi'
 
-const DeleteFormModal = ({ openModal, setOpenModal, form, searchParams }) => {
+const DeleteGuideModal = ({ openModal, setOpenModal, guide }) => {
   const router = useRouter()
+
   const [value, setValue] = useState('')
 
   const handleClick = async () => {
-    if (value === form?.name) {
+    if (value === guide?.title) {
       try {
-        await deleteFormById(form?._id)
-        router.push(`/forms/formsByCategory?id=${searchParams?.categoryId}`)
-        toast.success(`Your form ${form?.name} is deleted!`)
+        await deleteGuideApi(guide?._id)
+        router.push(`/how-to-guide`)
+        toast.success(`Deleted successfully!`)
         setOpenModal(false)
       } catch (error) {
-        setOpenModal(false)
+        toast.error(`Delete failed!`)
       }
     }
   }
@@ -36,13 +37,13 @@ const DeleteFormModal = ({ openModal, setOpenModal, form, searchParams }) => {
             htmlFor={'name'}
             className={`text-base font-semibold tracking-tight mb-1`}
           >
-            Type the form name{' '}
-            <span className="font-bold text-rose-600">{form?.name}</span> to
+            Type the Guide/Tutorial name{' '}
+            <span className="font-bold text-rose-600">{guide?.title}</span> to
             delete
           </label>
           <Input2
-            id={'name'}
-            placeholder={'Order title'}
+            id={'title'}
+            placeholder={'Guide/Tutorial Title'}
             type={'text'}
             validationRules={{
               onChange: (e) => setValue(e.target.value),
@@ -50,7 +51,7 @@ const DeleteFormModal = ({ openModal, setOpenModal, form, searchParams }) => {
           />
         </div>
 
-        <div className="flex items-center gap-3 mt-14 mb-3">
+        <div className="flex items-center gap-3 mt-8 mb-3">
           <motion.button
             whileHover={{ scale: 1.15 }}
             className="w-full py-2 text-blue-800 rounded-[9px] text-lg font-semibold leading-7"
@@ -64,9 +65,9 @@ const DeleteFormModal = ({ openModal, setOpenModal, form, searchParams }) => {
             whileHover={{ scale: 1.03 }}
             className="w-full py-2 px-2 bg-rose-600 rounded-[9px] text-white text-lg font-semibold leading-7 disabled:opacity-50 disabled:cursor-not-allowed"
             onClick={() => handleClick()}
-            disabled={value !== form?.name}
+            disabled={value !== guide?.title}
           >
-            Delete form
+            Delete
           </motion.button>
         </div>
       </div>
@@ -74,4 +75,4 @@ const DeleteFormModal = ({ openModal, setOpenModal, form, searchParams }) => {
   )
 }
 
-export default DeleteFormModal
+export default DeleteGuideModal

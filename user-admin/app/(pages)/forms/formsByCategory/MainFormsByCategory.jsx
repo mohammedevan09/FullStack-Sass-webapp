@@ -10,19 +10,21 @@ const MainFormsByCategory = ({ formCategory, forms, searchParams }) => {
   return (
     <div className="lg:w-full w-screen px-7 pt-8 overflow-x-scroll">
       <BackButton title={'Go Back'} link={'/forms'} />
-      <div className="flex justify-between items-end">
+      <div className="md:flex grid justify-between items-end md:gap-3 gap-6">
         <div>
           <h1 className="text-2xl font-semibold">{formCategory?.name}</h1>
           <h2 className="text-base font-semibold text-gray-500">
             {formCategory?.description}
           </h2>
         </div>{' '}
-        <Link
-          href={`/forms/formsByCategory/new?categoryId=${searchParams?.id}`}
-          className="w-[130px] h-[34px] btn-hover rounded-[5px] text-center flex items-center justify-center"
-        >
-          Create New +
-        </Link>
+        <div>
+          <Link
+            href={`/forms/formsByCategory/new?categoryId=${searchParams?.id}`}
+            className="w-[130px] h-[34px] btn-hover rounded-[5px] text-center flex items-center justify-center"
+          >
+            Create New +
+          </Link>
+        </div>
       </div>
       <div className="bg-zinc-400 w-full h-[1px] mt-3 mb-6" />
       <div className="grid items-center gap-3">

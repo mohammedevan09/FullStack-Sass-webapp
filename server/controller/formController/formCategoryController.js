@@ -26,7 +26,7 @@ export const updateFormCategory = async (req, res, next) => {
 
 export const getAllFormCategories = async (req, res, next) => {
   try {
-    const formCategory = await FormCategory.find()
+    const formCategory = await FormCategory.find().sort({ createdAt: -1 })
     return res.status(200).json(formCategory)
   } catch (error) {
     next(error)
