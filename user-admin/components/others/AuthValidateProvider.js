@@ -43,6 +43,7 @@ const AuthValidateProvider = ({ refreshToken, children }) => {
     }
     settingUser()
   }, [refreshToken])
+
   return <>{children}</>
 }
 
