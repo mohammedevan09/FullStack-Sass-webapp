@@ -75,6 +75,7 @@ export const loginUser = async (req, res, next) => {
           loggedUser._doc
 
         res.cookie('refreshToken', newRefreshToken, {
+          domain: process.env.BASE_URL,
           httpOnly: true,
           secure: true,
           maxAge: 90 * 24 * 60 * 60 * 1000,
@@ -321,7 +322,7 @@ export const sendVerifyEmail = async (req, res, next) => {
         },
         { new: true }
       )
-      const url = `${process.env.BASE_URL}login/email_verify/${_id}?token=${token.token}`
+      const url = `${process.env.BASE_URL}/login/email_verify/${_id}?token=${token.token}`
       await sendEmail(
         email,
         'Verify Email',
@@ -333,7 +334,7 @@ export const sendVerifyEmail = async (req, res, next) => {
         userId: _id,
         token: crypto.randomBytes(32).toString('hex'),
       })
-      const url = `${process.env.BASE_URL}login/email_verify/${_id}?token=${token.token}`
+      const url = `${process.env.BASE_URL}/login/email_verify/${_id}?token=${token.token}`
       await sendEmail(
         email,
         'Verify Email',
@@ -384,7 +385,7 @@ export const forgotPassword = async (req, res, next) => {
     const token = jwt.sign({ email: oldUser.email, id: oldUser._id }, secret, {
       expiresIn: '5m',
     })
-    const link = `${process.env.BASE_URL}login/forgot-password/${oldUser._id}?token=${token}`
+    const link = `${process.env.BASE_URL}/login/forgot-password/${oldUser._id}?token=${token}`
     await sendEmail(
       email,
       'Reset Password',
