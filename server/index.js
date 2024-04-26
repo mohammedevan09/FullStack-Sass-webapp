@@ -6,6 +6,7 @@ import mongoose from 'mongoose'
 import cookieParser from 'cookie-parser'
 import morgan from 'morgan'
 import { Server } from 'socket.io'
+import expressSession from 'express-session'
 
 import userRouter from './router/userRouter/userRouter.js'
 import { errorHandler, notFound } from './middleware/errorHandler.js'
@@ -52,6 +53,23 @@ app.get('/', (req, res, next) => {
     next(error)
   }
 })
+
+app.set('trust proxy', 1)
+
+app.use(
+  expressSession({
+    secret: '324123process.env.SESSION_SECRET',
+    resave: false,
+    saveUninitialized: true,
+    proxy: true,
+    name: 'MyCoolWebAppCookieName',
+    cookie: {
+      secure: true,
+      httpOnly: false,
+      sameSite: 'none',
+    },
+  })
+)
 
 app.post(
   '/api/order/webhook',

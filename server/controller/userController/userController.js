@@ -38,9 +38,6 @@ export const createUser = async (req, res, next) => {
         registeredUser._doc
 
       res.cookie('refreshToken', newRefreshToken, {
-        httpOnly: false,
-        sameSite: 'none',
-        secure: true,
         maxAge: 90 * 24 * 60 * 60 * 1000,
       })
 
@@ -125,9 +122,6 @@ export const googleLoginUser = async (req, res, next) => {
         loggedUser._doc
 
       res.cookie('refreshToken', refreshTokenNew, {
-        httpOnly: false,
-        sameSite: 'none',
-        secure: true,
         maxAge: 90 * 24 * 60 * 60 * 1000,
       })
 
@@ -152,9 +146,6 @@ export const googleLoginUser = async (req, res, next) => {
         registeredUser._doc
 
       res.cookie('refreshToken', newRefreshToken, {
-        httpOnly: false,
-        sameSite: 'none',
-        secure: true,
         maxAge: 90 * 24 * 60 * 60 * 1000,
       })
 
@@ -199,10 +190,6 @@ export const adminLogin = async (req, res, next) => {
           loggedUser._doc
 
         res.cookie('refreshToken', newRefreshToken, {
-          httpOnly: false,
-
-          sameSite: 'none',
-          secure: true,
           maxAge: 90 * 24 * 60 * 60 * 1000,
         })
 
