@@ -133,7 +133,7 @@ const Menu = () => {
   }, [])
 
   useEffect(() => {
-    if (!userInfo?._id) {
+    if (!userInfo?.token) {
       redirect('/login')
     }
   }, [userInfo, router])

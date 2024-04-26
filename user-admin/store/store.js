@@ -18,11 +18,6 @@ const createNoopStorage = () => {
   }
 }
 
-// const sessionStorageConfig =
-//   typeof window !== 'undefined'
-//     ? createWebStorage('session')
-//     : createNoopStorage()
-
 const localStorageConfig =
   typeof window !== 'undefined'
     ? createWebStorage('local')
@@ -34,13 +29,7 @@ const persistConfig = {
   // blacklist: [],
 }
 
-// const userPersistConfig = {
-//   key: 'user',
-//   storage: sessionStorageConfig,
-// }
-
 const rootReducer = combineReducers({
-  // user: persistReducer(userPersistConfig, userReducer),
   user: userReducer,
   active: activeReducer,
 })

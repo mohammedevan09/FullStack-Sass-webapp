@@ -2,6 +2,7 @@
 
 import { getUserByIdApi, handleRefreshTokenApi } from '@/api/userApi'
 import { setUsers } from '@/store/reducers/userReducer'
+import { jwtDecode } from 'jwt-decode'
 import { useLayoutEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
