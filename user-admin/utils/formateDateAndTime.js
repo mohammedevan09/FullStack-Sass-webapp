@@ -16,6 +16,39 @@ export function formatDate(dateString) {
   return formattedDate
 }
 
+export function formatDateTwo(dateString) {
+  const months = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'June',
+    'July',
+    'Aug',
+    'Sept',
+    'Oct',
+    'Nov',
+    'Dec',
+  ]
+
+  const date = new Date(dateString)
+  const day = date.getDate()
+  const monthIndex = date.getMonth()
+  const year = date.getFullYear()
+  let hours = date.getHours()
+  const minutes = date.getMinutes()
+  const ampm = hours >= 12 ? 'pm' : 'am'
+  hours = hours % 12
+  hours = hours ? hours : 12 // Handle midnight (0 hours)
+
+  const formattedDate = `${day} ${months[monthIndex]} ${year} ${hours}:${minutes
+    .toString()
+    .padStart(2, '0')} ${ampm}`
+
+  return formattedDate
+}
+
 export const formatChatDateAndTime = (dateString) => {
   const date = new Date(dateString)
 

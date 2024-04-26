@@ -6,17 +6,20 @@ import toast from 'react-hot-toast'
 import { verifyYourEmail } from '@/api/userApi'
 import { useRouter } from 'next/navigation'
 import { useDispatch } from 'react-redux'
+import { setUsers } from '@/store/reducers/userReducer'
+import { useSelector } from 'react-redux'
 
 const MainEmailTokenVerify = ({ params, searchParams }) => {
-  // console.log(params, searchParams)
-
   const router = useRouter()
   const dispatch = useDispatch()
+
+  const { userInfo } = useSelector((state) => state?.user)
 
   const handleClick = async () => {
     try {
       await verifyYourEmail(params?.id, searchParams?.token)
-      dispatch(setEmailVerified)
+      dispatch(setUsers({ ...userInfo, email_verified: true }))
+      toast.success('Verification Successful')
       router.push('/dashboard')
     } catch (error) {
       toast.error('Verification Failed')

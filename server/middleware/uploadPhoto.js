@@ -5,7 +5,7 @@ import fs from 'fs'
 import { fileURLToPath } from 'url'
 
 const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+export const __dirname = path.dirname(__filename)
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -30,17 +30,3 @@ export const uploadPhoto = multer({
   fileFilter: multerFilter,
   limits: { fileSize: 10000000 },
 })
-
-export const imgResize = async (req, res, next) => {
-  if (!req.files) return next()
-  await Promise.all(
-    req.files.map(async (file) => {
-      await sharp(file.path)
-        .toFormat('jpeg')
-        .jpeg({ quality: 90 })
-        .toFile(`public/images/products/${file.filename}`)
-      fs.unlinkSync(`public/images/products/${file.filename}`)
-    })
-  )
-  next()
-}

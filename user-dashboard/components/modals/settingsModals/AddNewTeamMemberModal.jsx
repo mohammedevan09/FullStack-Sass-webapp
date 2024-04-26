@@ -1,6 +1,6 @@
 'use client'
 
-import Input from '../../others/Input'
+import Input, { Input2 } from '../../others/Input'
 import Labels from '../../others/Labels'
 import WrappingModal from '../WrappingModal'
 import { motion } from 'framer-motion'
@@ -39,25 +39,13 @@ const AddNewTeamMemberModal = ({
 
   return (
     <WrappingModal modalOpen={openModal}>
-      <div className="grid bg-white sm:pt-16 pt-8 pb-4 sm:px-24 xs:px-6 px-2 rounded-[20px] overflow-x-hidden gap-7">
+      <div className="grid justify-center bg-white sm:pt-12 pt-8 pb-4 xs:px-6 px-4 rounded-[20px] overflow-x-hidden gap-7 sm:w-[550px] w-[360px]">
         <h2 className="text-xl font-semibold mx-auto">Add new team members</h2>
-        <Input
-          placeholder={'Full Name'}
-          type={'text'}
-          cn={'sm:w-[472.44px] w-[340px]'}
-        />
-        <Input
-          placeholder={'Email Address'}
-          type={'email'}
-          cn={'sm:w-[472.44px] w-[340px]'}
-        />
-        <Input
-          placeholder={'Position/Designation/Job title'}
-          type={'text'}
-          cn={'sm:w-[472.44px] w-[340px]'}
-        />
+        <Input2 placeholder={'Full Name'} type={'text'} />
+        <Input2 placeholder={'Email Address'} type={'email'} />
+        <Input2 placeholder={'Position/Designation/Job title'} type={'text'} />
         <div>
-          <h3 className="text-base font-medium leading-relaxed mb-4 text-center">
+          <h3 className="sm:text-base text-xs font-medium leading-relaxed sm:mb-4 mb-2 text-center">
             Select Access to profile and what they can see, manage.
           </h3>
           <div className="grid sm:grid-cols-3 grid-cols-2 items-center border-t border-gray-400 sm:py-9 py-5 pl-8 sm:gap-6 gap-2">
@@ -73,10 +61,20 @@ const AddNewTeamMemberModal = ({
             ))}
           </div>
         </div>
-        <div className="w-full grid gap-2">
+        <div className="w-full flex">
+          <motion.button
+            whileHover={{ scale: 1.15 }}
+            className="w-full text-center font-semibold text-blue-800 py-2 rounded-lg leading-7 text-lg"
+            onClick={(e) => {
+              e.preventDefault()
+              setOpenModal(false)
+            }}
+          >
+            Cancel
+          </motion.button>
           <motion.button
             whileHover={{ scale: 1.03 }}
-            className="w-full text-center text-white text-base font-semibold bg-blue-800 py-4 rounded-lg leading-7"
+            className="w-full text-center text-white text-base font-semibold bg-blue-800 py-2 rounded-lg leading-7"
             onClick={(e) => {
               e.preventDefault()
               setSuccessModal(true)
@@ -84,16 +82,6 @@ const AddNewTeamMemberModal = ({
             }}
           >
             Add Member
-          </motion.button>
-          <motion.button
-            whileHover={{ scale: 1.15 }}
-            className="w-full text-center bg-none text-base font-semibold text-blue-800 py-4 rounded-lg leading-7"
-            onClick={(e) => {
-              e.preventDefault()
-              setOpenModal(false)
-            }}
-          >
-            Cancel
           </motion.button>
         </div>
       </div>

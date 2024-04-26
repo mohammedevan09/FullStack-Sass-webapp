@@ -1,10 +1,9 @@
-export default function Home() {
+import Hero from '@/components/homeComp/Hero'
+
+export default function Home({ searchParams }) {
   return (
-    <div className="grid justify-center items-center h-screen">
-      <h1 className="text-3xl font-bold">
-        {' '}
-        Here Will be Landing page of WP Sprint LLC
-      </h1>
-    </div>
+    <>
+      <Hero searchParams={searchParams} />
+    </>
   )
 }

@@ -152,7 +152,6 @@ const FormExample = ({
         reset()
         toast.success('Form saved successfully!')
       } catch (error) {
-        console.log(error)
         toast.error('Sorry, Form saving failed!')
       }
     }

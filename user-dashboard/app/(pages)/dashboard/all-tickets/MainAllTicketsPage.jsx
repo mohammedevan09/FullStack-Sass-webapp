@@ -47,7 +47,7 @@ const MainAllTicketsPage = ({ projects }) => {
         >
           <AddProjectIcon /> Add Tickets
         </button>
-        <div className="sm:flex grid justify-between items-center sm:gap-[none] gap-5 ">
+        {/* <div className="sm:flex grid justify-between items-center sm:gap-[none] gap-5 ">
           <h2 className="text-2xl font-semibold">All Tickets</h2>
           <div className="flex md:gap-9 gap-3 sm:">
             <div className="flex sm:px-4 px-1 py-[7px] bg-white rounded-xl justify-start items-center sm:gap-4 gap-1">
@@ -88,7 +88,7 @@ const MainAllTicketsPage = ({ projects }) => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
       <div className="lg:w-full w-screen bg-white rounded-[20.37px] px-7 py-8 sm:my-14 my-10 overflow-x-scroll">
         <table className="w-full">

@@ -35,7 +35,7 @@ const UserSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ['user', 'admin', 'sub admin', 'super admin'],
+      enum: ['subUser', 'user', 'subAdmin', 'admin', 'superAdmin'],
       default: 'user',
     },
     isBlocked: {
@@ -47,9 +47,8 @@ const UserSchema = new mongoose.Schema(
       default: false,
     },
     referredBy: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.Mixed,
       ref: 'User',
-      required: true,
     },
     refreshToken: {
       type: String,

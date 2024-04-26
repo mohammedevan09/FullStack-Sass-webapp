@@ -1,14 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: [
-      '',
-      '*',
-      'localhost',
-      'res.cloudinary.com',
-      'res-console.cloudinary.com',
-      'lh3.googleusercontent.com',
-      'avatars.githubusercontent.com',
+    remotePatterns: [
+      {
+        protocol: 'http',
+        hostname: '**',
+      },
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
     ],
   },
 }

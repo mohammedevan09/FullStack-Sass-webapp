@@ -1,6 +1,10 @@
 import fs from 'fs'
 import Service from '../../model/serviceModels/serviceModel.js'
-import { cloudinaryUploadImg } from '../../utils/cloudinary.js'
+import {
+  cloudinaryDeleteImg,
+  cloudinaryUploadImg,
+} from '../../utils/cloudinary.js'
+import { sendResponse } from '../../utils/sendResponse.js'
 
 export const getAllServices = async (req, res, next) => {
   try {
@@ -47,6 +51,13 @@ export const uploadImages = async (req, res, next) => {
   const { id } = req.params
 
   try {
+    const service = await Service.findById(id)
+    if (service?.icon) {
+      const publicId = service?.icon.split('/').pop().split('.')[0]
+
+      await cloudinaryDeleteImg(publicId)
+    }
+
     const uploader = (path) => cloudinaryUploadImg(path, 'images')
     const urls = []
     const files = req.files
@@ -58,16 +69,10 @@ export const uploadImages = async (req, res, next) => {
       fs.unlinkSync(path)
     }
 
-    const findProduct = await Service.findByIdAndUpdate(
-      id,
-      {
-        icon: urls[0]?.url,
-      },
-      {
-        new: true,
-      }
-    )
-    return res.status(200).json(findProduct)
+    service.icon = urls[0]?.url
+    service.save()
+
+    return sendResponse(res, service)
   } catch (error) {
     next(error)
   }

@@ -25,6 +25,14 @@ export const googleLoginUserApi = async (sendData) => {
   return data?.data
 }
 
+export const handleRefreshTokenApi = async (queryData) => {
+  const data = await axios.get(`${host}/api/user/handleRefreshToken`, {
+    params: queryData,
+  })
+
+  return data?.data
+}
+
 export const updateUserApi = async (sendData, token) => {
   const data = await axios.put(
     `${host}/api/user/update`,
@@ -40,6 +48,27 @@ export const updateUserApi = async (sendData, token) => {
   )
 
   return data?.data
+}
+
+export const uploadProfileImageApi = async (id, formData) => {
+  const data = await axios.put(`${host}/api/user/upload/${id}`, formData)
+
+  return data?.data
+}
+
+export const getUserByIdApi = async (token) => {
+  try {
+    const data = await axios.get(`${host}/api/user/findUser`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      withCredentials: true,
+    })
+
+    return data?.data
+  } catch (error) {
+    return error
+  }
 }
 
 export const logoutUserApi = async () => {

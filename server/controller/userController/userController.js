@@ -1,11 +1,17 @@
+import fs from 'fs'
 import bcrypt from 'bcrypt'
-import generateToken from '../config/jwtToken.js'
-import generateRefreshToken from '../config/refreshToken.js'
-import User from '../model/userModel.js'
-import Token from '../model/tokenModel.js'
+import generateToken from '../../config/jwtToken.js'
+import generateRefreshToken from '../../config/refreshToken.js'
+import User from '../../model/userModels/userModel.js'
+import Token from '../../model/tokenModel.js'
 import jwt from 'jsonwebtoken'
-import sendEmail from '../utils/sendEmail.js'
+import sendEmail from '../../utils/sendEmail.js'
 import crypto from 'crypto'
+import {
+  cloudinaryDeleteImg,
+  cloudinaryUploadImg,
+} from '../../utils/cloudinary.js'
+import { sendResponse } from '../../utils/sendResponse.js'
 
 export const createUser = async (req, res, next) => {
   const { email, password: pass } = req.body
@@ -89,17 +95,25 @@ export const loginUser = async (req, res, next) => {
 
 export const googleLoginUser = async (req, res, next) => {
   const { email } = req.body
-  console.log(req.body)
   const findUser = await User.findOne({ email })
   try {
     if (findUser) {
       const refreshTokenNew = generateRefreshToken(findUser?._id)
+
+      const updateFields = {
+        refreshToken: refreshTokenNew,
+        email_verified: req.body?.email_verified,
+        email: req.body?.email,
+        fullName: req.body?.fullName,
+      }
+
+      if (!findUser.profileImage || findUser.profileImage === '') {
+        updateFields.profileImage = req.body.profileImage
+      }
+
       const loggedUser = await User.findByIdAndUpdate(
         findUser.id,
-        {
-          refreshToken: refreshTokenNew,
-          ...req.body,
-        },
+        updateFields,
         { new: true }
       )
 
@@ -197,12 +211,14 @@ export const adminLogin = async (req, res, next) => {
 }
 
 export const handleRefreshToken = async (req, res) => {
-  const cookie = req.cookies
-  if (!cookie.refreshToken)
-    return res.status(401).send('No Refresh token in Cookies!')
+  // const cookie = req.cookies
+  // if (!cookie.refreshToken)
+  //   return res.status(401).send('No Refresh token in Cookies!')
 
-  const refreshToken = cookie.refreshToken
+  // const refreshToken = cookie.refreshToken
   //   console.log(refreshToken)
+
+  const { refreshToken } = req.query
 
   const user = await User.findOne({ refreshToken })
   if (!user)
@@ -214,6 +230,39 @@ export const handleRefreshToken = async (req, res) => {
     const accessToken = generateToken(user?._id)
     return res.status(200).json({ accessToken })
   })
+}
+
+export const uploadProfilePicture = async (req, res, next) => {
+  const { id } = req.params
+
+  try {
+    const user = await User.findById(id)
+    if (user?.profileImage) {
+      const publicId = user.profileImage.split('/').pop().split('.')[0]
+      await cloudinaryDeleteImg(publicId)
+    }
+
+    const uploader = (path) => cloudinaryUploadImg(path, 'images')
+    const urls = []
+    const files = req.files
+
+    await Promise.all(
+      files.map(async (file) => {
+        const newPath = await uploader(file.path)
+        urls.push(newPath)
+        fs.unlinkSync(file.path)
+      })
+    )
+
+    user.profileImage = urls[0]?.url
+    await user.save()
+
+    const { password, refreshToken, ...userWithoutPassAndToken } = user._doc
+
+    return sendResponse(res, userWithoutPassAndToken)
+  } catch (error) {
+    next(error)
+  }
 }
 
 export const updateUser = async (req, res, next) => {
@@ -230,6 +279,21 @@ export const updateUser = async (req, res, next) => {
     )
 
     const { password, refreshToken, ...userWithoutPassAndToken } = update._doc
+
+    return res
+      .status(200)
+      .json({ ...userWithoutPassAndToken, token: generateToken(_id) })
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const getUserById = async (req, res, next) => {
+  const { _id } = req.user
+  try {
+    const user = await User.findById(_id)
+
+    const { password, refreshToken, ...userWithoutPassAndToken } = user._doc
 
     return res
       .status(200)

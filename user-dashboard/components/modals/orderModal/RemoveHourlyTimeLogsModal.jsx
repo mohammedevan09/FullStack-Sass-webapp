@@ -55,7 +55,6 @@ const RemoveHourlyTimeLogsModal = ({
         setOpenModal(false)
         toast.success('Removed Hourly Time log updated!')
       } catch (error) {
-        console.log(error)
         toast.error('Sorry cannot remove!')
       }
     }

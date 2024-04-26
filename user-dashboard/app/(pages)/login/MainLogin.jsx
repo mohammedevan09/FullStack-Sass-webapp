@@ -25,6 +25,7 @@ const MainLogin = () => {
   const dispatch = useDispatch()
 
   const { userInfo } = useSelector((state) => state?.user)
+  const { ref: reference } = useSelector((state) => state?.affiliate)
 
   const handleForgotPassLink = () => {
     router.push('/login/forgot-password')
@@ -93,7 +94,7 @@ const MainLogin = () => {
         </button>
       </div>
       {isSignUp ? (
-        <SignUp router={router} dispatch={dispatch} />
+        <SignUp router={router} dispatch={dispatch} reference={reference} />
       ) : (
         <SignIn
           router={router}
@@ -217,7 +218,7 @@ export const SignIn = ({ router, dispatch, forgotPassLink }) => {
   )
 }
 
-export const SignUp = ({ router, dispatch }) => {
+export const SignUp = ({ router, dispatch, reference }) => {
   const {
     register,
     handleSubmit,
@@ -232,16 +233,15 @@ export const SignUp = ({ router, dispatch }) => {
       company_name: '',
       company_website: '',
       position: '',
+      referredBy: reference || '',
     },
     mode: 'onChange',
   })
 
   const handleClick = async (formData) => {
-    // console.log(formData, isValid)
     if (isValid) {
       try {
         const data = await registerUserApi(formData)
-        // console.log(data)
         dispatch(setUsers(data))
         toast.success('Registration successful!')
         router.push('/dashboard', { scroll: true })
@@ -373,12 +373,16 @@ export const SignUp = ({ router, dispatch }) => {
           Sign Up
         </button>
       </div>
-      <GoogleLoginComp dispatch={dispatch} router={router} />
+      <GoogleLoginComp
+        dispatch={dispatch}
+        router={router}
+        reference={reference}
+      />
     </div>
   )
 }
 
-export const GoogleLoginComp = ({ dispatch, router }) => {
+export const GoogleLoginComp = ({ dispatch, router, reference }) => {
   const login = useGoogleLogin({
     onSuccess: async (response) => {
       try {
@@ -395,6 +399,7 @@ export const GoogleLoginComp = ({ dispatch, router }) => {
           email_verified: res?.data?.email_verified,
           email: res?.data?.email,
           fullName: res?.data?.name,
+          referredBy: reference || '',
           profileImage: res?.data?.picture,
         })
         dispatch(setUsers(data))
@@ -413,7 +418,7 @@ export const GoogleLoginComp = ({ dispatch, router }) => {
         className="w-full text-center text-base font-semibold py-4 rounded-lg border border-zinc-400 flex justify-center items-center gap-2"
         onClick={() => login()}
       >
-        <GoogleIcon /> Sign Up with Google
+        <GoogleIcon /> Continue with Google
       </button>
     </div>
   )

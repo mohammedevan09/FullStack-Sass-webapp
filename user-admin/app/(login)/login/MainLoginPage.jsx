@@ -110,14 +110,14 @@ const MainLoginPage = () => {
             <ErrorMessage errors={errors?.password} />
           </div>
         </div>
-        <div className="flex justify-start items-center font-medium">
+        {/* <div className="flex justify-start items-center font-medium">
           <button
             className="text-gray-950 hover:text-blue-800"
             //   onClick={forgotPassLink}
           >
             Forgot password?
           </button>
-        </div>
+        </div> */}
         <button
           type="submit"
           className="w-full text-center btn-hover text-base font-semibold py-2 rounded-lg leading-7 disabled:opacity-50 disabled:cursor-not-allowed"

@@ -92,7 +92,6 @@ const ProjectTrackingBoard = ({ order, link }) => {
 
   const handleRemoveTodo = (e, index) => {
     e.preventDefault()
-    console.log(index)
     const updatedProjectTracking = data.map((item) => {
       if (item.title === 'To do') {
         const updatedFields = item.fields.filter((_, idx) => idx !== index)

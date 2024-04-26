@@ -3,6 +3,7 @@ import {
   adminLogin,
   createUser,
   forgotPassword,
+  getUserById,
   googleLoginUser,
   handleRefreshToken,
   loginUser,
@@ -10,9 +11,11 @@ import {
   resetPassword,
   sendVerifyEmail,
   updateUser,
+  uploadProfilePicture,
   verifyEmail,
-} from '../controller/userController.js'
-import { authMiddleware } from '../middleware/authMiddleware.js'
+} from '../../controller/userController/userController.js'
+import { authMiddleware } from '../../middleware/authMiddleware.js'
+import { uploadPhoto } from '../../middleware/uploadPhoto.js'
 
 const router = express.Router()
 
@@ -23,9 +26,12 @@ router.post('/google-login', googleLoginUser)
 router.post('/send-email-verification', sendVerifyEmail)
 router.post('/forgot-password', forgotPassword)
 router.post('/reset-password/:id/:token', resetPassword)
-router.put('/handleRefreshToken', handleRefreshToken)
+router.get('/handleRefreshToken', handleRefreshToken)
 router.get('/logout', logoutUser)
+router.get('/findUser', authMiddleware, getUserById)
 router.put('/update', authMiddleware, updateUser)
+router.put('/upload/:id', uploadPhoto.array('images', 1), uploadProfilePicture)
+
 router.get('/:id/verify/:token/', verifyEmail)
 
 export default router

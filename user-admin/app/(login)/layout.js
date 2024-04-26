@@ -2,6 +2,8 @@ import { Inter } from 'next/font/google'
 import '../globals.css'
 import ReduxProvider from '@/store/ReduxProvider'
 import { Toaster } from 'react-hot-toast'
+import AuthValidateProvider from '@/components/others/AuthValidateProvider'
+import { cookies } from 'next/headers'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -11,14 +13,18 @@ export const metadata = {
 }
 
 export default function RootLayout({ children }) {
+  const cookieStore = cookies()
+  const refreshToken = cookieStore.get('refreshToken')
   return (
     <html lang="en">
       <body className={inter.className}>
         <Toaster />
         <ReduxProvider>
-          <div className="grid h-screen w-screen justify-center items-center overflow-x-hidden">
-            {children}
-          </div>
+          <AuthValidateProvider refreshToken={refreshToken}>
+            <div className="grid h-screen w-screen justify-center items-center overflow-x-hidden">
+              {children}
+            </div>
+          </AuthValidateProvider>
         </ReduxProvider>
       </body>
     </html>

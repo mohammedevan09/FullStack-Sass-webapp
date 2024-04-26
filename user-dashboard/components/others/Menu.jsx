@@ -26,12 +26,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setOpenMenu } from '@/store/reducers/activeReducer'
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import {
-  redirect,
-  useRouter,
-  useSelectedLayoutSegment,
-  useSelectedLayoutSegments,
-} from 'next/navigation'
+import { redirect, useRouter, useSelectedLayoutSegment } from 'next/navigation'
 import LogoutModal from '../modals/menuModals/LogoutModal'
 
 const Menu = () => {
@@ -110,9 +105,7 @@ const Menu = () => {
   ]
 
   useEffect(() => {
-    if (userInfo && userInfo?.email_verified === false) {
-      redirect('/login/email_verify')
-    } else if (!userInfo?._id) {
+    if (!userInfo?.token) {
       redirect('/login')
     }
   }, [userInfo, router])
@@ -185,8 +178,8 @@ const Menu = () => {
             <div className="text-center my-32">
               <motion.div whileHover={{ scale: 1.04 }}>
                 <Link
-                  href={'/dashboard/settings'}
-                  className={`flex justify-center items-center gap-1 font-medium lg:px-[51px] md:px-[20px] px-[10px] py-3 mr-2 ${
+                  href={`/dashboard/settings?userId=${userInfo?._id}`}
+                  className={`flex justify-center items-center gap-1 font-medium lg:px-[51px] md:px-[20px] px-[10px] py-3 ${
                     activeSegment === 'settings' &&
                     'text-blue-800 bg-[#0000ff30]'
                   }`}
@@ -201,7 +194,7 @@ const Menu = () => {
                   >
                     <SettingsIcon />
                   </div>
-                  <div>Settings</div>
+                  <div className="mr-2">Settings</div>
                 </Link>
               </motion.div>
               <motion.button

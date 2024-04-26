@@ -1,13 +1,8 @@
-'use client'
-
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import { persistStore, persistReducer } from 'redux-persist'
-// import storage from 'redux-persist/lib/storage'
-
+import createWebStorage from 'redux-persist/lib/storage/createWebStorage'
 import userReducer from './reducers/userReducer'
 import activeReducer from './reducers/activeReducer'
-
-import createWebStorage from 'redux-persist/lib/storage/createWebStorage'
 import affiliateReducer from './reducers/affiliateReducer'
 
 const createNoopStorage = () => {
@@ -24,18 +19,29 @@ const createNoopStorage = () => {
   }
 }
 
-const storage =
+// const sessionStorageConfig =
+//   typeof window !== 'undefined'
+//     ? createWebStorage('session')
+//     : createNoopStorage()
+
+const localStorageConfig =
   typeof window !== 'undefined'
     ? createWebStorage('local')
     : createNoopStorage()
 
 const persistConfig = {
   key: 'root',
-  storage,
+  storage: localStorageConfig,
   // blacklist: [],
 }
 
+// const userPersistConfig = {
+//   key: 'user',
+//   storage: sessionStorageConfig,
+// }
+
 const rootReducer = combineReducers({
+  // user: persistReducer(userPersistConfig, userReducer),
   user: userReducer,
   active: activeReducer,
   affiliate: affiliateReducer,

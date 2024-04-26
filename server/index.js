@@ -1,4 +1,4 @@
-import http, { createServer } from 'http'
+import { createServer } from 'http'
 import express from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
@@ -7,7 +7,7 @@ import cookieParser from 'cookie-parser'
 import morgan from 'morgan'
 import { Server } from 'socket.io'
 
-import userRouter from './router/userRouter.js'
+import userRouter from './router/userRouter/userRouter.js'
 import { errorHandler, notFound } from './middleware/errorHandler.js'
 import serviceRouter from './router/servicesRouter/serviceRoutes.js'
 import normalServiceRoutes from './router/servicesRouter/normalServiceRoutes.js'
@@ -24,6 +24,8 @@ import orderChatRouter from './router/orderRouter/orderChatRouter.js'
 import guideRouter from './router/guideRouter.js'
 import feedbackCategoryRouter from './router/feedbackRouter/feedbackCategoryRouter.js'
 import feedbackRouter from './router/feedbackRouter/feedbackRouter.js'
+import affiliateRouter from './router/affiliateRouter.js'
+import userSettingRouter from './router/userRouter/userSettingRouter.js'
 
 dotenv.config()
 
@@ -72,6 +74,8 @@ app.use('/api/order/chat', orderChatRouter)
 app.use('/api/guide', guideRouter)
 app.use('/api/feedbackCategory', feedbackCategoryRouter)
 app.use('/api/feedback', feedbackRouter)
+app.use('/api/affiliate', affiliateRouter)
+app.use('/api/userSetting', userSettingRouter)
 
 app.use(notFound)
 app.use(errorHandler)

@@ -1,15 +1,39 @@
 'use client'
 
-const MainEmailNotification = ({ emailNotifications }) => {
+import { updateSettingByIdApi } from '@/api/userSettingApi'
+import { useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
+
+const MainEmailNotification = ({ emailNotifications, userSetting }) => {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { isDirty },
+  } = useForm({
+    defaultValues: userSetting,
+    mode: 'onChange',
+  })
+
+  const handleSave = async (data) => {
+    await toast.promise(updateSettingByIdApi(data, userSetting?._id), {
+      loading: 'Updating settings',
+      success: <b>Settings updated successfully</b>,
+      error: <b>Settings updated failed!</b>,
+    })
+    reset(data)
+  }
+
   return (
-    <div className="grid justify-start items-center sm:p-10 p-7 bg-white gap-7">
+    <div className="grid justify-start items-center sm:p-10 py-7 px-3 bg-white gap-8 rounded-lg">
       {emailNotifications?.map((item, i) => (
-        <div key={i} className="flex gap-3 items-center">
-          <div className="h-4">
+        <div key={i} className="flex gap-3 font-medium">
+          <div className="h-4 relative top-[2px]">
             <div className="inline-flex items-center bg-gray-300 rounded-full">
               <div className="relative inline-block w-8 h-4 rounded-full cursor-pointer">
                 <input
-                  defaultChecked={item?.isOn}
+                  {...register(`emailNotification.${item.type}`)}
+                  defaultChecked={userSetting?.emailNotification[item.type]}
                   id={item?.title}
                   type="checkbox"
                   className="absolute w-8 h-4 transition-colors duration-300 rounded-full appearance-none cursor-pointer peer bg-blue-gray-100 checked:bg-blue-500 peer-checked:border-blue-500 peer-checked:before:bg-blue-500"
@@ -26,13 +50,22 @@ const MainEmailNotification = ({ emailNotifications }) => {
               </div>
             </div>
           </div>
-          <div className="text-slate-900 text-sm font-normal leading-tight">
+          <div
+            className="text-slate-900 text-sm"
+            style={{
+              wordBreak: 'break-word',
+            }}
+          >
             {item?.title}
           </div>
         </div>
       ))}
       <div className="w-full my-2">
-        <button className="w-full text-center text-white text-base font-semibold bg-blue-800 py-2 rounded-lg leading-7 hover:bg-white border-2 border-blue-800 hover:text-blue-800 transition-1">
+        <button
+          className="w-full px-10 py-2 bg-blue-800 hover:scale-105 text-white font-bold transition rounded-md disabled:opacity-50 disabled:cursor-pointer"
+          disabled={!isDirty}
+          onClick={handleSubmit(handleSave)}
+        >
           Save
         </button>
       </div>

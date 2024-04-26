@@ -34,16 +34,14 @@ const MainAddDetails = () => {
   })
 
   const handleClick = async (formData) => {
-    // console.log(formData, isValid)
     if (isValid) {
       try {
         const data = await updateUserApi(formData, userInfo?.token)
-        console.log(data)
         toast('Well done!', {
           icon: '🚀',
         })
         dispatch(setUsers(data))
-        // router.push('/dashboard')
+        router.push('/dashboard')
       } catch (err) {
         toast.error('Update failed')
       }

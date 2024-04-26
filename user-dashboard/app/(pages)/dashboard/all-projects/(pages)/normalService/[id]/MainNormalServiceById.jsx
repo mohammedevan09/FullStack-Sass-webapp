@@ -48,7 +48,6 @@ const MainNormalServiceById = ({ order, service, orderChat, messageCount }) => {
           </div>
         </div>
         <AdditionInfo order={orderData} />
-
         <h1 className="text-2xl font-semibold pb-5 pt-10">
           Project Traction Board
         </h1>
