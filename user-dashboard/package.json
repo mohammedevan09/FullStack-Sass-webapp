@@ -2,6 +2,7 @@
   "name": "saas",
   "version": "0.1.0",
   "private": true,
+  "proxy": "https://full-stack-saas-backend.onrender.com",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

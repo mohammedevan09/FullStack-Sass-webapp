@@ -1,6 +1,7 @@
 {
   "name": "user-admin",
   "version": "0.1.0",
+  "proxy": "https://full-stack-saas-backend.onrender.com",
   "private": true,
   "scripts": {
     "dev": "next dev",
