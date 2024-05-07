@@ -21,6 +21,10 @@ export const getSubscriptionServiceOrderById = async (req, res, next) => {
         model: 'Form',
         select: 'fields',
       })
+      .populate({
+        path: 'serviceId',
+        model: 'Service',
+      })
       .exec()
     return sendResponse(res, order)
   } catch (error) {

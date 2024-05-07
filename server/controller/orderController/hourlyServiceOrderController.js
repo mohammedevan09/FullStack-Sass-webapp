@@ -14,132 +14,115 @@ export const createHourlyServiceOrder = async (req, res, next) => {
 
 export const getHourlyServiceOrderById = async (req, res, next) => {
   try {
-    const { id } = req.params
-    const { page = 1, limit = 10 } = req.query
+    // const { id } = req.params
+    // const { page = 1, limit = 10 } = req.query
 
-    // const order = await HourlyServiceOrder.aggregate([
-    //   {
-    //     $match: { _id: new mongoose.Types.ObjectId(id) },
-    //   },
-    //   {
-    //     $lookup: {
-    //       from: 'forms',
-    //       localField: 'formId',
-    //       foreignField: '_id',
-    //       as: 'form',
-    //     },
-    //   },
-    //   {
-    //     $unwind: {
-    //       path: '$hourlyTimeLogs',
-    //       preserveNullAndEmptyArrays: true,
-    //     },
-    //   },
-    //   {
-    //     $sort: { 'hourlyTimeLogs._id': 1 },
-    //   },
-    //   {
-    //     $group: {
-    //       _id: '$_id',
-    //       projectTrackingBoard: { $first: '$projectTrackingBoard' },
-    //       additionalInfo: { $first: '$additionalInfo' },
-    //       totalHours: { $first: '$totalHours' },
-    //       spentHours: { $first: '$spentHours' },
-    //       remainHours: { $first: '$remainHours' },
-    //       userId: { $first: '$userId' },
-    //       serviceId: { $first: '$serviceId' },
-    //       title: { $first: '$title' },
-    //       description: { $first: '$description' },
-    //       totalAmount: { $first: '$totalAmount' },
-    //       pricingId: { $first: '$pricingId' },
-    //       formId: { $first: { $arrayElemAt: ['$form', 0] } },
-    //       createdAt: { $first: '$createdAt' },
-    //       updatedAt: { $first: '$updatedAt' },
-    //       payment_method_types: { $first: '$payment_method_types' },
-    //       payment_status: { $first: '$payment_status' },
-    //       payment_info: { $first: '$payment_info' },
-    //       status: { $first: '$status' },
-    //       __t: { $first: '$__t' },
-    //       hourlyTimeLogs: { $push: '$hourlyTimeLogs' },
-    //     },
-    //   },
-    //   {
-    //     $project: {
-    //       projectTrackingBoard: 1,
-    //       additionalInfo: 1,
-    //       totalHours: 1,
-    //       spentHours: 1,
-    //       remainHours: 1,
-    //       userId: 1,
-    //       serviceId: 1,
-    //       title: 1,
-    //       description: 1,
-    //       totalAmount: 1,
-    //       pricingId: 1,
-    //       createdAt: 1,
-    //       updatedAt: 1,
-    //       payment_method_types: 1,
-    //       payment_status: 1,
-    //       payment_info: 1,
-    //       status: 1,
-    //       __t: 1,
-    //       formId: {
-    //         _id: '$formId._id',
-    //         fields: '$formId.fields',
-    //       },
-    //       hourlyTimeLogs: {
-    //         $slice: [
-    //           {
-    //             $map: {
-    //               input: {
-    //                 $slice: [
-    //                   '$hourlyTimeLogs',
-    //                   0,
-    //                   { $size: '$hourlyTimeLogs' },
-    //                 ],
-    //               },
-    //               in: {
-    //                 $mergeObjects: ['$$this', {}],
-    //               },
-    //             },
-    //           },
-    //           (parseInt(page) - 1) * parseInt(limit),
-    //           parseInt(limit),
-    //         ],
-    //       },
-    //     },
-    //   },
-    // ])
+    // const order = await HourlyServiceOrder.findById(id)
+    //   .populate({
+    //     path: 'formId',
+    //     model: 'Form',
+    //     select: 'fields',
+    //   })
+    //   .populate({
+    //     path: 'serviceId',
+    //     model: 'Service',
+    //   })
+    //   .exec()
 
-    // if (!order || order.length === 0) {
+    // if (!order) {
     //   return sendResponse(res, 'Hourly Service Order not found')
     // }
 
-    // return sendResponse(res, order[0])
+    // const reversedHourlyTimeLogs = order.hourlyTimeLogs.slice().reverse()
 
-    const order = await HourlyServiceOrder.findById(id)
-      .populate({
-        path: 'formId',
-        model: 'Form',
-        select: 'fields',
-      })
-      .exec()
+    // const start = (parseInt(page) - 1) * parseInt(limit)
+    // const end = start + parseInt(limit)
+    // const hourlyTimeLogs = reversedHourlyTimeLogs.slice(start, end)
 
-    if (!order) {
-      return sendResponse(res, 'Hourly Service Order not found')
-    }
+    // const result = {
+    //   ...order.toObject(),
+    //   hourlyTimeLogs,
+    // }
 
-    const reversedHourlyTimeLogs = order.hourlyTimeLogs.slice().reverse()
+    // return sendResponse(res, result)
 
+    const { id } = req.params
+    const { page = 1, limit = 10 } = req.query
     const start = (parseInt(page) - 1) * parseInt(limit)
     const end = start + parseInt(limit)
-    const hourlyTimeLogs = reversedHourlyTimeLogs.slice(start, end)
 
-    const result = {
-      ...order.toObject(),
-      hourlyTimeLogs,
-    }
+    const order = await HourlyServiceOrder.aggregate([
+      { $match: { _id: new mongoose.Types.ObjectId(id) } },
+      {
+        $lookup: {
+          from: 'forms',
+          localField: 'formId',
+          foreignField: '_id',
+          as: 'form',
+        },
+      },
+      {
+        $lookup: {
+          from: 'services',
+          localField: 'serviceId',
+          foreignField: '_id',
+          as: 'service',
+        },
+      },
+      {
+        $addFields: {
+          hourlyTimeLogs: {
+            $reverseArray: '$hourlyTimeLogs',
+          },
+        },
+      },
+      {
+        $project: {
+          formId: {
+            $cond: [
+              { $isArray: ['$form'] },
+              {
+                $let: {
+                  vars: {
+                    formObj: { $arrayElemAt: ['$form', 0] },
+                  },
+                  in: {
+                    _id: '$$formObj._id',
+                    fields: '$$formObj.fields',
+                  },
+                },
+              },
+              null,
+            ],
+          },
+          serviceId: { $arrayElemAt: ['$service', 0] },
+          hourlyTimeLogs: { $slice: ['$hourlyTimeLogs', start, end] },
+          ...Object.keys(HourlyServiceOrder.schema.paths).reduce(
+            (acc, curr) => {
+              if (
+                curr !== '_id' &&
+                curr !== '__v' &&
+                curr !== 'formId' &&
+                curr !== 'serviceId' &&
+                curr !== 'hourlyTimeLogs'
+              ) {
+                acc[curr] = '$$ROOT.' + curr
+              }
+              return acc
+            },
+            {}
+          ),
+        },
+      },
+      {
+        $addFields: {
+          formId: '$formId',
+          serviceId: '$serviceId',
+        },
+      },
+    ])
 
+    const result = order[0]
     return sendResponse(res, result)
   } catch (error) {
     next(error)

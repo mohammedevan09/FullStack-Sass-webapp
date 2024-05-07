@@ -17,6 +17,19 @@ export const handleRefreshTokenApi = async (queryData) => {
   return data?.data
 }
 
+export const getAllUsersApi = async (queryData) => {
+  try {
+    const data = await axios.get(`${host}/api/user/all`, {
+      params: queryData,
+    })
+    return data?.data
+  } catch (error) {
+    return {
+      data: [],
+    }
+  }
+}
+
 export const updateUserApi = async (sendData, token) => {
   const data = await axios.put(
     `${host}/api/user/update`,
@@ -30,6 +43,29 @@ export const updateUserApi = async (sendData, token) => {
       withCredentials: true,
     }
   )
+
+  return data?.data
+}
+
+export const blockUserApi = async (id, sendData, token) => {
+  const data = await axios.put(
+    `${host}/api/user/block/${id}`,
+    sendData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+    {
+      withCredentials: true,
+    }
+  )
+
+  return data?.data
+}
+
+export const uploadProfileImageApi = async (id, formData) => {
+  const data = await axios.put(`${host}/api/user/upload/${id}`, formData)
 
   return data?.data
 }

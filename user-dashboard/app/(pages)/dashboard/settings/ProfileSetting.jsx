@@ -128,11 +128,12 @@ const ProfileSetting = () => {
             <ErrorMessageTwo errors={errors.fullName} />
           </div>
           <div>
-            <LabelsTwo name={'Email'} htmlFor={'email'} />
+            <LabelsTwo name={'Email - (Not Editable)'} htmlFor={'email'} />
             <Input2
               id="email"
               type="email"
               placeholder="John@dmarketing.com"
+              readOnly={true}
               validationRules={{
                 ...register('email', {
                   pattern: {
@@ -174,28 +175,34 @@ const ProfileSetting = () => {
             />
             <ErrorMessageTwo errors={errors?.number} />
           </div>
-          <div>
-            <LabelsTwo name={'Company Name'} htmlFor={'Company'} />
-            <Input2
-              type="text"
-              id={'Company Name'}
-              placeholder="D-marketing"
-              validationRules={{
-                ...register('company_name'),
-              }}
-            />
-          </div>
-          <div>
-            <LabelsTwo name={'Website'} htmlFor={'Website'} />
-            <Input2
-              type="text"
-              id={'Website'}
-              placeholder="D-marketing.com"
-              validationRules={{
-                ...register('company_website'),
-              }}
-            />
-          </div>
+          {!userInfo?.creatorId && (
+            <>
+              {' '}
+              <div>
+                <LabelsTwo name={'Company Name'} htmlFor={'Company'} />
+                <Input2
+                  type="text"
+                  id={'Company Name'}
+                  placeholder="D-marketing"
+                  validationRules={{
+                    ...register('company_name'),
+                  }}
+                />
+              </div>
+              <div>
+                <LabelsTwo name={'Website'} htmlFor={'Website'} />
+                <Input2
+                  type="text"
+                  id={'Website'}
+                  placeholder="D-marketing.com"
+                  validationRules={{
+                    ...register('company_website'),
+                  }}
+                />
+              </div>
+            </>
+          )}
+
           <div>
             <LabelsTwo name={'Position/Job'} htmlFor={'Position/Job'} />
             <Input2

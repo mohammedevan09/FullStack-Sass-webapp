@@ -18,7 +18,7 @@ const FormCategoryTable = ({
         {title}
       </h1>
       {formCategoryData?.length === 0 ? (
-        <h2 className="sm:text-xl text-lg pt-4 text-gray-500 text-center">
+        <h2 className="sm:text-xl text-lg py-6 text-gray-400 text-center font-semibold italic">
           {title} is empty!
         </h2>
       ) : (

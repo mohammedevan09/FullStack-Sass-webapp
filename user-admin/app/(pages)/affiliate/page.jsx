@@ -13,7 +13,7 @@ const page = async () => {
       <div className="bg-white rounded-[20px] sm:my-8 my-6 pt-8 grid gap-4 overflow-x-hidden">
         <div className="lg:w-full w-screen px-7 overflow-x-scroll">
           {affiliatesData?.length === 0 ? (
-            <h2 className="sm:text-xl text-lg pt-6 text-gray-500 text-center">
+            <h2 className="sm:text-xl text-lg py-6 text-gray-400 text-center font-semibold italic">
               {title} is empty!
             </h2>
           ) : (

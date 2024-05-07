@@ -1,3 +1,4 @@
+import { Types } from 'mongoose'
 import fs from 'fs'
 import bcrypt from 'bcrypt'
 import generateToken from '../../config/jwtToken.js'
@@ -12,6 +13,7 @@ import {
   cloudinaryUploadImg,
 } from '../../utils/cloudinary.js'
 import { sendResponse } from '../../utils/sendResponse.js'
+import Team from '../../model/userModels/teamModel.js'
 
 export const createUser = async (req, res, next) => {
   const { email, password: pass } = req.body
@@ -38,6 +40,8 @@ export const createUser = async (req, res, next) => {
         registeredUser._doc
 
       res.cookie('refreshToken', newRefreshToken, {
+        httpOnly: true,
+        secure: true,
         maxAge: 90 * 24 * 60 * 60 * 1000,
       })
 
@@ -73,8 +77,7 @@ export const loginUser = async (req, res, next) => {
           loggedUser._doc
 
         res.cookie('refreshToken', newRefreshToken, {
-          httpOnly: false,
-          sameSite: 'none',
+          httpOnly: true,
           secure: true,
           maxAge: 90 * 24 * 60 * 60 * 1000,
         })
@@ -122,6 +125,8 @@ export const googleLoginUser = async (req, res, next) => {
         loggedUser._doc
 
       res.cookie('refreshToken', refreshTokenNew, {
+        httpOnly: true,
+        secure: true,
         maxAge: 90 * 24 * 60 * 60 * 1000,
       })
 
@@ -146,6 +151,8 @@ export const googleLoginUser = async (req, res, next) => {
         registeredUser._doc
 
       res.cookie('refreshToken', newRefreshToken, {
+        httpOnly: true,
+        secure: true,
         maxAge: 90 * 24 * 60 * 60 * 1000,
       })
 
@@ -175,7 +182,7 @@ export const adminLogin = async (req, res, next) => {
   const findUser = await User.findOne({ email, role: 'admin' })
   try {
     if (findUser) {
-      const comparedPass = bcrypt.compare(pass, findUser.password)
+      const comparedPass = await bcrypt.compare(pass, findUser.password)
       if (comparedPass) {
         const newRefreshToken = generateRefreshToken(findUser?._id)
         const loggedUser = await User.findByIdAndUpdate(
@@ -190,6 +197,8 @@ export const adminLogin = async (req, res, next) => {
           loggedUser._doc
 
         res.cookie('refreshToken', newRefreshToken, {
+          httpOnly: true,
+          secure: true,
           maxAge: 90 * 24 * 60 * 60 * 1000,
         })
 
@@ -218,9 +227,16 @@ export const handleRefreshToken = async (req, res) => {
 
   const { refreshToken } = req.query
 
-  const user = await User.findOne({ refreshToken })
-  if (!user)
+  let user = await User.findOne({ refreshToken })
+
+  if (!user) {
+    user = await Team.findOne({ refreshToken })
+  }
+
+  if (!user) {
     return res.status(402).send('No refresh token present in db or not matched')
+  }
+
   jwt.verify(refreshToken, process.env.JWT_SECRET, (err, decoded) => {
     if (err || user?.id !== decoded?.id) {
       return res.status(500).send('There is something wrong with refresh token')
@@ -230,12 +246,74 @@ export const handleRefreshToken = async (req, res) => {
   })
 }
 
+export const getAllUsers = async (req, res, next) => {
+  try {
+    const { page = 1, limit = 10, search = '' } = req.query
+
+    const pipeline = [
+      {
+        $match: {
+          role: 'user',
+          $or: [
+            { fullName: { $regex: new RegExp(search), $options: 'i' } },
+            { email: { $regex: new RegExp(search), $options: 'i' } },
+            {
+              _id: Types.ObjectId.isValid(search)
+                ? new Types.ObjectId(search)
+                : null,
+            },
+          ],
+        },
+      },
+      {
+        $project: {
+          refreshToken: 0,
+          password: 0,
+        },
+      },
+      {
+        $sort: { createdAt: -1 },
+      },
+      {
+        $skip: (parseInt(page) - 1) * parseInt(limit),
+      },
+      {
+        $limit: parseInt(limit),
+      },
+    ]
+
+    const users = await User.aggregate(pipeline)
+    const totalUsers = await User.countDocuments({ role: 'user' })
+
+    return res.status(200).json({
+      success: true,
+      data: users,
+      totalPages: Math.ceil(totalUsers / parseInt(limit)),
+      currentPage: parseInt(page),
+      totalUsers,
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
 export const uploadProfilePicture = async (req, res, next) => {
   const { id } = req.params
 
   try {
-    const user = await User.findById(id)
-    if (user?.profileImage) {
+    let model
+    let user = await User.findById(id)
+    if (!user) {
+      user = await Team.findById(id)
+      if (!user) {
+        return res.status(404).json({ message: 'User or Team not found' })
+      }
+      model = Team
+    } else {
+      model = User
+    }
+
+    if (user.profileImage) {
       const publicId = user.profileImage.split('/').pop().split('.')[0]
       await cloudinaryDeleteImg(publicId)
     }
@@ -266,7 +344,7 @@ export const uploadProfilePicture = async (req, res, next) => {
 export const updateUser = async (req, res, next) => {
   const { _id } = req.user
   try {
-    const update = await User.findByIdAndUpdate(
+    let update = await User.findByIdAndUpdate(
       _id,
       {
         ...req.body,
@@ -275,6 +353,21 @@ export const updateUser = async (req, res, next) => {
         new: true,
       }
     )
+
+    if (!update) {
+      update = await Team.findByIdAndUpdate(
+        _id,
+        {
+          ...req.body,
+        },
+        {
+          new: true,
+        }
+      )
+      if (!update) {
+        return res.status(404).json({ message: 'User or Team not found' })
+      }
+    }
 
     const { password, refreshToken, ...userWithoutPassAndToken } = update._doc
 
@@ -286,10 +379,34 @@ export const updateUser = async (req, res, next) => {
   }
 }
 
+export const blockUser = async (req, res, next) => {
+  const { id } = req.params
+  try {
+    let update = await User.findByIdAndUpdate(
+      { _id: id },
+      {
+        ...req.body,
+      },
+      {
+        new: true,
+      }
+    )
+    return res.status(200).json({ message: 'Deleted Successfully' })
+  } catch (error) {
+    next(error)
+  }
+}
+
 export const getUserById = async (req, res, next) => {
   const { _id } = req.user
   try {
-    const user = await User.findById(_id)
+    let user = await User.findById(_id)
+    if (!user) {
+      user = await Team.findById(_id)
+      if (!user) {
+        return res.status(404).json({ message: 'User or Team not found' })
+      }
+    }
 
     const { password, refreshToken, ...userWithoutPassAndToken } = user._doc
 
@@ -305,35 +422,34 @@ export const sendVerifyEmail = async (req, res, next) => {
   const { email, _id } = req.body
 
   try {
-    const existedToken = await Token.findOne({ userId: _id })
-    if (existedToken) {
-      const token = await Token.findByIdAndUpdate(
-        existedToken._id,
-        {
-          token: crypto.randomBytes(32).toString('hex'),
-        },
-        { new: true }
-      )
-      const url = `${process.env.BASE_URL}/login/email_verify/${_id}?token=${token.token}`
-      await sendEmail(
-        email,
-        'Verify Email',
-        url,
-        'Welcome, Please verify your email by clicking the button!'
-      )
-    } else {
-      const token = await Token.create({
-        userId: _id,
+    const user = await User.findOne({ _id })
+    if (!user) {
+      const team = await Team.findOne({ _id })
+      if (!team) {
+        return res.status(404).json({ status: 'User or Team Not Found' })
+      }
+    }
+
+    const tokenData = { userId: _id }
+    let token = await Token.findOne(tokenData)
+    if (!token) {
+      token = await Token.create({
+        ...tokenData,
         token: crypto.randomBytes(32).toString('hex'),
       })
-      const url = `${process.env.BASE_URL}/login/email_verify/${_id}?token=${token.token}`
-      await sendEmail(
-        email,
-        'Verify Email',
-        url,
-        'Welcome, Please verify your email by clicking the button!'
-      )
+    } else {
+      token.token = crypto.randomBytes(32).toString('hex')
+      await token.save()
     }
+
+    const url = `${process.env.BASE_URL}/login/email_verify/${_id}?token=${token.token}`
+    await sendEmail(
+      email,
+      'Verify Email',
+      url,
+      'Welcome, Please verify your email by clicking the button!'
+    )
+
     return res.status(200).send('Email Send successfully!')
   } catch (error) {
     next(error)
@@ -342,23 +458,28 @@ export const sendVerifyEmail = async (req, res, next) => {
 
 export const verifyEmail = async (req, res, next) => {
   try {
-    const user = await User.findOne({ _id: req.params.id })
-    if (!user) return res.status(400).send({ message: 'Invalid link' })
+    const { id, token } = req.params
+    const user = await User.findOne({ _id: id })
+    if (!user) {
+      const team = await Team.findOne({ _id: id })
+      if (!team) {
+        return res.status(404).json({ message: 'Invalid User or Team' })
+      }
+    }
 
-    const token = await Token.findOne({
-      userId: user._id,
-      token: req.params.token,
-    })
-    if (!token) return res.status(400).send({ message: 'Invalid link' })
+    const tokenData = { userId: id, token }
+    const tokenDoc = await Token.findOneAndDelete(tokenData)
+    if (!tokenDoc) {
+      return res.status(400).json({ message: 'Invalid link' })
+    }
 
-    await User.findByIdAndUpdate(
-      { _id: user?.id },
+    const Model = user ? User : Team
+    await Model.findByIdAndUpdate(
+      { _id: id },
       {
         email_verified: true,
-      },
-      { new: true }
+      }
     )
-    await Token.deleteOne({ _id: token._id })
 
     return res.status(200).send({ message: 'Email verified successfully' })
   } catch (error) {
@@ -369,15 +490,23 @@ export const verifyEmail = async (req, res, next) => {
 export const forgotPassword = async (req, res, next) => {
   const { email } = req.body
   try {
-    const oldUser = await User.findOne({ email })
-    if (!oldUser) {
-      return res.status(404).json({ status: 'User Not Exists!!' })
+    const user = await User.findOne({ email })
+    let team
+    if (!user) {
+      team = await Team.findOne({ email })
+      if (!team) {
+        return res.status(404).json({ status: 'User or Team Not Found' })
+      }
     }
-    const secret = process.env.JWT_SECRET + oldUser?.password
-    const token = jwt.sign({ email: oldUser.email, id: oldUser._id }, secret, {
+
+    const secret =
+      process.env.JWT_SECRET + (user ? user.password : team.password)
+    const token = jwt.sign({ email, id: user ? user._id : team._id }, secret, {
       expiresIn: '5m',
     })
-    const link = `${process.env.BASE_URL}/login/forgot-password/${oldUser._id}?token=${token}`
+    const link = `${process.env.BASE_URL}/login/forgot-password/${
+      user ? user._id : team._id
+    }?token=${token}`
     await sendEmail(
       email,
       'Reset Password',
@@ -392,25 +521,28 @@ export const forgotPassword = async (req, res, next) => {
   }
 }
 
+const getPassword = async (id) => {
+  const user = await User.findOne({ _id: id })
+  if (user) return user.password
+  const team = await Team.findOne({ _id: id })
+  return team.password
+}
+
 export const resetPassword = async (req, res, next) => {
   const { id, token } = req.params
   const { password: pass } = req.body
-  console.log(pass)
-  const oldUser = await User.findOne({ _id: id })
-  if (!oldUser) {
-    return res.status(404).json({ status: 'User Not Exists!!' })
-  }
-  const secret = process.env.JWT_SECRET + oldUser.password
+
   try {
+    const secret = process.env.JWT_SECRET + (await getPassword(id))
     const verify = jwt.verify(token, secret)
-    // console.log(verify)
+
     const salt = await bcrypt.genSalt(10)
     const hashedPass = await bcrypt.hash(pass, salt)
-    const newRefreshToken = generateRefreshToken(verify?.id)
-    const loggedUser = await User.findByIdAndUpdate(
-      {
-        _id: verify?.id,
-      },
+    const newRefreshToken = generateRefreshToken(verify.id)
+
+    const Model = verify.email ? User : Team
+    const user = await Model.findByIdAndUpdate(
+      { _id: verify.id },
       {
         password: hashedPass,
         refreshToken: newRefreshToken,
@@ -418,20 +550,17 @@ export const resetPassword = async (req, res, next) => {
       { new: true }
     )
 
-    const { password, refreshToken, ...userWithoutPassAndToken } =
-      loggedUser._doc
+    const { password, refreshToken, ...userWithoutPassAndToken } = user._doc
 
     res.cookie('refreshToken', newRefreshToken, {
-      httpOnly: false,
-
-      sameSite: 'none',
+      httpOnly: true,
       secure: true,
       maxAge: 90 * 24 * 60 * 60 * 1000,
     })
 
     return res.status(200).json({
       ...userWithoutPassAndToken,
-      token: generateToken(verify?.id),
+      token: generateToken(verify.id),
     })
   } catch (error) {
     next(error)

@@ -15,14 +15,12 @@ import ThanksSubModal from '@/components/modals/serviceModals/ThanksSubModal'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { createOrderApi } from '@/api/orderApi'
-import { createOrderChat } from '@/api/orderChatApi'
+import { createChat } from '@/api/chatApi'
 
 const MainHourlyPricingPage = ({ service, link }) => {
   const router = useRouter()
 
-  const [openModalCustom, setOpenModalCustom] = useState(false)
   const [openModal, setOpenModal] = useState(false)
-  const [openSubModal, setOpenSubModal] = useState(false)
   const [checkoutModal, setCheckOutModal] = useState(false)
   const [pricingData, setPricingData] = useState(service?.pricing[0])
 
@@ -51,19 +49,29 @@ const MainHourlyPricingPage = ({ service, link }) => {
   }
 
   const handleCheckOutButton = async (data) => {
+    // console.log(data)
     if (isValid) {
       try {
         const orderData = await createOrderApi(
           { ...data, formId: service?.form?._id },
           link
         )
-        await createOrderChat({
-          participants: [userInfo?._id, service?.creatorId],
+        await createChat('order', {
+          participants: [
+            {
+              participantType: 'User',
+              participantId: userInfo?._id,
+            },
+            {
+              participantType: 'User',
+              participantId: service?.creatorId,
+            },
+          ],
           orderId: orderData?._id,
           messages: [],
         })
         toast.success('Your service order has been received!')
-        router.push(`/dashboard/all-projects?userId=${userInfo?._id}`)
+        router.push(`/dashboard/orders?userId=${userInfo?._id}`)
       } catch (error) {
         toast.error('Checkout order failed!')
       }
@@ -118,28 +126,27 @@ const MainHourlyPricingPage = ({ service, link }) => {
             <motion.button
               whileHover={{ scale: 1.03 }}
               className="w-full sm:py-4 py-3 text-white text-base font-semibold bg-blue-800 sm:rounded-lg rounded-md my-5"
-              onClick={() => setOpenModal(true)}
+              onClick={() => {
+                if (userInfo?.creatorId) {
+                  toast.error('Sorry Team members cannot do that~', {
+                    style: {
+                      padding: '6px 16px',
+                      fontWeight: '500',
+                    },
+                    iconTheme: {
+                      primary: '#137cff',
+                    },
+                  })
+                } else {
+                  setOpenModal(true)
+                }
+              }}
             >
               Book Now
             </motion.button>
           </div>
         </div>
-        <CustomProposals setOpenModalCustom={setOpenModalCustom} />
-        {openModalCustom && (
-          <GetACustomProposalModal
-            openModal={openModalCustom}
-            setOpenModal={setOpenModalCustom}
-            openSubModal={openSubModal}
-            setOpenSubModal={setOpenSubModal}
-          />
-        )}
-        {openSubModal && (
-          <ThanksSubModal
-            setOpenModal={setOpenModal}
-            setOpenSubModal={setOpenSubModal}
-            openModal={openSubModal}
-          />
-        )}
+        <CustomProposals />
         {openModal && (
           <CustomFormModal
             register={register}

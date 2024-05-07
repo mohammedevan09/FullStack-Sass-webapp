@@ -2,43 +2,6 @@ import mongoose from 'mongoose'
 import OrderChat from '../../model/orderModels/orderChatModel.js'
 import { sendResponse } from '../../utils/sendResponse.js'
 
-export const createOrderChatMessage = async (req, res, next) => {
-  try {
-    const message = await OrderChat.create(req.body)
-
-    return res.status(200).json(message)
-  } catch (error) {
-    next(error)
-  }
-}
-
-export const addMessageToOrderChat = async (req, res, next) => {
-  const { id } = req.params
-
-  try {
-    const { orderId, sender, content } = req.body
-
-    const orderChat = await OrderChat.findOne({ _id: id, orderId })
-
-    if (!orderChat) {
-      return res.status(404).json({ message: 'OrderChat not found' })
-    }
-
-    const newMessage = {
-      sender: sender,
-      content: content,
-    }
-
-    orderChat.messages.push(newMessage)
-
-    await orderChat.save()
-
-    res.status(200).json(orderChat)
-  } catch (error) {
-    next(error)
-  }
-}
-
 export const getChatByOrderId = async (req, res, next) => {
   const { orderId } = req.params
   let { page = 1, limit = 10 } = req.query
@@ -56,71 +19,73 @@ export const getChatByOrderId = async (req, res, next) => {
       {
         $lookup: {
           from: 'users',
-          localField: 'participants',
+          localField: 'participants.participantId',
           foreignField: '_id',
-          as: 'participantsInfo',
+          as: 'userParticipants',
+        },
+      },
+      {
+        $lookup: {
+          from: 'teams',
+          localField: 'participants.participantId',
+          foreignField: '_id',
+          as: 'teamParticipants',
         },
       },
       {
         $project: {
           _id: 1,
-          participants: 1,
-          orderId: 1,
-          participantsInfo: {
-            $map: {
-              input: '$participantsInfo',
-              as: 'participant',
-              in: {
-                _id: '$$participant._id',
-                email: '$$participant.email',
-                fullName: '$$participant.fullName',
-                profileImage: '$$participant.profileImage',
-                role: '$$participant.role',
-                position: '$$participant.position',
-              },
-            },
+          participants: {
+            $concatArrays: ['$userParticipants', '$teamParticipants'],
           },
+          orderId: 1,
           messages: {
-            $slice: [
-              { $reverseArray: '$messages' }, // Reverse the messages array
-              (page - 1) * limit,
-              limit,
-            ],
+            $slice: [{ $reverseArray: '$messages' }, (page - 1) * limit, limit],
           },
         },
       },
       {
         $unwind: {
           path: '$messages',
-          preserveNullAndEmptyArrays: true, // Preserve empty arrays
+          preserveNullAndEmptyArrays: true,
         },
       },
       {
-        $sort: { 'messages.createdAt': 1 }, // Sort messages by createdAt in ascending order
+        $sort: { 'messages.createdAt': 1 },
       },
       {
         $group: {
           _id: '$_id',
           participants: { $first: '$participants' },
           orderId: { $first: '$orderId' },
-          participantsInfo: { $first: '$participantsInfo' },
           messages: { $push: '$messages' },
         },
       },
       {
         $project: {
           _id: 1,
-          participants: 1,
+          participants: {
+            $map: {
+              input: '$participants',
+              as: 'participant',
+              in: {
+                _id: '$$participant._id',
+                fullName: '$$participant.fullName',
+                email: '$$participant.email',
+                profileImage: '$$participant.profileImage',
+                position: '$$participant.position',
+                role: '$$participant.role',
+              },
+            },
+          },
           orderId: 1,
-          participantsInfo: 1,
           messages: {
-            $slice: ['$messages', page * limit], // Final slice based on pagination
+            $slice: ['$messages', page * limit],
           },
         },
       },
     ]
 
-    // Count the total number of messages
     const countPipeline = [
       {
         $match: {

@@ -7,9 +7,8 @@ import {
   CheckSignIcon3,
   ManualPaymentIcon,
   PaymentCardIcon,
-  PaypalIcon,
 } from '@/staticData/Icon'
-import Input, { Input2 } from '@/components/others/Input'
+import { Input2 } from '@/components/others/Input'
 
 const CheckoutModal = ({
   setOpenModal,

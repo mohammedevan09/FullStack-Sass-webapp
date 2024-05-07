@@ -74,6 +74,7 @@ const AddNewService = ({ openModal, setOpenModal }) => {
         const serviceData = await createServiceApi(active, data)
         await uploadSvgIcon(serviceData?._id, formData)
         toast.success(`New Service created successfully!`)
+        window.location.reload()
         setOpenModal(false)
         setActiveStep(0)
       } catch (error) {

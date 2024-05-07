@@ -18,7 +18,7 @@ export default function Error() {
         </div>
         <div className="w-[320px] mx-auto">
           <Image
-            src={'/images/error.png'}
+            src={'/images/error.jpg'}
             width={500}
             height={500}
             alt="wp sprint"

@@ -26,6 +26,7 @@ import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { redirect, useRouter, useSelectedLayoutSegment } from 'next/navigation'
 import LogoutModal from '../modals/menuModals/LogoutModal'
+import socketIOClient from 'socket.io-client'
 
 const Menu = () => {
   const [isSmallScreen, setIsSmallScreen] = useState(false)
@@ -54,7 +55,7 @@ const Menu = () => {
     {
       name: 'Orders',
       icon: <AllProjectsIcon color="#ffffff" />,
-      link: '/orders',
+      link: `/orders?userId=${userInfo?._id}`,
       targetSegment: 'orders',
     },
     {
@@ -66,20 +67,20 @@ const Menu = () => {
     {
       name: 'Team',
       icon: <TeamsIcon color="#ffffff" />,
-      link: '/team',
+      link: `/team?userId=${userInfo?._id}`,
       targetSegment: 'team',
     },
     {
       name: 'Tickets',
       icon: <AllTicketsIcon color="#ffffff" />,
-      link: '/tickets',
+      link: `/tickets?userId=${userInfo?._id}`,
       targetSegment: 'tickets',
     },
     {
-      name: 'Quotation',
+      name: 'Proposals',
       icon: <ProposalsIcon color="#ffffff" />,
-      link: '/quotation',
-      targetSegment: 'quotation',
+      link: '/proposals',
+      targetSegment: 'proposals',
     },
     {
       name: 'Invoice',
@@ -93,12 +94,12 @@ const Menu = () => {
       link: '/forms',
       targetSegment: 'forms',
     },
-    {
-      name: 'Meetings',
-      icon: <MeetingIcon color="#ffffff" />,
-      link: '/meetings',
-      targetSegment: 'meetings',
-    },
+    // {
+    //   name: 'Meetings',
+    //   icon: <MeetingIcon color="#ffffff" />,
+    //   link: '/meetings',
+    //   targetSegment: 'meetings',
+    // },
     {
       name: 'How To Guide',
       icon: <HowToGuideIcon color="#ffffff" />,
@@ -114,10 +115,26 @@ const Menu = () => {
     {
       name: 'Affiliate',
       icon: <AffiliateIcon color="#ffffff" />,
-      link: '/affiliate',
+      link: `/affiliate`,
       targetSegment: 'affiliate',
     },
   ]
+
+  const filteredMenuData = MenuData.filter((menuItem) => {
+    if (userInfo?.creatorId && userInfo?.access) {
+      const updatedAccess = {
+        ...userInfo.access,
+        team: { access: false },
+      }
+
+      return (
+        !updatedAccess.hasOwnProperty(menuItem.targetSegment) ||
+        updatedAccess[menuItem.targetSegment].access === true
+      )
+    } else {
+      return true
+    }
+  })
 
   useEffect(() => {
     const handleResize = () => {
@@ -137,6 +154,13 @@ const Menu = () => {
       redirect('/login')
     }
   }, [userInfo, router])
+
+  useEffect(() => {
+    const socket = socketIOClient(process.env.NEXT_PUBLIC_HOST)
+    if (userInfo) {
+      socket.emit('add-user', { userId: userInfo?._id })
+    }
+  }, [userInfo])
 
   return (
     <div
@@ -166,7 +190,7 @@ const Menu = () => {
         <hr className="h-px bg-gray-200 border-0 dark:bg-gray-300" />
         <div className="grid justify-between gap-14 items-start h-screen overflow-y-scroll login-scroll">
           <div className="grid justify-center items-start text-[#e0f3ff]">
-            {MenuData?.map((item, i) => (
+            {filteredMenuData?.map((item, i) => (
               <motion.div whileHover={{ scale: 1.04 }} key={i}>
                 <Link
                   href={item?.link}
@@ -193,7 +217,7 @@ const Menu = () => {
             <div className="text-center py-32">
               <motion.div whileHover={{ scale: 1.04 }}>
                 <Link
-                  href={'/dashboard/settings'}
+                  href={'/settings'}
                   className={`flex justify-center items-center gap-1 font-medium lg:px-[51px] md:px-[20px] px-[10px] py-3 mr-2 ${
                     activeSegment === 'settings' &&
                     'text-blue-800 bg-[#0000ff30]'

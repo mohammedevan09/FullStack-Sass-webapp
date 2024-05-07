@@ -13,14 +13,13 @@ import { useRouter } from 'next/navigation'
 import CustomProposals from '../CustomProposals'
 import CheckoutModal from '@/components/modals/serviceModals/CheckoutModal'
 import { setRenewalDate } from '@/utils/SetRenewalDate'
-import { createOrderChat } from '@/api/orderChatApi'
+import { createChat } from '@/api/chatApi'
 
 const MainServicePricingPage = ({ service, link }) => {
   const router = useRouter()
 
-  const [openModalCustom, setOpenModalCustom] = useState(false)
   const [openModal, setOpenModal] = useState(false)
-  const [openSubModal, setOpenSubModal] = useState(false)
+
   const [checkoutModal, setCheckOutModal] = useState(false)
 
   const { userInfo } = useSelector((state) => state?.user)
@@ -42,9 +41,22 @@ const MainServicePricingPage = ({ service, link }) => {
   })
 
   const handleModal = (item) => {
-    setValue('pricingId', item?._id)
-    setValue('totalAmount', item?.amount)
-    setOpenModal(true)
+    if (userInfo?.creatorId) {
+      toast.error('Sorry Team members cannot do that~', {
+        style: {
+          padding: '6px 16px',
+          color: '#000000',
+          fontWeight: '500',
+        },
+        iconTheme: {
+          primary: '#137cff',
+        },
+      })
+    } else {
+      setValue('pricingId', item?._id)
+      setValue('totalAmount', item?.amount)
+      setOpenModal(true)
+    }
   }
 
   const handleCheckOutButton = async (data) => {
@@ -54,13 +66,22 @@ const MainServicePricingPage = ({ service, link }) => {
           { ...data, formId: service?.form?._id },
           link
         )
-        await createOrderChat({
-          participants: [userInfo?._id, service?.creatorId],
+        await createChat('order', {
+          participants: [
+            {
+              participantType: 'User',
+              participantId: userInfo?._id,
+            },
+            {
+              participantType: 'User',
+              participantId: service?.creatorId,
+            },
+          ],
           orderId: orderData?._id,
           messages: [],
         })
         toast.success('Your service order has been received!')
-        router.push(`/dashboard/all-projects?userId=${userInfo?._id}`)
+        router.push(`/dashboard/orders?userId=${userInfo?._id}`)
       } catch (error) {
         toast.error('Checkout order failed!')
       }
@@ -83,22 +104,8 @@ const MainServicePricingPage = ({ service, link }) => {
           )
         })}
       </div>
-      <CustomProposals setOpenModalCustom={setOpenModalCustom} />
-      {openModalCustom && (
-        <GetACustomProposalModal
-          openModal={openModalCustom}
-          setOpenModal={setOpenModalCustom}
-          openSubModal={openSubModal}
-          setOpenSubModal={setOpenSubModal}
-        />
-      )}
-      {openSubModal && (
-        <ThanksSubModal
-          setOpenModal={setOpenModal}
-          setOpenSubModal={setOpenSubModal}
-          openModal={openSubModal}
-        />
-      )}
+      <CustomProposals />
+
       {openModal && (
         <CustomFormModal
           register={register}

@@ -47,6 +47,7 @@ const MainSubscriptionServiceById = ({
             </button>
             <TakeAction
               order={orderData}
+              orderChat={orderChat}
               setValue={setValue}
               setOrderData={setOrderData}
               link={`subscriptionService/${order?._id}`}
@@ -67,8 +68,9 @@ const MainSubscriptionServiceById = ({
         />
         <h1 className="text-2xl font-semibold pt-10 pb-5">Inbox & Messaging</h1>
         <InboxAndMessaging
-          order={orderData}
-          orderChat={orderChat}
+          to={'order'}
+          itemData={orderData}
+          chatData={orderChat}
           messageCount={messageCount}
         />
       </div>

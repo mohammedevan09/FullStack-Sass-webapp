@@ -1,27 +1,49 @@
 'use client'
 
+import { addParticipantChatApi } from '@/api/chatApi'
+import { giveTeamAccessApi, removeTeamAccessApi } from '@/api/teamApi'
 import CancelOrderModal from '@/components/modals/orderModal/CancelOrderModal'
 import EditStatus from '@/components/modals/orderModal/EditStatusModal'
+import GiveTeamAccessModal from '@/components/modals/settingsModals/GiveTeamAccessModal'
+import RemoveTeamAccessModal from '@/components/modals/settingsModals/RemoveTeamAccessModal'
 import { FilterByIdIcon } from '@/staticData/Icon'
 import { useState } from 'react'
+import { useSelector } from 'react-redux'
 
-const TakeAction = ({ order, setValue, setOrderData, link }) => {
-  const takeActionData = [
-    { title: 'Edit  Status', type: 'EDIT_STATUS' },
-    order?.status !== 'canceled'
-      ? { title: 'Cancel Service', type: 'CANCEL' }
-      : { title: 'Renew Service', type: 'RENEW' },
-  ]
+const TakeAction = ({ order, orderChat, setValue, setOrderData, link }) => {
+  const { userInfo } = useSelector((state) => state?.user)
+
+  const takeActionData = !userInfo?.creatorId
+    ? [
+        { title: 'Edit  Status', type: 'EDIT_STATUS' },
+        order?.status !== 'canceled'
+          ? { title: 'Cancel Service', type: 'CANCEL' }
+          : { title: 'Renew Service', type: 'RENEW' },
+        { title: 'Grant Access', type: 'ACCESS' },
+        { title: 'Remove Access', type: 'REMOVE_ACCESS' },
+      ]
+    : [
+        { title: 'Edit  Status', type: 'EDIT_STATUS' },
+        order?.status !== 'canceled'
+          ? { title: 'Cancel Service', type: 'CANCEL' }
+          : { title: 'Renew Service', type: 'RENEW' },
+      ]
 
   const [dropOpen, setDropOpen] = useState(false)
   const [statusModal, setStatusModal] = useState(false)
+  const [accessModal, setAccessModal] = useState(false)
   const [cancelModal, setCancelModal] = useState(false)
+  const [removeAccessModal, setRemoveAccessModal] = useState(false)
 
   const handleClick = (item) => {
     if (item?.type === 'EDIT_STATUS') {
       setStatusModal(true)
-    } else if (item?.type === 'CANCEL' || 'RENEW') {
+    } else if (item?.type === 'CANCEL' || item?.type === 'RENEW') {
       setCancelModal(true)
+    } else if (item?.type === 'ACCESS') {
+      setAccessModal(true)
+    } else if (item?.type === 'REMOVE_ACCESS') {
+      setRemoveAccessModal(true)
     }
   }
 
@@ -74,6 +96,44 @@ const TakeAction = ({ order, setValue, setOrderData, link }) => {
           openModal={cancelModal}
           setOpenModal={setCancelModal}
           link={link}
+        />
+      )}
+      {accessModal && (
+        <GiveTeamAccessModal
+          openModal={accessModal}
+          setOpenModal={setAccessModal}
+          accessType={'orders'}
+          order={order}
+          api={async (val) => {
+            await giveTeamAccessApi(
+              {
+                accessType: 'orders',
+                _id: order?._id,
+              },
+              val?.value?._id
+            )
+            await addParticipantChatApi('order', orderChat?._id, {
+              participantId: val?.value?._id,
+              participantType: 'Team',
+            })
+          }}
+        />
+      )}
+      {removeAccessModal && (
+        <RemoveTeamAccessModal
+          openModal={removeAccessModal}
+          setOpenModal={setRemoveAccessModal}
+          accessType={'orders'}
+          order={order}
+          api={async (val) => {
+            await removeTeamAccessApi(
+              {
+                accessType: 'orders',
+                _id: order?._id,
+              },
+              val?.value?._id
+            )
+          }}
         />
       )}
     </>

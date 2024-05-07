@@ -1,20 +1,18 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
-import { motion } from 'framer-motion'
 import { BackButtonIcon } from '@/staticData/Icon'
+import Link from 'next/link'
+import { useSelector } from 'react-redux'
 
-const BackButton = () => {
-  const router = useRouter()
-
+const BackButton = ({ title, link }) => {
+  const { userInfo } = useSelector((state) => state?.user)
   return (
-    <motion.button
-      whileHover={{ scale: 1.1 }}
-      onClick={() => router.back()}
-      className="flex justify-start items-center w-[120px] gap-1 mb-10 font-semibold text-xl -ml-1"
+    <Link
+      href={`${link}?userId=${userInfo?._id}`}
+      className="flex justify-start items-center w-[120px] gap-1 mb-10 font-semibold text-xl -ml-1 hover:scale-110 transition"
     >
-      <BackButtonIcon /> Go Back
-    </motion.button>
+      <BackButtonIcon /> {title}
+    </Link>
   )
 }
 

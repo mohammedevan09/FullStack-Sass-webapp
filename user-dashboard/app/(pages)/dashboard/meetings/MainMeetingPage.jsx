@@ -5,7 +5,7 @@ import Link from 'next/link'
 
 const MainMeetingPage = ({ meetings }) => {
   return (
-    <div className="grid w-full justify-center items-center sm:px-4 xs:px-3 px-1">
+    <div className="grid w-full justify-center items-center">
       <Link
         href={'/dashboard/meetings'}
         className="sm:mt-16 mt-10 sm:mb-14 mb-8 sm:py-3 py-1 sm:w-[260px] w-[200px] flex items-center justify-center sm:gap-2 gap-1 rounded-lg shadow border-2 border-blue-800 text-blue-800 lg:text-xl sm:text-lg text-sm font-medium"

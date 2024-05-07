@@ -4,10 +4,11 @@ import Image from 'next/image'
 import { motion } from 'framer-motion'
 import toast from 'react-hot-toast'
 import { verifyYourEmail } from '@/api/userApi'
-import { useRouter } from 'next/navigation'
+import { redirect, useRouter } from 'next/navigation'
 import { useDispatch } from 'react-redux'
 import { setUsers } from '@/store/reducers/userReducer'
 import { useSelector } from 'react-redux'
+import { useEffect } from 'react'
 
 const MainEmailTokenVerify = ({ params, searchParams }) => {
   const router = useRouter()
@@ -25,6 +26,14 @@ const MainEmailTokenVerify = ({ params, searchParams }) => {
       toast.error('Verification Failed')
     }
   }
+
+  useEffect(() => {
+    if (!userInfo?.token) {
+      redirect('/login')
+    } else if (userInfo?.email_verified === true) {
+      redirect('/dashboard')
+    }
+  }, [userInfo, router])
 
   return (
     <>

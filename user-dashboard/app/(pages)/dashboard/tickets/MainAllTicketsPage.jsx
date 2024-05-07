@@ -1,0 +1,51 @@
+'use client'
+
+import OpenTicketModal from '@/components/modals/ticketModals/OpenTicketModal'
+import TicketSubmitThanksModal from '@/components/modals/ticketModals/TicketSubmitThanksModal'
+import MainTicketTables from '@/components/tables/ticket/MainTicketTables'
+import { AddProjectIcon } from '@/staticData/Icon'
+import { useState } from 'react'
+import { useSelector } from 'react-redux'
+
+const MainAllTicketsPage = ({ orders, tickets }) => {
+  const [openModal, setOpenModal] = useState(false)
+  const [openSubModal, setOpenSubModal] = useState(false)
+
+  const { userInfo } = useSelector((state) => state?.user)
+
+  return (
+    <>
+      <div>
+        <button
+          className="sm:mt-16 mt-10 sm:mb-14 mb-8 sm:py-3 py-1 sm:w-[190px] w-[150px] flex items-center justify-center sm:gap-2 gap-1 rounded-lg shadow border-2 border-blue-800 text-blue-800 lg:text-xl text-lg font-medium"
+          onClick={(e) => {
+            e.preventDefault()
+            setOpenModal(true)
+          }}
+        >
+          <AddProjectIcon /> Add Tickets
+        </button>
+        <div className="bg-white rounded-[20px] my-8 overflow-x-hidden pt-4">
+          <MainTicketTables tickets={tickets} userInfo={userInfo} />
+        </div>
+      </div>
+
+      {openModal && (
+        <OpenTicketModal
+          setOpenModal={setOpenModal}
+          setOpenSubModal={setOpenSubModal}
+          openModal={openModal}
+          orders={orders}
+        />
+      )}
+      {openSubModal && (
+        <TicketSubmitThanksModal
+          setOpenModal={setOpenModal}
+          setOpenSubModal={setOpenSubModal}
+        />
+      )}
+    </>
+  )
+}
+
+export default MainAllTicketsPage

@@ -166,7 +166,7 @@ const Main = () => {
                   <button
                     className="w-[100px] h-[34px] btn-hover rounded-[10px] text-center"
                     onClick={() =>
-                      router.push(`/dashboard/all-projects/${item?.orderId}`)
+                      router.push(`/dashboard/orders/${item?.orderId}`)
                     }
                   >
                     Open

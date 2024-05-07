@@ -1,36 +1,17 @@
 'use client'
 
 import ThanksInvoicePaymentPaid from '@/components/modals/invoicesModals/ThanksInvoicePaymentPaid'
-import { FilterByIdIcon, SearchByIdIcon } from '@/staticData/Icon'
-import { filterByStatusData } from '@/staticData/MainData'
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 
 const MainInvoicePage = ({ invoices }) => {
   const [openModal, setOpenModal] = useState(false)
-  const [dropOpen, setDropOpen] = useState(false)
-
-  const dropRef = useRef()
-
-  useEffect(() => {
-    const handleClick = (e) => {
-      if (dropRef.current && !dropRef.current.contains(e.target)) {
-        setDropOpen(false)
-      }
-    }
-
-    document.addEventListener('click', handleClick)
-
-    return () => {
-      document.removeEventListener('click', handleClick)
-    }
-  }, [])
 
   return (
     <>
       <div className="sm:px-4 xs:px-3 px-1">
         <div className="sm:flex grid justify-between items-center sm:gap-[none] gap-5">
           <h2 className="text-2xl font-semibold">All Invoice</h2>
-          <div className="flex md:gap-9 gap-3 sm:">
+          {/* <div className="flex md:gap-9 gap-3 sm:">
             <div className="flex sm:px-4 px-1 py-[7px] bg-white rounded-xl justify-start items-center sm:gap-4 gap-1">
               <SearchByIdIcon />
               <input
@@ -68,7 +49,7 @@ const MainInvoicePage = ({ invoices }) => {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
       <div className="lg:w-full w-screen bg-white rounded-[20.37px] px-7 py-8 sm:my-14 my-10 overflow-x-scroll">

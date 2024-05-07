@@ -5,7 +5,7 @@ import dummyProfile from '@/public/images/dummyProfile.png'
 
 const MainFeedbackByCategory = ({ feedbackCategory, feedbacks }) => {
   return (
-    <div className="lg:w-full w-screen px-7 pt-8 overflow-x-scroll">
+    <div className="sm:w-full w-screen pt-8 overflow-x-scroll">
       <BackButton title={'Go Back'} link={'/feedback'} />
       <div className=" md:gap-3 gap-6">
         <h1 className="text-2xl font-semibold">{feedbackCategory?.name}</h1>
@@ -32,7 +32,7 @@ const MainFeedbackByCategory = ({ feedbackCategory, feedbacks }) => {
                 <span className="text-sm text-gray-600">{item?.details}</span>
               </div>
             </div>
-            <div className="w-10">
+            <div className="max-w-10">
               <Image
                 src={item?.userId?.profileImage || dummyProfile}
                 alt="img"

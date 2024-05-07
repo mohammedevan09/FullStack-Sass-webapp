@@ -6,7 +6,7 @@ const SubscriptionServiceTables = ({ subscriptions }) => {
     <>
       <div className="lg:w-full w-screen px-7 overflow-x-scroll">
         {subscriptions?.length === 0 ? (
-          <h2 className="sm:text-xl text-lg pt-6 text-gray-500 text-center">
+          <h2 className="sm:text-xl text-lg py-6 text-gray-400 text-center font-semibold italic">
             No projects to show
           </h2>
         ) : (
@@ -36,7 +36,7 @@ const SubscriptionServiceTables = ({ subscriptions }) => {
                       )}
                     </div>
                   </td>
-                  <td className="lg:py-5 py-4 text-center px-3">
+                  <td className="lg:py-5 py-4 text-center px-3 lg:w-[127px] w-[96px]">
                     <StatusColor status={item?.status} />
                   </td>
                   <td className="lg:py-5 py-4 text-center">

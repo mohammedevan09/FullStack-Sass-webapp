@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken'
 import User from '../model/userModels/userModel.js'
+import Team from '../model/userModels/teamModel.js'
 
 export const authMiddleware = async (req, res, next) => {
   let token
@@ -10,7 +11,13 @@ export const authMiddleware = async (req, res, next) => {
       if (token) {
         const decoded = jwt.verify(token, process.env.JWT_SECRET)
         // console.log(decoded)
-        const user = await User.findById(decoded?.id)
+        let user = await User.findById(decoded?.id)
+        if (!user) {
+          user = await Team.findById(decoded?.id)
+          if (!user) {
+            return res.status(404).json({ message: 'User or Team not found' })
+          }
+        }
         req.user = user
         next()
       }
@@ -24,12 +31,9 @@ export const authMiddleware = async (req, res, next) => {
 }
 
 export const isAdmin = async (req, res, next) => {
-  const { email } = req.user
-  const adminUser = await User.findOne({ email })
-  // console.log(adminUser)
-  if (adminUser?.role !== 'admin') {
-    next('You are not admin!')
-  } else {
+  if (req.user?.role === 'admin') {
     next()
+  } else {
+    return res.status(403).json({ message: 'You are not an admin' })
   }
 }

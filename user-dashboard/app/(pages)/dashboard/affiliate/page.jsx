@@ -8,9 +8,12 @@ const page = async ({ searchParams }) => {
   return (
     <section className="grid w-full items-center sm:my-10 my-8 sm:px-4 xs:px-3 px-1">
       {affiliate?.affiliate?._id ? (
-        <MainAffiliatePageUserId affiliate={affiliate} />
+        <MainAffiliatePageUserId
+          affiliate={affiliate}
+          searchParams={searchParams}
+        />
       ) : (
-        <AffiliateLanding />
+        <AffiliateLanding searchParams={searchParams} />
       )}
     </section>
   )

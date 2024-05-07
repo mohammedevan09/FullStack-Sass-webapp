@@ -62,7 +62,7 @@ const MainSingleGuidePage = ({ guide }) => {
       <div className="sm:mt-16 mt-10 sm:mb-14 mb-8 w-full grid gap-6">
         <BackButton title={'Go Back'} link={`/how-to-guide`} />
         <div className="flex justify-between gap-3 items-center">
-          <h1 className="text-2xl font-bold">
+          <h1 className="md:text-2xl xs:text-base text-sm font-bold">
             {guide?._id ? guide?.title : 'Add New Custom tutorial'}
           </h1>
           <button

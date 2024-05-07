@@ -11,11 +11,10 @@ import { useSelector } from 'react-redux'
 
 const MainAffiliatePageUserId = ({
   affiliate: { affiliate, orders, referredUsers },
+  searchParams,
 }) => {
   const [openModal, setOpenModal] = useState(false)
   const [openSubModal, setOpenSubModal] = useState(false)
-
-  const { userInfo } = useSelector((state) => state?.user)
 
   const {
     register,
@@ -30,7 +29,7 @@ const MainAffiliatePageUserId = ({
 
   const getBaseLink = () => {
     const baseUrl = window.location.origin
-    return `${baseUrl}?ref=${userInfo?._id}`
+    return `${baseUrl}?ref=${searchParams?.userId}`
   }
 
   const handleCopyLink = (e) => {

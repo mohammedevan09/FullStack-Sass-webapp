@@ -1,32 +1,11 @@
 'use client'
 
-import { useMemo, useState } from 'react'
 import Select from 'react-select'
 import makeAnimated from 'react-select/animated'
 
 const animatedComponents = makeAnimated()
 
-const ReactSelect = ({ data, setValue, setError, clearErrors }) => {
-  const [val, setVal] = useState('')
-
-  const onChange = (selectedOption) => {
-    setVal(selectedOption)
-    if (selectedOption?.value) {
-      setValue('feedbackCategoryId', selectedOption?.value, {
-        shouldDirty: true,
-      })
-      clearErrors('feedbackCategoryId')
-    } else {
-      setValue('feedbackCategoryId', '', {
-        shouldDirty: true,
-      })
-      setError('feedbackCategoryId', {
-        type: 'manual',
-        message: 'Please select an issue',
-      })
-    }
-  }
-
+const ReactSelect = ({ data, onChange, val, placeholder }) => {
   const customStyles = {
     control: (provided) => ({
       ...provided,
@@ -99,10 +78,7 @@ const ReactSelect = ({ data, setValue, setError, clearErrors }) => {
         onChange={onChange}
         styles={customStyles}
         closeMenuOnSelect={true}
-        placeholder={'Ex - Admin issue'}
-        //   getOptionLabel={(option) => option.name}
-        //   getOptionValue={(option) => option.id}
-        //   className="react-select-container genresDD"
+        placeholder={placeholder || 'Ex - Admin issue'}
       />
     </div>
   )

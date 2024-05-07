@@ -29,7 +29,7 @@ const MainNormalServiceById = ({ order, service, orderChat, messageCount }) => {
   return (
     <>
       <div className="sm:my-14 my-8">
-        <BackButton link={'/orders/normalService'} title={'Go back'} />
+        <BackButton link={`/orders/normalService`} title={'Go back'} />
         <div className="md:flex grid md:justify-between xs:items-start items-end gap-6 mb-6">
           <OrderBasicInfo order={orderData} service={service} />
           <div className="flex gap-2 items-start">
@@ -41,6 +41,7 @@ const MainNormalServiceById = ({ order, service, orderChat, messageCount }) => {
             </button>
             <TakeAction
               order={orderData}
+              orderChat={orderChat}
               setValue={setValue}
               setOrderData={setOrderData}
               link={`normalService/${order?._id}`}
@@ -58,8 +59,9 @@ const MainNormalServiceById = ({ order, service, orderChat, messageCount }) => {
         />
         <h1 className="text-2xl font-semibold pt-10 pb-5">Inbox & Messaging</h1>
         <InboxAndMessaging
-          order={orderData}
-          orderChat={orderChat}
+          to={'order'}
+          itemData={orderData}
+          chatData={orderChat}
           messageCount={messageCount}
         />
       </div>

@@ -5,6 +5,7 @@ import {
   cloudinaryUploadImg,
 } from '../../utils/cloudinary.js'
 import { sendResponse } from '../../utils/sendResponse.js'
+import { Types } from 'mongoose'
 
 export const getAllServices = async (req, res, next) => {
   try {
@@ -20,9 +21,22 @@ export const getAllServices = async (req, res, next) => {
     const page = parseInt(req.query.page) || 1
     const limit = parseInt(req.query.limit) || 5
     const skip = (page - 1) * limit
+    const { search = '' } = req.query
 
     const services = await Service.aggregate([
-      { $match: query },
+      {
+        $match: {
+          ...query,
+          $or: [
+            { name: { $regex: new RegExp(search), $options: 'i' } },
+            {
+              _id: Types.ObjectId.isValid(search)
+                ? new Types.ObjectId(search)
+                : null,
+            },
+          ],
+        },
+      },
       { $sort: { createdAt: -1 } },
       { $group: { _id: '$__t', services: { $push: '$$ROOT' } } },
       {

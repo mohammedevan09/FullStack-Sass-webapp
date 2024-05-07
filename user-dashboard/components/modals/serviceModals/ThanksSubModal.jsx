@@ -1,22 +1,17 @@
 'use client'
 
 import { CheckIcon, OpenInboxIcon } from '@/staticData/Icon'
-import { usePathname, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 
-const ThanksSubModal = ({ setOpenModal, setOpenSubModal }) => {
+const ThanksSubModal = ({ setOpenModal, setOpenSubModal, userInfo }) => {
   const router = useRouter()
-  const pathname = usePathname()
 
   const handleClick = (e) => {
     e.preventDefault()
     setOpenSubModal(false)
     setOpenModal(false)
-    if (pathname.endsWith('/hourlyPlan')) {
-      router.push('/dashboard/hourly-plan/1234')
-    } else {
-      router.push('/dashboard/all-projects/1234')
-    }
+    router.push(`/dashboard/proposals?userId=${userInfo?._id}`)
   }
   return (
     <div className="fixed z-[9999999999] left-0 top-0 right-0 bottom-0 modal-b-blur h-screen w-screen overflow-hidden flex justify-center items-center">

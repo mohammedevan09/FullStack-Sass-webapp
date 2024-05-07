@@ -6,7 +6,7 @@ import Link from 'next/link'
 
 const MainHowToGuide = ({ guides }) => {
   return (
-    <div className="px-7 pt-8">
+    <div className="pt-8 sm:my-10 my-8">
       <div className="flex justify-between items-end">
         <h1 className="text-2xl font-semibold">How to guide & Tutorials</h1>
         <Link
@@ -20,14 +20,18 @@ const MainHowToGuide = ({ guides }) => {
       <div className="grid items-center gap-4">
         {guides?.map((item) => (
           <div key={item?._id} className="flex justify-between items-start">
-            <div className="flex items-center gap-2">
-              <HowToGuideTutorialsYTIcon size={'27'} />
-              <p className="font-semibold text-base">{item?.title}</p>
+            <div className="flex items-center gap-4">
+              <div className="max-w-5">
+                <HowToGuideTutorialsYTIcon size={'27'} />
+              </div>
+              <p className="font-semibold md:text-base text-sm text-gray-600">
+                {item?.title}
+              </p>
             </div>
 
             <Link
               href={`/how-to-guide/${item?._id}`}
-              className="hover:scale-105 transition-all duration-200 ease-in-out text-blue-500 hover:text-blue-700 font-medium rounded-[5px] text-center"
+              className="hover:scale-105 transition-all duration-200 ease-in-out text-blue-500 hover:text-blue-700 font-medium rounded-[5px] text-center min-w-[100px]"
             >
               View details
             </Link>

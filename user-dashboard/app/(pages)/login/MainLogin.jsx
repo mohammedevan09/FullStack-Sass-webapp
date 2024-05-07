@@ -6,7 +6,7 @@ import {
   registerUserApi,
 } from '@/api/userApi'
 import Input, { PasswordInput } from '@/components/others/Input'
-import { GoogleIcon } from '@/staticData/Icon'
+import { GoogleIcon, TeamMemberIcon } from '@/staticData/Icon'
 import { setUsers } from '@/store/reducers/userReducer'
 import Image from 'next/image'
 import { redirect, useRouter } from 'next/navigation'
@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useGoogleLogin } from '@react-oauth/google'
 import axios from 'axios'
 import ErrorMessage from '@/components/others/ErrorMessage'
+import Link from 'next/link'
 
 const MainLogin = () => {
   const [isSignUp, setIsSignUp] = useState(false)
@@ -413,13 +414,26 @@ export const GoogleLoginComp = ({ dispatch, router, reference }) => {
   })
 
   return (
-    <div className="w-full relative">
-      <button
+    <>
+      <div className="w-full relative">
+        <button
+          className="w-full text-center text-base font-semibold py-4 rounded-lg border border-zinc-400 flex justify-center items-center gap-2"
+          onClick={() => login()}
+        >
+          <GoogleIcon /> Continue with Google
+        </button>
+      </div>
+      <div className="flex gap-2 items-center text-sm">
+        <div className="bg-gray-300 w-full h-[1px]"></div>
+        <div>OR</div>
+        <div className="bg-gray-300 w-full h-[1px]"></div>
+      </div>
+      <Link
+        href={'/login/teamMember'}
         className="w-full text-center text-base font-semibold py-4 rounded-lg border border-zinc-400 flex justify-center items-center gap-2"
-        onClick={() => login()}
       >
-        <GoogleIcon /> Continue with Google
-      </button>
-    </div>
+        <TeamMemberIcon /> Login as a Team Member
+      </Link>
+    </>
   )
 }

@@ -2,7 +2,9 @@ const Labels = ({ htmlFor, name, cn }) => {
   return (
     <label
       htmlFor={htmlFor}
-      className={`text-black text-base font-medium ${cn ? cn : '-mb-4'}`}
+      className={`text-black text-base font-medium cursor-pointer ${
+        cn ? cn : '-mb-4'
+      }`}
     >
       {name}
     </label>
@@ -21,7 +23,7 @@ export const LabelsTwo = ({
       htmlFor={htmlFor}
       className={`${
         textSize || 'text-base'
-      } font-semibold tracking-tight mb-1 ${className}`}
+      } font-semibold tracking-tight mb-1 cursor-pointer ${className}`}
     >
       {name}
       {optional && (

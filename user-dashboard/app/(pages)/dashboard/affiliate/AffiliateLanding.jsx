@@ -6,12 +6,10 @@ import Image from 'next/image'
 import toast from 'react-hot-toast'
 import { useSelector } from 'react-redux'
 
-const AffiliateLanding = () => {
-  const { userInfo } = useSelector((state) => state?.user)
-
+const AffiliateLanding = ({ searchParams }) => {
   const handleClick = async (e) => {
     e.preventDefault()
-    await toast.promise(createAffiliateApi({ userId: userInfo?._id }), {
+    await toast.promise(createAffiliateApi({ userId: searchParams?.userId }), {
       loading: 'Creating Affiliate Account',
       success: <b>Affiliate Account Created</b>,
       error: <b>Affiliate Account Creation failed</b>,

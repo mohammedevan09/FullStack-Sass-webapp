@@ -7,6 +7,7 @@ import {
   HowToGuideIcon,
   LogoutIcon,
   SettingsIcon,
+  TeamsIcon,
 } from '@/staticData/Icon'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -15,12 +16,10 @@ import {
   AllProjectsIcon,
   AllTicketsIcon,
   HomeIcon,
-  HourlyPlanIcon,
   InvoiceIcon,
   MarketPlaceIcon,
   MeetingIcon,
   ProposalsIcon,
-  SubscriptionIcon,
 } from '../../staticData/Icon'
 import { useDispatch, useSelector } from 'react-redux'
 import { setOpenMenu } from '@/store/reducers/activeReducer'
@@ -28,6 +27,7 @@ import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { redirect, useRouter, useSelectedLayoutSegment } from 'next/navigation'
 import LogoutModal from '../modals/menuModals/LogoutModal'
+import socketIOClient from 'socket.io-client'
 
 const Menu = () => {
   const [isSmallScreen, setIsSmallScreen] = useState(false)
@@ -45,7 +45,7 @@ const Menu = () => {
     {
       name: 'Dashboard',
       icon: <HomeIcon color="#6C7893" />,
-      link: '/dashboard',
+      link: `/dashboard?userId=${userInfo?._id}`,
       targetSegment: null,
     },
     {
@@ -57,32 +57,38 @@ const Menu = () => {
     {
       name: 'All Projects',
       icon: <AllProjectsIcon color="#6C7893" />,
-      link: `/dashboard/all-projects?userId=${userInfo?._id}`,
-      targetSegment: 'all-projects',
+      link: `/dashboard/orders?userId=${userInfo?._id}`,
+      targetSegment: 'orders',
     },
     {
       name: 'All Tickets',
       icon: <AllTicketsIcon color="#6C7893" />,
-      link: '/dashboard/all-tickets',
-      targetSegment: 'all-tickets',
+      link: `/dashboard/tickets?userId=${userInfo?._id}`,
+      targetSegment: 'tickets',
     },
     {
-      name: 'Quotation',
+      name: 'Proposals',
       icon: <ProposalsIcon color="#6C7893" />,
-      link: '/dashboard/quotation',
-      targetSegment: 'quotation',
+      link: `/dashboard/proposals?userId=${userInfo?._id}`,
+      targetSegment: 'proposals',
     },
     {
       name: 'Invoice',
       icon: <InvoiceIcon color="#6C7893" />,
-      link: '/dashboard/invoice',
+      link: `/dashboard/invoice?userId=${userInfo?._id}`,
       targetSegment: 'invoice',
     },
     {
       name: 'Meetings',
       icon: <MeetingIcon color="#6C7893" />,
-      link: '/dashboard/meetings',
+      link: `/dashboard/meetings?userId=${userInfo?._id}`,
       targetSegment: 'meetings',
+    },
+    {
+      name: 'Team',
+      icon: <TeamsIcon color="#6C7893" />,
+      link: `/dashboard/team?userId=${userInfo?._id}`,
+      targetSegment: 'team',
     },
     {
       name: 'How To Guide',
@@ -99,14 +105,34 @@ const Menu = () => {
     {
       name: 'Affiliate',
       icon: <AffiliateIcon color="#6C7893" />,
-      link: `/dashboard/affiliate?userId=${userInfo?._id}`,
+      link: `/dashboard/affiliate?userId=${
+        userInfo?.creatorId || userInfo?._id
+      }`,
       targetSegment: 'affiliate',
     },
   ]
 
+  const filteredMenuData = MenuData.filter((menuItem) => {
+    if (userInfo?.creatorId && userInfo?.access) {
+      const updatedAccess = {
+        ...userInfo.access,
+        team: { access: false },
+      }
+
+      return (
+        !updatedAccess.hasOwnProperty(menuItem.targetSegment) ||
+        updatedAccess[menuItem.targetSegment].access === true
+      )
+    } else {
+      return true
+    }
+  })
+
   useEffect(() => {
     if (!userInfo?.token) {
       redirect('/login')
+    } else if (userInfo?.email_verified === false) {
+      redirect('/login/email_verify')
     }
   }, [userInfo, router])
 
@@ -122,6 +148,13 @@ const Menu = () => {
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
   }, [])
+
+  useEffect(() => {
+    const socket = socketIOClient(process.env.NEXT_PUBLIC_HOST)
+    if (userInfo) {
+      socket.emit('add-user', { userId: userInfo?._id })
+    }
+  }, [userInfo])
 
   return (
     <div
@@ -151,7 +184,7 @@ const Menu = () => {
         <hr className="h-px bg-gray-200 border-0 dark:bg-gray-300" />
         <div className="grid justify-between gap-14 items-start h-screen overflow-y-scroll">
           <div className="grid justify-center items-start text-slate-500">
-            {MenuData?.map((item, i) => (
+            {filteredMenuData?.map((item, i) => (
               <motion.div whileHover={{ scale: 1.04 }} key={i}>
                 <Link
                   href={item?.link}

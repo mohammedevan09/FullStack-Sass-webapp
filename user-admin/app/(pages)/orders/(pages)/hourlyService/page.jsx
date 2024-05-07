@@ -6,6 +6,8 @@ import HourlyServiceTables from '@/components/tables/order/HourlyServiceTables'
 const page = async ({ searchParams }) => {
   const { HourlyServiceOrder } = await getAllOrders({
     __t: 'HourlyServiceOrder',
+    userId: searchParams?.userId,
+    role: 'admin',
     limit: 20,
   })
   return (

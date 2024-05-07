@@ -5,17 +5,17 @@ import React from 'react'
 import { motion } from 'framer-motion'
 
 const TeamMemberAddedModal = ({
-  successModal,
+  editableMember,
   setSuccessModal,
   setOpenModal,
 }) => {
   return (
-    <div className="flex justify-center items-center fixed z-[9999999999] w-screen h-screen left-0 top-0 right-0 bottom-0 modal-b-blur">
+    <div className="flex justify-center items-center fixed z-[999] w-screen h-screen left-0 top-0 right-0 bottom-0 modal-b-blur">
       <div className="grid gap-7 justify-center items-center bg-white rounded-[20px] shadow pt-10 px-6">
         <div className="mb-3">
           <CheckIcon />
           <div className="text-gray-900 text-lg font-medium leading-7 mx-auto text-center">
-            Team member hs been added!
+            Team member has been {editableMember ? 'Updated' : `Added`}!
           </div>
           <div className="text-gray-500 text-sm font-normal leading-tight text-center">
             A confirmation email has been sent to your team member!
@@ -29,6 +29,7 @@ const TeamMemberAddedModal = ({
               e.preventDefault()
               setSuccessModal(false)
               setOpenModal(false)
+              window.location.reload()
             }}
           >
             Ok Thanks!

@@ -3,8 +3,10 @@
 import { adminLoginApi } from '@/api/userApi'
 import ErrorMessage from '@/components/others/ErrorMessage'
 import Input, { PasswordInput } from '@/components/others/Input'
+import { TeamMemberIcon } from '@/staticData/Icon'
 import { setUsers } from '@/store/reducers/userReducer'
 import Image from 'next/image'
+import Link from 'next/link'
 import { redirect, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -110,14 +112,7 @@ const MainLoginPage = () => {
             <ErrorMessage errors={errors?.password} />
           </div>
         </div>
-        {/* <div className="flex justify-start items-center font-medium">
-          <button
-            className="text-gray-950 hover:text-blue-800"
-            //   onClick={forgotPassLink}
-          >
-            Forgot password?
-          </button>
-        </div> */}
+
         <button
           type="submit"
           className="w-full text-center btn-hover text-base font-semibold py-2 rounded-lg leading-7 disabled:opacity-50 disabled:cursor-not-allowed"
@@ -126,6 +121,17 @@ const MainLoginPage = () => {
         >
           Sign in
         </button>
+        <div className="flex gap-2 items-center text-sm">
+          <div className="bg-gray-300 w-full h-[1px]"></div>
+          <div>OR</div>
+          <div className="bg-gray-300 w-full h-[1px]"></div>
+        </div>
+        <Link
+          href={'/login/teamMember'}
+          className="w-full text-center text-base font-semibold py-4 rounded-lg border border-zinc-400 flex justify-center items-center gap-2"
+        >
+          <TeamMemberIcon /> Login as a Team Member
+        </Link>
       </div>
     </div>
   )

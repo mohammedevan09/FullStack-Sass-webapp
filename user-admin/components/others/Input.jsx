@@ -41,6 +41,7 @@ export const Input2 = ({
   id,
   validationRules,
   className,
+  readOnly,
 }) => {
   return (
     <>
@@ -48,6 +49,7 @@ export const Input2 = ({
         id={id}
         type={type}
         placeholder={placeholder}
+        readOnly={readOnly}
         className={`w-full h-[50px] border border-zinc-400 font-medium placeholder:font-normal rounded-md placeholder:text-center text-center px-2 ${className}`}
         {...validationRules}
       />
@@ -61,6 +63,7 @@ export const PasswordInput = ({
   cn,
   cnh,
   validationRules,
+  readOnly,
 }) => {
   const [showPass, setShowPass] = useState()
   return (
@@ -73,6 +76,7 @@ export const PasswordInput = ({
         id={id}
         type={showPass ? 'text' : 'password'}
         placeholder={placeholder}
+        readOnly={readOnly}
         className=" placeholder:text-center text-center font-medium placeholder:font-normal"
         {...validationRules}
       />

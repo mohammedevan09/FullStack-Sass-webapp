@@ -1,8 +1,11 @@
 'use client'
 
 import { updateSettingByIdApi } from '@/api/userSettingApi'
+import { redirect } from 'next/navigation'
+import { useLayoutEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
+import { useSelector } from 'react-redux'
 
 const MainEmailNotification = ({ emailNotifications, userSetting }) => {
   const {
@@ -23,6 +26,14 @@ const MainEmailNotification = ({ emailNotifications, userSetting }) => {
     })
     reset(data)
   }
+
+  const { userInfo } = useSelector((state) => state?.user)
+
+  useLayoutEffect(() => {
+    if (userInfo?.access) {
+      redirect('/dashboard')
+    }
+  }, [userInfo])
 
   return (
     <div className="grid justify-start items-center sm:p-10 py-7 px-3 bg-white gap-8 rounded-lg">

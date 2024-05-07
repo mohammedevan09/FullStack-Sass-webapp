@@ -23,7 +23,7 @@ import Link from '@tiptap/extension-link'
 import { EditorProvider, useCurrentEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import { useCallback, useEffect } from 'react'
-import { initialText } from '@/app/(pages)/dashboard/all-projects/_components/InboxAndMessaging'
+import { initialText } from '@/app/(pages)/dashboard/orders/_components/InboxAndMessaging'
 
 export const MenuBar = ({ setText, subClassName, text }) => {
   const { editor } = useCurrentEditor()

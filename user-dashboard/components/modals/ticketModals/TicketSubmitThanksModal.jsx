@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 
 const TicketSubmitThanksModal = ({ setOpenSubModal, setOpenModal }) => {
   return (
-    <div className="flex justify-center items-center fixed z-[9999999999] w-screen h-screen left-0 top-0 right-0 bottom-0 modal-b-blur">
+    <div className="flex justify-center items-center fixed z-[999] w-screen h-screen left-0 top-0 right-0 bottom-0 modal-b-blur">
       <div className="grid gap-7 justify-center items-center bg-white rounded-[20px] shadow pt-10 pb-5 px-10">
         <div className="mb-3">
           <CheckIcon />
@@ -24,6 +24,7 @@ const TicketSubmitThanksModal = ({ setOpenSubModal, setOpenModal }) => {
               e.preventDefault()
               setOpenSubModal(false)
               setOpenModal(false)
+              window.location.reload()
             }}
           >
             <OpenInboxIcon /> See All Tickets

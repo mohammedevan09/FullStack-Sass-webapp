@@ -1,29 +1,26 @@
 'use client'
 
+import { useSelector } from 'react-redux'
 import MainSettingsLayoutPage from './MainSettingsLayoutPage'
 
 const layout = ({ children }) => {
+  const { userInfo } = useSelector((state) => state?.user)
+
   const allSettings = [
     {
       title: 'Profile',
       link: '/dashboard/settings',
       comp: '',
     },
-    {
-      title: 'Team',
-      link: '/dashboard/settings/team',
-      comp: '',
-    },
-    // {
-    //   title: 'Billing',
-    //   link: '/dashboard/settings/billing',
-    //   comp: '',
-    // },
-    {
-      title: 'Notifications',
-      link: '/dashboard/settings/notifications',
-      comp: '',
-    },
+    ...(!userInfo?.creatorId
+      ? [
+          {
+            title: 'Notifications',
+            link: '/dashboard/settings/notifications',
+            comp: '',
+          },
+        ]
+      : []),
   ]
 
   return (

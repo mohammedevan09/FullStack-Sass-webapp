@@ -9,7 +9,7 @@ const ServiceTables = ({ serviceData, title, link }) => {
   return (
     <div className="lg:w-full w-screen px-7 overflow-x-scroll">
       {serviceData?.length === 0 ? (
-        <h2 className="sm:text-xl text-lg pt-6 text-gray-500 text-center">
+        <h2 className="sm:text-xl text-lg py-6 text-gray-400 text-center font-semibold italic">
           {title} is empty!
         </h2>
       ) : (

@@ -6,6 +6,8 @@ import SubscriptionServiceTables from '@/components/tables/order/SubscriptionSer
 const page = async ({ searchParams }) => {
   const { SubscriptionServiceOrder } = await getAllOrders({
     __t: 'SubscriptionServiceOrder',
+    userId: searchParams?.userId,
+    role: 'admin',
     limit: 20,
   })
   return (

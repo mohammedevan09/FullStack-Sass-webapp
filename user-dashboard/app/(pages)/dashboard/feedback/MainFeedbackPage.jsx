@@ -4,12 +4,14 @@ import { createFeedbackApi } from '@/api/feedback'
 import ErrorMessage from '@/components/others/ErrorMessage'
 import ReactSelect from '@/components/others/ReactSelect'
 import { useRouter } from 'next/navigation'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { useSelector } from 'react-redux'
 
 const MainFeedbackPage = ({ options }) => {
+  const [val, setVal] = useState('')
+
   const router = useRouter()
 
   const { userInfo } = useSelector((state) => state?.user)
@@ -40,6 +42,24 @@ const MainFeedbackPage = ({ options }) => {
     mode: 'onChange',
   })
 
+  const onChange = (selectedOption) => {
+    setVal(selectedOption)
+    if (selectedOption?.value) {
+      setValue('feedbackCategoryId', selectedOption?.value, {
+        shouldDirty: true,
+      })
+      clearErrors('feedbackCategoryId')
+    } else {
+      setValue('feedbackCategoryId', '', {
+        shouldDirty: true,
+      })
+      setError('feedbackCategoryId', {
+        type: 'manual',
+        message: 'Please select an issue',
+      })
+    }
+  }
+
   const handleSave = async (formData) => {
     if (isValid) {
       try {
@@ -65,12 +85,7 @@ const MainFeedbackPage = ({ options }) => {
         <div className="text-slate-700 lg:text-xl sm:text-lg xs:text-base text-sm font-semibold grid">
           <label htmlFor="issue">Select an issues</label>
 
-          <ReactSelect
-            data={data}
-            setValue={setValue}
-            setError={setError}
-            clearErrors={clearErrors}
-          />
+          <ReactSelect onChange={onChange} data={data} val={val} />
           <ErrorMessage errors={errors?.feedbackCategoryId} />
           <label htmlFor="Details">Details</label>
           <textarea

@@ -11,7 +11,7 @@ import {
   addTime,
   calculateTotalTime,
   subtractTime,
-} from '@/app/(pages)/dashboard/all-projects/_components/HourlyTimeLogs'
+} from '@/app/(pages)/dashboard/orders/_components/HourlyTimeLogs'
 
 const RemoveHourlyTimeLogsModal = ({
   openModal,

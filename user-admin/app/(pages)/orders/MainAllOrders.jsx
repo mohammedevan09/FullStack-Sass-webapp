@@ -5,8 +5,11 @@ import NormalServiceTables from '@/components/tables/order/NormalServiceTables'
 import SubscriptionServiceTables from '@/components/tables/order/SubscriptionServiceTables'
 import HourlyServiceTables from '@/components/tables/order/HourlyServiceTables'
 import ProjectHeading from './_components/ProjectHeading'
+import { useSelector } from 'react-redux'
 
 const MainAllOrders = ({ projects, subscriptions, hourlyData }) => {
+  const { userInfo } = useSelector((state) => state?.user)
+
   return (
     <>
       <div className="my-14">
@@ -19,7 +22,7 @@ const MainAllOrders = ({ projects, subscriptions, hourlyData }) => {
             title={'Normal Projects'}
             link={
               // projects?.length > 4 &&
-              `/orders/normalService`
+              `/orders/normalService?userId=${userInfo?._id}`
             }
           />
           <NormalServiceTables projects={projects} />
@@ -31,7 +34,7 @@ const MainAllOrders = ({ projects, subscriptions, hourlyData }) => {
             title={'Subscriptions'}
             link={
               // subscriptions?.length > 4 &&
-              `/orders/subscriptionService`
+              `/orders/subscriptionService?userId=${userInfo?._id}`
             }
           />
           <SubscriptionServiceTables subscriptions={subscriptions} />
@@ -42,7 +45,7 @@ const MainAllOrders = ({ projects, subscriptions, hourlyData }) => {
             title={'Hourly Plans'}
             link={
               // hourlyData?.length > 4 &&
-              `/orders/hourlyService`
+              `/orders/hourlyService?userId=${userInfo?._id}`
             }
           />
           <HourlyServiceTables hourlyData={hourlyData} />

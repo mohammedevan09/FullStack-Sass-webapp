@@ -1,4 +1,5 @@
 import MainMeetingPage from './MainMeetingPage'
+import MeetingCalendly from './MeetingCalendly'
 
 const page = () => {
   const meetings = [
@@ -20,7 +21,8 @@ const page = () => {
   ]
   return (
     <>
-      <MainMeetingPage meetings={meetings} />
+      {/* <MainMeetingPage meetings={meetings} /> */}
+      <MeetingCalendly />
     </>
   )
 }

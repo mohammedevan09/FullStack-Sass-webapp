@@ -6,7 +6,6 @@ import mongoose from 'mongoose'
 import cookieParser from 'cookie-parser'
 import morgan from 'morgan'
 import { Server } from 'socket.io'
-import expressSession from 'express-session'
 
 import userRouter from './router/userRouter/userRouter.js'
 import { errorHandler, notFound } from './middleware/errorHandler.js'
@@ -27,6 +26,9 @@ import feedbackCategoryRouter from './router/feedbackRouter/feedbackCategoryRout
 import feedbackRouter from './router/feedbackRouter/feedbackRouter.js'
 import affiliateRouter from './router/affiliateRouter.js'
 import userSettingRouter from './router/userRouter/userSettingRouter.js'
+import teamRouter from './router/userRouter/teamRouter.js'
+import ticketRouter from './router/ticketRouter/ticketRouter.js'
+import ticketChatRouter from './router/ticketRouter/ticketChatRouter.js'
 
 dotenv.config()
 
@@ -54,23 +56,6 @@ app.get('/', (req, res, next) => {
   }
 })
 
-app.set('trust proxy', 1)
-
-app.use(
-  expressSession({
-    secret: '324123process.env.SESSION_SECRET',
-    resave: false,
-    saveUninitialized: true,
-    proxy: true,
-    name: 'MyCoolWebAppCookieName',
-    cookie: {
-      secure: true,
-      httpOnly: false,
-      sameSite: 'none',
-    },
-  })
-)
-
 app.post(
   '/api/order/webhook',
   express.raw({ type: 'application/json' }),
@@ -91,10 +76,13 @@ app.use('/api/order/subscriptionService', subscriptionServiceOrderRouter)
 app.use('/api/order/hourlyService', hourlyServiceOrderRouter)
 app.use('/api/order/chat', orderChatRouter)
 app.use('/api/guide', guideRouter)
+app.use('/api/ticket', ticketRouter)
+app.use('/api/ticket/chat', ticketChatRouter)
 app.use('/api/feedbackCategory', feedbackCategoryRouter)
 app.use('/api/feedback', feedbackRouter)
 app.use('/api/affiliate', affiliateRouter)
 app.use('/api/userSetting', userSettingRouter)
+app.use('/api/team', teamRouter)
 
 app.use(notFound)
 app.use(errorHandler)
@@ -118,29 +106,50 @@ mongoose
   })
 
 // Socket
+global.online = new Map()
 global.onlineUsers = new Map()
 
 io.on('connection', (socket) => {
   global.chatSocket = socket
+
   socket.on('add-user', (data) => {
-    onlineUsers.set(`${data?.userId}-${data?.orderId}`, socket.id)
+    if (data?.id) {
+      online.set(`${data?.userId}-${data?.id}`, socket.id)
+    }
+    onlineUsers.set(data?.userId, socket.id)
     socket.broadcast.emit('online-users', {
       onlineUsers: Array.from(onlineUsers.keys()),
     })
   })
 
   socket.on('sendMessage', (message) => {
-    let sendUserSocket = onlineUsers.get(
-      `${message?.receiver}-${message?.orderId}`
-    )
+    message.receiver.forEach((receiverId) => {
+      let sendUserSocket = online.get(`${receiverId}-${message?.id}`)
 
-    if (sendUserSocket) {
-      socket.to(sendUserSocket).emit('message', message)
-    }
+      if (sendUserSocket) {
+        socket.to(sendUserSocket).emit('message', message)
+      }
+    })
   })
 
   socket.on('disconnect', () => {
     console.log(`Socket ${socket.id} disconnected`)
+
+    online.forEach((value, key) => {
+      if (value === socket.id) {
+        online.delete(key)
+      }
+    })
+
+    onlineUsers.forEach((value, key) => {
+      if (value === socket.id) {
+        onlineUsers.delete(key)
+      }
+    })
+
+    socket.broadcast.emit('online-users', {
+      onlineUsers: Array.from(onlineUsers.keys()),
+    })
   })
 })
 

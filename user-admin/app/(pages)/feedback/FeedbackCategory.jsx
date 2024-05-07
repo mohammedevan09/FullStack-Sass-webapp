@@ -50,7 +50,7 @@ const FeedbackCategory = ({ feedbackCategories }) => {
   return (
     <>
       <button
-        className=" mx-auto py-2 px-4 mb-2 bg-blue-800 hover:scale-105 text-white font-semibold rounded-[5px] text-center transition sm:my-10 my-8"
+        className="mx-auto py-2 px-4 mb-2 bg-blue-800 hover:scale-105 text-white font-semibold rounded-[5px] text-center transition sm:my-10 my-8"
         onClick={(e) => {
           e.preventDefault()
           setItem(null)

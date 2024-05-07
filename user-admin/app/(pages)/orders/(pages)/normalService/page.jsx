@@ -6,6 +6,8 @@ import NormalServiceTables from '@/components/tables/order/NormalServiceTables'
 const page = async ({ searchParams }) => {
   const { NormalServiceOrder } = await getAllOrders({
     __t: 'NormalServiceOrder',
+    userId: searchParams?.userId,
+    role: 'admin',
     limit: 20,
   })
   return (
