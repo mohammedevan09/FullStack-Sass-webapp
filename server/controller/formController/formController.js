@@ -26,7 +26,7 @@ export const updateForm = async (req, res, next) => {
 
 export const getAllForms = async (req, res, next) => {
   try {
-    let { page = 1, limit, categoryId } = req.query
+    let { page = 1, limit = 10, categoryId } = req.query
     page = parseInt(page)
     limit = parseInt(limit)
 
@@ -41,7 +41,13 @@ export const getAllForms = async (req, res, next) => {
       .limit(limit)
       .exec()
 
-    return res.status(200).json(forms)
+    const totalDocsCount = await Form.countDocuments(query)
+    const response = {
+      forms,
+      totalDocsCount,
+    }
+
+    return sendResponse(res, response)
   } catch (error) {
     next(error)
   }

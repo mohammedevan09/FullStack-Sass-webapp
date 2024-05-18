@@ -1,16 +1,16 @@
 'use client'
 
 import ClientTable from '@/components/tables/client/ClientTable'
-import { AllProjectsIcon } from '@/staticData/Icon'
+import ProjectHeading from '../orders/_components/ProjectHeading'
+import TablePagination from '@/components/others/TablePagination'
 
-const MainClientPage = ({ data }) => {
+const MainClientPage = ({ data, totalDocsCount }) => {
   return (
     <div className="sm:mt-16 mt-10 sm:mb-14 mb-8">
-      <h2 className="text-zinc-700 text-2xl flex justify-start items-center sm:gap-3 gap-2">
-        <AllProjectsIcon color={'black'} /> Users List
-      </h2>
-      <div className="bg-white rounded-[20px] my-14 overflow-x-hidden">
+      <ProjectHeading title={'Users List'} isHideStatus={true} />
+      <div className="bg-white rounded-[20px] my-6 overflow-x-hidden pb-4">
         <ClientTable data={data} />
+        <TablePagination pageCount={totalDocsCount} />
       </div>
     </div>
   )

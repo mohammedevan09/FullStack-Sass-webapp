@@ -12,7 +12,7 @@ const MainAllOrders = ({ projects, subscriptions, hourlyData }) => {
 
   return (
     <>
-      <div className="my-14">
+      <div className="mt-14 mb-10">
         <ProjectHeading />
       </div>
 

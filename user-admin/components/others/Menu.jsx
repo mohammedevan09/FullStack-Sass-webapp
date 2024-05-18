@@ -26,7 +26,6 @@ import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { redirect, useRouter, useSelectedLayoutSegment } from 'next/navigation'
 import LogoutModal from '../modals/menuModals/LogoutModal'
-import socketIOClient from 'socket.io-client'
 
 const Menu = () => {
   const [isSmallScreen, setIsSmallScreen] = useState(false)
@@ -43,7 +42,7 @@ const Menu = () => {
     {
       name: 'Dashboard',
       icon: <HomeIcon color="#ffffff" />,
-      link: '/',
+      link: `/?userId=${userInfo?._id}`,
       targetSegment: null,
     },
     {
@@ -79,13 +78,13 @@ const Menu = () => {
     {
       name: 'Proposals',
       icon: <ProposalsIcon color="#ffffff" />,
-      link: '/proposals',
+      link: `/proposals?userId=${userInfo?._id}`,
       targetSegment: 'proposals',
     },
     {
       name: 'Invoice',
       icon: <InvoiceIcon color="#ffffff" />,
-      link: '/invoice',
+      link: `/invoice?userId=${userInfo?._id}`,
       targetSegment: 'invoice',
     },
     {
@@ -154,13 +153,6 @@ const Menu = () => {
       redirect('/login')
     }
   }, [userInfo, router])
-
-  useEffect(() => {
-    const socket = socketIOClient(process.env.NEXT_PUBLIC_HOST)
-    if (userInfo) {
-      socket.emit('add-user', { userId: userInfo?._id })
-    }
-  }, [userInfo])
 
   return (
     <div

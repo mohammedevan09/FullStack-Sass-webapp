@@ -2,7 +2,7 @@ import MainAllOrders from './MainAllOrders'
 import { getAllOrders } from '@/api/orderApi'
 
 const page = async ({ searchParams }) => {
-  const orders = await getAllOrders({ ...searchParams, role: 'admin' })
+  const { orders } = await getAllOrders({ ...searchParams, role: 'admin' })
 
   return (
     <>

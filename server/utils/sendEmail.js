@@ -39,6 +39,6 @@ export default async (email, subject, text, html, buttonText) => {
     })
     // console.log('email sent successfully')
   } catch (error) {
-    next(error)
+    console.log(error)
   }
 }

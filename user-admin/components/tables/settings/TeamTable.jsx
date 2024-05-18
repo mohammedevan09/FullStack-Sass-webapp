@@ -8,7 +8,6 @@ const TeamTable = ({
   setOpenModal,
   setRemoveModal,
   setEditableMember,
-  isOnlyViewable,
 }) => {
   return (
     <>
@@ -33,15 +32,11 @@ const TeamTable = ({
               {members?.map((item, i) => {
                 return (
                   <tr key={i}>
-                    <td className="py-3 w-[120px]">
-                      <div className="w-[120px]">
-                        #{item?._id?.slice(0, 8)}..
-                      </div>
+                    <td className="lg:py-5 py-4 w-[120px] pr-4">
+                      <div className="w-[120px] truncate">#{item?._id}</div>
                     </td>
-                    <td className="py-3 w-[120px] pl-1">
-                      <div className="flex justify-start items-center gap-3 w-[120px]">
-                        {item?.fullName}
-                      </div>
+                    <td className="lg:py-5 py-4 w-[120px] pl-1 pr-2">
+                      <div className="w-[120px] truncate">{item.fullName}</div>
                     </td>
                     <td className="py-3 w-[60px] px-8">
                       <div className="w-[50px]">
@@ -62,55 +57,36 @@ const TeamTable = ({
                       </div>
                     </td>
                     <td className="py-3 text-center font-semibold text-xs min-w-[210px]">
-                      <div className="w-[210x] mx-auto px-4">
+                      <div className="w-[210px] mx-auto px-4 truncate">
                         {Object.entries(item.access)
                           .filter(([_, { access }]) => access)
                           .map(([key]) => makeCapitalize(key))
-                          .slice(0, 3)
                           .join(' | ')}
-                        {Object.entries(item.access).filter(
-                          ([_, { access }]) => access
-                        ).length > 3 && '...'}
                         {!Object.values(item.access).some(
                           ({ access }) => access
                         ) && 'None'}
                       </div>
                     </td>
                     <td className="py-4 text-center">
-                      <div className="w-[90px] mx-auto flex gap-4 justify-center items-center">
-                        {isOnlyViewable ? (
-                          <button
-                            className="px-3 py-1 rounded-md btn-hover"
-                            onClick={(e) => {
-                              e.preventDefault()
-                              setEditableMember(item)
-                              setOpenModal(true)
-                            }}
-                          >
-                            View
-                          </button>
-                        ) : (
-                          <>
-                            <button
-                              onClick={(e) => {
-                                e.preventDefault()
-                                setEditableMember(item)
-                                setOpenModal(true)
-                              }}
-                            >
-                              <EditIcon color={'#2525ff'} />
-                            </button>
-                            <button
-                              onClick={(e) => {
-                                e.preventDefault()
-                                setEditableMember(item)
-                                setRemoveModal(true)
-                              }}
-                            >
-                              <RemoveIcon color={'#ff2a2a'} />
-                            </button>
-                          </>
-                        )}
+                      <div className="w-[90px] mx-auto flex gap-4 justify-center">
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault()
+                            setEditableMember(item)
+                            setOpenModal(true)
+                          }}
+                        >
+                          <EditIcon color={'#2525ff'} />
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault()
+                            setEditableMember(item)
+                            setRemoveModal(true)
+                          }}
+                        >
+                          <RemoveIcon color={'#ff2a2a'} />
+                        </button>
                       </div>
                     </td>
                   </tr>

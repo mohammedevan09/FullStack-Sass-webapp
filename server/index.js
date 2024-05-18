@@ -29,6 +29,10 @@ import userSettingRouter from './router/userRouter/userSettingRouter.js'
 import teamRouter from './router/userRouter/teamRouter.js'
 import ticketRouter from './router/ticketRouter/ticketRouter.js'
 import ticketChatRouter from './router/ticketRouter/ticketChatRouter.js'
+import proposalRouter from './router/proposalRouter/proposalRouter.js'
+import proposalChatRouter from './router/proposalRouter/proposalChatRouter.js'
+import notificationRouter from './router/notificationRouter/notificationRouter.js'
+import messageNotificationRouter from './router/notificationRouter/messageNotificationRouter.js'
 
 dotenv.config()
 
@@ -78,11 +82,15 @@ app.use('/api/order/chat', orderChatRouter)
 app.use('/api/guide', guideRouter)
 app.use('/api/ticket', ticketRouter)
 app.use('/api/ticket/chat', ticketChatRouter)
+app.use('/api/proposal', proposalRouter)
+app.use('/api/proposal/chat', proposalChatRouter)
 app.use('/api/feedbackCategory', feedbackCategoryRouter)
 app.use('/api/feedback', feedbackRouter)
 app.use('/api/affiliate', affiliateRouter)
 app.use('/api/userSetting', userSettingRouter)
 app.use('/api/team', teamRouter)
+app.use('/api/notification', notificationRouter)
+app.use('/api/messageNotification', messageNotificationRouter)
 
 app.use(notFound)
 app.use(errorHandler)

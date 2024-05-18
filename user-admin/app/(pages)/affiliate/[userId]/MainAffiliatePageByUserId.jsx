@@ -1,13 +1,14 @@
 'use client'
 
 import EditAffiliateModal from '@/components/modals/affiliateModals/EditAffiliateModal'
+import TablePagination from '@/components/others/TablePagination'
 import { EditIcon } from '@/staticData/Icon'
 import { formatDateTwo } from '@/utils/formateDateAndTime'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 const MainAffiliatePageUserId = ({
-  affiliate: { affiliate, orders, referredUsers },
+  affiliate: { affiliate, orders, referredUsers, totalCountDocs },
 }) => {
   const [openModal, setOpenModal] = useState(false)
 
@@ -111,17 +112,11 @@ const MainAffiliatePageUserId = ({
             <tbody className="lg:text-base text-sm font-medium text-zinc-600">
               {orders?.map((item, i) => (
                 <tr key={i}>
-                  <td className="py-3 w-[250px] pl-1">
-                    <div className="flex justify-start items-center gap-3 w-[250px]">
-                      {item?.title?.length >= 60 ? (
-                        <>{item?.title?.substring(0, 60)}...</>
-                      ) : (
-                        <>{item?.title}</>
-                      )}
-                    </div>
+                  <td className="lg:py-5 py-4 w-[120px] pr-2">
+                    <div className="w-[120px] truncate">#{item?.title}</div>
                   </td>
                   <td>
-                    <div className="w-[150px]">{item?.fullName}</div>
+                    <div className="w-[150px] truncate">{item?.fullName}</div>
                   </td>
                   <td>
                     <div className="w-[160px]">
@@ -143,6 +138,7 @@ const MainAffiliatePageUserId = ({
             </tbody>
           </table>
         </div>
+        <TablePagination pageCount={totalCountDocs} />
       </main>
       <div>
         <h1 className="font-bold text-base">

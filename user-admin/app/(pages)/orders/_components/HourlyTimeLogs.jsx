@@ -11,6 +11,7 @@ import {
 } from '@/api/hourlyTimeLogsApi'
 import { updateOrderApi } from '@/api/orderApi'
 import RemoveHourlyTimeLogsModal from '@/components/modals/orderModal/RemoveHourlyTimeLogsModal'
+import TablePagination from '@/components/others/TablePagination'
 
 const HourlyTimeLogs = ({
   order,
@@ -102,102 +103,105 @@ const HourlyTimeLogs = ({
           </button>
         </div>
 
-        <div className="w-full bg-white rounded-[20.37px] px-7 pt-8 mt-4 overflow-x-scroll">
-          <table className="w-full">
-            <thead>
-              <tr className="text-zinc-700 lg:text-xl text-lg font-semibold tracking-tight text-left">
-                <th>#Tasks & Memo</th>
-                <th className="text-center">Time & Date</th>
-                <th className="text-center">Logged Hours</th>
-                <th className="text-center">Time remain</th>
-                <th className="text-center">Action</th>
-              </tr>
-            </thead>
+        <div className="w-full bg-white rounded-[20.37px] pt-8 pb-4 mt-4 overflow-x-scroll">
+          <div className="px-7">
+            <table className="w-full">
+              <thead>
+                <tr className="text-zinc-700 lg:text-xl text-lg font-semibold tracking-tight text-left">
+                  <th>#Tasks & Memo</th>
+                  <th className="text-center">Time & Date</th>
+                  <th className="text-center">Logged Hours</th>
+                  <th className="text-center">Time remain</th>
+                  <th className="text-center">Action</th>
+                </tr>
+              </thead>
 
-            {order?.hourlyTimeLogs?.length === 0 ? (
-              <div className="py-4 font-bold italic text-lg text-[#00000047]">
-                No Hourly Time Log created
-              </div>
-            ) : (
-              <tbody className="text-sm font-semibold text-zinc-600">
-                {order?.hourlyTimeLogs?.map((item, i) => {
-                  const currentTime = new Date().getTime()
-                  const startDate = new Date(
-                    `${item?.date}T${item?.startTime}`
-                  ).getTime()
-                  const endDate = new Date(
-                    `${item?.date}T${item?.endTime}`
-                  ).getTime()
-                  return (
-                    <tr key={i}>
-                      <td className="py-4 w-[300px]">
-                        <div className="grid justify-start items-center gap-[2px] w-[300px]">
-                          <div className="text-base font-semibold">
-                            {item?.task}
+              {order?.hourlyTimeLogs?.length === 0 ? (
+                <div className="py-4 font-bold italic text-lg text-[#00000047]">
+                  No Hourly Time Log created
+                </div>
+              ) : (
+                <tbody className="text-sm font-semibold text-zinc-600">
+                  {order?.hourlyTimeLogs?.map((item, i) => {
+                    const currentTime = new Date().getTime()
+                    const startDate = new Date(
+                      `${item?.date}T${item?.startTime}`
+                    ).getTime()
+                    const endDate = new Date(
+                      `${item?.date}T${item?.endTime}`
+                    ).getTime()
+                    return (
+                      <tr key={i}>
+                        <td className="py-4 w-[300px]">
+                          <div className="grid justify-start items-center gap-[2px] w-[300px]">
+                            <div className="text-base font-semibold">
+                              {item?.task}
+                            </div>
+                            <div className="font-medium">{item?.memo}</div>
                           </div>
-                          <div className="font-medium">{item?.memo}</div>
-                        </div>
-                      </td>
-                      <td className="py-4 text-center">
-                        <div className="grid gap-1 w-[180px] mx-auto justify-center items-center">
-                          <div>{item?.date}</div>
-                          <div className="text-xs">
-                            {convertToAMPM(item?.startTime)} -{' '}
-                            {convertToAMPM(item?.endTime)}
+                        </td>
+                        <td className="py-4 text-center">
+                          <div className="grid gap-1 w-[180px] mx-auto justify-center items-center">
+                            <div>{item?.date}</div>
+                            <div className="text-xs">
+                              {convertToAMPM(item?.startTime)} -{' '}
+                              {convertToAMPM(item?.endTime)}
+                            </div>
                           </div>
-                        </div>
-                      </td>
+                        </td>
 
-                      <td className="py-4 text-center">
-                        <div className="w-[150px] mx-auto">
-                          {calculateTotalTime(item?.startTime, item?.endTime)}
-                        </div>
-                      </td>
-                      <td className="py-4 text-center italic">
-                        <div className="w-[150px] mx-auto">
-                          {startDate > currentTime ? (
-                            'Pending'
-                          ) : (
-                            <CountdownClock
-                              startDate={startDate}
-                              endDate={endDate}
-                              currentTime={currentTime}
-                            />
-                          )}
-                        </div>
-                      </td>
-                      <td className="py-4 text-center">
-                        <div className="w-[90px] mx-auto flex gap-4 justify-center">
-                          <button
-                            className={`disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer`}
-                            disabled={startDate > currentTime === false}
-                            onClick={(e) => {
-                              e.preventDefault()
-                              setLogsLength(i)
-                              setOpenModal(true)
-                            }}
-                          >
-                            <EditIcon color={'#2525ff'} />
-                          </button>
-                          <button
-                            className={`disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer`}
-                            disabled={startDate > currentTime === false}
-                            onClick={(e) => {
-                              e.preventDefault()
-                              setLogsLength(i)
-                              setRemoveModal(true)
-                            }}
-                          >
-                            <RemoveIcon color={'#ff2a2a'} />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  )
-                })}
-              </tbody>
-            )}
-          </table>
+                        <td className="py-4 text-center">
+                          <div className="w-[150px] mx-auto">
+                            {calculateTotalTime(item?.startTime, item?.endTime)}
+                          </div>
+                        </td>
+                        <td className="py-4 text-center italic">
+                          <div className="w-[150px] mx-auto">
+                            {startDate > currentTime ? (
+                              'Pending'
+                            ) : (
+                              <CountdownClock
+                                startDate={startDate}
+                                endDate={endDate}
+                                currentTime={currentTime}
+                              />
+                            )}
+                          </div>
+                        </td>
+                        <td className="py-4 text-center">
+                          <div className="w-[90px] mx-auto flex gap-4 justify-center">
+                            <button
+                              className={`disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer`}
+                              disabled={startDate > currentTime === false}
+                              onClick={(e) => {
+                                e.preventDefault()
+                                setLogsLength(i)
+                                setOpenModal(true)
+                              }}
+                            >
+                              <EditIcon color={'#2525ff'} />
+                            </button>
+                            <button
+                              className={`disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer`}
+                              disabled={startDate > currentTime === false}
+                              onClick={(e) => {
+                                e.preventDefault()
+                                setLogsLength(i)
+                                setRemoveModal(true)
+                              }}
+                            >
+                              <RemoveIcon color={'#ff2a2a'} />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              )}
+            </table>
+          </div>
+          <TablePagination pageCount={order?.totalDocsCount} />
         </div>
       </div>
       {OpenModal && (

@@ -19,7 +19,7 @@ router.post('/', async (req, res, next) => {
   }
 })
 router.put('/:id', addMessageToChat)
-router.get('/:ticketId', getChatByProposalId)
+router.get('/:proposalId', getChatByProposalId)
 router.put('/update/:id', updateChatById)
 router.put('/addParticipant/:id', addChatParticipants)
 

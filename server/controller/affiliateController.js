@@ -2,7 +2,7 @@ import Affiliate from '../model/affiliateModel.js'
 import User from '../model/userModels/userModel.js'
 import Order from '../model/orderModels/orderModel.js'
 import { sendResponse } from '../utils/sendResponse.js'
-import mongoose from 'mongoose'
+import mongoose, { Types } from 'mongoose'
 
 export const createAffiliate = async (req, res, next) => {
   try {
@@ -16,7 +16,10 @@ export const createAffiliate = async (req, res, next) => {
 
 export const getAllAffiliates = async (req, res, next) => {
   try {
-    const affiliates = await Affiliate.aggregate([
+    const { page = 1, limit = 10, search } = req.query
+    const skip = (parseInt(page) - 1) * parseInt(limit)
+
+    let pipeline = [
       {
         $lookup: {
           from: 'users',
@@ -41,6 +44,38 @@ export const getAllAffiliates = async (req, res, next) => {
           visitorsCount: { $size: '$visitors' },
         },
       },
+    ]
+
+    if (search) {
+      pipeline.push({
+        $match: {
+          $or: [
+            { fullName: { $regex: new RegExp(search), $options: 'i' } },
+            {
+              _id: Types.ObjectId.isValid(search)
+                ? new Types.ObjectId(search)
+                : null,
+            },
+            {
+              userId: Types.ObjectId.isValid(search)
+                ? new Types.ObjectId(search)
+                : null,
+            },
+          ],
+        },
+      })
+    }
+
+    pipeline.push({
+      $skip: skip,
+    })
+    pipeline.push({
+      $limit: parseInt(limit),
+    })
+
+    const [affiliates, totalCount] = await Promise.all([
+      Affiliate.aggregate(pipeline.slice(0, -1)),
+      Affiliate.countDocuments(),
     ])
 
     const affiliatesWithStats = await Promise.all(
@@ -97,7 +132,10 @@ export const getAllAffiliates = async (req, res, next) => {
       })
     )
 
-    return sendResponse(res, affiliatesWithStats)
+    return sendResponse(res, {
+      affiliates: affiliatesWithStats || [],
+      totalDocsCount: totalCount || 0,
+    })
   } catch (error) {
     next(error)
   }
@@ -105,6 +143,8 @@ export const getAllAffiliates = async (req, res, next) => {
 
 export const getAffiliateByUserId = async (req, res, next) => {
   try {
+    const { page = 1, limit = 10 } = req.query
+
     const affiliate = await Affiliate.aggregate([
       {
         $match: {
@@ -128,33 +168,45 @@ export const getAffiliateByUserId = async (req, res, next) => {
 
     const referredUserIds = referredUsers.map((user) => user._id)
 
-    const orders = await Order.aggregate([
-      {
-        $match: {
-          userId: { $in: referredUserIds },
+    const [orders, totalCountDocs] = await Promise.all([
+      Order.aggregate([
+        {
+          $match: {
+            userId: { $in: referredUserIds },
+          },
         },
-      },
-      {
-        $lookup: {
-          from: 'users',
-          localField: 'userId',
-          foreignField: '_id',
-          as: 'user',
+        {
+          $lookup: {
+            from: 'users',
+            localField: 'userId',
+            foreignField: '_id',
+            as: 'user',
+          },
         },
-      },
-      {
-        $unwind: '$user',
-      },
-      {
-        $project: {
-          _id: 1,
-          title: 1,
-          createdAt: 1,
-          userId: '$userId',
-          totalAmount: 1,
-          fullName: '$user.fullName',
+        {
+          $unwind: '$user',
         },
-      },
+        {
+          $project: {
+            _id: 1,
+            title: 1,
+            createdAt: 1,
+            userId: '$userId',
+            totalAmount: 1,
+            fullName: '$user.fullName',
+          },
+        },
+        {
+          $sort: { createdAt: -1 },
+        },
+        {
+          $skip: (parseInt(page) - 1) * parseInt(limit),
+        },
+        {
+          $limit: parseInt(limit),
+        },
+      ]),
+      Order.countDocuments({ userId: { $in: referredUserIds } }),
     ])
 
     const referredUsersInfo = []
@@ -186,6 +238,7 @@ export const getAffiliateByUserId = async (req, res, next) => {
         signUps: referredUsers.length,
         totalEarnings: totalEarnings / 10,
       },
+      totalCountDocs,
     }
 
     return sendResponse(res, response)

@@ -10,6 +10,8 @@ import { formatDateTwo } from '@/utils/formateDateAndTime'
 import Image from 'next/image'
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
+import ProjectHeading from '../../orders/_components/ProjectHeading'
+import TablePagination from '@/components/others/TablePagination'
 
 const MainTeam = ({ teamData, user }) => {
   const [openModal, setOpenModal] = useState(false)
@@ -79,15 +81,27 @@ const MainTeam = ({ teamData, user }) => {
           </div>
         ))}
       </div>
-      <h1 className="text-2xl font-semibold pt-10 pb-5">
-        <span className="text-blue-600">{user?.fullName}</span> Team Members
-      </h1>
+      <div className="my-9">
+        <ProjectHeading
+          title={
+            <div
+              dangerouslySetInnerHTML={{
+                __html: `<span class="text-blue-600">${user?.fullName}</span> Team Members`,
+              }}
+            />
+          }
+          isHideStatus={true}
+        />
+      </div>
       <TeamTable
-        members={teamData}
+        members={teamData?.users || []}
         setOpenModal={setOpenModal}
         setEditableMember={setEditableMember}
         isOnlyViewable={true}
       />
+      <div className="my-3">
+        <TablePagination pageCount={teamData?.totalDocsCount} />
+      </div>
 
       {openModal && (
         <AddNewTeamMemberModal

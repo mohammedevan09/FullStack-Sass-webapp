@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 
 const notificationTypes = {
-  message: { type: Boolean, default: true },
+  message: { type: Boolean, default: false },
   project: { type: Boolean, default: true },
   ticket: { type: Boolean, default: true },
   invoiceAndProposal: { type: Boolean, default: true },

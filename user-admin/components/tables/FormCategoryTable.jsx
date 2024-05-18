@@ -27,7 +27,7 @@ const FormCategoryTable = ({
             <tr className="text-zinc-700 lg:text-xl text-lg font-semibold tracking-tight text-left">
               <th>ID</th>
               <th>Name</th>
-              <th>Creator ID</th>
+              <th className="text-center">Creator ID</th>
               <th className="text-center">Action</th>
               <th className="text-center">Manage</th>
             </tr>
@@ -35,19 +35,11 @@ const FormCategoryTable = ({
           <tbody className="lg:text-base text-sm font-medium text-zinc-800">
             {formCategoryData?.map((item, i) => (
               <tr key={i}>
-                <td className="lg:py-5 py-4">
-                  <div className="flex justify-start items-center gap-3 w-[90px]">
-                    #{item?._id?.slice(0, 8)}..
-                  </div>
+                <td className="lg:py-5 py-4 w-[120px] pr-3">
+                  <div className="w-[120px] truncate">#{item?._id}</div>
                 </td>
                 <td className="lg:py-5 py-4 pl-1">
-                  <div className="flex justify-start items-center gap-3 w-[300px]">
-                    {item?.name?.length >= 60 ? (
-                      <>{item?.name?.substring(0, 60)}...</>
-                    ) : (
-                      <>{item?.name}</>
-                    )}
-                  </div>
+                  <div className="truncate">{item?.name}</div>
                 </td>
                 <td className="lg:py-5 py-4 px-2 w-[110px]">
                   <div className="flex justify-start items-center gap-3 min-w-[110px]">

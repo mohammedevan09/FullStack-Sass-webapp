@@ -13,7 +13,7 @@ export const createFeedback = async (req, res, next) => {
 
 export const getAllFeedback = async (req, res, next) => {
   try {
-    let { page = 1, limit, categoryId } = req.query
+    let { page = 1, limit = 10, categoryId } = req.query
     page = parseInt(page)
     limit = parseInt(limit)
 
@@ -33,7 +33,13 @@ export const getAllFeedback = async (req, res, next) => {
       })
       .exec()
 
-    return sendResponse(res, feedback)
+    const totalDocsCount = await Feedback.countDocuments(query)
+    const response = {
+      feedback,
+      totalDocsCount,
+    }
+
+    return sendResponse(res, response)
   } catch (error) {
     next(error)
   }

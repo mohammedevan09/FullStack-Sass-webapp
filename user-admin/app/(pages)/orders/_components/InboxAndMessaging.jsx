@@ -160,7 +160,7 @@ const InboxAndMessaging = ({ to, itemData, chatData, messageCount }) => {
               return (
                 <div key={role}>
                   <h2 className="text-base font-semibold mb-3 mt-5  px-3 border-l-4 border-blue-500">
-                    {makeCapitalize(role)}
+                    {makeCapitalize(role.replace(/([a-z])([A-Z])/g, '$1 $2'))}
                   </h2>
                   {Array.isArray(participantsInRole) &&
                     participantsInRole.map((participant, i) => (

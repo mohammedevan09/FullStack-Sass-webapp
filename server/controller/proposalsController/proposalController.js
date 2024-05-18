@@ -1,10 +1,24 @@
 import mongoose, { Types } from 'mongoose'
 import { sendResponse } from '../../utils/sendResponse.js'
 import Proposal from '../../model/proposalsModels/proposalsModel.js'
+import ProposalChat from '../../model/proposalsModels/proposalsChatModel.js'
+import {
+  createNotification,
+  updateNotification,
+} from '../notificationController/notificationController.js'
 
 export const createProposal = async (req, res, next) => {
   try {
     const data = await Proposal.create(req.body)
+
+    await createNotification({
+      content: data?.description,
+      title: `A proposal name "${data?.title}"`,
+      type: 'Proposal',
+      to: 'invoiceAndProposal',
+      id: data?._id,
+      userId: data.userId,
+    })
 
     return res.status(200).json(data)
   } catch (error) {
@@ -22,6 +36,10 @@ export const getAllProposals = async (req, res, next) => {
       (req.query.role === 'user' || req.query.role === 'userMember')
     ) {
       query.userId = new mongoose.Types.ObjectId(req.query.userId)
+    }
+
+    if (req.query.status) {
+      query.status = req.query.status
     }
 
     const pipeline = [
@@ -55,9 +73,17 @@ export const getAllProposals = async (req, res, next) => {
       pipeline.push({ $match: { _id: { $in: accessOf } } })
     }
 
-    const data = await Proposal.aggregate(pipeline)
+    const [proposals, totalCount] = await Promise.all([
+      Proposal.aggregate(pipeline),
+      Proposal.countDocuments(query),
+    ])
 
-    return sendResponse(res, data)
+    const response = {
+      proposals,
+      totalDocsCount: totalCount,
+    }
+
+    return sendResponse(res, response)
   } catch (error) {
     next(error)
   }
@@ -66,8 +92,9 @@ export const getAllProposals = async (req, res, next) => {
 export const getProposalById = async (req, res, next) => {
   try {
     const data = await Proposal.findById({ _id: req.params.id }).populate({
-      path: 'orderId',
-      model: 'Order',
+      path: 'details.lastProposalBy',
+      model: 'User',
+      select: 'fullName email profileImage _id number',
     })
 
     return sendResponse(res, data)
@@ -86,6 +113,15 @@ export const updateProposal = async (req, res, next) => {
       }
     )
 
+    await updateNotification({
+      content: data?.description,
+      title: `Update of proposal name "${data?.title}"`,
+      type: 'Proposal',
+      to: 'invoiceAndProposal',
+      id: data?._id,
+      userId: data.userId,
+    })
+
     return sendResponse(res, data)
   } catch (error) {
     next(error)
@@ -95,6 +131,10 @@ export const updateProposal = async (req, res, next) => {
 export const deleteProposal = async (req, res, next) => {
   try {
     const data = await Proposal.findByIdAndDelete({ _id: req.params.id })
+
+    await ProposalChat.deleteOne({
+      proposalId: data?._id,
+    })
 
     return sendResponse(res, data)
   } catch (error) {

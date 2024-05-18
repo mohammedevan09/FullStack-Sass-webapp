@@ -2,7 +2,7 @@ import { getAllService } from '@/api/serviceApi'
 import ServiceCard from './_components/ServiceCard'
 
 const page = async () => {
-  const services = await getAllService({ isActive: true })
+  const { services } = await getAllService({ isActive: true })
 
   return (
     <div className="grid items-center lg:gap-24 sm:gap-12 gap-8 sm:my-10 my-3">

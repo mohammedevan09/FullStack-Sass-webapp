@@ -48,7 +48,7 @@ export const addMessageToChat = async (req, res, next) => {
 
     await chat.save()
 
-    return res.status(200).json(chat)
+    return sendResponse(res, { message: 'Successful' })
   } catch (error) {
     next(error)
   }

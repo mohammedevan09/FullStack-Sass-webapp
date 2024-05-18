@@ -11,6 +11,7 @@ import { EditIcon } from '@/staticData/Icon'
 import { useState } from 'react'
 import EditOrderModal from '@/components/modals/orderModal/EditOrderModal'
 import SubscriptionInfo from '../../../_components/SubscriptionInfo'
+import { updateOrderApi } from '@/api/orderApi'
 
 const MainSubscriptionServiceById = ({
   order,
@@ -67,6 +68,7 @@ const MainSubscriptionServiceById = ({
         <ProjectTrackingBoard
           order={orderData}
           link={`subscriptionService/${order?._id}`}
+          api={updateOrderApi}
         />
         <h1 className="text-2xl font-semibold pt-10 pb-5">Inbox & Messaging</h1>
         <InboxAndMessaging

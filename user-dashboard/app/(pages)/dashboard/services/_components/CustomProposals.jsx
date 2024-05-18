@@ -1,7 +1,7 @@
 'use client'
 
-import GetACustomProposalModal from '@/components/modals/serviceModals/GetACustomProposalModal'
-import ThanksSubModal from '@/components/modals/serviceModals/ThanksSubModal'
+import GetACustomProposalModal from '@/components/modals/proposalsModals/GetACustomProposalModal'
+import ThanksSubModal from '@/components/modals/proposalsModals/ThanksSubModal'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { useSelector } from 'react-redux'

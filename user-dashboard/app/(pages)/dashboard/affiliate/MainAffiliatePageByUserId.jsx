@@ -2,6 +2,7 @@
 
 import RequestWithdrawModal from '@/components/modals/affiliateModals/RequestWithdrawModal'
 import ThanksWithdrawRequestModal from '@/components/modals/affiliateModals/ThanksWithdrawRequestModal'
+import TablePagination from '@/components/others/TablePagination'
 import { CopyLinkIcon, EditIcon, RequestWithdrawIcon } from '@/staticData/Icon'
 import { formatDateTwo } from '@/utils/formateDateAndTime'
 import { useState } from 'react'
@@ -10,7 +11,7 @@ import toast from 'react-hot-toast'
 import { useSelector } from 'react-redux'
 
 const MainAffiliatePageUserId = ({
-  affiliate: { affiliate, orders, referredUsers },
+  affiliate: { affiliate, orders, referredUsers, totalCountDocs },
   searchParams,
 }) => {
   const [openModal, setOpenModal] = useState(false)
@@ -151,13 +152,9 @@ const MainAffiliatePageUserId = ({
             <tbody className="lg:text-base text-sm font-medium text-zinc-600">
               {orders?.map((item, i) => (
                 <tr key={i}>
-                  <td className="py-3 w-[250px] pl-1">
-                    <div className="flex justify-start items-center gap-3 w-[250px]">
-                      {item?.title?.length >= 60 ? (
-                        <>{item?.title?.substring(0, 60)}...</>
-                      ) : (
-                        <>{item?.title}</>
-                      )}
+                  <td className="lg:py-5 py-4 2xl:w-[300px] w-[250px] pl-1 pr-2">
+                    <div className="2xl:w-full w-[250px] truncate">
+                      {item.title}
                     </div>
                   </td>
                   <td>
@@ -183,6 +180,7 @@ const MainAffiliatePageUserId = ({
             </tbody>
           </table>
         </div>
+        <TablePagination pageCount={totalCountDocs} />
       </main>
       <div>
         <button

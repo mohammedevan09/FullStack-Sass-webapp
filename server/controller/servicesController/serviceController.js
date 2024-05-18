@@ -18,10 +18,23 @@ export const getAllServices = async (req, res, next) => {
       query.__t = req.query.__t
     }
 
-    const page = parseInt(req.query.page) || 1
-    const limit = parseInt(req.query.limit) || 5
-    const skip = (page - 1) * limit
     const { search = '' } = req.query
+
+    const totalDocsCount = await Service.countDocuments({
+      ...query,
+      $or: [
+        { name: { $regex: new RegExp(search), $options: 'i' } },
+        {
+          _id: Types.ObjectId.isValid(search)
+            ? new Types.ObjectId(search)
+            : null,
+        },
+      ],
+    })
+
+    const page = parseInt(req.query.page) || 1
+    const limit = parseInt(req.query.limit) || 10
+    const skip = (page - 1) * limit
 
     const services = await Service.aggregate([
       {
@@ -38,7 +51,21 @@ export const getAllServices = async (req, res, next) => {
         },
       },
       { $sort: { createdAt: -1 } },
-      { $group: { _id: '$__t', services: { $push: '$$ROOT' } } },
+      {
+        $group: {
+          _id: '$__t',
+          services: {
+            $push: {
+              _id: '$_id',
+              name: '$name',
+              heading: '$heading',
+              isActive: '$isActive',
+              icon: '$icon',
+              creatorId: '$creatorId',
+            },
+          },
+        },
+      },
       {
         $project: {
           _id: 0,
@@ -55,7 +82,12 @@ export const getAllServices = async (req, res, next) => {
       return acc
     }, {})
 
-    return res.status(200).json(formattedServices)
+    const result = {
+      services: formattedServices,
+      totalDocsCount: totalDocsCount,
+    }
+
+    return sendResponse(res, result)
   } catch (error) {
     next(error)
   }

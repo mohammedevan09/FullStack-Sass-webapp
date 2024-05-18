@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+import mongoose, { Types } from 'mongoose'
 import bcrypt from 'bcrypt'
 import { sendResponse } from '../../utils/sendResponse.js'
 import Team from '../../model/userModels/teamModel.js'
@@ -128,20 +128,52 @@ export const getAllTeams = async (req, res, next) => {
     const { creatorId } = req.params
     const page = parseInt(req.query.page) || 1
     const limit = parseInt(req.query.limit) || 10
+    const search = req.query.search || ''
 
     const skip = (page - 1) * limit
 
-    const aggregationPipeline = [
-      { $match: { creatorId: new mongoose.Types.ObjectId(creatorId) } },
-      { $sort: { _id: -1 } },
-      { $skip: skip },
-      { $limit: limit },
-      { $project: { password: 0, refreshToken: 0 } },
+    const matchStage = {
+      $match: {
+        creatorId: new Types.ObjectId(creatorId),
+        $or: [
+          { fullName: { $regex: new RegExp(search, 'i') } },
+          { email: { $regex: new RegExp(search, 'i') } },
+          {
+            _id: Types.ObjectId.isValid(search)
+              ? new Types.ObjectId(search)
+              : null,
+          },
+        ],
+      },
+    }
+
+    const pipeline = [
+      matchStage,
+      {
+        $facet: {
+          teams: [
+            { $sort: { _id: -1 } },
+            { $skip: skip },
+            { $limit: limit },
+            { $project: { password: 0, refreshToken: 0 } },
+          ],
+          totalCount: [{ $count: 'count' }],
+        },
+      },
     ]
 
-    const users = await Team.aggregate(aggregationPipeline)
+    const results = await Team.aggregate(pipeline)
 
-    return sendResponse(res, users)
+    const teams = results[0].teams
+    const totalDocsCount = results[0].totalCount[0]?.count || 0
+
+    return res.status(200).json({
+      success: true,
+      users: teams,
+      totalPages: Math.ceil(totalDocsCount / limit),
+      currentPage: page,
+      totalDocsCount,
+    })
   } catch (error) {
     next(error)
   }

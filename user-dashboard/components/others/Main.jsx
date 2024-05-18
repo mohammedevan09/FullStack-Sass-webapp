@@ -8,10 +8,25 @@ import {
   ticketsData,
 } from '@/staticData/MainData'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { useLayoutEffect } from 'react'
+import { useSelector } from 'react-redux'
 
 const Main = () => {
   const router = useRouter()
+  const { replace } = useRouter()
+  const searchParams = useSearchParams()
+  const pathname = usePathname()
+  const params = new URLSearchParams(searchParams)
+
+  const { userInfo } = useSelector((state) => state?.user)
+
+  useLayoutEffect(() => {
+    if (!params?.get('userId')) {
+      params?.set('userId', userInfo?._id)
+      replace(`${pathname}?${params.toString()}`, { scroll: false })
+    }
+  }, [userInfo])
 
   return (
     <>

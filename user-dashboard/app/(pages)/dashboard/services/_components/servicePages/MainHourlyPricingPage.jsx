@@ -10,8 +10,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useRouter } from 'next/navigation'
 import CheckoutModal from '@/components/modals/serviceModals/CheckoutModal'
 import CustomFormModal from '@/components/modals/serviceModals/CustomFormModal'
-import GetACustomProposalModal from '@/components/modals/serviceModals/GetACustomProposalModal'
-import ThanksSubModal from '@/components/modals/serviceModals/ThanksSubModal'
+import GetACustomProposalModal from '@/components/modals/proposalsModals/GetACustomProposalModal'
+import ThanksSubModal from '@/components/modals/proposalsModals/ThanksSubModal'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { createOrderApi } from '@/api/orderApi'
@@ -52,6 +52,7 @@ const MainHourlyPricingPage = ({ service, link }) => {
     // console.log(data)
     if (isValid) {
       try {
+        toast.loading('Processing, please wait!', { duration: 600 })
         const orderData = await createOrderApi(
           { ...data, formId: service?.form?._id },
           link

@@ -1,17 +1,14 @@
 'use client'
 
 import { CheckIcon, OpenInboxIcon } from '@/staticData/Icon'
-import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 
-const ThanksSubModal = ({ setOpenModal, setOpenSubModal, userInfo }) => {
-  const router = useRouter()
-
+const ThanksSubModal = ({ setOpenModal, setOpenSubModal }) => {
   const handleClick = (e) => {
     e.preventDefault()
     setOpenSubModal(false)
     setOpenModal(false)
-    router.push(`/dashboard/proposals?userId=${userInfo?._id}`)
+    window.location.reload()
   }
   return (
     <div className="fixed z-[9999999999] left-0 top-0 right-0 bottom-0 modal-b-blur h-screen w-screen overflow-hidden flex justify-center items-center">

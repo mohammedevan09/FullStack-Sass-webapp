@@ -7,13 +7,36 @@ const ProposalSchema = new mongoose.Schema(
       required: true,
     },
     description: {
-      type: Object,
+      type: mongoose.Schema.Types.Mixed,
       required: true,
     },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true,
+    },
+    details: {
+      executive_summary: {
+        problem_overview: mongoose.Schema.Types.Mixed,
+        problem_solution: mongoose.Schema.Types.Mixed,
+      },
+      scope_of_work: {
+        features: mongoose.Schema.Types.Mixed,
+        resources_required: mongoose.Schema.Types.Mixed,
+      },
+      lastProposalBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
+      },
+      isAccepted: {
+        type: Boolean,
+        default: false,
+      },
+      isMeeting: {
+        type: Boolean,
+        default: false,
+      },
     },
     projectTrackingBoard: {
       todo: [{ title: String }],
@@ -42,6 +65,10 @@ const ProposalSchema = new mongoose.Schema(
     },
     totalAmount: {
       type: Number,
+      required: true,
+    },
+    timeline: {
+      type: mongoose.Schema.Types.Mixed,
       required: true,
     },
   },

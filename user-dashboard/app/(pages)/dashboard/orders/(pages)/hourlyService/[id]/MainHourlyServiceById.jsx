@@ -12,6 +12,7 @@ import { useState } from 'react'
 import EditOrderModal from '@/components/modals/orderModal/EditOrderModal'
 import HourlyInfo from '../../../_components/HourlyInfo'
 import HourlyTimeLogs from '../../../_components/HourlyTimeLogs'
+import { updateOrderApi } from '@/api/orderApi'
 
 const MainHourlyServiceById = ({ order, service, orderChat, messageCount }) => {
   const [orderData, setOrderData] = useState(order)
@@ -74,6 +75,7 @@ const MainHourlyServiceById = ({ order, service, orderChat, messageCount }) => {
         <ProjectTrackingBoard
           order={orderData}
           link={`hourlyService/${order?._id}`}
+          api={updateOrderApi}
         />
         <h1 className="text-2xl font-semibold pt-10 pb-5">Inbox & Messaging</h1>
         <InboxAndMessaging

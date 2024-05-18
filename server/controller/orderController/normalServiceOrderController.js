@@ -4,6 +4,11 @@ dotenv.config()
 import Stripe from 'stripe'
 import NormalServiceOrder from '../../model/orderModels/normalServiceOrderModel.js'
 import { sendResponse } from '../../utils/sendResponse.js'
+import OrderChat from '../../model/orderModels/orderChatModel.js'
+import {
+  createNotification,
+  updateNotification,
+} from '../notificationController/notificationController.js'
 
 const stripe = Stripe(process.env.SECURITY_KEY)
 
@@ -50,6 +55,14 @@ export const createNormalServiceOrder = async (req, res, next) => {
 
       return res.send({ url: session?.url })
     } else {
+      await createNotification({
+        content: createOrder?.description,
+        title: createOrder?.title,
+        type: 'Order',
+        to: 'project',
+        id: createOrder?._id,
+        userId: createOrder.userId,
+      })
       return res.status(200).json(createOrder)
     }
   } catch (error) {
@@ -86,6 +99,15 @@ export const updateNormalServiceOrderById = async (req, res, next) => {
       { new: true }
     )
 
+    await updateNotification({
+      content: order?.description,
+      title: order?.title,
+      type: 'Order',
+      to: 'project',
+      id: order?._id,
+      userId: order.userId,
+    })
+
     return sendResponse(res, order)
   } catch (error) {
     next(error)
@@ -95,6 +117,10 @@ export const updateNormalServiceOrderById = async (req, res, next) => {
 export const deleteNormalServiceOrderById = async (req, res, next) => {
   try {
     const order = await NormalServiceOrder.findByIdAndDelete(req.params.id)
+
+    await OrderChat.deleteOne({
+      orderId: data?._id,
+    })
 
     return sendResponse(res, order)
   } catch (error) {

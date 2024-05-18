@@ -1,7 +1,7 @@
 'use client'
 
-import GetACustomProposalModal from '@/components/modals/serviceModals/GetACustomProposalModal'
-import ThanksSubModal from '@/components/modals/serviceModals/ThanksSubModal'
+import GetACustomProposalModal from '@/components/modals/proposalsModals/GetACustomProposalModal'
+import ThanksSubModal from '@/components/modals/proposalsModals/ThanksSubModal'
 import { useState } from 'react'
 import PricingCard from '../PricingCard'
 import { useForm } from 'react-hook-form'
@@ -62,6 +62,7 @@ const MainServicePricingPage = ({ service, link }) => {
   const handleCheckOutButton = async (data) => {
     if (isValid) {
       try {
+        toast.loading('Processing, please wait!', { duration: 600 })
         const orderData = await createOrderApi(
           { ...data, formId: service?.form?._id },
           link

@@ -24,6 +24,7 @@ const EditOrderModal = ({
   const handleEdit = async (data) => {
     if (isValid) {
       try {
+        toast.loading('Processing, please wait!', { duration: 600 })
         const updated = await updateOrderApi(data, link)
         setOrderData(updated)
         reset(updated)

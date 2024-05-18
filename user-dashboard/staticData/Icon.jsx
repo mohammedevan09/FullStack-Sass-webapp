@@ -353,9 +353,9 @@ export const StoreIcon = () => {
 export const MessageIcon = ({ size }) => {
   return (
     <svg
-      width={size || '41'}
-      height={size || '40'}
-      viewBox="0 0 41 40"
+      width={size || '35'}
+      height={size || '35'}
+      viewBox="0 0 37 35"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       // className="lg:w-[41px] w-[15px] lg:h-[40px] h-[15px]"
@@ -1115,70 +1115,6 @@ export const HourlyLogoIcon = () => {
     </svg>
   )
 }
-export const SpentHourIcon = () => {
-  return (
-    <svg
-      width="54"
-      height="54"
-      viewBox="0 0 54 54"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <g id="Group">
-        <path
-          id="Vector"
-          d="M27 52C40.8071 52 52 40.8071 52 27C52 13.1929 40.8071 2 27 2C13.1929 2 2 13.1929 2 27C2 40.8071 13.1929 52 27 52Z"
-          fill="#2E71F3"
-          stroke="white"
-          strokeWidth="4"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path
-          id="Vector_2"
-          d="M27 2C31.9445 2 36.778 3.46623 40.8893 6.21326C45.0005 8.9603 48.2048 12.8648 50.097 17.4329C51.9891 22.0011 52.4843 27.0278 51.5196 31.8773C50.555 36.7268 48.174 41.1814 44.6776 44.6776C41.1814 48.174 36.7268 50.555 31.8773 51.5196C27.0278 52.4843 22.0011 51.9891 17.4329 50.097C12.8648 48.2048 8.9603 45.0005 6.21326 40.8893C3.46623 36.778 2 31.9445 2 27H27V2Z"
-          fill="#12B347"
-          stroke="white"
-          strokeWidth="4"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </g>
-    </svg>
-  )
-}
-export const RemainingHoursIcon = () => {
-  return (
-    <svg
-      width="54"
-      height="54"
-      viewBox="0 0 54 54"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <g id="Group">
-        <path
-          id="Vector"
-          d="M27 52C40.8071 52 52 40.8071 52 27C52 13.1929 40.8071 2 27 2C13.1929 2 2 13.1929 2 27C2 40.8071 13.1929 52 27 52Z"
-          fill="#2E71F3"
-          stroke="white"
-          strokeWidth="4"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path
-          id="Vector_2"
-          d="M27 2C31.9445 2 36.778 3.46623 40.8893 6.21326C45.0005 8.9603 48.2048 12.8648 50.097 17.4329C51.9891 22.0011 52.4843 27.0278 51.5196 31.8773C50.555 36.7268 48.174 41.1814 44.6776 44.6776C41.1814 48.174 36.7268 50.555 31.8773 51.5196C27.0278 52.4843 22.0011 51.9891 17.4329 50.097C12.8648 48.2048 8.9603 45.0005 6.21326 40.8893C3.46623 36.778 2 31.9445 2 27H27V2Z"
-          fill="#F5153D"
-          stroke="white"
-          strokeWidth="4"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </g>
-    </svg>
-  )
-}
 
 export const DownloadIcon = () => {
   return (
@@ -1777,19 +1713,19 @@ export const NoteIcon = ({ size }) => {
   )
 }
 
-export const TotalHoursIcon = () => {
+export const TotalHoursIcon = ({ color, size }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="1.9em"
-      height="1.9em"
+      width={size || '1.9em'}
+      height={size || '1.9em'}
       viewBox="0 0 24 24"
     >
       <path
-        fill="#4268ff"
+        fill={color || '#4268ff'}
         d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,20a9,9,0,1,1,9-9A9,9,0,0,1,12,21Z"
       />
-      <rect width="2" height="7" x="11" y="6" fill="#4268ff" rx="1">
+      <rect width="2" height="7" x="11" y="6" fill={color || '#4268ff'} rx="1">
         <animateTransform
           attributeName="transform"
           dur="5s"
@@ -1798,7 +1734,7 @@ export const TotalHoursIcon = () => {
           values="0 12 12;360 12 12"
         />
       </rect>
-      <rect width="2" height="9" x="11" y="11" fill="#4268ff" rx="1">
+      <rect width="2" height="9" x="11" y="11" fill={color || '#4268ff'} rx="1">
         <animateTransform
           attributeName="transform"
           dur="2s"
@@ -1810,12 +1746,12 @@ export const TotalHoursIcon = () => {
     </svg>
   )
 }
-export const SpentHoursIcon = () => {
+export const SpentHoursIcon = ({ size }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="2em"
-      height="2em"
+      width={size || '2em'}
+      height={size || '2em'}
       viewBox="0 0 24 24"
     >
       <g

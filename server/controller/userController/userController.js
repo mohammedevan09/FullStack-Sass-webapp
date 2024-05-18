@@ -250,47 +250,50 @@ export const getAllUsers = async (req, res, next) => {
   try {
     const { page = 1, limit = 10, search = '' } = req.query
 
+    const pageInt = parseInt(page)
+    const limitInt = parseInt(limit)
+
+    const matchStage = {
+      $match: {
+        role: 'user',
+        $or: [
+          { fullName: { $regex: new RegExp(search, 'i') } },
+          { email: { $regex: new RegExp(search, 'i') } },
+          {
+            _id: Types.ObjectId.isValid(search)
+              ? new Types.ObjectId(search)
+              : null,
+          },
+        ],
+      },
+    }
+
     const pipeline = [
+      matchStage,
       {
-        $match: {
-          role: 'user',
-          $or: [
-            { fullName: { $regex: new RegExp(search), $options: 'i' } },
-            { email: { $regex: new RegExp(search), $options: 'i' } },
-            {
-              _id: Types.ObjectId.isValid(search)
-                ? new Types.ObjectId(search)
-                : null,
-            },
+        $facet: {
+          users: [
+            { $project: { refreshToken: 0, password: 0 } },
+            { $sort: { createdAt: -1 } },
+            { $skip: (pageInt - 1) * limitInt },
+            { $limit: limitInt },
           ],
+          totalCount: [{ $count: 'count' }],
         },
-      },
-      {
-        $project: {
-          refreshToken: 0,
-          password: 0,
-        },
-      },
-      {
-        $sort: { createdAt: -1 },
-      },
-      {
-        $skip: (parseInt(page) - 1) * parseInt(limit),
-      },
-      {
-        $limit: parseInt(limit),
       },
     ]
 
-    const users = await User.aggregate(pipeline)
-    const totalUsers = await User.countDocuments({ role: 'user' })
+    const results = await User.aggregate(pipeline)
+
+    const users = results[0].users
+    const totalCount = results[0].totalCount[0]?.count || 0
 
     return res.status(200).json({
       success: true,
       data: users,
-      totalPages: Math.ceil(totalUsers / parseInt(limit)),
-      currentPage: parseInt(page),
-      totalUsers,
+      totalPages: Math.ceil(totalCount / limitInt),
+      currentPage: pageInt,
+      totalDocsCount: totalCount,
     })
   } catch (error) {
     next(error)

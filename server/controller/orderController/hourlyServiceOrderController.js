@@ -1,10 +1,24 @@
 import HourlyServiceOrder from '../../model/orderModels/hourlyServiceOrderModel.js'
+import OrderChat from '../../model/orderModels/orderChatModel.js'
 import { sendResponse } from '../../utils/sendResponse.js'
 import mongoose from 'mongoose'
+import {
+  createNotification,
+  updateNotification,
+} from '../notificationController/notificationController.js'
 
 export const createHourlyServiceOrder = async (req, res, next) => {
   try {
     const createOrder = await HourlyServiceOrder.create(req.body)
+
+    await createNotification({
+      content: createOrder?.description,
+      title: createOrder?.title,
+      type: 'Order',
+      to: 'project',
+      id: createOrder?._id,
+      userId: createOrder.userId,
+    })
 
     return res.status(200).json(createOrder)
   } catch (error) {
@@ -14,38 +28,6 @@ export const createHourlyServiceOrder = async (req, res, next) => {
 
 export const getHourlyServiceOrderById = async (req, res, next) => {
   try {
-    // const { id } = req.params
-    // const { page = 1, limit = 10 } = req.query
-
-    // const order = await HourlyServiceOrder.findById(id)
-    //   .populate({
-    //     path: 'formId',
-    //     model: 'Form',
-    //     select: 'fields',
-    //   })
-    //   .populate({
-    //     path: 'serviceId',
-    //     model: 'Service',
-    //   })
-    //   .exec()
-
-    // if (!order) {
-    //   return sendResponse(res, 'Hourly Service Order not found')
-    // }
-
-    // const reversedHourlyTimeLogs = order.hourlyTimeLogs.slice().reverse()
-
-    // const start = (parseInt(page) - 1) * parseInt(limit)
-    // const end = start + parseInt(limit)
-    // const hourlyTimeLogs = reversedHourlyTimeLogs.slice(start, end)
-
-    // const result = {
-    //   ...order.toObject(),
-    //   hourlyTimeLogs,
-    // }
-
-    // return sendResponse(res, result)
-
     const { id } = req.params
     const { page = 1, limit = 10 } = req.query
     const start = (parseInt(page) - 1) * parseInt(limit)
@@ -74,6 +56,7 @@ export const getHourlyServiceOrderById = async (req, res, next) => {
           hourlyTimeLogs: {
             $reverseArray: '$hourlyTimeLogs',
           },
+          totalDocsCount: { $size: '$hourlyTimeLogs' },
         },
       },
       {
@@ -97,6 +80,7 @@ export const getHourlyServiceOrderById = async (req, res, next) => {
           },
           serviceId: { $arrayElemAt: ['$service', 0] },
           hourlyTimeLogs: { $slice: ['$hourlyTimeLogs', start, end] },
+          totalDocsCount: '$totalDocsCount',
           ...Object.keys(HourlyServiceOrder.schema.paths).reduce(
             (acc, curr) => {
               if (
@@ -161,6 +145,15 @@ export const updateHourlyServiceOrderById = async (req, res, next) => {
       hourlyTimeLogs,
     }
 
+    await updateNotification({
+      content: order?.description,
+      title: order?.title,
+      type: 'Order',
+      to: 'project',
+      id: order?._id,
+      userId: order.userId,
+    })
+
     return sendResponse(res, result)
   } catch (error) {
     next(error)
@@ -170,6 +163,10 @@ export const updateHourlyServiceOrderById = async (req, res, next) => {
 export const deleteHourlyServiceOrderById = async (req, res, next) => {
   try {
     const order = await HourlyServiceOrder.findByIdAndDelete(req.params.id)
+
+    await OrderChat.deleteOne({
+      orderId: data?._id,
+    })
 
     return sendResponse(res, order)
   } catch (error) {

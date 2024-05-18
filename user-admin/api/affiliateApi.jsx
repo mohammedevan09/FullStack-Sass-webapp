@@ -2,18 +2,22 @@ import axios from 'axios'
 
 const host = process.env.NEXT_PUBLIC_HOST
 
-export const getAllAffiliates = async () => {
+export const getAllAffiliates = async (searchParams) => {
   try {
-    const data = await axios.get(`${host}/api/affiliate/`)
+    const data = await axios.get(`${host}/api/affiliate/`, {
+      params: searchParams,
+    })
     return data?.data
   } catch (error) {
     return []
   }
 }
 
-export const getAffiliateByUserId = async (id) => {
+export const getAffiliateByUserId = async (id, queryData) => {
   try {
-    const data = await axios.get(`${host}/api/affiliate/${id}`)
+    const data = await axios.get(`${host}/api/affiliate/${id}`, {
+      params: queryData,
+    })
     return data?.data
   } catch (error) {
     return error

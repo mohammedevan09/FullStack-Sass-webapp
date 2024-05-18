@@ -1,22 +1,20 @@
-import StatusColor, { makeCapitalize } from '@/utils/StatusColor'
+import { makeCapitalize } from '@/utils/StatusColor'
 import Image from 'next/image'
 
-const OrderBasicInfo = ({ order, service }) => {
-  const defaultColor = 'bg-blue-600'
-
-  const getColorClass = (status) => {
-    switch (status?.toLowerCase()) {
-      case 'pending':
-        return 'bg-rose-600'
-      case 'done':
-        return 'bg-green-500'
-      case 'canceled':
-        return ' bg-rose-600 text-red-600'
-      default:
-        return defaultColor
-    }
+export const getColorClass = (status) => {
+  switch (status?.toLowerCase()) {
+    case 'pending':
+      return 'bg-rose-600'
+    case 'done':
+      return 'bg-green-500'
+    case 'canceled':
+      return ' bg-rose-600 text-red-600'
+    default:
+      return 'bg-blue-600'
   }
+}
 
+const OrderBasicInfo = ({ order, service }) => {
   return (
     <div className="overflow-hidden">
       <h1 className="md:text-2xl text-xl font-semibold">{order?.title}</h1>

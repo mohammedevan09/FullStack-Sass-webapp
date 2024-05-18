@@ -24,7 +24,7 @@ const page = () => {
     },
   ]
   return (
-    <div className='md:mt-36 mt-8 md:mb-14 mb-6"'>
+    <div>
       <MainInvoicePage invoices={invoices} />
     </div>
   )

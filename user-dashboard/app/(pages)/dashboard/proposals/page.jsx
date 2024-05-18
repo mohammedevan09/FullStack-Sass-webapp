@@ -1,9 +1,19 @@
+import { getAllProposals } from '@/api/proposalApi'
 import MainProposalsPage from './MainProposalsPage'
 
-const page = () => {
+const page = async ({ searchParams }) => {
+  const { proposals, totalDocsCount } = await getAllProposals({
+    ...searchParams,
+    userId: searchParams?.userId,
+    role: 'user',
+  })
+
   return (
     <>
-      <MainProposalsPage />
+      <MainProposalsPage
+        proposals={proposals}
+        totalDocsCount={totalDocsCount}
+      />
     </>
   )
 }

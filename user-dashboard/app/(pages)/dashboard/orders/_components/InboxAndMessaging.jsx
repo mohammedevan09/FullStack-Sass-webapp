@@ -12,6 +12,7 @@ import '@/components/text-editor/tiptapstyle.css'
 import io from 'socket.io-client'
 import { makeCapitalize } from '@/utils/StatusColor'
 import { sendMessageChat } from '@/api/chatApi'
+import { findOrCreateChatNotification } from '@/api/notificationApi'
 
 export const initialText = {
   type: 'doc',
@@ -72,6 +73,7 @@ const InboxAndMessaging = ({ to, itemData, chatData, messageCount }) => {
         },
       ],
     })
+    setText(initialText)
     await sendMessageChat(to, chat?._id, {
       sender: {
         senderType: userInfo?.creatorId ? 'Team' : 'User',
@@ -81,7 +83,30 @@ const InboxAndMessaging = ({ to, itemData, chatData, messageCount }) => {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     })
-    setText(initialText)
+    await findOrCreateChatNotification(
+      {
+        type: makeCapitalize(to),
+        title: text,
+        content: itemData?.title,
+        idDetails: { __t: itemData?.__t },
+        sender: {
+          senderType: userInfo?.creatorId ? 'Team' : 'User',
+          senderId: userInfo?._id,
+        },
+        receivers: chat?.participants
+          ?.map((item) => {
+            return {
+              userId: item?._id,
+              type:
+                item?.role === 'admin' || item?.role === 'user'
+                  ? 'User'
+                  : 'Team',
+            }
+          })
+          .filter((i) => i?._id !== userInfo?._id),
+      },
+      itemData?._id
+    )
   }
 
   useEffect(() => {
@@ -118,6 +143,14 @@ const InboxAndMessaging = ({ to, itemData, chatData, messageCount }) => {
 
     groupParticipants()
   }, [chat])
+
+  if (!chatData) {
+    return (
+      <h1 className="font-bold italic text-xl text-gray-400 bg-white text-center p-6 rounded-xl">
+        No Chat Available
+      </h1>
+    )
+  }
 
   return (
     <div className="grid items-start pb-5  bg-white rounded-[10px] w-full overflow-hidden board-shadow">
@@ -160,7 +193,7 @@ const InboxAndMessaging = ({ to, itemData, chatData, messageCount }) => {
               return (
                 <div key={role}>
                   <h2 className="text-base font-semibold mb-3 mt-5  px-3 border-l-4 border-blue-500">
-                    {makeCapitalize(role)}
+                    {makeCapitalize(role.replace(/([a-z])([A-Z])/g, '$1 $2'))}
                   </h2>
                   {Array.isArray(participantsInRole) &&
                     participantsInRole.map((participant, i) => (

@@ -3,7 +3,7 @@ import MainTeam from './MainTeam'
 import { getAllUsersApi } from '@/api/userApi'
 
 const page = async ({ searchParams, params }) => {
-  const data = await getAllTeamByCreatorIdApi({ limit: 100 }, params?.id)
+  const data = await getAllTeamByCreatorIdApi(searchParams, params?.id)
   const user = await getAllUsersApi({
     search: params?.id,
   })

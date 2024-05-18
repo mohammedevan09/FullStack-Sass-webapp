@@ -7,9 +7,11 @@ export const createAffiliateApi = async (sendData) => {
   return data?.data
 }
 
-export const getAffiliateByUserId = async (id) => {
+export const getAffiliateByUserId = async (id, queryData) => {
   try {
-    const data = await axios.get(`${host}/api/affiliate/${id}`)
+    const data = await axios.get(`${host}/api/affiliate/${id}`, {
+      params: queryData,
+    })
     return data?.data
   } catch (error) {
     return error

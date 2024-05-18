@@ -3,10 +3,27 @@
 import { AllProjectsIcon } from '@/staticData/Icon'
 import { projectData } from '@/staticData/MainData'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import DashboardSalesReport from '../charts/DashboardSalesReport'
+import { useSelector } from 'react-redux'
+import { useLayoutEffect } from 'react'
 
 const Main = () => {
+  const router = useRouter()
+  const { replace } = useRouter()
+  const searchParams = useSearchParams()
+  const pathname = usePathname()
+  const params = new URLSearchParams(searchParams)
+
+  const { userInfo } = useSelector((state) => state?.user)
+
+  useLayoutEffect(() => {
+    if (!params?.get('userId')) {
+      params?.set('userId', userInfo?._id)
+      replace(`${pathname}?${params.toString()}`, { scroll: false })
+    }
+  }, [userInfo])
+
   const data = [
     {
       id: '2022',
@@ -117,7 +134,6 @@ const Main = () => {
       ],
     },
   ]
-  const router = useRouter()
 
   const statisticsData = [
     {

@@ -23,62 +23,51 @@ const HourlyServiceTables = ({ hourlyData }) => {
               </tr>
             </thead>
             <tbody className="lg:text-base text-sm font-medium text-zinc-600">
-              {hourlyData?.map((item, i) => {
-                return (
-                  <tr key={i}>
-                    <td className="lg:py-5 py-4 w-[120px]">
-                      <div className="w-[120px]">
-                        #{item?._id?.slice(0, 8)}..
-                      </div>
-                    </td>
-                    <td className="lg:py-5 py-4 2xl:w-[300px] w-[250px] pl-1">
-                      <div className="flex justify-start items-center gap-3 2xl:w-full w-[250px]">
-                        {item?.title?.length >= 60 ? (
-                          <>{item?.title?.substring(0, 60)}...</>
-                        ) : (
-                          <>{item?.title}</>
-                        )}
-                      </div>
-                    </td>
-                    <td className="lg:py-5 py-4 text-center px-3 lg:w-[127px] w-[96px]">
-                      <StatusColor status={item?.status} />
-                    </td>
-                    <td className="lg:py-5 py-4 text-center">
-                      <div
-                        className={`w-[110px] h-[34px] mx-2 bg-opacity-20 rounded-[20px] bg-green-500 py-1 px-3 text-base`}
-                      >
-                        {item?.totalHours?.replace(/ hours \d+ minutes/, ' hr')}
-                      </div>
-                    </td>
-                    <td className="lg:py-5 py-4 text-center">
-                      <div
-                        className={`w-[110px] h-[34px] mx-2 bg-opacity-20 rounded-[20px] bg-sky-500 py-1 px-3 text-base`}
-                      >
-                        {item?.spentHours?.replace(/ hours \d+ minutes/, ' hr')}
-                      </div>
-                    </td>
-                    <td className="lg:py-5 py-4 text-center">
-                      <div
-                        className={`w-[110px] h-[34px] mx-2 bg-opacity-20 rounded-[20px] bg-rose-600 py-1 px-3 text-base`}
-                      >
-                        {item?.remainHours?.replace(
-                          / hours \d+ minutes/,
-                          ' hr'
-                        )}
-                      </div>
-                    </td>
+              {hourlyData?.map((item, i) => (
+                <tr key={i}>
+                  <td className="lg:py-5 py-4 w-[120px] pr-3">
+                    <div className="w-[120px] truncate">#{item?._id}</div>
+                  </td>
+                  <td className="lg:py-5 py-4 2xl:w-[300px] w-[250px] pl-1 pr-2">
+                    <div className="2xl:w-full w-[250px] truncate">
+                      {item.title}
+                    </div>
+                  </td>
+                  <td className="lg:py-5 py-4 text-center px-3 lg:w-[127px] w-[96px]">
+                    <StatusColor status={item?.status} />
+                  </td>
+                  <td className="lg:py-5 py-4 text-center">
+                    <div
+                      className={`w-[110px] h-[34px] mx-2 bg-opacity-20 rounded-[20px] bg-green-500 py-1 px-3 text-base`}
+                    >
+                      {item?.totalHours?.replace(/ hours \d+ minutes/, ' hr')}
+                    </div>
+                  </td>
+                  <td className="lg:py-5 py-4 text-center">
+                    <div
+                      className={`w-[110px] h-[34px] mx-2 bg-opacity-20 rounded-[20px] bg-sky-500 py-1 px-3 text-base`}
+                    >
+                      {item?.spentHours?.replace(/ hours \d+ minutes/, ' hr')}
+                    </div>
+                  </td>
+                  <td className="lg:py-5 py-4 text-center">
+                    <div
+                      className={`w-[110px] h-[34px] mx-2 bg-opacity-20 rounded-[20px] bg-rose-600 py-1 px-3 text-base`}
+                    >
+                      {item?.remainHours?.replace(/ hours \d+ minutes/, ' hr')}
+                    </div>
+                  </td>
 
-                    <td className="lg:py-5 py-4 lg:px-0 px-3 text-center w-[130px]">
-                      <Link
-                        href={`/orders/hourlyService/${item?._id}`}
-                        className="btn-hover rounded-[5px] text-center px-5 py-1"
-                      >
-                        Open
-                      </Link>
-                    </td>
-                  </tr>
-                )
-              })}
+                  <td className="lg:py-5 py-4 lg:px-0 px-3 text-center w-[130px]">
+                    <Link
+                      href={`/orders/hourlyService/${item?._id}`}
+                      className="btn-hover rounded-[5px] text-center px-5 py-1"
+                    >
+                      Open
+                    </Link>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         )}

@@ -1,9 +1,10 @@
 import TrueFalseColumn, { IsBlockedColumn } from '@/utils/TrueFalseColumn'
 import { formatDateTwo } from '@/utils/formateDateAndTime'
+import Image from 'next/image'
+import dummyProfile from '@/public/images/dummyProfile.png'
 import Link from 'next/link'
 
 const ClientTable = ({ data }) => {
-  console.log(data)
   return (
     <div className="lg:w-full w-screen px-7 py-8 overflow-x-scroll">
       {data?.length === 0 ? (
@@ -28,17 +29,11 @@ const ClientTable = ({ data }) => {
             {data?.map((item, i) => {
               return (
                 <tr key={i}>
-                  <td className="lg:py-5 py-4 w-[120px]">
-                    <div className="w-[120px]">#{item?._id?.slice(0, 8)}..</div>
+                  <td className="lg:py-5 py-4 w-[90px] pr-4">
+                    <div className="w-[90px] truncate">#{item?._id}</div>
                   </td>
                   <td className="lg:py-5 py-4 w-[160px] pr-3">
-                    <div className="flex justify-start items-center gap-3 w-[160px]">
-                      {item?.fullName?.length >= 17 ? (
-                        <>{item?.fullName?.substring(0, 17)}...</>
-                      ) : (
-                        <>{item?.fullName}</>
-                      )}
-                    </div>
+                    <div className="w-[160px] truncate">{item?.fullName}</div>
                   </td>
                   <td className="lg:py-5 py-4 w-[150px] pr-7">{item?.email}</td>
                   <td className="lg:py-5 py-4">
@@ -52,7 +47,7 @@ const ClientTable = ({ data }) => {
                   <td className="lg:py-5 py-4 px-6">
                     <IsBlockedColumn value={item?.isBlocked} />
                   </td>
-                  <td className="w-[140px] pl-6 pr-8">
+                  <td className="w-[140px] pl-4 pr-6">
                     <div className="w-[140px] text-center font-semibold text-xs">
                       {formatDateTwo(item?.createdAt)}
                     </div>

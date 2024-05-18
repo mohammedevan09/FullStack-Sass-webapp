@@ -2,14 +2,14 @@ import { getAllTeamByCreatorIdApi } from '@/api/teamApi'
 import MainTeam from './MainTeam'
 
 const page = async ({ searchParams }) => {
-  const data = await getAllTeamByCreatorIdApi(
-    { limit: 100 },
+  const { users, totalDocsCount } = await getAllTeamByCreatorIdApi(
+    searchParams,
     searchParams?.userId
   )
 
   return (
-    <div className="w-full sm:my-20 xs:my-10 my-3 md:mx-4 xs:mx-3 mx-1">
-      <MainTeam teamData={data} />
+    <div className="w-full sm:my-20 xs:my-10 my-3 sm:px-4 xs:px-3 px-1">
+      <MainTeam teamData={users} totalDocsCount={totalDocsCount} />
     </div>
   )
 }

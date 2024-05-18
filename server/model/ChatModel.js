@@ -31,6 +31,7 @@ export const messageSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.Mixed,
       required: true,
     },
+    seenBy: [{ type: participantSchema }],
   },
   { timestamps: true }
 )

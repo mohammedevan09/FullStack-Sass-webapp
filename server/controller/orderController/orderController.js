@@ -32,67 +32,85 @@ export const createStripeOrder = async (customer, data, res) => {
 
 export const getAllOrder = async (req, res, next) => {
   try {
-    let query = {}
+    const {
+      __t,
+      status,
+      userId,
+      role,
+      access,
+      page = 1,
+      limit = 5,
+      search = '',
+    } = req.query
 
-    if (req.query.__t) {
-      query.__t = req.query.__t
+    const query = {
+      ...(__t && { __t }),
+      ...(status && { status }),
+      ...(userId &&
+        (role === 'user' || role === 'userMember') && {
+          userId: new Types.ObjectId(userId),
+        }),
     }
-    if (
-      req.query.userId &&
-      (req.query.role === 'user' || req.query.role === 'userMember')
-    ) {
-      query.userId = new mongoose.Types.ObjectId(req.query.userId)
+
+    const accessOf = access?.orders?.accessOf || []
+    const skip = (parseInt(page) - 1) * parseInt(limit)
+
+    // Define the match stage
+    const matchStage = {
+      $match: {
+        ...query,
+        $or: [
+          { title: { $regex: new RegExp(search, 'i') } },
+          {
+            _id: Types.ObjectId.isValid(search)
+              ? new Types.ObjectId(search)
+              : null,
+          },
+        ],
+      },
     }
 
-    const accessOf = req.query?.access?.orders?.accessOf || []
+    // Conditional match for access control
+    if (access) {
+      matchStage.$match._id = { $in: accessOf }
+    }
 
-    const page = parseInt(req.query.page) || 1
-    const limit = parseInt(req.query.limit) || 5
-    const skip = (page - 1) * limit
-    const { search = '' } = req.query
-
+    // Aggregation pipeline
     const pipeline = [
+      matchStage,
+      { $sort: { createdAt: -1 } },
       {
-        $match: {
-          ...query,
-          $or: [
-            { title: { $regex: new RegExp(search), $options: 'i' } },
-            {
-              _id: Types.ObjectId.isValid(search)
-                ? new Types.ObjectId(search)
-                : null,
-            },
-          ],
+        $group: {
+          _id: '$__t',
+          orders: { $push: '$$ROOT' },
         },
       },
-      { $sort: { createdAt: -1 } },
-    ]
-
-    if (req.query.access) {
-      pipeline.push({ $match: { _id: { $in: accessOf } } })
-    }
-
-    pipeline.push(
-      { $group: { _id: '$__t', orders: { $push: '$$ROOT' } } },
       {
         $project: {
           _id: 0,
           serviceType: '$_id',
-          orders: {
-            $slice: ['$orders', skip, limit],
-          },
+          orders: { $slice: ['$orders', skip, parseInt(limit)] },
         },
-      }
-    )
+      },
+    ]
 
-    const orders = await Order.aggregate(pipeline)
+    // Fetch data using aggregation
+    const [orders, totalCount] = await Promise.all([
+      Order.aggregate(pipeline),
+      Order.countDocuments(matchStage.$match), // Consistent count query
+    ])
 
     const formattedOrders = orders.reduce((acc, curr) => {
       acc[curr.serviceType] = curr.orders.length > 0 ? curr.orders : []
       return acc
     }, {})
 
-    return sendResponse(res, formattedOrders)
+    const response = {
+      orders: formattedOrders,
+      totalDocsCount: totalCount,
+    }
+
+    return sendResponse(res, response)
   } catch (error) {
     next(error)
   }

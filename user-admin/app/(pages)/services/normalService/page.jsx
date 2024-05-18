@@ -1,11 +1,16 @@
 import { getAllService } from '@/api/serviceApi'
 import BackButton from '@/components/others/BackButton'
 import ServiceTables from '@/components/tables/ServiceTables'
+import ServiceFilter from '../_components/ServiceFilter'
+import TablePagination from '@/components/others/TablePagination'
 
-const page = async () => {
-  const { NormalService } = await getAllService({
+const page = async ({ searchParams }) => {
+  const {
+    services: { NormalService },
+    totalDocsCount,
+  } = await getAllService({
     __t: 'NormalService',
-    limit: 50,
+    ...searchParams,
   })
 
   return (
@@ -13,8 +18,14 @@ const page = async () => {
       <div className="sm:mt-14 mt-8 mb-8">
         <BackButton title={'Go Back'} link={'/services'} />
       </div>
-      <div className="bg-white rounded-[20px] sm:my-8 my-6 pt-8 grid gap-4 overflow-x-hidden">
-        <ServiceTables serviceData={NormalService} link={'/normalService'} />
+      <ServiceFilter title={'Normal Services'} />
+      <div className="bg-white rounded-[20px] sm:my-8 my-6 pt-6 pb-4 grid gap-4 overflow-x-hidden">
+        <ServiceTables
+          serviceData={NormalService || []}
+          link={'/normalService'}
+          title={'Normal Services'}
+        />
+        <TablePagination pageCount={totalDocsCount} />
       </div>
     </div>
   )

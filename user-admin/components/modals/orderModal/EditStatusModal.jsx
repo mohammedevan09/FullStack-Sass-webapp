@@ -34,6 +34,7 @@ const EditStatus = ({ openModal, setOpenModal, order, setOrderData, link }) => {
 
   const handleStatusEdit = async () => {
     try {
+      toast.loading('Processing, please wait!', { duration: 600 })
       const updated = await updateOrderApi(
         {
           payment_status: PaymentStatus,

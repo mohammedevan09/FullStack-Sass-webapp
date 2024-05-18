@@ -20,26 +20,18 @@ const ServiceTables = ({ serviceData, title, link }) => {
               <th>Name</th>
               <th className="text-center">Icon</th>
               <th className="text-center">Is Active</th>
-              <th>Creator ID</th>
+              <th className="text-center">Creator ID</th>
               <th className="text-center">Action</th>
             </tr>
           </thead>
           <tbody className="lg:text-base text-sm font-medium text-zinc-800">
             {serviceData?.map((item, i) => (
               <tr key={i}>
-                <td className="lg:py-5 py-4">
-                  <div className="flex justify-start items-center gap-3 w-[90px]">
-                    #{item?._id?.slice(0, 8)}..
-                  </div>
+                <td className="lg:py-5 py-4 w-[120px] pr-3">
+                  <div className="w-[120px] truncate">#{item?._id}</div>
                 </td>
-                <td className="lg:py-5 py-4 2xl:w-[300px] w-[250px] pl-1">
-                  <div className="flex justify-start items-center gap-3 2xl:w-full w-[250px]">
-                    {item?.name?.length >= 60 ? (
-                      <>{item?.name?.substring(0, 60)}...</>
-                    ) : (
-                      <>{item?.name}</>
-                    )}
-                  </div>
+                <td className="lg:py-5 py-4 pl-1">
+                  <div className="truncate w-[200px]">{item?.name}</div>
                 </td>
                 <td className="lg:py-5 py-4 text-center px-2">
                   <div className="w-[40px] mx-auto">
@@ -66,10 +58,8 @@ const ServiceTables = ({ serviceData, title, link }) => {
                     {item?.isActive ? 'On' : 'Off'}
                   </div>
                 </td>
-                <td className="lg:py-5 py-4 px-2">
-                  <div className="flex justify-start items-center gap-3 min-w-[110px]">
-                    #{item?.creatorId?.slice(0, 10)}..
-                  </div>
+                <td className="lg:py-5 py-4 px-2 text-center">
+                  <div className="truncate px-2">#{item?.creatorId}</div>
                 </td>
                 <td className="lg:py-5 py-4 text-center">
                   <button

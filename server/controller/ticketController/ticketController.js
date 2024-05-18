@@ -1,10 +1,24 @@
 import mongoose, { Types } from 'mongoose'
 import Ticket from '../../model/tickerModels/ticketModel.js'
 import { sendResponse } from '../../utils/sendResponse.js'
+import TicketChat from '../../model/tickerModels/ticketChatModels.js'
+import {
+  createNotification,
+  updateNotification,
+} from '../notificationController/notificationController.js'
 
 export const createTicket = async (req, res, next) => {
   try {
     const data = await Ticket.create(req.body)
+
+    await createNotification({
+      content: data?.description,
+      title: data?.title,
+      type: 'Ticket',
+      to: 'ticket',
+      id: data?._id,
+      userId: data.userId,
+    })
 
     return res.status(200).json(data)
   } catch (error) {
@@ -22,6 +36,10 @@ export const getAllTickets = async (req, res, next) => {
       (req.query.role === 'user' || req.query.role === 'userMember')
     ) {
       query.userId = new mongoose.Types.ObjectId(req.query.userId)
+    }
+
+    if (req.query.status) {
+      query.status = req.query.status
     }
 
     const pipeline = [
@@ -60,9 +78,17 @@ export const getAllTickets = async (req, res, next) => {
       pipeline.push({ $match: { _id: { $in: accessOf } } })
     }
 
-    const ticket = await Ticket.aggregate(pipeline)
+    const [tickets, totalCount] = await Promise.all([
+      Ticket.aggregate(pipeline),
+      Ticket.countDocuments(query),
+    ])
 
-    return sendResponse(res, ticket)
+    const response = {
+      tickets,
+      totalDocsCount: totalCount,
+    }
+
+    return sendResponse(res, response)
   } catch (error) {
     next(error)
   }
@@ -90,6 +116,14 @@ export const updateTicket = async (req, res, next) => {
         new: true,
       }
     )
+    await updateNotification({
+      content: data?.description,
+      title: data?.title,
+      type: 'Ticket',
+      to: 'ticket',
+      id: data?._id,
+      userId: data.userId,
+    })
 
     return sendResponse(res, data)
   } catch (error) {
@@ -100,6 +134,10 @@ export const updateTicket = async (req, res, next) => {
 export const deleteTicket = async (req, res, next) => {
   try {
     const data = await Ticket.findByIdAndDelete({ _id: req.params.id })
+
+    await TicketChat.deleteOne({
+      ticketId: data?._id,
+    })
 
     return sendResponse(res, data)
   } catch (error) {

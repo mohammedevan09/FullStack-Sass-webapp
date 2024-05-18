@@ -32,8 +32,8 @@ const Action = ({ data, chat, accessType, to, deleteApi }) => {
 
   return (
     <>
-      <div className="relative min-w-[154px] z-[999]">
-        <div className="bg-white grid items-center px-4 py-1 rounded-md overflow-hidden absolute">
+      <div className="relative min-w-[154px] z-[9]">
+        <div className="bg-white grid items-center px-4 py-1 rounded-md overflow-hidden absolute z-10">
           <button
             className="flex items-center gap-2 text-base font-semibold"
             onClick={(e) => {

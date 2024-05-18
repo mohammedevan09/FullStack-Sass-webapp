@@ -27,7 +27,6 @@ import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { redirect, useRouter, useSelectedLayoutSegment } from 'next/navigation'
 import LogoutModal from '../modals/menuModals/LogoutModal'
-import socketIOClient from 'socket.io-client'
 
 const Menu = () => {
   const [isSmallScreen, setIsSmallScreen] = useState(false)
@@ -148,13 +147,6 @@ const Menu = () => {
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
   }, [])
-
-  useEffect(() => {
-    const socket = socketIOClient(process.env.NEXT_PUBLIC_HOST)
-    if (userInfo) {
-      socket.emit('add-user', { userId: userInfo?._id })
-    }
-  }, [userInfo])
 
   return (
     <div

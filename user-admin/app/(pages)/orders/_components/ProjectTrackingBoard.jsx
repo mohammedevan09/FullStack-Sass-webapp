@@ -1,13 +1,12 @@
 'use client'
 
-import { updateOrderApi } from '@/api/orderApi'
 import { DndContext } from '@/components/others/DndContext'
 import { RemoveIcon } from '@/staticData/Icon'
 import { useEffect, useState } from 'react'
 import { Draggable, Droppable } from 'react-beautiful-dnd'
 import toast from 'react-hot-toast'
 
-const ProjectTrackingBoard = ({ order, link }) => {
+const ProjectTrackingBoard = ({ order, link, api }) => {
   const initialProjectTrackingBoard = [
     {
       title: 'To do',
@@ -122,7 +121,7 @@ const ProjectTrackingBoard = ({ order, link }) => {
           fields: item.fields.map(({ title }) => ({ title })),
         }
       })
-      await updateOrderApi(
+      await api(
         {
           projectTrackingBoard: {
             todo: newData[0]?.fields,

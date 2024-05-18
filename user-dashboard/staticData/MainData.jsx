@@ -12,16 +12,16 @@ export const dropdownData = [
     icon: <DropProfileIcon />,
     link: '/dashboard/settings',
   },
-  {
-    title: 'Team',
-    icon: <DropTeamIcon />,
-    link: '/dashboard/settings/team',
-  },
-  {
-    title: 'Billing',
-    icon: <DropBillingIcon />,
-    link: '/dashboard/settings/billing',
-  },
+  // {
+  //   title: 'Team',
+  //   icon: <DropTeamIcon />,
+  //   link: '/dashboard/settings/team',
+  // },
+  // {
+  //   title: 'Billing',
+  //   icon: <DropBillingIcon />,
+  //   link: '/dashboard/settings/billing',
+  // },
   {
     title: 'Notification',
     icon: <DropNotificationIcon />,

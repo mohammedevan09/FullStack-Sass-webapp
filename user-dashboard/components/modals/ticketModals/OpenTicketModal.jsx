@@ -80,7 +80,7 @@ const OpenTicketModal = ({
     } else {
       params.delete('search')
     }
-    replace(`${pathname}?${params.toString()}`)
+    replace(`${pathname}?${params.toString()}`, { scroll: false })
   }, 300)
 
   const handleSave = async (data) => {
@@ -89,12 +89,13 @@ const OpenTicketModal = ({
       return
     }
     if (isValid) {
+      toast.loading('Processing, please wait!', { duration: 600 })
       try {
         const selectedOrder = Object.values(orders)
           .flatMap((orderType) => orderType)
           .find((o) => o._id === data?.orderId)
 
-        const serviceData = await getAllService({
+        const { services: serviceData } = await getAllService({
           search: selectedOrder?.serviceId,
           limit: 1,
         })
@@ -187,7 +188,7 @@ const OpenTicketModal = ({
             </div>
             <input
               type="text"
-              className="outline-none bg-[none]"
+              className="outline-none bg-[none] text-sm font-medium"
               placeholder="Search by name, ID"
               onChange={(e) => {
                 handleSearch(e.target.value)
