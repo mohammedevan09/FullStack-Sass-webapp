@@ -1,12 +1,5 @@
 'use client'
 
-import {
-  ordersData,
-  projectData,
-  someIconImages,
-  statisticsData,
-  ticketsData,
-} from '@/staticData/MainData'
 import Image from 'next/image'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useLayoutEffect } from 'react'
@@ -30,7 +23,7 @@ const Main = () => {
 
   return (
     <>
-      <div className="w-full sm:px-4 xs:px-3 px-1">
+      {/* <div className="w-full sm:px-4 xs:px-3 px-1">
         <div className="flex items-end sm:my-12 my-6">
           <div className="grid">
             <span className="text-gray-800 text-xl font-medium ">
@@ -191,7 +184,7 @@ const Main = () => {
             ))}
           </tbody>
         </table>
-      </div>
+      </div> */}
     </>
   )
 }

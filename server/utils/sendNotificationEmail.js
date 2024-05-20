@@ -16,7 +16,7 @@ export const emailNotification = async (email, subject, html) => {
     })
 
     await transporter.sendMail({
-      from: process.env.USER,
+      from: `${process.env.COMPANY_NAME} <${process.env.USER}>`,
       to: email,
       subject: subject,
       // text: text,
@@ -123,3 +123,17 @@ export const notificationTypes = [
     `,
   },
 ]
+
+export const teamMemberNotification = (fullName, email, password) => {
+  return `
+      <html>
+        <body>
+          <p>Hi ${fullName},</p>
+          <p>Congratulations! You are added as a team member</p>
+          <p><b>Email - </b>${email}</p>
+          <p><b>Password - </b>${password}</p>
+          ${bottomMail}
+        </body>
+      </html>
+    `
+}

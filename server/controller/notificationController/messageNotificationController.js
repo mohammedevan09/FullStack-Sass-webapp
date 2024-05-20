@@ -85,7 +85,7 @@ export const getAllMessageNotification = async (req, res, next) => {
                 id: '$$notification.id',
                 content: '$$notification.content',
                 createdAt: '$$notification.createdAt',
-                isDetails: '$$notification.isDetails',
+                idDetails: '$$notification.idDetails',
                 title: '$$notification.title',
                 type: '$$notification.type',
                 updatedAt: '$$notification.updatedAt',

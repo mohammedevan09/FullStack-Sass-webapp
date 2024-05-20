@@ -14,7 +14,7 @@ export default async (email, subject, text, html, buttonText) => {
     })
 
     await transporter.sendMail({
-      from: process.env.USER,
+      from: `${process.env.COMPANY_NAME} <${process.env.USER}>`,
       to: email,
       subject: subject,
       // text: text,

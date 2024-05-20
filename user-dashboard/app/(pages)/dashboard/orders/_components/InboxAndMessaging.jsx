@@ -13,6 +13,7 @@ import io from 'socket.io-client'
 import { makeCapitalize } from '@/utils/StatusColor'
 import { sendMessageChat } from '@/api/chatApi'
 import { findOrCreateChatNotification } from '@/api/notificationApi'
+import { socket } from '@/components/others/Header'
 
 export const initialText = {
   type: 'doc',
@@ -23,9 +24,9 @@ export const initialText = {
   ],
 }
 
-export const socket = io(process.env.NEXT_PUBLIC_HOST, {
-  transports: ['websocket'],
-})
+// export const socket = io(process.env.NEXT_PUBLIC_HOST, {
+//   transports: ['websocket'],
+// })
 
 const InboxAndMessaging = ({ to, itemData, chatData, messageCount }) => {
   const [chat, setChat] = useState(chatData)
@@ -55,6 +56,9 @@ const InboxAndMessaging = ({ to, itemData, chatData, messageCount }) => {
       receiver: chat.participants.map((participant) => participant._id),
       id: itemData?._id,
       content: text,
+      title: itemData?.title,
+      type: makeCapitalize(to),
+      idDetails: { __t: itemData?.__t },
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     })
@@ -244,7 +248,10 @@ const InboxAndMessaging = ({ to, itemData, chatData, messageCount }) => {
                 return (
                   <div
                     className={`flex gap-4 w-full ${
-                      senderInfo?._id === userInfo?._id && 'flex-row-reverse'
+                      !senderInfo
+                        ? 'opacity-50'
+                        : senderInfo?._id === userInfo?._id &&
+                          'flex-row-reverse'
                     }`}
                     key={i}
                   >
@@ -278,19 +285,15 @@ const InboxAndMessaging = ({ to, itemData, chatData, messageCount }) => {
                               : 'rounded-r-md'
                           }`}
                         >
-                          {senderInfo && (
-                            <>
-                              <h1 className="font-semibold">
-                                {senderInfo.fullName}
-                              </h1>
-                              {typeof item?.content === 'object' ? (
-                                <h2 className="text-sm tiptap">
-                                  {JsonToText(item?.content, false)}
-                                </h2>
-                              ) : (
-                                <h2 className="text-sm">{item?.content}</h2>
-                              )}
-                            </>
+                          <h1 className="font-semibold">
+                            {senderInfo?.fullName || 'Unknown'}
+                          </h1>
+                          {typeof item?.content === 'object' ? (
+                            <h2 className="text-sm tiptap">
+                              {JsonToText(item?.content, false)}
+                            </h2>
+                          ) : (
+                            <h2 className="text-sm">{item?.content}</h2>
                           )}
                         </div>
                       </div>

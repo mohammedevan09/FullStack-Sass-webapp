@@ -133,9 +133,9 @@ export const getAllNotification = async (req, res, next) => {
     const result = await Notification.aggregate(pipeline)
 
     const notifications = result[0].notifications
-    const totalCount = result[0].totalCount
-    const unreadCount = result[0].unreadCount
-    const unreadByAdminCount = result[0].unreadByAdminCount
+    const totalCount = result[0].totalCount || 0
+    const unreadCount = result[0].unreadCount || 0
+    const unreadByAdminCount = result[0].unreadByAdminCount || 0
 
     const populatedNotifications = await Promise.all(
       notifications.map(async (notification) => {
@@ -215,6 +215,7 @@ export const updateOneNotification = async (req, res, next) => {
 export const updateManyNotification = async (req, res, next) => {
   try {
     const { filter, updateData } = req.body
+
     await Notification.updateMany(filter, updateData, {
       new: true,
     })

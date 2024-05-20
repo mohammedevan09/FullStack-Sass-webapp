@@ -25,6 +25,14 @@ export const addParticipantChatApi = async (to, id, sendData) => {
   return data?.data
 }
 
+export const removeParticipantChatApi = async (to, id, sendData) => {
+  const data = await axios.put(
+    `${host}/api/${to}/chat/removeParticipant/${id}`,
+    sendData
+  )
+  return data?.data
+}
+
 export const getChatByIdApi = async (to, queryData, id) => {
   try {
     const data = await axios.get(`${host}/api/${to}/chat/${id}`, {

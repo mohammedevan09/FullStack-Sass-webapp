@@ -55,7 +55,6 @@ export const getAllOrder = async (req, res, next) => {
     const accessOf = access?.orders?.accessOf || []
     const skip = (parseInt(page) - 1) * parseInt(limit)
 
-    // Define the match stage
     const matchStage = {
       $match: {
         ...query,
@@ -70,12 +69,10 @@ export const getAllOrder = async (req, res, next) => {
       },
     }
 
-    // Conditional match for access control
     if (access) {
       matchStage.$match._id = { $in: accessOf }
     }
 
-    // Aggregation pipeline
     const pipeline = [
       matchStage,
       { $sort: { createdAt: -1 } },
@@ -94,10 +91,9 @@ export const getAllOrder = async (req, res, next) => {
       },
     ]
 
-    // Fetch data using aggregation
     const [orders, totalCount] = await Promise.all([
       Order.aggregate(pipeline),
-      Order.countDocuments(matchStage.$match), // Consistent count query
+      Order.countDocuments(matchStage.$match),
     ])
 
     const formattedOrders = orders.reduce((acc, curr) => {

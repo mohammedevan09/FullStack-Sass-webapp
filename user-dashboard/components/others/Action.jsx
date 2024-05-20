@@ -1,6 +1,6 @@
 'use client'
 
-import { addParticipantChatApi } from '@/api/chatApi'
+import { addParticipantChatApi, removeParticipantChatApi } from '@/api/chatApi'
 import { giveTeamAccessApi, removeTeamAccessApi } from '@/api/teamApi'
 import GiveTeamAccessModal from '@/components/modals/settingsModals/GiveTeamAccessModal'
 import RemoveTeamAccessModal from '@/components/modals/settingsModals/RemoveTeamAccessModal'
@@ -105,6 +105,10 @@ const Action = ({ data, chat, accessType, to, deleteApi }) => {
               },
               val?.value?._id
             )
+            await removeParticipantChatApi(to, chat?._id, {
+              participantId: val?.value?._id,
+              participantType: 'Team',
+            })
           }}
         />
       )}

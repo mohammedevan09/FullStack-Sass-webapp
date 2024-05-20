@@ -4,6 +4,10 @@ import { sendResponse } from '../../utils/sendResponse.js'
 import Team from '../../model/userModels/teamModel.js'
 import generateRefreshToken from '../../config/refreshToken.js'
 import generateToken from '../../config/jwtToken.js'
+import {
+  emailNotification,
+  teamMemberNotification,
+} from '../../utils/sendNotificationEmail.js'
 
 export const createTeam = async (req, res, next) => {
   const { email, password: pass } = req.body
@@ -18,6 +22,14 @@ export const createTeam = async (req, res, next) => {
         ...req.body,
         password: hashedPass,
       })
+
+      const { fullName, email, originalPass } = newUser
+
+      await emailNotification(
+        email,
+        `New Team Member - ${fullName}`,
+        teamMemberNotification(fullName, email, originalPass)
+      )
 
       return sendResponse(res, newUser)
     } else {

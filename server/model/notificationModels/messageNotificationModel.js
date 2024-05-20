@@ -30,7 +30,7 @@ const MessageNotificationSchema = new mongoose.Schema(
         required: true,
       },
     },
-    isDetails: {},
+    idDetails: {},
     receivers: [
       {
         userId: {

@@ -4,6 +4,7 @@ import {
   addChatParticipants,
   addMessageToChat,
   createChatMessage,
+  removeChatParticipants,
   updateChatById,
 } from '../../controller/chatController.js'
 import OrderChat from '../../model/orderModels/orderChatModel.js'
@@ -21,5 +22,6 @@ router.put('/:id', addMessageToChat)
 router.get('/:orderId', getChatByOrderId)
 router.put('/update/:id', updateChatById)
 router.put('/addParticipant/:id', addChatParticipants)
+router.put('/removeParticipant/:id', removeChatParticipants)
 
 export default router

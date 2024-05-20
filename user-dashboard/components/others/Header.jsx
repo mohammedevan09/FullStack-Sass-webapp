@@ -1,5 +1,6 @@
 'use client'
 
+import { getAllSearchCollectionsApi } from '@/api/dashboardApi'
 import {
   getAllMessageNotification,
   getAllNotification,
@@ -18,12 +19,11 @@ import {
   MessageIcon2,
   NotificationBellIcon,
   NotificationIcon,
+  SearchByIdIcon,
   SearchIcon,
-  StoreIcon,
 } from '@/staticData/Icon'
 import { setOpenMenu } from '@/store/reducers/activeReducer'
 import JsonToText from '@/utils/JsonToText'
-import { makeCapitalize } from '@/utils/StatusColor'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
@@ -31,6 +31,9 @@ import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import ResponsivePagination from 'react-responsive-pagination'
 import socketIOClient from 'socket.io-client'
+import { useDebounce } from 'use-debounce'
+
+export const socket = socketIOClient(process.env.NEXT_PUBLIC_HOST)
 
 export const dropdownData = [
   {
@@ -54,6 +57,8 @@ const Header = () => {
   const [dropOpen, setDropOpen] = useState(false)
   const [notificationDropOpen, setNotificationDropOpen] = useState(false)
   const [messageDropOpen, setMessageDropOpen] = useState(false)
+  const [searchDropOpen, setSearchDropOpen] = useState(false)
+  const [searchValue, setSearchValue] = useState('')
   const [isSmallScreen, setIsSmallScreen] = useState(false)
 
   const dispatch = useDispatch()
@@ -61,6 +66,7 @@ const Header = () => {
 
   const notificationRef = useRef()
   const messageRef = useRef()
+  const searchRef = useRef()
 
   useEffect(() => {
     const handleClick = (e) => {
@@ -77,6 +83,13 @@ const Header = () => {
         e.target.className !== 'page-link prevent'
       ) {
         setMessageDropOpen(false)
+      }
+      if (
+        searchRef.current &&
+        !searchRef.current.contains(e.target) &&
+        e.target.className !== 'page-link prevent'
+      ) {
+        setSearchDropOpen(false)
       }
     }
 
@@ -121,7 +134,6 @@ const Header = () => {
   }, [lastScrollY, isSmallScreen])
 
   useEffect(() => {
-    const socket = socketIOClient(process.env.NEXT_PUBLIC_HOST)
     if (userInfo) {
       socket.emit('add-user', { userId: userInfo?._id })
     }
@@ -138,12 +150,24 @@ const Header = () => {
         >
           <MenuIcon size={isSmallScreen && '25'} />
         </div>
-        <div className="flex bg-white sm:rounded-xl rounded-md justify-start items-center lg:gap-4 gap-1 sm:py-2 py-1 px-4 mx-1 font-medium svg-shadow">
-          <SearchIcon size={isSmallScreen && '15'} />
-          <input
-            type="text"
-            className="outline-none text-sm lg:w-[250px] md:w-[200px] sm:w-[160px] xs:w-[120px] w-[90px]"
-            placeholder="Search Anything Here..."
+        <div className="relative" ref={searchRef}>
+          <div
+            className="flex bg-white sm:rounded-xl rounded-lg justify-start items-center lg:gap-4 gap-1 sm:py-2 py-1 px-4 mx-1 font-medium svg-shadow"
+            onClick={() => setSearchDropOpen((prev) => !prev)}
+          >
+            <SearchIcon size={isSmallScreen && '15'} />
+            <input
+              type="text"
+              className="outline-none text-sm sm:w-[250px] w-full"
+              placeholder="Search Anything Here..."
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target?.value)}
+            />
+          </div>
+          <SearchComponent
+            searchDropOpen={searchDropOpen}
+            searchValue={searchValue}
+            userInfo={userInfo}
           />
         </div>
         <div className="flex justify-center items-start md:gap-6 xs:gap-3 gap-2">
@@ -188,7 +212,7 @@ const Header = () => {
             />
           </div>
           <div className="relative sm:w-[150px] w-[130px] z-10 sm:text-base text-sm">
-            <div className="bg-white grid items-center px-4 py-1 rounded-md overflow-hidden absolute z-10 svg-shadow">
+            <div className="bg-white grid items-center px-4 py-1 rounded-md overflow-hidden absolute z-10 svg-shadow sm:w-[150px] w-[130px]">
               <button
                 className="flex items-center gap-2 font-semibold"
                 onClick={(e) => {
@@ -196,7 +220,9 @@ const Header = () => {
                   setDropOpen((prev) => !prev)
                 }}
               >
-                {userInfo?.fullName?.split(' ')[0]}{' '}
+                <span className="truncate sm:w-[100px] w-[70px] text-left">
+                  {userInfo?.fullName}
+                </span>
                 <DownIcon size={isSmallScreen && '13'} />
               </button>
               <div
@@ -225,6 +251,88 @@ const Header = () => {
   )
 }
 
+export const SearchComponent = ({ searchDropOpen, searchValue, userInfo }) => {
+  const [data, setData] = useState({
+    results: [],
+    totalDocsCount: 0,
+  })
+  const [value] = useDebounce(searchValue, 300)
+  const [currentPage, setCurrentPage] = useState(1)
+
+  useEffect(() => {
+    const fetchSearch = async () => {
+      if (value) {
+        const resData = await getAllSearchCollectionsApi({
+          userId: userInfo?._id,
+          role: 'user',
+          page: currentPage,
+          search: value,
+        })
+        setData(resData)
+      }
+    }
+    fetchSearch()
+  }, [value, currentPage, userInfo?._id])
+
+  return (
+    <div>
+      {searchDropOpen && (
+        <>
+          <div className="absolute left-[46%]">
+            <DropUpIcon />
+          </div>
+          <div className="absolute w-full max-h-[400px] overflow-y-scroll bg-white sm:rounded-xl rounded-lg dropdown-shadow2 top-[50px] sm:p-4 p-3 z-50 mx-1">
+            {data?.results?.length <= 0 ? (
+              <h2 className="py-4 text-gray-400 text-center font-semibold italic">
+                Nothings to show
+              </h2>
+            ) : (
+              <>
+                <div className={`grid gap-3 mb-3`}>
+                  {data?.results?.map((item, i) => (
+                    <div
+                      key={i}
+                      className="flex items-center gap-3 border-b border-stone-300 pb-2 font-medium"
+                    >
+                      <div>
+                        <SearchByIdIcon color={'blue'} />
+                      </div>
+                      <div className="grid gap-[6px] w-full">
+                        <div className="grid">
+                          <Link
+                            href={`/dashboard/${getCorrectLink(item)}?userId=${
+                              userInfo?._id
+                            }`}
+                            className={`sm:text-sm text-[13px] font-bold truncate flex justify-between items-center gap-1`}
+                          >
+                            <h2 className="truncate">{item?.title}</h2>
+                            <div className="px-2 text-xs font-medium rounded-2xl bg-blue-600 text-white italic">
+                              {item?.modelType}
+                            </div>
+                          </Link>
+                          <div className={`text-xs truncate`}>
+                            {item?.description}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                  <ResponsivePagination
+                    total={Math.ceil(data?.totalDocsCount / 10) || 1}
+                    current={currentPage}
+                    onPageChange={(page) => setCurrentPage(page)}
+                    pageLinkClassName="page-link prevent"
+                  />
+                </div>
+              </>
+            )}
+          </div>
+        </>
+      )}
+    </div>
+  )
+}
+
 export const NotificationComp = ({
   notificationDropOpen,
   isSmallScreen,
@@ -236,7 +344,7 @@ export const NotificationComp = ({
   updateOneApi,
   updateAllApi,
 }) => {
-  const [notificationData, setNotificationData] = useState([])
+  const [notificationData, setNotificationData] = useState({})
   const [currenPage, setCurrentPage] = useState(1)
 
   useEffect(() => {
@@ -251,6 +359,33 @@ export const NotificationComp = ({
     }
     fetchNotification()
   }, [userInfo, currenPage])
+
+  useEffect(() => {
+    const handleNewMessage = (message) => {
+      setNotificationData((prevData) => ({
+        ...prevData,
+        unreadCount: prevData?.unreadCount + 1,
+        unreadByAdminCount: prevData?.unreadByAdminCount + 1,
+        notifications: [
+          {
+            ...message,
+            title: message?.content,
+            content: message?.title,
+            modelType: message?.type,
+          },
+          ...prevData.notifications,
+        ],
+      }))
+    }
+
+    if (!notificationData?.unreadByAdminCount) {
+      socket.on('messageNotification', handleNewMessage)
+    }
+
+    return () => {
+      socket.off('messageNotification', handleNewMessage)
+    }
+  }, [notificationData?.unreadByAdminCount, notificationData])
 
   return (
     <>
@@ -272,14 +407,14 @@ export const NotificationComp = ({
           </div>
           <div className="absolute sm:w-[358px] w-[300px] max-h-[400px] overflow-y-scroll bg-white rounded-[15px] dropdown-shadow2 sm:-right-[400%] right-[-350%] top-4 sm:p-4 p-3 z-50">
             {notificationData?.notifications?.length === 0 ? (
-              <h2 className="py-6 text-gray-400 text-center font-semibold italic">
+              <h2 className="py-4 text-gray-400 text-center font-semibold italic">
                 No Notification to show
               </h2>
             ) : (
               <>
-                <div className={`grid sm:gap-4 gap-2 mb-3`}>
+                <div className={`grid gap-3 mb-3`}>
                   <div
-                    className={`cursor-pointer text-sm border-b border-stone-300 text-center font-semibold ${
+                    className={`cursor-pointer text-sm border-b border-stone-300 text-center font-semibold pb-[6px] ${
                       (notificationData?.unreadCount <= 0 ||
                         !notificationData?.unreadCount) &&
                       'text-gray-400 italic'
@@ -337,13 +472,13 @@ export const SingleNotification = ({
   return (
     <div
       key={i}
-      className="flex items-center justify-start gap-2 border-b border-stone-300 pb-2 font-medium"
+      className="flex items-center justify-start gap-3 border-b border-stone-300 pb-2 font-medium"
     >
       <div>
         <IconTwo />
       </div>
-      <div className="grid sm:gap-3 gap-2">
-        <div className="grid sm:gap-[2px]">
+      <div className="grid gap-[6px]">
+        <div className="grid">
           <Link
             href={`/dashboard/${getCorrectLink(item)}?userId=${userInfo?._id}`}
             className={`sm:text-sm text-[13px] font-bold truncate max-h-[1.2rem] tiptap ${
@@ -401,6 +536,12 @@ export const getCorrectLink = (val) => {
     return `orders/${val?.idDetails?.__t
       .replace('Order', '')
       .replace(/^\w/, (c) => c.toLowerCase())}/${val?.id}`
+  } else if (val?.modelType === 'Ticket' || val?.modelType === 'Proposal') {
+    return `${val?.modelType?.toLowerCase()}s/${val?._id}`
+  } else if (val?.modelType === 'Order') {
+    return `orders/${val?.__t
+      .replace('Order', '')
+      .replace(/^\w/, (c) => c.toLowerCase())}/${val?._id}`
   } else {
     return '#'
   }

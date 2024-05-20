@@ -12,6 +12,8 @@ import '@/components/text-editor/tiptapstyle.css'
 import io from 'socket.io-client'
 import { makeCapitalize } from '@/utils/StatusColor'
 import { sendMessageChat } from '@/api/chatApi'
+import { findOrCreateChatNotification } from '@/api/notificationApi'
+import { socket } from '@/components/others/Header'
 
 export const initialText = {
   type: 'doc',
@@ -22,9 +24,9 @@ export const initialText = {
   ],
 }
 
-export const socket = io(process.env.NEXT_PUBLIC_HOST, {
-  transports: ['websocket'],
-})
+// export const socket = io(process.env.NEXT_PUBLIC_HOST, {
+//   transports: ['websocket'],
+// })
 
 const InboxAndMessaging = ({ to, itemData, chatData, messageCount }) => {
   const [chat, setChat] = useState(chatData)
@@ -54,6 +56,9 @@ const InboxAndMessaging = ({ to, itemData, chatData, messageCount }) => {
       receiver: chat.participants.map((participant) => participant._id),
       id: itemData?._id,
       content: text,
+      title: itemData?.title,
+      type: makeCapitalize(to),
+      idDetails: { __t: itemData?.__t },
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     })
@@ -72,6 +77,7 @@ const InboxAndMessaging = ({ to, itemData, chatData, messageCount }) => {
         },
       ],
     })
+    setText(initialText)
     await sendMessageChat(to, chat?._id, {
       sender: {
         senderType: userInfo?.creatorId ? 'Team' : 'User',
@@ -81,7 +87,30 @@ const InboxAndMessaging = ({ to, itemData, chatData, messageCount }) => {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     })
-    setText(initialText)
+    await findOrCreateChatNotification(
+      {
+        type: makeCapitalize(to),
+        title: text,
+        content: itemData?.title,
+        idDetails: { __t: itemData?.__t },
+        sender: {
+          senderType: userInfo?.creatorId ? 'Team' : 'User',
+          senderId: userInfo?._id,
+        },
+        receivers: chat?.participants
+          ?.map((item) => {
+            return {
+              userId: item?._id,
+              type:
+                item?.role === 'admin' || item?.role === 'user'
+                  ? 'User'
+                  : 'Team',
+            }
+          })
+          .filter((i) => i?._id !== userInfo?._id),
+      },
+      itemData?._id
+    )
   }
 
   useEffect(() => {
@@ -118,6 +147,14 @@ const InboxAndMessaging = ({ to, itemData, chatData, messageCount }) => {
 
     groupParticipants()
   }, [chat])
+
+  if (!chatData) {
+    return (
+      <h1 className="font-bold italic text-xl text-gray-400 bg-white text-center p-6 rounded-xl">
+        No Chat Available
+      </h1>
+    )
+  }
 
   return (
     <div className="grid items-start pb-5  bg-white rounded-[10px] w-full overflow-hidden board-shadow">
@@ -211,7 +248,10 @@ const InboxAndMessaging = ({ to, itemData, chatData, messageCount }) => {
                 return (
                   <div
                     className={`flex gap-4 w-full ${
-                      senderInfo?._id === userInfo?._id && 'flex-row-reverse'
+                      !senderInfo
+                        ? 'opacity-50'
+                        : senderInfo?._id === userInfo?._id &&
+                          'flex-row-reverse'
                     }`}
                     key={i}
                   >
@@ -245,19 +285,15 @@ const InboxAndMessaging = ({ to, itemData, chatData, messageCount }) => {
                               : 'rounded-r-md'
                           }`}
                         >
-                          {senderInfo && (
-                            <>
-                              <h1 className="font-semibold">
-                                {senderInfo.fullName}
-                              </h1>
-                              {typeof item?.content === 'object' ? (
-                                <h2 className="text-sm tiptap">
-                                  {JsonToText(item?.content, false)}
-                                </h2>
-                              ) : (
-                                <h2 className="text-sm">{item?.content}</h2>
-                              )}
-                            </>
+                          <h1 className="font-semibold">
+                            {senderInfo?.fullName || 'Unknown'}
+                          </h1>
+                          {typeof item?.content === 'object' ? (
+                            <h2 className="text-sm tiptap">
+                              {JsonToText(item?.content, false)}
+                            </h2>
+                          ) : (
+                            <h2 className="text-sm">{item?.content}</h2>
                           )}
                         </div>
                       </div>

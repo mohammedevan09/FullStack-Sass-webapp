@@ -83,6 +83,7 @@ export const getNormalServiceOrderById = async (req, res, next) => {
         model: 'Service',
       })
       .exec()
+
     return sendResponse(res, order)
   } catch (error) {
     next(error)

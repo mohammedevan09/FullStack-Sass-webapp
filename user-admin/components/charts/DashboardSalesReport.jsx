@@ -17,9 +17,6 @@ const DashboardSalesReport = ({ data }) => {
     {
       title: '30 Days',
     },
-    {
-      title: '7 Days',
-    },
   ]
   return (
     <div className="lg:w-full w-[1200px] h-[500px] bg-white rounded-[20.37px] px-7 py-8 grid">
@@ -81,25 +78,20 @@ const DashboardSalesReport = ({ data }) => {
         pointBorderColor={{ from: 'serieColor' }}
         pointLabelYOffset={-12}
         useMesh={true}
+        enableArea={true}
         theme={{
           axis: {
             ticks: {
               text: {
-                fontSize: 14,
+                fontSize: 12,
                 fill: 'black',
-                outlineWidth: 1,
+                fontWeight: 'Bold',
               },
             },
             legend: {
               text: {
                 fontSize: 16,
                 outlineWidth: 6,
-              },
-            },
-            domain: {
-              line: {
-                stroke: 'black',
-                strokeWidth: 1,
               },
             },
           },

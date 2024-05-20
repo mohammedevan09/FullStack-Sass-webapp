@@ -81,3 +81,33 @@ export const addChatParticipants = async (req, res, next) => {
     next(error)
   }
 }
+
+export const removeChatParticipants = async (req, res, next) => {
+  const { participantId } = req.body
+
+  try {
+    const chat = await Chat.findOne({ _id: req.params.id })
+
+    if (!chat) {
+      return res.status(404).json({ message: 'Chat not found' })
+    }
+
+    const participantIndex = chat.participants.findIndex(
+      (participant) => participant.participantId.toString() === participantId
+    )
+
+    if (participantIndex !== -1) {
+      chat.participants.splice(participantIndex, 1)
+      await chat.save()
+      return res
+        .status(200)
+        .json({ message: 'Participant removed successfully' })
+    } else {
+      return res
+        .status(404)
+        .json({ message: 'Participant not found in the chat' })
+    }
+  } catch (error) {
+    next(error)
+  }
+}

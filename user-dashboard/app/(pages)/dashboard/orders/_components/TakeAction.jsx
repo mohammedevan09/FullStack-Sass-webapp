@@ -1,6 +1,6 @@
 'use client'
 
-import { addParticipantChatApi } from '@/api/chatApi'
+import { addParticipantChatApi, removeParticipantChatApi } from '@/api/chatApi'
 import { giveTeamAccessApi, removeTeamAccessApi } from '@/api/teamApi'
 import CancelOrderModal from '@/components/modals/orderModal/CancelOrderModal'
 import GiveTeamAccessModal from '@/components/modals/settingsModals/GiveTeamAccessModal'
@@ -117,6 +117,10 @@ const TakeAction = ({ order, orderChat, setOrderData, link }) => {
               },
               val?.value?._id
             )
+            await removeParticipantChatApi('order', orderChat?._id, {
+              participantId: val?.value?._id,
+              participantType: 'Team',
+            })
           }}
         />
       )}

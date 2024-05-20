@@ -21,18 +21,18 @@ export const teamMiddleware = async (req, res, next) => {
       return next()
     }
 
-    const userExists = await User.exists({ _id: userId })
+    const userExists = await User.findById({ _id: userId })
     if (userExists) {
       req.query = {
         ...req.query,
-        userId: userExists.creatorId,
+        userId: userExists._id,
         role: userExists.role,
       }
       return next()
+    } else {
+      return res.status(404).json({ message: 'No User found!' })
     }
-
-    return res.status(404).json({ message: 'No User found!' })
   } catch (error) {
-    return next(error)
+    next()
   }
 }

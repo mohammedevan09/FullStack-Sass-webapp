@@ -1,7 +1,7 @@
 import mongoose, { Types } from 'mongoose'
-import Ticket from '../../model/tickerModels/ticketModel.js'
+import Ticket from '../../model/ticketModels/ticketModel.js'
 import { sendResponse } from '../../utils/sendResponse.js'
-import TicketChat from '../../model/tickerModels/ticketChatModels.js'
+import TicketChat from '../../model/ticketModels/ticketChatModels.js'
 import {
   createNotification,
   updateNotification,

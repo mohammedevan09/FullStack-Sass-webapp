@@ -67,8 +67,11 @@ const RemoveTeamAccessModal = ({
   useLayoutEffect(() => {
     const fetchMembers = async () => {
       try {
-        const result = await getAllTeamByCreatorIdApi({}, userInfo?._id)
-        setData(result || [])
+        const { users } = await getAllTeamByCreatorIdApi(
+          { limit: 50 },
+          userInfo?._id
+        )
+        setData(users || [])
       } catch (error) {
         return []
       }

@@ -4,6 +4,7 @@ import {
   addChatParticipants,
   addMessageToChat,
   createChatMessage,
+  removeChatParticipants,
   updateChatById,
 } from '../../controller/chatController.js'
 import ProposalChat from '../../model/proposalsModels/proposalsChatModel.js'
@@ -22,5 +23,6 @@ router.put('/:id', addMessageToChat)
 router.get('/:proposalId', getChatByProposalId)
 router.put('/update/:id', updateChatById)
 router.put('/addParticipant/:id', addChatParticipants)
+router.put('/removeParticipant/:id', removeChatParticipants)
 
 export default router

@@ -33,6 +33,7 @@ import proposalRouter from './router/proposalRouter/proposalRouter.js'
 import proposalChatRouter from './router/proposalRouter/proposalChatRouter.js'
 import notificationRouter from './router/notificationRouter/notificationRouter.js'
 import messageNotificationRouter from './router/notificationRouter/messageNotificationRouter.js'
+import dashboardRouter from './router/dashboardRouter.js'
 
 dotenv.config()
 
@@ -67,6 +68,7 @@ app.post(
 )
 
 app.use(express.json())
+app.use('/api/dashboard', dashboardRouter)
 app.use('/api/user', userRouter)
 app.use('/api/services', serviceRouter)
 app.use('/api/services/normalService', normalServiceRoutes)
@@ -133,9 +135,14 @@ io.on('connection', (socket) => {
   socket.on('sendMessage', (message) => {
     message.receiver.forEach((receiverId) => {
       let sendUserSocket = online.get(`${receiverId}-${message?.id}`)
+      let sendOnlineUserSocket = onlineUsers.get(receiverId)
 
       if (sendUserSocket) {
         socket.to(sendUserSocket).emit('message', message)
+      }
+      if (sendOnlineUserSocket) {
+        console.log(sendOnlineUserSocket)
+        socket.to(sendOnlineUserSocket).emit('messageNotification', message)
       }
     })
   })

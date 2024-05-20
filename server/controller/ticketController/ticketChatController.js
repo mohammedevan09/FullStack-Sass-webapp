@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 import { sendResponse } from '../../utils/sendResponse.js'
-import TicketChat from '../../model/tickerModels/ticketChatModels.js'
+import TicketChat from '../../model/ticketModels/ticketChatModels.js'
 
 export const getChatByTicketId = async (req, res, next) => {
   const { ticketId } = req.params
