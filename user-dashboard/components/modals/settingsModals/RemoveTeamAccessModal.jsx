@@ -86,7 +86,7 @@ const RemoveTeamAccessModal = ({
           Select Team member you want to remove access from.
         </h3>
         <h4 className="mb-8 text-sm italic text-gray-600 font-medium">
-          The team member will still show on Chat list. But can't chat anymore
+          The team member will still show on Chat list. But cannot chat anymore
         </h4>
         <ReactSelect
           data={modifiedData}

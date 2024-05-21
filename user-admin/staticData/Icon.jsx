@@ -438,6 +438,68 @@ export const NotificationBellIcon = () => {
   )
 }
 
+export const CreditCardSvg = () => {
+  return (
+    <svg
+      width="24"
+      height="25"
+      viewBox="0 0 24 25"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <g id="credit-card">
+        <path
+          id="Icon"
+          d="M1 10.5H23M3 4.5H21C22.1046 4.5 23 5.39543 23 6.5V18.5C23 19.6046 22.1046 20.5 21 20.5H3C1.89543 20.5 1 19.6046 1 18.5V6.5C1 5.39543 1.89543 4.5 3 4.5Z"
+          stroke="#1310C6"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </g>
+    </svg>
+  )
+}
+export const MastercardIcon = () => {
+  return (
+    <svg
+      width="34"
+      height="25"
+      viewBox="0 0 34 25"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <g id="Payment method icon">
+        <rect x="0.5" y="1" width="33" height="23" rx="3.5" fill="white" />
+        <rect x="0.5" y="1" width="33" height="23" rx="3.5" stroke="#F2F4F7" />
+        <g id="Mastercard">
+          <path
+            id="Left"
+            fillRule="evenodd"
+            clipRule="evenodd"
+            d="M17.179 17.3294C15.9949 18.3275 14.459 18.93 12.7807 18.93C9.03582 18.93 6 15.9303 6 12.23C6 8.52966 9.03582 5.52997 12.7807 5.52997C14.459 5.52997 15.9949 6.13247 17.179 7.13051C18.363 6.13247 19.8989 5.52997 21.5773 5.52997C25.3221 5.52997 28.358 8.52966 28.358 12.23C28.358 15.9303 25.3221 18.93 21.5773 18.93C19.8989 18.93 18.363 18.3275 17.179 17.3294Z"
+            fill="#ED0006"
+          />
+          <path
+            id="Right"
+            fillRule="evenodd"
+            clipRule="evenodd"
+            d="M17.1787 17.3294C18.6366 16.1005 19.5611 14.2719 19.5611 12.23C19.5611 10.188 18.6366 8.35941 17.1787 7.13051C18.3628 6.13247 19.8987 5.52997 21.577 5.52997C25.3219 5.52997 28.3577 8.52966 28.3577 12.23C28.3577 15.9303 25.3219 18.93 21.577 18.93C19.8987 18.93 18.3628 18.3275 17.1787 17.3294Z"
+            fill="#F9A000"
+          />
+          <path
+            id="Middle"
+            fillRule="evenodd"
+            clipRule="evenodd"
+            d="M17.1793 17.3294C18.6372 16.1005 19.5616 14.2719 19.5616 12.23C19.5616 10.188 18.6372 8.35944 17.1793 7.13054C15.7213 8.35944 14.7969 10.188 14.7969 12.23C14.7969 14.2719 15.7213 16.1005 17.1793 17.3294Z"
+            fill="#FF5E00"
+          />
+        </g>
+      </g>
+    </svg>
+  )
+}
+
 export const DownIcon = ({ size }) => {
   return (
     <svg

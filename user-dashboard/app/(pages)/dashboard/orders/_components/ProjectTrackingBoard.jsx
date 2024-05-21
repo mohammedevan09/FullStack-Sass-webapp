@@ -139,7 +139,7 @@ const ProjectTrackingBoard = ({ order, link, api }) => {
 
   useEffect(() => {
     setData(initialProjectTrackingBoard)
-  }, [])
+  }, [initialProjectTrackingBoard])
 
   return (
     <DndContext onDragEnd={onDragEnd}>

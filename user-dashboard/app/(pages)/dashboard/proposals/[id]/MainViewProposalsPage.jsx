@@ -75,7 +75,7 @@ const MainViewProposalsPage = ({ data }) => {
     if (!data?._id) {
       redirect(`/dashboard/proposals?userId=${userInfo?._id}`)
     }
-  }, [data])
+  }, [data, userInfo?._id])
 
   return (
     <div className="w-full mx-auto">

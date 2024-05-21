@@ -366,7 +366,7 @@ export const NotificationComp = ({
       setNotificationData(adjustedData)
     }
     fetchNotification()
-  }, [userInfo, currenPage])
+  }, [userInfo, currenPage, api])
 
   useEffect(() => {
     const handleNewMessage = (message) => {

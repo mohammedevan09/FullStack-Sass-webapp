@@ -120,7 +120,7 @@ const InboxAndMessaging = ({ to, itemData, chatData, messageCount }) => {
     socket.on('online-users', ({ onlineUsers }) => {
       setOnlineUsers(onlineUsers)
     })
-  }, [socket, userInfo])
+  }, [userInfo, itemData?._id])
 
   useEffect(() => {
     socket.on('message', (message) => {
@@ -130,7 +130,7 @@ const InboxAndMessaging = ({ to, itemData, chatData, messageCount }) => {
       })
     })
     scrollToBottom()
-  }, [socket, text, chat])
+  }, [text, chat])
 
   useEffect(() => {
     const groupParticipants = () => {
