@@ -7,14 +7,15 @@ import {
   getSubscriptionServiceByUserId,
   updateSubscriptionService,
 } from '../../controller/servicesController/subscriptionServiceController.js'
+import { authMiddleware, isAdmin } from '../../middleware/authMiddleware.js'
 
 const router = express.Router()
 
-router.post('/', createSubscriptionService)
-router.put('/:id', updateSubscriptionService)
+router.post('/', authMiddleware, isAdmin, createSubscriptionService)
+router.put('/:id', authMiddleware, isAdmin, updateSubscriptionService)
 router.get('/', getAllSubscriptionServices)
 router.get('/:id', getSubscriptionServiceById)
 router.get('/userId/:id', getSubscriptionServiceByUserId)
-router.delete('/:id', deleteSubscriptionServiceById)
+router.delete('/:id', authMiddleware, isAdmin, deleteSubscriptionServiceById)
 
 export default router

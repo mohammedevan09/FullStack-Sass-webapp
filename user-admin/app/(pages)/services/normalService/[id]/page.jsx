@@ -4,7 +4,7 @@ import { getAllForm } from '@/api/formApi'
 
 const page = async ({ params }) => {
   const service = await getServiceById(`normalService/${params?.id}`)
-  const forms = await getAllForm()
+  const { forms } = await getAllForm({ limit: 50 })
 
   return (
     <>

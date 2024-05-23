@@ -7,14 +7,15 @@ import {
   getHourlyServiceByUserId,
   updateHourlyService,
 } from '../../controller/servicesController/hourlyServiceController.js'
+import { authMiddleware, isAdmin } from '../../middleware/authMiddleware.js'
 
 const router = express.Router()
 
-router.post('/', createHourlyService)
-router.put('/:id', updateHourlyService)
+router.post('/', authMiddleware, isAdmin, createHourlyService)
+router.put('/:id', authMiddleware, isAdmin, updateHourlyService)
 router.get('/', getAllHourlyServices)
 router.get('/:id', getHourlyServiceById)
 router.get('/userId/:id', getHourlyServiceByUserId)
-router.delete('/:id', deleteHourlyServiceById)
+router.delete('/:id', authMiddleware, isAdmin, deleteHourlyServiceById)
 
 export default router

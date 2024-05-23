@@ -90,8 +90,9 @@ const DashboardSalesReport = ({ data }) => {
             },
             legend: {
               text: {
-                fontSize: 16,
+                fontSize: 12,
                 outlineWidth: 6,
+                fontWeight: 'Bold',
               },
             },
           },
@@ -102,8 +103,8 @@ const DashboardSalesReport = ({ data }) => {
           },
           legends: {
             text: {
-              fontSize: 16,
-              fill: 'black',
+              fontSize: 14,
+              fontWeight: '600',
             },
           },
         }}
@@ -114,12 +115,12 @@ const DashboardSalesReport = ({ data }) => {
             justify: false,
             translateX: 120,
             translateY: 10,
-            itemsSpacing: 0,
+            itemsSpacing: 10,
             itemDirection: 'left-to-right',
             itemWidth: 80,
             itemHeight: 20,
             itemOpacity: 1,
-            symbolSize: 16,
+            symbolSize: 13,
             symbolShape: 'circle',
             symbolBorderColor: 'rgba(0, 0, 0, .5)',
           },

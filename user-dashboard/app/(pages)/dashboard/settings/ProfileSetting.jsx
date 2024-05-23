@@ -16,6 +16,7 @@ import { updateUserApi, uploadProfileImageApi } from '@/api/userApi'
 import { useDispatch } from 'react-redux'
 import { setUsers } from '@/store/reducers/userReducer'
 import { resizeImage } from '@/utils/resizeImage.jsx'
+import IsAuthorized from '@/utils/IsAuthorized'
 
 const ProfileSetting = () => {
   const [logoutModal, setLogoutModal] = useState(false)
@@ -67,7 +68,8 @@ const ProfileSetting = () => {
           })
           const { profileImage } = await uploadProfileImageApi(
             userInfo?._id,
-            formData
+            formData,
+            userInfo?.token
           )
           dispatch(setUsers({ ...userData, profileImage }))
         }

@@ -3,7 +3,10 @@ import { sendResponse } from '../../utils/sendResponse.js'
 
 export const createHourlyService = async (req, res, next) => {
   try {
-    const newHourlyService = await HourlyService.create(req.body)
+    const newHourlyService = await HourlyService.create({
+      ...req.body,
+      creatorId: req.user?._id,
+    })
     return res.status(200).json(newHourlyService)
   } catch (error) {
     next(error)
@@ -12,9 +15,9 @@ export const createHourlyService = async (req, res, next) => {
 
 export const updateHourlyService = async (req, res, next) => {
   try {
-    const update = await HourlyService.findByIdAndUpdate(
-      { _id: req.params.id },
-      { ...req.body },
+    const update = await HourlyService.findOneAndUpdate(
+      { _id: req.params.id, creatorId: req.user?._id },
+      { $set: { ...req.body } },
       { new: true }
     ).populate('form')
     return sendResponse(res, update)
@@ -56,8 +59,9 @@ export const getHourlyServiceByUserId = async (req, res, next) => {
 
 export const deleteHourlyServiceById = async (req, res, next) => {
   try {
-    const deletedService = await HourlyService.findByIdAndDelete({
+    const deletedService = await HourlyService.findOneAndDelete({
       _id: req.params.id,
+      creatorId: req.user?._id,
     })
 
     if (deletedService) {

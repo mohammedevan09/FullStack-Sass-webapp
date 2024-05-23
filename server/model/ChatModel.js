@@ -39,11 +39,17 @@ export const messageSchema = new mongoose.Schema(
 const ChatSchema = new mongoose.Schema(
   {
     participants: [participantSchema],
-    messages: [messageSchema],
+    messages: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Message',
+      },
+    ],
   },
   { timestamps: true }
 )
 
+export const Message = mongoose.model('Message', messageSchema)
 const Chat = mongoose.model('Chat', ChatSchema)
 
 export default Chat

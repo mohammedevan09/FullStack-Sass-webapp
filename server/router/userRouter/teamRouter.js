@@ -9,16 +9,17 @@ import {
   removeAccessTeam,
   updateTeam,
 } from '../../controller/userController/teamController.js'
+import { authMiddleware } from '../../middleware/authMiddleware.js'
 
 const router = express.Router()
 
-router.post('/', createTeam)
+router.post('/', authMiddleware, createTeam)
 router.post('/login', loginTeam)
 router.get('/all/:creatorId', getAllTeams)
 router.get('/:id', getTeamById)
-router.put('/access/:id', giveAccessTeam)
-router.put('/removeAccess/:id', removeAccessTeam)
-router.put('/:id', updateTeam)
-router.delete('/:id', deleteTeam)
+router.put('/access/:id', authMiddleware, giveAccessTeam)
+router.put('/removeAccess/:id', authMiddleware, removeAccessTeam)
+router.put('/:id', authMiddleware, updateTeam)
+router.delete('/:id', authMiddleware, deleteTeam)
 
 export default router

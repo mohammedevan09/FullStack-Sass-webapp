@@ -1,4 +1,4 @@
-import Chat from '../model/ChatModel.js'
+import Chat, { Message } from '../model/ChatModel.js'
 import { sendResponse } from '../utils/sendResponse.js'
 
 export const createChatMessage = async (req, res, next, ChatModel) => {
@@ -39,12 +39,15 @@ export const addMessageToChat = async (req, res, next) => {
       return res.status(404).json({ message: 'Chat not found' })
     }
 
-    const newMessage = {
+    const newMessage = new Message({
+      chat: chat._id,
       sender: sender,
       content: content,
-    }
+    })
 
-    chat.messages.push(newMessage)
+    await newMessage.save()
+
+    chat.messages.push(newMessage._id)
 
     await chat.save()
 

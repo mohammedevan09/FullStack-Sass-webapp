@@ -19,7 +19,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   const cookieStore = cookies()
-  const refreshToken = cookieStore.get('refreshToken')
+  const refreshToken = cookieStore.get('adminRefreshToken')
   return (
     <html lang="en">
       <body className={roboto.className}>

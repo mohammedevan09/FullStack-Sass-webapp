@@ -3,7 +3,10 @@ import { sendResponse } from '../../utils/sendResponse.js'
 
 export const createNormalService = async (req, res, next) => {
   try {
-    const newNormalService = await NormalService.create(req.body)
+    const newNormalService = await NormalService.create({
+      ...req.body,
+      creatorId: req.user?._id,
+    })
     return res.status(200).json(newNormalService)
   } catch (error) {
     next(error)
@@ -12,11 +15,12 @@ export const createNormalService = async (req, res, next) => {
 
 export const updateNormalService = async (req, res, next) => {
   try {
-    const update = await NormalService.findByIdAndUpdate(
-      { _id: req.params.id },
-      { ...req.body },
+    const update = await NormalService.findOneAndUpdate(
+      { _id: req.params.id, creatorId: req.user?._id },
+      { $set: { ...req.body } },
       { new: true }
     ).populate('form')
+
     return sendResponse(res, update)
   } catch (error) {
     next(error)
@@ -56,8 +60,9 @@ export const getNormalServiceByUserId = async (req, res, next) => {
 
 export const deleteNormalServiceById = async (req, res, next) => {
   try {
-    const deletedService = await NormalService.findByIdAndDelete({
+    const deletedService = await NormalService.findOneAndDelete({
       _id: req.params.id,
+      creatorId: req.user?._id,
     })
 
     if (deletedService) {

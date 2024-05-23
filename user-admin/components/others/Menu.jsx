@@ -209,10 +209,10 @@ const Menu = () => {
             <div className="text-center py-32">
               <motion.div whileHover={{ scale: 1.04 }}>
                 <Link
-                  href={'/settings'}
-                  className={`flex justify-center items-center gap-1 font-medium lg:px-[51px] md:px-[20px] px-[10px] py-3 mr-2 ${
+                  href={`/settings?userId=${userInfo?._id}`}
+                  className={`flex justify-center items-center gap-1 font-medium pr-3 py-3 rounded-sm ${
                     activeSegment === 'settings' &&
-                    'text-blue-800 bg-[#0000ff30]'
+                    'text-blue-800 bg-[#ffffffcf]'
                   }`}
                   onClick={() => {
                     dispatch(setOpenMenu(false))

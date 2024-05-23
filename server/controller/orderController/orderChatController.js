@@ -33,32 +33,44 @@ export const getChatByOrderId = async (req, res, next) => {
         },
       },
       {
+        $lookup: {
+          from: 'messages',
+          localField: 'messages',
+          foreignField: '_id',
+          as: 'messageDetails',
+        },
+      },
+      {
         $project: {
           _id: 1,
           participants: {
             $concatArrays: ['$userParticipants', '$teamParticipants'],
           },
           orderId: 1,
-          messages: {
-            $slice: [{ $reverseArray: '$messages' }, (page - 1) * limit, limit],
+          messageDetails: {
+            $slice: [
+              { $reverseArray: '$messageDetails' },
+              (page - 1) * limit,
+              limit,
+            ],
           },
         },
       },
       {
         $unwind: {
-          path: '$messages',
+          path: '$messageDetails',
           preserveNullAndEmptyArrays: true,
         },
       },
       {
-        $sort: { 'messages.createdAt': 1 },
+        $sort: { 'messageDetails.createdAt': 1 },
       },
       {
         $group: {
           _id: '$_id',
           participants: { $first: '$participants' },
           orderId: { $first: '$orderId' },
-          messages: { $push: '$messages' },
+          messageDetails: { $push: '$messageDetails' },
         },
       },
       {
@@ -80,7 +92,7 @@ export const getChatByOrderId = async (req, res, next) => {
           },
           orderId: 1,
           messages: {
-            $slice: ['$messages', page * limit],
+            $slice: ['$messageDetails', page * limit],
           },
         },
       },
@@ -93,8 +105,16 @@ export const getChatByOrderId = async (req, res, next) => {
         },
       },
       {
+        $lookup: {
+          from: 'messages',
+          localField: 'messages',
+          foreignField: '_id',
+          as: 'messageDetails',
+        },
+      },
+      {
         $project: {
-          messageCount: { $size: '$messages' },
+          messageCount: { $size: '$messageDetails' },
         },
       },
     ]

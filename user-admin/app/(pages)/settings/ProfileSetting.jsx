@@ -67,7 +67,8 @@ const ProfileSetting = () => {
           })
           const { profileImage } = await uploadProfileImageApi(
             userInfo?._id,
-            formData
+            formData,
+            userInfo?.token
           )
           dispatch(setUsers({ ...userData, profileImage }))
         }

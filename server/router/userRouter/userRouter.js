@@ -34,7 +34,12 @@ router.get('/logout', logoutUser)
 router.get('/findUser', authMiddleware, getUserById)
 router.put('/update', authMiddleware, updateUser)
 router.put('/block/:id', authMiddleware, isAdmin, blockUser)
-router.put('/upload/:id', uploadPhoto.array('images', 1), uploadProfilePicture)
+router.put(
+  '/upload/:id',
+  authMiddleware,
+  uploadPhoto.array('images', 1),
+  uploadProfilePicture
+)
 
 router.get('/:id/verify/:token/', verifyEmail)
 

@@ -3,7 +3,10 @@ import { sendResponse } from '../../utils/sendResponse.js'
 
 export const createSubscriptionService = async (req, res, next) => {
   try {
-    const newSubscriptionService = await SubscriptionService.create(req.body)
+    const newSubscriptionService = await SubscriptionService.create({
+      ...req.body,
+      creatorId: req.user?._id,
+    })
     return res.status(200).json(newSubscriptionService)
   } catch (error) {
     next(error)
@@ -12,9 +15,9 @@ export const createSubscriptionService = async (req, res, next) => {
 
 export const updateSubscriptionService = async (req, res, next) => {
   try {
-    const update = await SubscriptionService.findByIdAndUpdate(
-      { _id: req.params.id },
-      { ...req.body },
+    const update = await SubscriptionService.findOneAndUpdate(
+      { _id: req.params.id, creatorId: req.user?._id },
+      { $set: { ...req.body } },
       { new: true }
     ).populate('form')
     return sendResponse(res, update)
@@ -56,8 +59,9 @@ export const getSubscriptionServiceByUserId = async (req, res, next) => {
 
 export const deleteSubscriptionServiceById = async (req, res, next) => {
   try {
-    const deletedService = await SubscriptionService.findByIdAndDelete({
+    const deletedService = await SubscriptionService.findOneAndDelete({
       _id: req.params.id,
+      creatorId: req.user?._id,
     })
 
     if (deletedService) {

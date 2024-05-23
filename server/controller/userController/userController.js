@@ -42,6 +42,7 @@ export const createUser = async (req, res, next) => {
       res.cookie('refreshToken', newRefreshToken, {
         httpOnly: true,
         secure: true,
+
         maxAge: 90 * 24 * 60 * 60 * 1000,
       })
 
@@ -79,6 +80,7 @@ export const loginUser = async (req, res, next) => {
         res.cookie('refreshToken', newRefreshToken, {
           httpOnly: true,
           secure: true,
+
           maxAge: 90 * 24 * 60 * 60 * 1000,
         })
 
@@ -150,12 +152,6 @@ export const googleLoginUser = async (req, res, next) => {
       const { password, refreshToken, ...newUserWithoutPassAndToken } =
         registeredUser._doc
 
-      res.cookie('refreshToken', newRefreshToken, {
-        httpOnly: true,
-        secure: true,
-        maxAge: 90 * 24 * 60 * 60 * 1000,
-      })
-
       return res.status(200).json({
         ...newUserWithoutPassAndToken,
         token: generateToken(newUser?._id),
@@ -171,6 +167,7 @@ export const logoutUser = (req, res, next) => {
   //   console.log(cookie.refreshToken)
   try {
     res.clearCookie('refreshToken')
+    res.clearCookie('adminRefreshToken')
     return res.status(200).send('Logout successful')
   } catch (error) {
     next(error)
@@ -196,7 +193,7 @@ export const adminLogin = async (req, res, next) => {
         const { password, refreshToken, ...userWithoutPassAndToken } =
           loggedUser._doc
 
-        res.cookie('refreshToken', newRefreshToken, {
+        res.cookie('adminRefreshToken', newRefreshToken, {
           httpOnly: true,
           secure: true,
           maxAge: 90 * 24 * 60 * 60 * 1000,

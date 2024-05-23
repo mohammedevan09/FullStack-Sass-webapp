@@ -71,8 +71,12 @@ const AddNewService = ({ openModal, setOpenModal }) => {
         images.forEach((image) => {
           formData.append(`images`, image)
         })
-        const serviceData = await createServiceApi(active, data)
-        await uploadSvgIcon(serviceData?._id, formData)
+        const serviceData = await createServiceApi(
+          active,
+          data,
+          userInfo?.token
+        )
+        await uploadSvgIcon(serviceData?._id, formData, userInfo?.token)
         toast.success(`New Service created successfully!`)
         window.location.reload()
         setOpenModal(false)

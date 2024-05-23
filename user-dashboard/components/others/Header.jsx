@@ -358,7 +358,7 @@ export const NotificationComp = ({
       setNotificationData(resData)
     }
     fetchNotification()
-  }, [userInfo, currenPage, api])
+  }, [userInfo?._id, currenPage])
 
   useEffect(() => {
     const handleNewMessage = (message) => {
@@ -385,7 +385,7 @@ export const NotificationComp = ({
     return () => {
       socket.off('messageNotification', handleNewMessage)
     }
-  }, [notificationData?.unreadByAdminCount, notificationData])
+  }, [notificationData?.unreadByAdminCount])
 
   return (
     <>

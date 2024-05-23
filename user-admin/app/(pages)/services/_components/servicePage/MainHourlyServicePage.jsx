@@ -16,6 +16,7 @@ import { updateService, uploadSvgIcon } from '@/api/serviceApi'
 import HourlyPricing from '../HourlyPricing'
 import EditHourlyPricingService from '@/components/modals/serviceModal/EditHourlyPricingService'
 import HourlyAvailableService from '../HourlyAvailableService.jsx'
+import { useSelector } from 'react-redux'
 
 const MainHourlyServicePage = ({ service, forms }) => {
   const [serviceData, setServiceData] = useState(service)
@@ -29,6 +30,8 @@ const MainHourlyServicePage = ({ service, forms }) => {
 
   const router = useRouter()
   const pathname = usePathname()
+
+  const { userInfo } = useSelector((state) => state?.user)
 
   // console.log(serviceData)
 
@@ -44,27 +47,24 @@ const MainHourlyServicePage = ({ service, forms }) => {
   })
 
   const handleClick = async (data) => {
-    // console.log(data, isValid, isDirty)
+    let updatedImage
     if (image) {
       toast.loading('Processing, please wait!', { duration: 1000 })
       const formData = new FormData()
       image.forEach((img) => {
         formData.append(`images`, img)
       })
-      const updatedImage = await uploadSvgIcon(data?._id, formData)
-      setValue('icon', updatedImage?.icon)
-      setImage(null)
-      setServiceData({ ...serviceData, icon: updatedImage?.icon })
-      toast.success('Your service icon is updated!')
-      reset()
+      updatedImage = await uploadSvgIcon(data?._id, formData, userInfo?.token)
     }
-    if (isValid && isDirty) {
-      const updatedData = await updateService(pathname, data)
-      setServiceData(updatedData)
-      setImage(null)
-      toast.success('Your service updated successfully!')
-      reset()
-    }
+    const updatedData = await updateService(
+      pathname,
+      { ...data, ...(updatedImage?.icon && { icon: updatedImage.icon }) },
+      userInfo?.token
+    )
+    setServiceData(updatedData)
+    setImage(null)
+    toast.success('Your service updated successfully!')
+    reset(updatedData)
   }
 
   return (

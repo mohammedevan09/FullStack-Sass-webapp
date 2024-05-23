@@ -6,6 +6,7 @@ import { motion } from 'framer-motion'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { deleteService } from '@/api/serviceApi'
+import { useSelector } from 'react-redux'
 
 const DeleteService = ({
   openModal,
@@ -16,10 +17,12 @@ const DeleteService = ({
 }) => {
   const [value, setValue] = useState('')
 
+  const { userInfo } = useSelector((state) => state?.user)
+
   const handleClick = async () => {
     if (value === serviceData?.name) {
       try {
-        await deleteService(pathname)
+        await deleteService(pathname, userInfo?.token)
         router.push(`/services`)
         toast.success(`Your service ${serviceData?.name} is deleted!`)
         setOpenModal(false)

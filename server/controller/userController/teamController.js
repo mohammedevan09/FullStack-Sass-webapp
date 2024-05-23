@@ -63,11 +63,17 @@ export const loginTeam = async (req, res, next) => {
           ...userWithoutPassAndToken
         } = loggedUser._doc
 
-        res.cookie('refreshToken', newRefreshToken, {
-          httpOnly: true,
-          secure: true,
-          maxAge: 90 * 24 * 60 * 60 * 1000,
-        })
+        res.cookie(
+          findUser?.role === 'userMember'
+            ? 'refreshToken'
+            : 'adminRefreshToken',
+          newRefreshToken,
+          {
+            httpOnly: true,
+            secure: true,
+            maxAge: 90 * 24 * 60 * 60 * 1000,
+          }
+        )
 
         return res.status(200).json({
           ...userWithoutPassAndToken,

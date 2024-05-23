@@ -4,7 +4,7 @@ import MainServicePage from '../../_components/servicePage/MainServicePage'
 
 const page = async ({ params }) => {
   const service = await getServiceById(`subscriptionService/${params?.id}`)
-  const forms = await getAllForm()
+  const { forms } = await getAllForm({ limit: 50 })
 
   return (
     <>

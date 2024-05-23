@@ -4,7 +4,7 @@ import MainHourlyServicePage from '../../_components/servicePage/MainHourlyServi
 
 const page = async ({ params }) => {
   const service = await getServiceById(`hourlyService/${params?.id}`)
-  const forms = await getAllForm()
+  const { forms } = await getAllForm({ limit: 50 })
 
   return (
     <>

@@ -119,7 +119,7 @@ const AddNewTeamMemberModal = ({
           images.forEach((image) => {
             formData.append(`images`, image)
           })
-          await uploadProfileImageApi(userData?._id, formData)
+          await uploadProfileImageApi(userData?._id, formData, userInfo?.token)
         }
         reset()
         setImages([])
