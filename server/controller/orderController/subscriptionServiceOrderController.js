@@ -1,14 +1,15 @@
 import OrderChat from '../../model/orderModels/orderChatModel.js'
 import SubscriptionServiceOrder from '../../model/orderModels/subscriptionServiceOrderModel.js'
 import { sendResponse } from '../../utils/sendResponse.js'
-import {
-  createNotification,
-  updateNotification,
-} from '../notificationController/notificationController.js'
+import { createNotification } from '../notificationController/notificationController.js'
 
 export const createSubscriptionServiceOrder = async (req, res, next) => {
   try {
-    const createOrder = await SubscriptionServiceOrder.create(req.body)
+    const createOrder = await SubscriptionServiceOrder.create({
+      ...req.body,
+      userId: req.user?._id,
+    })
+
     await createNotification({
       content: createOrder?.description,
       title: createOrder?.title,
@@ -39,31 +40,6 @@ export const getSubscriptionServiceOrderById = async (req, res, next) => {
         model: 'Service',
       })
       .exec()
-    return sendResponse(res, order)
-  } catch (error) {
-    next(error)
-  }
-}
-
-export const updateSubscriptionServiceOrderById = async (req, res, next) => {
-  try {
-    const order = await SubscriptionServiceOrder.findByIdAndUpdate(
-      {
-        _id: req.params.id,
-      },
-      req.body,
-      { new: true }
-    )
-
-    await updateNotification({
-      content: order?.description,
-      title: order?.title,
-      type: 'Order',
-      to: 'subscription',
-      id: order?._id,
-      userId: order.userId,
-    })
-
     return sendResponse(res, order)
   } catch (error) {
     next(error)

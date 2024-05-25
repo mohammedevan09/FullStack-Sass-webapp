@@ -7,6 +7,7 @@ import ErrorMessage from '@/components/others/ErrorMessage'
 import { updateOrderApi } from '@/api/orderApi'
 import toast from 'react-hot-toast'
 import Labels from '@/components/others/Labels'
+import { useSelector } from 'react-redux'
 
 const EditOrderModal = ({
   openModal,
@@ -21,11 +22,13 @@ const EditOrderModal = ({
   link,
   reset,
 }) => {
+  const { userInfo } = useSelector((state) => state?.user)
+
   const handleEdit = async (data) => {
     if (isValid) {
       try {
         toast.loading('Processing, please wait!', { duration: 600 })
-        const updated = await updateOrderApi(data, link)
+        const updated = await updateOrderApi(data, link, userInfo?.token)
         setOrderData(updated)
         reset(updated)
         toast.success('Updated successfully!')

@@ -1,9 +1,15 @@
+import IsAuthorized from '@/utils/IsAuthorized'
 import axios from 'axios'
 
 const host = process.env.NEXT_PUBLIC_HOST
 
 export const createOrderApi = async (sendData, link) => {
-  const data = await axios.post(`${host}/api/order/${link}`, sendData)
+  const authorizedToken = await IsAuthorized(token)
+  const data = await axios.post(`${host}/api/order/${link}`, sendData, {
+    headers: {
+      Authorization: `Bearer ${authorizedToken}`,
+    },
+  })
   return data?.data
 }
 
@@ -18,7 +24,12 @@ export const getAllOrders = async (queryData, id = '') => {
   }
 }
 
-export const updateOrderApi = async (sendData, link) => {
-  const data = await axios.put(`${host}/api/order/${link}`, sendData)
+export const updateOrderApi = async (sendData, link, token) => {
+  const authorizedToken = await IsAuthorized(token)
+  const data = await axios.put(`${host}/api/order/${link}`, sendData, {
+    headers: {
+      Authorization: `Bearer ${authorizedToken}`,
+    },
+  })
   return data?.data
 }

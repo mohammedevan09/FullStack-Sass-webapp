@@ -7,8 +7,11 @@ import RemoveTeamAccessModal from '@/components/modals/settingsModals/RemoveTeam
 import { FilterByIdIcon } from '@/staticData/Icon'
 import { useState } from 'react'
 import DeleteModal from '../modals/DeleteModal'
+import { useSelector } from 'react-redux'
 
 const Action = ({ data, chat, accessType, to, deleteApi }) => {
+  const { userInfo } = useSelector((state) => state?.user)
+
   const actionData = [
     { title: 'Delete', type: 'DELETE' },
     { title: 'Grant Access', type: 'ACCESS' },
@@ -82,12 +85,18 @@ const Action = ({ data, chat, accessType, to, deleteApi }) => {
                 accessType: accessType,
                 _id: data?._id,
               },
-              val?.value?._id
+              val?.value?._id,
+              userInfo?.token
             )
-            await addParticipantChatApi(to, chat?._id, {
-              participantId: val?.value?._id,
-              participantType: 'Team',
-            })
+            await addParticipantChatApi(
+              to,
+              chat?._id,
+              {
+                participantId: val?.value?._id,
+                participantType: 'Team',
+              },
+              userInfo?.token
+            )
           }}
         />
       )}
@@ -105,10 +114,15 @@ const Action = ({ data, chat, accessType, to, deleteApi }) => {
               },
               val?.value?._id
             )
-            await removeParticipantChatApi(to, chat?._id, {
-              participantId: val?.value?._id,
-              participantType: 'Team',
-            })
+            await removeParticipantChatApi(
+              to,
+              chat?._id,
+              {
+                participantId: val?.value?._id,
+                participantType: 'Team',
+              },
+              userInfo?.token
+            )
           }}
         />
       )}

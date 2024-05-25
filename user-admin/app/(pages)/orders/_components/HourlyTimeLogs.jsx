@@ -12,6 +12,7 @@ import {
 import { updateOrderApi } from '@/api/orderApi'
 import RemoveHourlyTimeLogsModal from '@/components/modals/orderModal/RemoveHourlyTimeLogsModal'
 import TablePagination from '@/components/others/TablePagination'
+import { useSelector } from 'react-redux'
 
 const HourlyTimeLogs = ({
   order,
@@ -22,12 +23,15 @@ const HourlyTimeLogs = ({
   watch,
   setOrderData,
 }) => {
+  const { userInfo } = useSelector((state) => state?.user)
+
   const [OpenModal, setOpenModal] = useState(false)
   const [removeModal, setRemoveModal] = useState(false)
   const [logsLength, setLogsLength] = useState(order?.hourlyTimeLogs?.length)
 
   const handleClick = async (data) => {
     try {
+      toast.loading('Processing, please wait!', { duration: 600 })
       let totalTimeString = calculateTotalTime(
         data?.hourlyTimeLogs?.[logsLength]?.startTime,
         data?.hourlyTimeLogs?.[logsLength]?.endTime
@@ -44,7 +48,8 @@ const HourlyTimeLogs = ({
             remainHours: subtractTime(order?.remainHours, totalTimeString),
             spentHours: addTime(order?.spentHours, totalTimeString),
           },
-          `hourlyService/${order?._id}`
+          `hourlyService/${order?._id}`,
+          userInfo?.token
         )
 
         setOrderData(updated)
@@ -74,7 +79,8 @@ const HourlyTimeLogs = ({
             remainHours: subtractTime(order?.remainHours, totalTimeString),
             spentHours: addTime(order?.spentHours, totalTimeString),
           },
-          `hourlyService/${order?._id}`
+          `hourlyService/${order?._id}`,
+          userInfo?.token
         )
         setOrderData(updated)
       }

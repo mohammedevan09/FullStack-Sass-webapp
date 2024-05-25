@@ -1,3 +1,4 @@
+import IsAuthorized from '@/utils/IsAuthorized'
 import axios from 'axios'
 
 const host = process.env.NEXT_PUBLIC_HOST
@@ -17,18 +18,30 @@ export const updateChatApi = async (to, id, sendData) => {
   return data?.data
 }
 
-export const addParticipantChatApi = async (to, id, sendData) => {
+export const addParticipantChatApi = async (to, id, sendData, token) => {
+  const authorizedToken = await IsAuthorized(token)
   const data = await axios.put(
     `${host}/api/${to}/chat/addParticipant/${id}`,
-    sendData
+    sendData,
+    {
+      headers: {
+        Authorization: `Bearer ${authorizedToken}`,
+      },
+    }
   )
   return data?.data
 }
 
-export const removeParticipantChatApi = async (to, id, sendData) => {
+export const removeParticipantChatApi = async (to, id, sendData, token) => {
+  const authorizedToken = await IsAuthorized(token)
   const data = await axios.put(
     `${host}/api/${to}/chat/removeParticipant/${id}`,
-    sendData
+    sendData,
+    {
+      headers: {
+        Authorization: `Bearer ${authorizedToken}`,
+      },
+    }
   )
   return data?.data
 }

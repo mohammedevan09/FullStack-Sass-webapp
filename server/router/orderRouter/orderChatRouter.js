@@ -8,6 +8,7 @@ import {
   updateChatById,
 } from '../../controller/chatController.js'
 import OrderChat from '../../model/orderModels/orderChatModel.js'
+import { authMiddleware } from '../../middleware/authMiddleware.js'
 
 const router = express.Router()
 
@@ -18,10 +19,11 @@ router.post('/', async (req, res, next) => {
     next(error)
   }
 })
+
 router.put('/:id', addMessageToChat)
 router.get('/:orderId', getChatByOrderId)
 router.put('/update/:id', updateChatById)
-router.put('/addParticipant/:id', addChatParticipants)
-router.put('/removeParticipant/:id', removeChatParticipants)
+router.put('/addParticipant/:id', authMiddleware, addChatParticipants)
+router.put('/removeParticipant/:id', authMiddleware, removeChatParticipants)
 
 export default router

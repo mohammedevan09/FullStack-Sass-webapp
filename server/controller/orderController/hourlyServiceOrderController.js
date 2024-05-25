@@ -2,14 +2,14 @@ import HourlyServiceOrder from '../../model/orderModels/hourlyServiceOrderModel.
 import OrderChat from '../../model/orderModels/orderChatModel.js'
 import { sendResponse } from '../../utils/sendResponse.js'
 import mongoose from 'mongoose'
-import {
-  createNotification,
-  updateNotification,
-} from '../notificationController/notificationController.js'
+import { createNotification } from '../notificationController/notificationController.js'
 
 export const createHourlyServiceOrder = async (req, res, next) => {
   try {
-    const createOrder = await HourlyServiceOrder.create(req.body)
+    const createOrder = await HourlyServiceOrder.create({
+      ...req.body,
+      userId: req.user?._id,
+    })
 
     await createNotification({
       content: createOrder?.description,
@@ -107,53 +107,6 @@ export const getHourlyServiceOrderById = async (req, res, next) => {
     ])
 
     const result = order[0]
-    return sendResponse(res, result)
-  } catch (error) {
-    next(error)
-  }
-}
-
-export const updateHourlyServiceOrderById = async (req, res, next) => {
-  try {
-    const { page = 1, limit = 10 } = req.query
-    const order = await HourlyServiceOrder.findByIdAndUpdate(
-      {
-        _id: req.params.id,
-      },
-      req.body,
-      { new: true }
-    )
-      .populate({
-        path: 'formId',
-        model: 'Form',
-        select: 'fields',
-      })
-      .exec()
-
-    if (!order) {
-      return sendResponse(res, 'Hourly Service Order not found')
-    }
-
-    const reversedHourlyTimeLogs = order.hourlyTimeLogs.slice().reverse()
-
-    const start = (parseInt(page) - 1) * parseInt(limit)
-    const end = start + parseInt(limit)
-    const hourlyTimeLogs = reversedHourlyTimeLogs.slice(start, end)
-
-    const result = {
-      ...order.toObject(),
-      hourlyTimeLogs,
-    }
-
-    await updateNotification({
-      content: order?.description,
-      title: order?.title,
-      type: 'Order',
-      to: 'project',
-      id: order?._id,
-      userId: order.userId,
-    })
-
     return sendResponse(res, result)
   } catch (error) {
     next(error)

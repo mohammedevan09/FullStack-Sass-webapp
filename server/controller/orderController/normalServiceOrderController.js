@@ -5,10 +5,7 @@ import Stripe from 'stripe'
 import NormalServiceOrder from '../../model/orderModels/normalServiceOrderModel.js'
 import { sendResponse } from '../../utils/sendResponse.js'
 import OrderChat from '../../model/orderModels/orderChatModel.js'
-import {
-  createNotification,
-  updateNotification,
-} from '../notificationController/notificationController.js'
+import { createNotification } from '../notificationController/notificationController.js'
 
 const stripe = Stripe(process.env.SECURITY_KEY)
 
@@ -16,7 +13,10 @@ const clientURL = process.env.CLIENT_URL
 
 export const createNormalServiceOrder = async (req, res, next) => {
   try {
-    const createOrder = await NormalServiceOrder.create(req.body)
+    const createOrder = await NormalServiceOrder.create({
+      ...req.body,
+      userId: req.user?._id,
+    })
 
     if (createOrder?.payment_method_types === 'card') {
       const customer = await stripe.customers.create({
@@ -83,31 +83,6 @@ export const getNormalServiceOrderById = async (req, res, next) => {
         model: 'Service',
       })
       .exec()
-
-    return sendResponse(res, order)
-  } catch (error) {
-    next(error)
-  }
-}
-
-export const updateNormalServiceOrderById = async (req, res, next) => {
-  try {
-    const order = await NormalServiceOrder.findByIdAndUpdate(
-      {
-        _id: req.params.id,
-      },
-      req.body,
-      { new: true }
-    )
-
-    await updateNotification({
-      content: order?.description,
-      title: order?.title,
-      type: 'Order',
-      to: 'project',
-      id: order?._id,
-      userId: order.userId,
-    })
 
     return sendResponse(res, order)
   } catch (error) {

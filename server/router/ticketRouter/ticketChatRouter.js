@@ -9,6 +9,7 @@ import {
 } from '../../controller/chatController.js'
 import TicketChat from '../../model/ticketModels/ticketChatModels.js'
 import { getChatByTicketId } from '../../controller/ticketController/ticketChatController.js'
+import { authMiddleware } from '../../middleware/authMiddleware.js'
 
 const router = express.Router()
 
@@ -22,7 +23,7 @@ router.post('/', async (req, res, next) => {
 router.put('/:id', addMessageToChat)
 router.get('/:ticketId', getChatByTicketId)
 router.put('/update/:id', updateChatById)
-router.put('/addParticipant/:id', addChatParticipants)
-router.put('/removeParticipant/:id', removeChatParticipants)
+router.put('/addParticipant/:id', authMiddleware, addChatParticipants)
+router.put('/removeParticipant/:id', authMiddleware, removeChatParticipants)
 
 export default router

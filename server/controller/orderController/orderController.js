@@ -1,6 +1,7 @@
-import mongoose, { Types } from 'mongoose'
+import { Types } from 'mongoose'
 import Order from '../../model/orderModels/orderModel.js'
 import { sendResponse } from '../../utils/sendResponse.js'
+import { updateNotification } from '../notificationController/notificationController.js'
 
 export const createStripeOrder = async (customer, data, res) => {
   // console.log(customer, data)
@@ -107,6 +108,75 @@ export const getAllOrder = async (req, res, next) => {
     }
 
     return sendResponse(res, response)
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const updateOrderById = async (req, res, next, to = 'project') => {
+  const { page = 1, limit = 10 } = req.query
+
+  try {
+    const order = await Order.findOne({
+      _id: req.params.id,
+    }).populate({ path: 'serviceId', model: 'Service', select: 'creatorId' })
+    if (!order) {
+      return res.status(404).send({ message: 'Order not found' })
+    }
+
+    const restrictedFields = [
+      'payment_info',
+      'payment_method_types',
+      'payment_status',
+    ]
+
+    if (req.user.role === 'user' || req.user.role === 'userMember') {
+      restrictedFields.forEach((field) => {
+        if (req.body.hasOwnProperty(field)) {
+          delete req.body[field]
+        }
+      })
+    }
+
+    if (
+      order.userId.toString() === req.user._id.toString() ||
+      order.userId.toString() === req.user.creatorId?.toString() ||
+      order.serviceId?.creatorId.toString() === req.user._id.toString() ||
+      order.serviceId?.creatorId.toString() === req.user.creatorId?.toString()
+    ) {
+      Object.keys(req.body).forEach((key) => {
+        order[key] = req.body[key]
+      })
+
+      await order.save()
+
+      await updateNotification({
+        content: order.description,
+        title: order.title,
+        type: 'Order',
+        to: to,
+        id: order._id,
+        userId: order.userId,
+      })
+
+      if (order?.__t === 'HourlyServiceOrder') {
+        const reversedHourlyTimeLogs = order.hourlyTimeLogs.slice().reverse()
+
+        const start = (parseInt(page) - 1) * parseInt(limit)
+        const end = start + parseInt(limit)
+        const hourlyTimeLogs = reversedHourlyTimeLogs.slice(start, end)
+
+        const result = {
+          ...order.toObject(),
+          hourlyTimeLogs,
+        }
+        return sendResponse(res, result)
+      } else {
+        return sendResponse(res, order)
+      }
+    } else {
+      return res.status(403).json({ message: 'You are not permitted' })
+    }
   } catch (error) {
     next(error)
   }

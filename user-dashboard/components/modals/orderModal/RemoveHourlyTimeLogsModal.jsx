@@ -12,6 +12,7 @@ import {
   calculateTotalTime,
   subtractTime,
 } from '@/app/(pages)/dashboard/orders/_components/HourlyTimeLogs'
+import { useSelector } from 'react-redux'
 
 const RemoveHourlyTimeLogsModal = ({
   openModal,
@@ -22,11 +23,14 @@ const RemoveHourlyTimeLogsModal = ({
   order,
   logsLength,
 }) => {
+  const { userInfo } = useSelector((state) => state?.user)
+
   const [value, setValue] = useState('')
 
   const handleDelete = async (data) => {
     if (value === order?.title) {
       try {
+        toast.loading('Processing, please wait!', { duration: 600 })
         let totalTimeString = calculateTotalTime(
           order?.hourlyTimeLogs?.[logsLength]?.startTime,
           order?.hourlyTimeLogs?.[logsLength]?.endTime
@@ -41,7 +45,8 @@ const RemoveHourlyTimeLogsModal = ({
             remainHours: addTime(order?.remainHours, totalTimeString),
             spentHours: subtractTime(order?.spentHours, totalTimeString),
           },
-          `hourlyService/${order?._id}`
+          `hourlyService/${order?._id}`,
+          userInfo?.token
         )
         const filteredHourlyTimeLogs = order?.hourlyTimeLogs.filter(
           (_, index) => index !== logsLength

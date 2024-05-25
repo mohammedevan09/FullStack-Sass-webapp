@@ -78,7 +78,7 @@ const MainTeam = ({ teamData, totalDocsCount }) => {
           openModal={removeModal}
           setOpenModal={setRemoveModal}
           deleteDataName={editableMember?.fullName}
-          api={() => deleteTeamApi(editableMember?._id)}
+          api={() => deleteTeamApi(editableMember?._id, userInfo?.token)}
           isNotDeletableMessage={
             isNotDeletable &&
             'has access to some of the things! Please remove them first!'

@@ -1,4 +1,4 @@
-import mongoose, { Types } from 'mongoose'
+import { Types } from 'mongoose'
 import bcrypt from 'bcrypt'
 import { sendResponse } from '../../utils/sendResponse.js'
 import Team from '../../model/userModels/teamModel.js'
@@ -10,6 +10,12 @@ import {
 } from '../../utils/sendNotificationEmail.js'
 
 export const createTeam = async (req, res, next) => {
+  if (req.user?.role === 'userMember' || req.user?.role === 'adminMember') {
+    return res
+      .status(500)
+      .json({ message: 'Team members not allowed to create Team!' })
+  }
+
   const { email, password: pass } = req.body
   try {
     const findUser = await Team.findOne({ email })
@@ -20,6 +26,7 @@ export const createTeam = async (req, res, next) => {
 
       const newUser = await Team.create({
         ...req.body,
+        creatorId: req.user?._id,
         password: hashedPass,
       })
 
@@ -94,7 +101,10 @@ export const giveAccessTeam = async (req, res, next) => {
   const { accessType, _id } = req.body
 
   try {
-    const user = await Team.findById(req.params.id)
+    const user = await Team.findOne({
+      _id: req.params.id,
+      creatorId: req.user?._id,
+    })
 
     const isAlreadyHaveAccess =
       user?.access?.[accessType]?.accessOf?.includes(_id)
@@ -106,10 +116,7 @@ export const giveAccessTeam = async (req, res, next) => {
       await user.save()
     }
 
-    const { password, refreshToken, originalPass, ...userWithoutPassAndToken } =
-      user._doc
-
-    return sendResponse(res, userWithoutPassAndToken)
+    return sendResponse(res, { message: 'Access Granted' })
   } catch (error) {
     next(error)
   }
@@ -119,7 +126,10 @@ export const removeAccessTeam = async (req, res, next) => {
   const { accessType, _id } = req.body
 
   try {
-    const user = await Team.findById(req.params.id)
+    const user = await Team.findOne({
+      _id: req.params.id,
+      creatorId: req.user?._id,
+    })
 
     const accessIndex = user?.access?.[accessType]?.accessOf.findIndex(
       (accessId) => accessId?.toString() === _id
@@ -132,10 +142,7 @@ export const removeAccessTeam = async (req, res, next) => {
     user.access[accessType].accessOf.splice(accessIndex, 1)
     await user.save()
 
-    const { password, refreshToken, originalPass, ...userWithoutPassAndToken } =
-      user._doc
-
-    return sendResponse(res, userWithoutPassAndToken)
+    return sendResponse(res, { message: 'Access Removed' })
   } catch (error) {
     next(error)
   }
@@ -226,8 +233,11 @@ export const updateTeam = async (req, res, next) => {
 export const deleteTeam = async (req, res, next) => {
   const { id } = req.params
   try {
-    const user = await Team.findByIdAndDelete(id)
-    return sendResponse(res, user)
+    await Team.findOneAndDelete({
+      _id: id,
+      creatorId: req.user?._id,
+    })
+    return sendResponse(res, { message: 'Deleted team member successfully' })
   } catch (error) {
     next(error)
   }

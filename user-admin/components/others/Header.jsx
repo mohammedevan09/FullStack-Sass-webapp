@@ -33,7 +33,9 @@ import ResponsivePagination from 'react-responsive-pagination'
 import socketIOClient from 'socket.io-client'
 import { useDebounce } from 'use-debounce'
 
-export const socket = socketIOClient(process.env.NEXT_PUBLIC_HOST)
+export const socket = socketIOClient(process.env.NEXT_PUBLIC_HOST, {
+  transports: ['websocket'],
+})
 
 export const dropdownData = [
   {

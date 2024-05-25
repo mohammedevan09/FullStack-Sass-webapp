@@ -94,12 +94,18 @@ const TakeAction = ({ order, orderChat, setOrderData, link }) => {
                 accessType: 'orders',
                 _id: order?._id,
               },
-              val?.value?._id
+              val?.value?._id,
+              userInfo?.token
             )
-            await addParticipantChatApi('order', orderChat?._id, {
-              participantId: val?.value?._id,
-              participantType: 'Team',
-            })
+            await addParticipantChatApi(
+              'order',
+              orderChat?._id,
+              {
+                participantId: val?.value?._id,
+                participantType: 'Team',
+              },
+              userInfo?.token
+            )
           }}
         />
       )}
@@ -117,10 +123,15 @@ const TakeAction = ({ order, orderChat, setOrderData, link }) => {
               },
               val?.value?._id
             )
-            await removeParticipantChatApi('order', orderChat?._id, {
-              participantId: val?.value?._id,
-              participantType: 'Team',
-            })
+            await removeParticipantChatApi(
+              'order',
+              orderChat?._id,
+              {
+                participantId: val?.value?._id,
+                participantType: 'Team',
+              },
+              userInfo?.token
+            )
           }}
         />
       )}

@@ -5,8 +5,11 @@ import { RemoveIcon } from '@/staticData/Icon'
 import { useEffect, useState } from 'react'
 import { Draggable, Droppable } from 'react-beautiful-dnd'
 import toast from 'react-hot-toast'
+import { useSelector } from 'react-redux'
 
 const ProjectTrackingBoard = ({ order, link, api }) => {
+  const { userInfo } = useSelector((state) => state?.user)
+
   const initialProjectTrackingBoard = [
     {
       title: 'To do',
@@ -91,7 +94,6 @@ const ProjectTrackingBoard = ({ order, link, api }) => {
 
   const handleRemoveTodo = (e, index) => {
     e.preventDefault()
-    console.log(index)
     const updatedProjectTracking = data.map((item) => {
       if (item.title === 'To do') {
         const updatedFields = item.fields.filter((_, idx) => idx !== index)
@@ -115,6 +117,7 @@ const ProjectTrackingBoard = ({ order, link, api }) => {
   const handleSave = async (e) => {
     e.preventDefault()
     try {
+      toast.loading('Processing, please wait!', { duration: 600 })
       const newData = data.map((item) => {
         return {
           ...item,
@@ -129,7 +132,8 @@ const ProjectTrackingBoard = ({ order, link, api }) => {
             complete: newData[2]?.fields,
           },
         },
-        link
+        link,
+        userInfo?.token
       )
       setSaveButton(false)
       toast.success('Project Tracking board updated!')

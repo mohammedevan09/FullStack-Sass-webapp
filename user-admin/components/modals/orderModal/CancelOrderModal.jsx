@@ -6,6 +6,7 @@ import { motion } from 'framer-motion'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { updateOrderApi } from '@/api/orderApi'
+import { useSelector } from 'react-redux'
 
 const CancelOrderModal = ({
   openModal,
@@ -14,16 +15,20 @@ const CancelOrderModal = ({
   link,
   setOrderData,
 }) => {
+  const { userInfo } = useSelector((state) => state?.user)
+
   const [value, setValue] = useState('')
 
   const handleClick = async () => {
     if (value === order?.title) {
       try {
+        toast.loading('Processing, please wait!', { duration: 600 })
         const updated = await updateOrderApi(
           {
             status: order?.status === 'canceled' ? 'running' : 'canceled',
           },
-          link
+          link,
+          userInfo?.token
         )
         setOrderData(updated)
         toast.success(

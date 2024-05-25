@@ -108,12 +108,20 @@ const AddNewTeamMemberModal = ({
         const { profileImage, ...dataWithoutImage } = data
         let userData
         if (initialData) {
-          userData = await updateTeamApi(dataWithoutImage, initialData?._id)
+          userData = await updateTeamApi(
+            dataWithoutImage,
+            initialData?._id,
+            userInfo?.token
+          )
         } else {
-          userData = await createTeamApi({
-            ...dataWithoutImage,
-            originalPass: pass,
-          })
+          userData = await createTeamApi(
+            {
+              ...dataWithoutImage,
+              originalPass: pass,
+              role: 'userMember',
+            },
+            userInfo?.token
+          )
         }
         if (images?.length !== 0) {
           images.forEach((image) => {

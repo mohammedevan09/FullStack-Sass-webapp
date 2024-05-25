@@ -7,6 +7,7 @@ import { useState } from 'react'
 import { CheckSignIcon3, CloseMenuIcon } from '@/staticData/Icon'
 import toast from 'react-hot-toast'
 import { updateOrderApi } from '@/api/orderApi'
+import { useSelector } from 'react-redux'
 
 export const projectStatuses = [
   {
@@ -27,6 +28,8 @@ export const paymentStatuses = [
 ]
 
 const EditStatus = ({ openModal, setOpenModal, order, setOrderData, link }) => {
+  const { userInfo } = useSelector((state) => state?.user)
+
   const [ProjectStatus, setProjectStatus] = useState(order?.status)
   const [ProjectStatusDrop, setProjectStatusDrop] = useState(false)
   const [PaymentStatus, setPaymentStatus] = useState(order?.payment_status)
@@ -40,7 +43,8 @@ const EditStatus = ({ openModal, setOpenModal, order, setOrderData, link }) => {
           payment_status: PaymentStatus,
           status: ProjectStatus,
         },
-        link
+        link,
+        userInfo?.token
       )
       setOrderData(updated)
       toast.success('Update successfully!')

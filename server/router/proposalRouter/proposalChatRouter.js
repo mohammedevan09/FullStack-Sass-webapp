@@ -9,6 +9,7 @@ import {
 } from '../../controller/chatController.js'
 import ProposalChat from '../../model/proposalsModels/proposalsChatModel.js'
 import { getChatByProposalId } from '../../controller/proposalsController/proposalChatController.js'
+import { authMiddleware } from '../../middleware/authMiddleware.js'
 
 const router = express.Router()
 
@@ -22,7 +23,7 @@ router.post('/', async (req, res, next) => {
 router.put('/:id', addMessageToChat)
 router.get('/:proposalId', getChatByProposalId)
 router.put('/update/:id', updateChatById)
-router.put('/addParticipant/:id', addChatParticipants)
-router.put('/removeParticipant/:id', removeChatParticipants)
+router.put('/addParticipant/:id', authMiddleware, addChatParticipants)
+router.put('/removeParticipant/:id', authMiddleware, removeChatParticipants)
 
 export default router

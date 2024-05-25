@@ -9,7 +9,6 @@ import JsonToText from '@/utils/JsonToText'
 import { useSelector } from 'react-redux'
 import { formatChatDateAndTime } from '@/utils/formateDateAndTime'
 import '@/components/text-editor/tiptapstyle.css'
-import io from 'socket.io-client'
 import { makeCapitalize } from '@/utils/StatusColor'
 import { sendMessageChat } from '@/api/chatApi'
 import { findOrCreateChatNotification } from '@/api/notificationApi'
@@ -114,13 +113,15 @@ const InboxAndMessaging = ({ to, itemData, chatData, messageCount }) => {
   }
 
   useEffect(() => {
-    if (userInfo) {
+    const timeoutId = setTimeout(() => {
       socket.emit('add-user', { id: itemData?._id, userId: userInfo?._id })
-    }
-    socket.on('online-users', ({ onlineUsers }) => {
-      setOnlineUsers(onlineUsers)
-    })
-  }, [userInfo, itemData?._id])
+      socket.on('online-users', ({ onlineUsers }) => {
+        setOnlineUsers(onlineUsers)
+      })
+    }, 1000)
+
+    return () => clearTimeout(timeoutId)
+  }, [userInfo?._id, itemData?._id])
 
   useEffect(() => {
     socket.on('message', (message) => {

@@ -141,7 +141,6 @@ io.on('connection', (socket) => {
         socket.to(sendUserSocket).emit('message', message)
       }
       if (sendOnlineUserSocket) {
-        console.log(sendOnlineUserSocket)
         socket.to(sendOnlineUserSocket).emit('messageNotification', message)
       }
     })
