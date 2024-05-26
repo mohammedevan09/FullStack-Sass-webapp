@@ -136,10 +136,10 @@ const Header = () => {
   }, [lastScrollY, isSmallScreen])
 
   useEffect(() => {
-    if (userInfo) {
+    if (userInfo?._id) {
       socket.emit('add-user', { userId: userInfo?._id })
     }
-  }, [userInfo])
+  }, [userInfo?._id])
 
   return (
     <header className={`sticky z-30`}>

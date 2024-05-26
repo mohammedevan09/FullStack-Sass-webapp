@@ -120,22 +120,20 @@ global.online = new Map()
 global.onlineUsers = new Map()
 
 io.on('connection', (socket) => {
-  global.chatSocket = socket
+  console.log('New client connected:', socket.id)
 
   socket.on('add-user', (data) => {
     if (data?.id) {
-      online.set(`${data?.userId}-${data?.id}`, socket.id)
+      online.set(`${data.userId}-${data.id}`, socket.id)
     }
-    onlineUsers.set(data?.userId, socket.id)
-    socket.broadcast.emit('online-users', {
-      onlineUsers: Array.from(onlineUsers.keys()),
-    })
+    onlineUsers.set(data.userId, socket.id)
+    io.emit('online-users', { onlineUsers: Array.from(onlineUsers.keys()) })
   })
 
   socket.on('sendMessage', (message) => {
     message.receiver.forEach((receiverId) => {
-      let sendUserSocket = online.get(`${receiverId}-${message?.id}`)
-      let sendOnlineUserSocket = onlineUsers.get(receiverId)
+      const sendUserSocket = online.get(`${receiverId}-${message.id}`)
+      const sendOnlineUserSocket = onlineUsers.get(receiverId)
 
       if (sendUserSocket) {
         socket.to(sendUserSocket).emit('message', message)
@@ -161,9 +159,7 @@ io.on('connection', (socket) => {
       }
     })
 
-    socket.broadcast.emit('online-users', {
-      onlineUsers: Array.from(onlineUsers.keys()),
-    })
+    io.emit('online-users', { onlineUsers: Array.from(onlineUsers.keys()) })
   })
 })
 

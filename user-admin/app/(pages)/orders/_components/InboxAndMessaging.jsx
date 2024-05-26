@@ -1,8 +1,8 @@
 'use client'
 
+import React, { useEffect, useRef, useState, useCallback } from 'react'
 import MainEditor from '@/components/text-editor/MainEditor'
 import Image from 'next/image'
-import { useEffect, useRef, useState } from 'react'
 import dummyProfile from '@/public/images/dummyProfile.png'
 import { CloseMenuIcon, MessageSentIcon } from '@/staticData/Icon'
 import JsonToText from '@/utils/JsonToText'
@@ -23,31 +23,26 @@ export const initialText = {
   ],
 }
 
-// export const socket = io(process.env.NEXT_PUBLIC_HOST, {
-//   transports: ['websocket'],
-// })
-
 const InboxAndMessaging = ({ to, itemData, chatData, messageCount }) => {
   const [chat, setChat] = useState(chatData)
   const [text, setText] = useState(initialText)
-  const [onlineUsers, setOnlineUsers] = useState([])
+  const [onlineUsers, setOnlineUsers] = useState(new Set())
   const [groupedParticipants, setGroupedParticipants] = useState(
     chat?.participants
   )
   const [open, setOpen] = useState(false)
 
   const messagesEndRef = useRef(null)
-
   const { userInfo } = useSelector((state) => state?.user)
 
-  const scrollToBottom = () => {
+  const scrollToBottom = useCallback(() => {
     if (messagesEndRef.current) {
       messagesEndRef.current?.lastElementChild?.scrollIntoView()
     }
-  }
+  }, [messagesEndRef])
 
   const handleMessageSend = async () => {
-    socket.emit('sendMessage', {
+    const message = {
       sender: {
         senderType: userInfo?.creatorId ? 'Team' : 'User',
         senderId: userInfo?._id,
@@ -60,23 +55,16 @@ const InboxAndMessaging = ({ to, itemData, chatData, messageCount }) => {
       idDetails: { __t: itemData?.__t },
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-    })
-    setChat({
-      ...chat,
-      messages: [
-        ...chat?.messages,
-        {
-          sender: {
-            senderType: userInfo?.creatorId ? 'Team' : 'User',
-            senderId: userInfo?._id,
-          },
-          content: text,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-        },
-      ],
-    })
+    }
+
+    socket.emit('sendMessage', message)
+
+    setChat((prevChat) => ({
+      ...prevChat,
+      messages: [...prevChat?.messages, message],
+    }))
     setText(initialText)
+
     await sendMessageChat(to, chat?._id, {
       sender: {
         senderType: userInfo?.creatorId ? 'Team' : 'User',
@@ -86,6 +74,7 @@ const InboxAndMessaging = ({ to, itemData, chatData, messageCount }) => {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     })
+
     await findOrCreateChatNotification(
       {
         type: makeCapitalize(to),
@@ -106,31 +95,42 @@ const InboxAndMessaging = ({ to, itemData, chatData, messageCount }) => {
                   : 'Team',
             }
           })
-          .filter((i) => i?._id !== userInfo?._id),
+          .filter((i) => i?.userId !== userInfo?._id),
       },
       itemData?._id
     )
   }
 
   useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      socket.emit('add-user', { id: itemData?._id, userId: userInfo?._id })
-      socket.on('online-users', ({ onlineUsers }) => {
-        setOnlineUsers(onlineUsers)
-      })
-    }, 1000)
+    const handleOnlineUsers = ({ onlineUsers }) => {
+      setOnlineUsers(new Set(onlineUsers))
+    }
 
-    return () => clearTimeout(timeoutId)
+    socket.on('online-users', handleOnlineUsers)
+
+    if (userInfo?._id && itemData?._id) {
+      socket.emit('add-user', { id: itemData?._id, userId: userInfo?._id })
+    }
+
+    return () => {
+      socket.off('online-users', handleOnlineUsers)
+    }
   }, [userInfo?._id, itemData?._id])
 
   useEffect(() => {
-    socket.on('message', (message) => {
-      setChat({
-        ...chat,
-        messages: [...chat?.messages, message],
-      })
-    })
+    const handleNewMessage = (message) => {
+      setChat((prevChat) => ({
+        ...prevChat,
+        messages: [...prevChat?.messages, message],
+      }))
+    }
+
     scrollToBottom()
+    socket.on('message', handleNewMessage)
+
+    return () => {
+      socket.off('message', handleNewMessage)
+    }
   }, [text, chat])
 
   useEffect(() => {
@@ -158,31 +158,29 @@ const InboxAndMessaging = ({ to, itemData, chatData, messageCount }) => {
   }
 
   return (
-    <div className="grid items-start pb-5  bg-white rounded-[10px] w-full overflow-hidden board-shadow">
+    <div className="grid items-start pb-5 bg-white rounded-[10px] w-full overflow-hidden board-shadow">
       <div className="grid bg-[#d0d0ff] relative">
         <div
           className="flex items-center py-3 px-4 cursor-pointer gap-2"
           onClick={() => setOpen((prev) => !prev)}
         >
-          {chat?.participants?.map((item, i) => {
-            return (
-              <div className="w-[40px] relative" key={i}>
-                <Image
-                  src={item?.profileImage || dummyProfile}
-                  alt="img"
-                  width={40}
-                  height={40}
-                  className="h-[40px] rounded-full bg-[#0000ffc9] object-cover"
-                />
-                {onlineUsers?.includes(item?._id) && (
-                  <span className="w-3 h-3 rounded-full bg-green-500 border-2 border-[#d0d0ff] absolute right-0 bottom-0" />
-                )}
-              </div>
-            )
-          })}
+          {chat?.participants?.map((item, i) => (
+            <div className="w-[40px] relative" key={i}>
+              <Image
+                src={item?.profileImage || dummyProfile}
+                alt="img"
+                width={40}
+                height={40}
+                className="h-[40px] rounded-full bg-[#0000ffc9] object-cover"
+              />
+              {onlineUsers.has(item?._id) && (
+                <span className="w-3 h-3 rounded-full bg-green-500 border-2 border-[#d0d0ff] absolute right-0 bottom-0" />
+              )}
+            </div>
+          ))}
           <div
             className={`${
-              open ? 'rotate-[267deg]' : 'rotate-180 '
+              open ? 'rotate-[267deg]' : 'rotate-180'
             } transition-all duration-300 ease-in-out`}
           >
             <CloseMenuIcon size={24} color={'#6e79ff'} />
@@ -194,47 +192,41 @@ const InboxAndMessaging = ({ to, itemData, chatData, messageCount }) => {
           }`}
         >
           {Object.entries(groupedParticipants)?.map(
-            ([role, participantsInRole]) => {
-              return (
-                <div key={role}>
-                  <h2 className="text-base font-semibold mb-3 mt-5  px-3 border-l-4 border-blue-500">
-                    {makeCapitalize(role.replace(/([a-z])([A-Z])/g, '$1 $2'))}
-                  </h2>
-                  {Array.isArray(participantsInRole) &&
-                    participantsInRole.map((participant, i) => (
-                      <div
-                        key={i}
-                        className="flex items-center gap-3 mb-3 px-3"
-                      >
-                        <div className="w-[30px] relative">
-                          <Image
-                            src={participant?.profileImage || dummyProfile}
-                            alt="img"
-                            width={30}
-                            height={30}
-                            className="h-[30px] rounded-full bg-[#7136ff36] object-cover"
-                          />
-                          {onlineUsers?.includes(participant?._id) && (
-                            <span className="w-3 h-3 rounded-full bg-green-500 border-2 border-[#d0d0ff] absolute right-0 bottom-0" />
-                          )}
-                        </div>
-                        <div className="grid lg:gap-1">
-                          <h1 className="text-sm font-semibold">
-                            {participant?.fullName}
-                          </h1>
-                          <h4 className="font-semibold text-xs text-gray-600">
-                            {participant?.position || 'Project Manager'}
-                          </h4>
-                        </div>
+            ([role, participantsInRole]) => (
+              <div key={role}>
+                <h2 className="text-base font-semibold mb-3 mt-5 px-3 border-l-4 border-blue-500">
+                  {makeCapitalize(role.replace(/([a-z])([A-Z])/g, '$1 $2'))}
+                </h2>
+                {Array.isArray(participantsInRole) &&
+                  participantsInRole.map((participant, i) => (
+                    <div key={i} className="flex items-center gap-3 mb-3 px-3">
+                      <div className="w-[30px] relative">
+                        <Image
+                          src={participant?.profileImage || dummyProfile}
+                          alt="img"
+                          width={30}
+                          height={30}
+                          className="h-[30px] rounded-full bg-[#7136ff36] object-cover"
+                        />
+                        {onlineUsers.has(participant?._id) && (
+                          <span className="w-3 h-3 rounded-full bg-green-500 border-2 border-[#d0d0ff] absolute right-0 bottom-0" />
+                        )}
                       </div>
-                    ))}
-                </div>
-              )
-            }
+                      <div className="grid lg:gap-1">
+                        <h1 className="text-sm font-semibold">
+                          {participant?.fullName}
+                        </h1>
+                        <h4 className="font-semibold text-xs text-gray-600">
+                          {participant?.position || 'Project Manager'}
+                        </h4>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            )
           )}
         </div>
       </div>
-
       <div className="min-h-[300px]">
         <div
           className="grid gap-6 w-full text-sm md:max-h-[500px] max-h-[390px] overflow-y-scroll pt-6 sm:px-6 px-4 scroll-smooth"
