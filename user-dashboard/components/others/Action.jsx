@@ -8,6 +8,7 @@ import { FilterByIdIcon } from '@/staticData/Icon'
 import { useState } from 'react'
 import DeleteModal from '../modals/DeleteModal'
 import { useSelector } from 'react-redux'
+import { showTeamMemberErrorToast } from '@/utils/toastUtils'
 
 const Action = ({ data, chat, accessType, to, deleteApi }) => {
   const { userInfo } = useSelector((state) => state?.user)
@@ -27,9 +28,17 @@ const Action = ({ data, chat, accessType, to, deleteApi }) => {
     if (item?.type === 'DELETE') {
       setDeleteModal(true)
     } else if (item?.type === 'ACCESS') {
-      setAccessModal(true)
+      if (userInfo?.creatorId) {
+        return showTeamMemberErrorToast()
+      } else {
+        setAccessModal(true)
+      }
     } else if (item?.type === 'REMOVE_ACCESS') {
-      setRemoveAccessModal(true)
+      if (userInfo?.creatorId) {
+        return showTeamMemberErrorToast()
+      } else {
+        setRemoveAccessModal(true)
+      }
     }
   }
 

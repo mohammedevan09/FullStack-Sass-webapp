@@ -24,7 +24,7 @@ const WrappingModal = ({ children, modalOpen }) => {
       className={`fixed z-[999] left-0 right-0 bottom-0 top-0 modal-b-blur h-screen w-screen overflow-y-scroll grid justify-center items-center overflow-x-hidden`}
     >
       <div
-        className={`flex justify-center items-center sm:my-20 my-16 transition-all duration-[400ms] ease-in sm:w-[550px] w-[360px] ${
+        className={`flex justify-center items-center sm:my-20 my-16 transition-all duration-[400ms] ease-in md:w-[650px] sm:w-[580px] w-[360px] ${
           delayedOpenModal ? 'translate-y-0' : 'translate-y-full'
         }`}
       >

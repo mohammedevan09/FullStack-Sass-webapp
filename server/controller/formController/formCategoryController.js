@@ -1,9 +1,13 @@
 import FormCategory from '../../model/formModels/formCategoryModel.js'
 import { sendResponse } from '../../utils/sendResponse.js'
+import Form from '../../model/formModels/formModel.js'
 
 export const createFormCategory = async (req, res, next) => {
   try {
-    const form = await FormCategory.create(req.body)
+    const form = await FormCategory.create({
+      ...req.body,
+      creatorId: req.user._id,
+    })
     return res.status(200).json(form)
   } catch (error) {
     next(error)
@@ -12,8 +16,8 @@ export const createFormCategory = async (req, res, next) => {
 
 export const updateFormCategory = async (req, res, next) => {
   try {
-    const update = await FormCategory.findByIdAndUpdate(
-      { _id: req.params.id },
+    const update = await FormCategory.findOneAndUpdate(
+      { _id: req.params.id, creatorId: req.user._id },
       { ...req.body },
       { new: true }
     )
@@ -55,8 +59,19 @@ export const getFormCategoryByUserId = async (req, res, next) => {
 
 export const deleteFormCategoryById = async (req, res, next) => {
   try {
-    const deletedFormCategory = await FormCategory.findByIdAndDelete({
+    const formCount = await Form.countDocuments({
+      formCategoryId: req.params.id,
+    })
+
+    if (formCount > 0) {
+      return res
+        .status(405)
+        .json({ message: 'First delete the forms inside it' })
+    }
+
+    const deletedFormCategory = await FormCategory.findOneAndDelete({
       _id: req.params.id,
+      creatorId: req.user._id,
     })
 
     if (deletedFormCategory) {

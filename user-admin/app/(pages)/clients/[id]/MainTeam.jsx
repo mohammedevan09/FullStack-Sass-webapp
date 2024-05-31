@@ -124,6 +124,7 @@ const MainTeam = ({ teamData, user }) => {
               },
               userInfo?.token
             )
+            window.location.reload()
           }}
           buttonType={user?.isBlocked ? 'Unblock' : 'Block'}
         />

@@ -56,7 +56,7 @@ const EditStatus = ({ openModal, setOpenModal, order, setOrderData, link }) => {
 
   return (
     <WrappingModal modalOpen={openModal}>
-      <div className="grid bg-white pt-10 pb-4 px-8 rounded-[20px] sm:w-[500px] w-[360px]">
+      <div className="grid bg-white pt-10 pb-4 sm:px-12 px-8 rounded-[20px] w-full">
         <h2 className="text-gray-900 text-xl font-bold text-center">
           Edit Project and Payment Status.
         </h2>

@@ -33,7 +33,7 @@ const EditAffiliateModal = ({
 
   return (
     <WrappingModal modalOpen={openModal}>
-      <div className="grid bg-white pt-10 pb-4 px-8 rounded-[20px] sm:w-[500px] w-[360px]">
+      <div className="grid bg-white pt-10 pb-4 sm:px-12 px-8 rounded-[20px] w-full">
         <h2 className="text-gray-900 sm:text-xl text-lg font-bold text-center">
           Edit This User Affiliate Account.
         </h2>
@@ -81,7 +81,7 @@ const EditAffiliateModal = ({
             className="w-full p-4 bg-blue-800 rounded-[9px] text-white font-semibold xm:text-lg text-sm"
             onClick={handleSubmit(handleClick)}
           >
-            Request Withdraw
+            Save
           </motion.button>
         </div>
       </div>

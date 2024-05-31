@@ -43,7 +43,7 @@ const EditOrderModal = ({
   return (
     <>
       <WrappingModal modalOpen={openModal}>
-        <div className="grid bg-white pt-10 pb-4 px-8 rounded-[20px] sm:w-[500px] w-[360px]">
+        <div className="grid bg-white pt-10 pb-4 sm:px-12 px-8 rounded-[20px] w-full">
           <h3 className="xs:text-2xl text-xl font-semibold tracking-tight mx-auto">
             Edit your order information
           </h3>

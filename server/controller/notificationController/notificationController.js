@@ -71,7 +71,7 @@ export const updateNotification = async (notificationData) => {
 export const getAllNotification = async (req, res, next) => {
   try {
     let query = {}
-    const { page = 1, limit = 10, search = '' } = req.query
+    const { page = 1, limit = 10, search = '', access } = req.query
 
     if (
       req.query.userId &&
@@ -112,7 +112,7 @@ export const getAllNotification = async (req, res, next) => {
             { $count: 'unreadByAdmin' },
           ],
           notifications: [
-            { $sort: { createdAt: -1 } },
+            { $sort: { updatedAt: -1 } },
             { $skip: (parseInt(page) - 1) * parseInt(limit) },
             { $limit: parseInt(limit) },
           ],
@@ -129,6 +129,18 @@ export const getAllNotification = async (req, res, next) => {
         },
       },
     ]
+
+    if (access) {
+      const accessOf = [
+        ...(access.orders?.accessOf || []),
+        ...(access.tickets?.accessOf || []),
+        ...(access.proposals?.accessOf || []),
+      ].map((id) => new Types.ObjectId(id))
+
+      if (accessOf.length > 0) {
+        pipeline[0].$match.id = { $in: accessOf }
+      }
+    }
 
     const result = await Notification.aggregate(pipeline)
 

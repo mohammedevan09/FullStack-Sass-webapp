@@ -10,11 +10,15 @@ import MainEditor from '@/components/text-editor/MainEditor'
 import JsonToText from '@/utils/JsonToText'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { useSelector } from 'react-redux'
+import { showTeamMemberErrorToast } from '@/utils/toastUtils'
 
 const MainFormPage = ({ form, searchParams }) => {
   // console.log(form)
   const [text, setText] = useState('')
   const [openDeleteModal, setOpenDeleteModal] = useState(false)
+
+  const { userInfo } = useSelector((state) => state?.user)
 
   const {
     register,
@@ -46,7 +50,13 @@ const MainFormPage = ({ form, searchParams }) => {
             className={`py-1 px-4 bg-rose-600 rounded-[9px] text-white text-lg font-semibold leading-7 disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105 transition ${
               form?._id ? 'block' : 'hidden'
             }`}
-            onClick={() => setOpenDeleteModal(true)}
+            onClick={() => {
+              if (userInfo?.creatorId) {
+                return showTeamMemberErrorToast()
+              } else {
+                setOpenDeleteModal(true)
+              }
+            }}
           >
             Delete form
           </button>

@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
 import { createFormApi, updateFormApi } from '@/api/formApi'
 import { useSelector } from 'react-redux'
+import { showTeamMemberErrorToast } from '@/utils/toastUtils'
 
 const FormExample = ({
   form,
@@ -125,6 +126,9 @@ const FormExample = ({
   }
 
   const handleSave = async (formData) => {
+    if (userInfo?.creatorId) {
+      return showTeamMemberErrorToast()
+    }
     if (isValid) {
       let newFormData
       try {
@@ -135,16 +139,20 @@ const FormExample = ({
               description: text || form?.description,
               fields: [...data[0]?.fields],
             },
-            form?._id
+            form?._id,
+            userInfo?.token
           )
         } else {
-          newFormData = await createFormApi({
-            ...formData,
-            formCategoryId: searchParams?.categoryId,
-            userId: userInfo?._id,
-            description: text,
-            fields: [...data[0]?.fields],
-          })
+          newFormData = await createFormApi(
+            {
+              ...formData,
+              formCategoryId: searchParams?.categoryId,
+              userId: userInfo?._id,
+              description: text,
+              fields: [...data[0]?.fields],
+            },
+            userInfo?.token
+          )
           router.push(
             `/forms/formsByCategory/${newFormData?._id}?categoryId=${newFormData?.formCategoryId}`
           )

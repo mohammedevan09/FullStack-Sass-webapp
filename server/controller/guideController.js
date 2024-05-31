@@ -3,7 +3,7 @@ import Guide from '../model/guideModel.js'
 
 export const createGuide = async (req, res, next) => {
   try {
-    const data = await Guide.create(req.body)
+    const data = await Guide.create({ ...req.body, creatorId: req.user._id })
 
     return res.status(200).json(data)
   } catch (error) {
@@ -33,8 +33,8 @@ export const getGuideById = async (req, res, next) => {
 
 export const updateGuide = async (req, res, next) => {
   try {
-    const data = await Guide.findByIdAndUpdate(
-      { _id: req.params.id },
+    const data = await Guide.findOneAndUpdate(
+      { _id: req.params.id, creatorId: req.user._id },
       req.body,
       {
         new: true,
@@ -49,7 +49,10 @@ export const updateGuide = async (req, res, next) => {
 
 export const deleteGuide = async (req, res, next) => {
   try {
-    const data = await Guide.findByIdAndDelete({ _id: req.params.id })
+    const data = await Guide.findOneAndDelete({
+      _id: req.params.id,
+      creatorId: req.user._id,
+    })
 
     return sendResponse(res, data)
   } catch (error) {

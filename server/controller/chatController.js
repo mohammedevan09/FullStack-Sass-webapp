@@ -41,7 +41,7 @@ export const addMessageToChat = async (req, res, next) => {
 
     const newMessage = new Message({
       chat: chat._id,
-      sender: sender,
+      sender: { ...sender, senderId: req.user._id },
       content: content,
     })
 

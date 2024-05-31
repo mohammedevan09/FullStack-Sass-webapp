@@ -16,6 +16,7 @@ import DeleteService from '@/components/modals/serviceModal/DeleteService'
 import ReactSelect from '@/components/others/ReactSelect'
 import { updateService, uploadSvgIcon } from '@/api/serviceApi'
 import { useSelector } from 'react-redux'
+import { showTeamMemberErrorToast } from '@/utils/toastUtils'
 
 const MainServicePage = ({ service, forms }) => {
   const [serviceData, setServiceData] = useState(service)
@@ -45,6 +46,10 @@ const MainServicePage = ({ service, forms }) => {
   })
 
   const handleClick = async (data) => {
+    if (userInfo?.creatorId) {
+      return showTeamMemberErrorToast()
+    }
+
     let updatedImage
     if (image) {
       toast.loading('Processing, please wait!', { duration: 1000 })
@@ -99,6 +104,9 @@ const MainServicePage = ({ service, forms }) => {
             <button
               className="text-base py-1 px-4 rounded font-semibold hover:scale-105 transition text-white bg-blue-600 min-w-[180px] w-[181px]"
               onClick={() => {
+                if (userInfo?.creatorId) {
+                  return showTeamMemberErrorToast()
+                }
                 setPricingModal(true)
                 setPricingLength(serviceData?.pricing?.length || 0)
               }}

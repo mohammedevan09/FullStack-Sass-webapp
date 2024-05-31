@@ -38,9 +38,11 @@ const GoogleOAuthProviderLayout = ({ refreshToken, children }) => {
               dispatch(setUsers(userData))
             }
           } catch (error) {
+            await logoutUserApi()
             dispatch(setUsers({}))
           }
         } else {
+          await logoutUserApi()
           dispatch(setUsers({}))
         }
       }

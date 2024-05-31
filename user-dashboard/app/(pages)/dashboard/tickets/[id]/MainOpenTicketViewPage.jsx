@@ -55,7 +55,7 @@ const MainOpenTicketViewPage = ({ data, chat, orders }) => {
               data={data}
               chat={chat?.chat}
               deleteApi={async () => {
-                await deleteTicketApi(data?._id)
+                await deleteTicketApi(data?._id, userInfo?.token)
                 router.push(`/dashboard/tickets?userId=${userInfo?._id}`)
               }}
             />

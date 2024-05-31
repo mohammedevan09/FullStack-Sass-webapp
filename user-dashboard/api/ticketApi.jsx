@@ -1,9 +1,15 @@
+import IsAuthorized from '@/utils/IsAuthorized'
 import axios from 'axios'
 
 const host = process.env.NEXT_PUBLIC_HOST
 
-export const createTicketApi = async (sendData) => {
-  const data = await axios.post(`${host}/api/ticket`, sendData)
+export const createTicketApi = async (sendData, token) => {
+  const authorizedToken = await IsAuthorized(token)
+  const data = await axios.post(`${host}/api/ticket`, sendData, {
+    headers: {
+      Authorization: `Bearer ${authorizedToken}`,
+    },
+  })
   return data?.data
 }
 
@@ -27,12 +33,22 @@ export const getTicketByIdApi = async (id) => {
   }
 }
 
-export const updateTicketApi = async (sendData, link) => {
-  const data = await axios.put(`${host}/api/ticket/${link}`, sendData)
+export const updateTicketApi = async (sendData, link, token) => {
+  const authorizedToken = await IsAuthorized(token)
+  const data = await axios.put(`${host}/api/ticket/${link}`, sendData, {
+    headers: {
+      Authorization: `Bearer ${authorizedToken}`,
+    },
+  })
   return data?.data
 }
 
-export const deleteTicketApi = async (link) => {
-  const data = await axios.delete(`${host}/api/ticket/${link}`)
+export const deleteTicketApi = async (link, token) => {
+  const authorizedToken = await IsAuthorized(token)
+  const data = await axios.delete(`${host}/api/ticket/${link}`, {
+    headers: {
+      Authorization: `Bearer ${authorizedToken}`,
+    },
+  })
   return data?.data
 }

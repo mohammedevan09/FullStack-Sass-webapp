@@ -33,10 +33,6 @@ const AddNewTeamMemberModal = ({
       id: 'orders',
     },
     {
-      title: 'Invoice',
-      id: 'invoice',
-    },
-    {
       title: 'Proposals',
       id: 'proposals',
     },
@@ -146,7 +142,7 @@ const AddNewTeamMemberModal = ({
 
   return (
     <WrappingModal modalOpen={openModal}>
-      <div className="grid justify-center bg-white sm:pt-12 pt-8 pb-4 xs:px-6 px-4 rounded-[20px] overflow-x-hidden gap-7 sm:w-[550px] w-[360px]">
+      <div className="grid justify-center bg-white sm:pt-12 pt-8 pb-4 xs:px-6 px-4 rounded-[20px] overflow-x-hidden gap-7 md:w-[650px] sm:w-[580px] w-[360px]">
         <h2 className="text-2xl font-semibold mx-auto mb-2">
           Add new team members
         </h2>

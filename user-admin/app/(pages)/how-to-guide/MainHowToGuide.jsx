@@ -1,20 +1,24 @@
-import {
-  FormsByCategoryIdIcon,
-  HowToGuideTutorialsYTIcon,
-} from '@/staticData/Icon'
+'use client'
+
+import { HowToGuideTutorialsYTIcon } from '@/staticData/Icon'
 import Link from 'next/link'
+import { useSelector } from 'react-redux'
 
 const MainHowToGuide = ({ guides }) => {
+  const { userInfo } = useSelector((state) => state?.user)
+
   return (
     <div className="pt-8 sm:my-10 my-8">
       <div className="flex justify-between items-end">
         <h1 className="text-2xl font-semibold">How to guide & Tutorials</h1>
-        <Link
-          href={`/how-to-guide/new`}
-          className="w-[130px] h-[34px] btn-hover rounded-[5px] text-center flex items-center justify-center"
-        >
-          Create New +
-        </Link>
+        {!userInfo?.creatorId && (
+          <Link
+            href={`/how-to-guide/new`}
+            className="w-[130px] h-[34px] btn-hover rounded-[5px] text-center flex items-center justify-center"
+          >
+            Create New +
+          </Link>
+        )}
       </div>
       <div className="bg-zinc-400 w-full h-[1px] mt-3 mb-6" />
       <div className="grid items-center gap-4">

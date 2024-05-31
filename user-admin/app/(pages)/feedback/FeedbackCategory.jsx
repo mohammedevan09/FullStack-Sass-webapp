@@ -8,6 +8,7 @@ import {
 import CategoryModal from '@/components/modals/FormAndFeedbackModal/CategoryModal'
 import DeleteCategoryModal from '@/components/modals/FormAndFeedbackModal/DeleteCategoryModal'
 import FormCategoryTable from '@/components/tables/FormCategoryTable'
+import { showTeamMemberErrorToast } from '@/utils/toastUtils'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useSelector } from 'react-redux'
@@ -45,7 +46,7 @@ const FeedbackCategory = ({ feedbackCategories }) => {
         creatorId: userInfo?._id || '',
       })
     }
-  }, [item, reset, userInfo])
+  }, [item, reset, userInfo?._id])
 
   return (
     <>
@@ -53,8 +54,12 @@ const FeedbackCategory = ({ feedbackCategories }) => {
         className="mx-auto py-2 px-4 mb-2 bg-blue-800 hover:scale-105 text-white font-semibold rounded-[5px] text-center transition sm:my-10 my-8"
         onClick={(e) => {
           e.preventDefault()
-          setItem(null)
-          setFeedbackCategoryModal(true)
+          if (userInfo?.creatorId) {
+            return showTeamMemberErrorToast()
+          } else {
+            setItem(null)
+            setFeedbackCategoryModal(true)
+          }
         }}
       >
         Add a new Feedback category
@@ -67,6 +72,7 @@ const FeedbackCategory = ({ feedbackCategories }) => {
           setEditModel={setFeedbackCategoryModal}
           setRemoveModal={setDeleteModal}
           link={`/feedback/feedbackByCategory?id=`}
+          userInfo={userInfo}
         />
       </div>
       {feedbackCategoryModal && (

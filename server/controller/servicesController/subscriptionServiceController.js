@@ -1,3 +1,4 @@
+import Order from '../../model/orderModels/orderModel.js'
 import SubscriptionService from '../../model/serviceModels/subscriptionServiceModel.js'
 import { sendResponse } from '../../utils/sendResponse.js'
 
@@ -58,6 +59,12 @@ export const getSubscriptionServiceByUserId = async (req, res, next) => {
 }
 
 export const deleteSubscriptionServiceById = async (req, res, next) => {
+  const orders = await Order.countDocuments({ serviceId: req.params.id })
+
+  if (orders > 0) {
+    return res.status(405).json({ message: 'The service is in use.' })
+  }
+
   try {
     const deletedService = await SubscriptionService.findOneAndDelete({
       _id: req.params.id,

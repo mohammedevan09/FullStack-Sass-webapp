@@ -1,3 +1,4 @@
+import Order from '../../model/orderModels/orderModel.js'
 import NormalService from '../../model/serviceModels/normalServicePlanModel.js'
 import { sendResponse } from '../../utils/sendResponse.js'
 
@@ -60,6 +61,12 @@ export const getNormalServiceByUserId = async (req, res, next) => {
 
 export const deleteNormalServiceById = async (req, res, next) => {
   try {
+    const orders = await Order.countDocuments({ serviceId: req.params.id })
+
+    if (orders > 0) {
+      return res.status(405).json({ message: 'The service is in use.' })
+    }
+
     const deletedService = await NormalService.findOneAndDelete({
       _id: req.params.id,
       creatorId: req.user?._id,
@@ -71,6 +78,7 @@ export const deleteNormalServiceById = async (req, res, next) => {
       return sendResponse(res)
     }
   } catch (error) {
+    console.error('Error deleting subscription service:', error)
     next(error)
   }
 }

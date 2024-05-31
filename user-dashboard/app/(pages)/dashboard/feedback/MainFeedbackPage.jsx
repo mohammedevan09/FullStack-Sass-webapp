@@ -3,6 +3,7 @@
 import { createFeedbackApi } from '@/api/feedback'
 import ErrorMessage from '@/components/others/ErrorMessage'
 import ReactSelect from '@/components/others/ReactSelect'
+import { showTeamMemberErrorToast } from '@/utils/toastUtils'
 import { useRouter } from 'next/navigation'
 import { useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -61,6 +62,9 @@ const MainFeedbackPage = ({ options }) => {
   }
 
   const handleSave = async (formData) => {
+    if (userInfo?.creatorId) {
+      return showTeamMemberErrorToast()
+    }
     if (isValid) {
       try {
         await createFeedbackApi(formData)

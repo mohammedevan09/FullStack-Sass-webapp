@@ -1,9 +1,13 @@
 'use client'
 
-import { getUserByIdApi, handleRefreshTokenApi } from '@/api/userApi'
+import {
+  getUserByIdApi,
+  handleRefreshTokenApi,
+  logoutUserApi,
+} from '@/api/userApi'
 import { setUsers } from '@/store/reducers/userReducer'
 import { jwtDecode } from 'jwt-decode'
-import { useLayoutEffect } from 'react'
+import { useEffect, useLayoutEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 
@@ -35,9 +39,11 @@ const AuthValidateProvider = ({ refreshToken, children }) => {
               dispatch(setUsers(userData))
             }
           } catch (error) {
+            await logoutUserApi()
             dispatch(setUsers({}))
           }
         } else {
+          await logoutUserApi()
           dispatch(setUsers({}))
         }
       }

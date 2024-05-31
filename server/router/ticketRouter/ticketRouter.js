@@ -7,13 +7,14 @@ import {
   getTicketById,
   updateTicket,
 } from '../../controller/ticketController/ticketController.js'
+import { authMiddleware } from '../../middleware/authMiddleware.js'
 
 const router = express.Router()
 
-router.post('/', createTicket)
+router.post('/', authMiddleware, createTicket)
 router.get('/', teamMiddleware, getAllTickets)
 router.get('/:id', getTicketById)
-router.put('/:id', updateTicket)
-router.delete('/:id', deleteTicket)
+router.put('/:id', authMiddleware, updateTicket)
+router.delete('/:id', authMiddleware, deleteTicket)
 
 export default router

@@ -1,13 +1,21 @@
 'use client'
 
 import StatusModal from '@/components/modals/serviceModal/StatusModal'
+import { showTeamMemberErrorToast } from '@/utils/toastUtils'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
+import { useSelector } from 'react-redux'
 
 const StatusAction = ({ service, handleSubmit, setValue, setServiceData }) => {
   const [statusModal, setStatusModal] = useState(false)
 
+  const { userInfo } = useSelector((state) => state?.user)
+
   const handleClick = (data) => {
+    if (userInfo?.creatorId) {
+      return showTeamMemberErrorToast()
+    }
+
     if (data?.pricing?.length >= 3) {
       if (!data?.isActive && (!data?.form || data?.form == '')) {
         setStatusModal(false)

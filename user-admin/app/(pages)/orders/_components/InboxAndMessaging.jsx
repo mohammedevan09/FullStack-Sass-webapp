@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState, useCallback } from 'react'
 import MainEditor from '@/components/text-editor/MainEditor'
 import Image from 'next/image'
 import dummyProfile from '@/public/images/dummyProfile.png'
-import { CloseMenuIcon, MessageSentIcon } from '@/staticData/Icon'
+import { CloseMenuIcon, ErrorIcon, MessageSentIcon } from '@/staticData/Icon'
 import JsonToText from '@/utils/JsonToText'
 import { useSelector } from 'react-redux'
 import { formatChatDateAndTime } from '@/utils/formateDateAndTime'
@@ -65,15 +65,20 @@ const InboxAndMessaging = ({ to, itemData, chatData, messageCount }) => {
     }))
     setText(initialText)
 
-    await sendMessageChat(to, chat?._id, {
-      sender: {
-        senderType: userInfo?.creatorId ? 'Team' : 'User',
-        senderId: userInfo?._id,
+    await sendMessageChat(
+      to,
+      chat?._id,
+      {
+        sender: {
+          senderType: userInfo?.creatorId ? 'Team' : 'User',
+          senderId: userInfo?._id,
+        },
+        content: text,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       },
-      content: text,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    })
+      userInfo?.token
+    )
 
     await findOrCreateChatNotification(
       {
@@ -158,7 +163,7 @@ const InboxAndMessaging = ({ to, itemData, chatData, messageCount }) => {
   }
 
   return (
-    <div className="grid items-start pb-5 bg-white rounded-[10px] w-full overflow-hidden board-shadow">
+    <div className="grid items-start bg-white rounded-[10px] w-full overflow-hidden board-shadow">
       <div className="grid bg-[#d0d0ff] relative">
         <div
           className="flex items-center py-3 px-4 cursor-pointer gap-2"
@@ -309,25 +314,34 @@ const InboxAndMessaging = ({ to, itemData, chatData, messageCount }) => {
           )}
         </div>
       </div>
-      <div className="relative sm:px-6 px-4">
-        <MainEditor
-          setText={setText}
-          className={
-            'grid text-sm border border-gray-300 rounded-lg mt-8 relative [&>*:nth-child(2)]:min-h-[45px]'
-          }
-          subClassName={'order-4'}
-          defaultText={text}
-          text={text}
-        />
-        {JsonToText(text) !== JsonToText(initialText) && (
-          <div
-            className="absolute top-11 right-8 cursor-pointer bg-blue-200 rounded-full px-2 pl-3 py-1"
-            onClick={handleMessageSend}
-          >
-            <MessageSentIcon />
-          </div>
-        )}
-      </div>
+
+      {chat?.participants?.find(
+        (participant) => participant?._id === userInfo?._id
+      ) ? (
+        <div className="relative sm:px-6 px-4 pb-5">
+          <MainEditor
+            setText={setText}
+            className={
+              'grid text-sm border border-gray-300 rounded-lg mt-8 relative [&>*:nth-child(2)]:min-h-[45px]'
+            }
+            subClassName={'order-4'}
+            defaultText={text}
+            text={text}
+          />
+          {JsonToText(text) !== JsonToText(initialText) && (
+            <div
+              className="absolute top-11 right-8 cursor-pointer bg-blue-200 rounded-full px-2 pl-3 py-1"
+              onClick={handleMessageSend}
+            >
+              <MessageSentIcon />
+            </div>
+          )}
+        </div>
+      ) : (
+        <div className="bg-rose-700 bg-opacity-20 p-3 flex justify-center gap-1 rounded-lg font-medium text-sm">
+          <ErrorIcon color={'red'} /> You are not allowed to send message here!
+        </div>
+      )}
     </div>
   )
 }

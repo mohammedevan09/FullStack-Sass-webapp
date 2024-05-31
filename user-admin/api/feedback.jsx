@@ -1,10 +1,16 @@
+import IsAuthorized from '@/utils/IsAuthorized'
 import axios from 'axios'
 
 const host = process.env.NEXT_PUBLIC_HOST
 
 // Feedback category
-export const createFeedbackCategoryApi = async (sendData) => {
-  const data = await axios.post(`${host}/api/feedbackCategory/`, sendData)
+export const createFeedbackCategoryApi = async (sendData, token) => {
+  const authorizedToken = await IsAuthorized(token)
+  const data = await axios.post(`${host}/api/feedbackCategory/`, sendData, {
+    headers: {
+      Authorization: `Bearer ${authorizedToken}`,
+    },
+  })
   return data?.data
 }
 
@@ -20,13 +26,27 @@ export const getFeedbackCategoryByIdApi = async (link) => {
   return data?.data
 }
 
-export const updateFeedbackCategoryApi = async (sendData, link) => {
-  const data = await axios.put(`${host}/api/feedbackCategory/${link}`, sendData)
+export const updateFeedbackCategoryApi = async (sendData, link, token) => {
+  const authorizedToken = await IsAuthorized(token)
+  const data = await axios.put(
+    `${host}/api/feedbackCategory/${link}`,
+    sendData,
+    {
+      headers: {
+        Authorization: `Bearer ${authorizedToken}`,
+      },
+    }
+  )
   return data?.data
 }
 
-export const deleteFeedbackCategoryApi = async (link) => {
-  const data = await axios.delete(`${host}/api/feedbackCategory/${link}`)
+export const deleteFeedbackCategoryApi = async (link, token) => {
+  const authorizedToken = await IsAuthorized(token)
+  const data = await axios.delete(`${host}/api/feedbackCategory/${link}`, {
+    headers: {
+      Authorization: `Bearer ${authorizedToken}`,
+    },
+  })
   return data?.data
 }
 

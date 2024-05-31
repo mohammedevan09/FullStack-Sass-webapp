@@ -120,8 +120,6 @@ global.online = new Map()
 global.onlineUsers = new Map()
 
 io.on('connection', (socket) => {
-  console.log('New client connected:', socket.id)
-
   socket.on('add-user', (data) => {
     if (data?.id) {
       online.set(`${data.userId}-${data.id}`, socket.id)

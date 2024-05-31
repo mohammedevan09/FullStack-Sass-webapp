@@ -46,7 +46,7 @@ const CheckoutModal = ({
 
   return (
     <WrappingModal modalOpen={openModal}>
-      <div className="grid bg-white pt-10 pb-4 sm:px-8 px-6 rounded-[20px] sm:w-[500px] w-[340px]">
+      <div className="grid bg-white pt-10 pb-4 sm:px-12 px-8 rounded-[20px] w-full">
         <h3 className="sm:text-2xl text-xl font-semibold tracking-tight mx-auto">
           Checkout
         </h3>

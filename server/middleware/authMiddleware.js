@@ -31,7 +31,7 @@ export const authMiddleware = async (req, res, next) => {
 }
 
 export const isAdmin = async (req, res, next) => {
-  if (req.user?.role === 'admin' || req.user?.role === 'adminMember') {
+  if (req.user?.role === 'admin') {
     next()
   } else {
     return res.status(403).json({ message: 'You are not an admin' })

@@ -6,10 +6,13 @@ import {
   createNotification,
   updateNotification,
 } from '../notificationController/notificationController.js'
+import Team from '../../model/userModels/teamModel.js'
+import Notification from '../../model/notificationModels/notificationModel.js'
+import MessageNotification from '../../model/notificationModels/messageNotificationModel.js'
 
 export const createTicket = async (req, res, next) => {
   try {
-    const data = await Ticket.create(req.body)
+    const data = await Ticket.create({ ...req.body, userId: req.user?._id })
 
     await createNotification({
       content: data?.description,
@@ -109,23 +112,48 @@ export const getTicketById = async (req, res, next) => {
 
 export const updateTicket = async (req, res, next) => {
   try {
-    const data = await Ticket.findByIdAndUpdate(
-      { _id: req.params.id },
-      req.body,
-      {
-        new: true,
-      }
-    )
-    await updateNotification({
-      content: data?.description,
-      title: data?.title,
-      type: 'Ticket',
-      to: 'ticket',
-      id: data?._id,
-      userId: data.userId,
-    })
+    const data = await Ticket.findOne({ _id: req.params.id })
 
-    return sendResponse(res, data)
+    const alwaysRestrictedFields = ['userId', 'orderId']
+    const restrictedFields = ['status']
+
+    if (req.user.role === 'user' || req.user.role === 'userMember') {
+      restrictedFields.forEach((field) => {
+        if (req.body.hasOwnProperty(field)) {
+          delete req.body[field]
+        }
+      })
+    }
+
+    if (
+      data.userId.toString() === req.user._id.toString() ||
+      (data.userId.toString() === req.user.creatorId?.toString() &&
+        req.user?.access?.tickets?.accessOf.includes(data?._id)) ||
+      req.user.role === 'admin' ||
+      (req.user.role === 'adminMember' &&
+        req.user?.access?.tickets?.accessOf.includes(data?._id))
+    ) {
+      Object.keys(req.body).forEach((key) => {
+        if (!alwaysRestrictedFields.includes(key)) {
+          data[key] = req.body[key]
+        }
+      })
+
+      data.save()
+
+      await updateNotification({
+        content: data?.description,
+        title: data?.title,
+        type: 'Ticket',
+        to: 'ticket',
+        id: data?._id,
+        userId: data.userId,
+      })
+
+      return sendResponse(res, data)
+    } else {
+      return res.status(403).json({ message: 'You are not permitted' })
+    }
   } catch (error) {
     next(error)
   }
@@ -133,13 +161,35 @@ export const updateTicket = async (req, res, next) => {
 
 export const deleteTicket = async (req, res, next) => {
   try {
-    const data = await Ticket.findByIdAndDelete({ _id: req.params.id })
+    const data = await Ticket.findOne({ _id: req.params.id })
 
-    await TicketChat.deleteOne({
-      ticketId: data?._id,
-    })
+    if (!data) {
+      return res.status(404).json({ message: 'Ticket not found' })
+    }
 
-    return sendResponse(res, data)
+    if (
+      data.userId.toString() === req.user._id.toString() ||
+      (data.userId.toString() === req.user.creatorId?.toString() &&
+        req.user?.access?.tickets?.accessOf.includes(data?._id)) ||
+      req.user.role === 'admin' ||
+      (req.user.role === 'adminMember' &&
+        req.user?.access?.tickets?.accessOf.includes(data?._id))
+    ) {
+      await Promise.all([
+        data.deleteOne(),
+        TicketChat.deleteOne({ ticketId: data._id }),
+        Team.updateMany(
+          { 'access.tickets.accessOf': data._id },
+          { $pull: { 'access.tickets.accessOf': data._id } }
+        ),
+        Notification.deleteMany({ id: data._id }),
+        MessageNotification.deleteMany({ id: data._id }),
+      ])
+
+      return sendResponse(res, { message: 'Deleted Successfully' })
+    } else {
+      return res.status(403).json({ message: 'You are not permitted' })
+    }
   } catch (error) {
     next(error)
   }

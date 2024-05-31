@@ -13,16 +13,16 @@ import { authMiddleware } from '../../middleware/authMiddleware.js'
 
 const router = express.Router()
 
-router.post('/', async (req, res, next) => {
+router.post('/', authMiddleware, async (req, res, next) => {
   try {
     await createChatMessage(req, res, next, ProposalChat)
   } catch (error) {
     next(error)
   }
 })
-router.put('/:id', addMessageToChat)
+router.put('/:id', authMiddleware, addMessageToChat)
 router.get('/:proposalId', getChatByProposalId)
-router.put('/update/:id', updateChatById)
+router.put('/update/:id', authMiddleware, updateChatById)
 router.put('/addParticipant/:id', authMiddleware, addChatParticipants)
 router.put('/removeParticipant/:id', authMiddleware, removeChatParticipants)
 

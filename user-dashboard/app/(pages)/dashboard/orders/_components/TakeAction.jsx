@@ -6,6 +6,7 @@ import CancelOrderModal from '@/components/modals/orderModal/CancelOrderModal'
 import GiveTeamAccessModal from '@/components/modals/settingsModals/GiveTeamAccessModal'
 import RemoveTeamAccessModal from '@/components/modals/settingsModals/RemoveTeamAccessModal'
 import { FilterByIdIcon } from '@/staticData/Icon'
+import { showTeamMemberErrorToast } from '@/utils/toastUtils'
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
 
@@ -35,9 +36,17 @@ const TakeAction = ({ order, orderChat, setOrderData, link }) => {
     if (item?.type === 'CANCEL' || item?.type === 'RENEW') {
       setCancelModal(true)
     } else if (item?.type === 'ACCESS') {
-      setAccessModal(true)
+      if (userInfo?.creatorId) {
+        return showTeamMemberErrorToast()
+      } else {
+        setAccessModal(true)
+      }
     } else if (item?.type === 'REMOVE_ACCESS') {
-      setRemoveAccessModal(true)
+      if (userInfo?.creatorId) {
+        return showTeamMemberErrorToast()
+      } else {
+        setRemoveAccessModal(true)
+      }
     }
   }
 

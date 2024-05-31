@@ -1,3 +1,4 @@
+import Order from '../../model/orderModels/orderModel.js'
 import HourlyService from '../../model/serviceModels/hourlyServiceModel.js'
 import { sendResponse } from '../../utils/sendResponse.js'
 
@@ -59,6 +60,12 @@ export const getHourlyServiceByUserId = async (req, res, next) => {
 
 export const deleteHourlyServiceById = async (req, res, next) => {
   try {
+    const orders = await Order.countDocuments({ serviceId: req.params.id })
+
+    if (orders > 0) {
+      return res.status(405).json({ message: 'The service is in use.' })
+    }
+
     const deletedService = await HourlyService.findOneAndDelete({
       _id: req.params.id,
       creatorId: req.user?._id,

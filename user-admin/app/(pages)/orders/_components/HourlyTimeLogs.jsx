@@ -9,7 +9,6 @@ import {
   createHourlyTimeLogsApi,
   updateHourlyTimeLogApi,
 } from '@/api/hourlyTimeLogsApi'
-import { updateOrderApi } from '@/api/orderApi'
 import RemoveHourlyTimeLogsModal from '@/components/modals/orderModal/RemoveHourlyTimeLogsModal'
 import TablePagination from '@/components/others/TablePagination'
 import { useSelector } from 'react-redux'
@@ -32,61 +31,21 @@ const HourlyTimeLogs = ({
   const handleClick = async (data) => {
     try {
       toast.loading('Processing, please wait!', { duration: 600 })
-      let totalTimeString = calculateTotalTime(
-        data?.hourlyTimeLogs?.[logsLength]?.startTime,
-        data?.hourlyTimeLogs?.[logsLength]?.endTime
-      )
-
       if (logsLength === order?.hourlyTimeLogs?.length) {
         await createHourlyTimeLogsApi(
           data?.hourlyTimeLogs?.[logsLength],
-          order?._id
-        )
-
-        const updated = await updateOrderApi(
-          {
-            remainHours: subtractTime(order?.remainHours, totalTimeString),
-            spentHours: addTime(order?.spentHours, totalTimeString),
-          },
-          `hourlyService/${order?._id}`,
+          order?._id,
           userInfo?.token
         )
-
-        setOrderData(updated)
       } else {
         await updateHourlyTimeLogApi(
           data?.hourlyTimeLogs?.[logsLength],
-          `${order?._id}/${data?.hourlyTimeLogs?.[logsLength]?._id}`
-        )
-
-        order.remainHours = addTime(
-          order?.remainHours,
-          calculateTotalTime(
-            order?.hourlyTimeLogs?.[logsLength]?.startTime,
-            order?.hourlyTimeLogs?.[logsLength]?.endTime
-          )
-        )
-        order.spentHours = subtractTime(
-          order?.spentHours,
-          calculateTotalTime(
-            order?.hourlyTimeLogs?.[logsLength]?.startTime,
-            order?.hourlyTimeLogs?.[logsLength]?.endTime
-          )
-        )
-
-        const updated = await updateOrderApi(
-          {
-            remainHours: subtractTime(order?.remainHours, totalTimeString),
-            spentHours: addTime(order?.spentHours, totalTimeString),
-          },
-          `hourlyService/${order?._id}`,
+          `${order?._id}/${data?.hourlyTimeLogs?.[logsLength]?._id}`,
           userInfo?.token
         )
-        setOrderData(updated)
       }
-      reset()
-      setOpenModal(false)
       toast.success('Hourly Time log updated!')
+      window.location.reload()
     } catch (error) {
       toast.error('Sorry cannot update time logs!')
     }
@@ -290,56 +249,6 @@ export function convertToAMPM(time24) {
   }
 
   return `${String(hours).padStart(2, '0')}:${minutes} ${meridiem}`
-}
-
-export function subtractTime(time1, time2) {
-  const getTimeInMinutes = (time) => {
-    const parts = time
-      .split(' ')
-      .filter((part) => !isNaN(parseInt(part)))
-      .map(Number)
-    if (parts.length === 1) {
-      return parts[0] * 60
-    } else {
-      const [hours, minutes] = parts
-      return hours * 60 + minutes
-    }
-  }
-
-  const totalMinutes1 = getTimeInMinutes(time1)
-  const totalMinutes2 = getTimeInMinutes(time2)
-
-  const differenceMinutes = totalMinutes1 - totalMinutes2
-
-  const hours = Math.floor(differenceMinutes / 60)
-  const minutes = differenceMinutes % 60
-
-  return `${hours} hours ${minutes} minutes`
-}
-
-export function addTime(time1, time2) {
-  const getTimeInMinutes = (time) => {
-    const parts = time
-      .split(' ')
-      .filter((part) => !isNaN(parseInt(part)))
-      .map(Number)
-    if (parts.length === 1) {
-      return parts[0] * 60 // Convert hours to minutes
-    } else {
-      const [hours, minutes] = parts
-      return hours * 60 + minutes
-    }
-  }
-
-  const totalMinutes1 = getTimeInMinutes(time1)
-  const totalMinutes2 = getTimeInMinutes(time2)
-
-  const sumMinutes = totalMinutes1 + totalMinutes2
-
-  const hours = Math.floor(sumMinutes / 60)
-  const minutes = sumMinutes % 60
-
-  return `${hours} hours ${minutes} minutes`
 }
 
 export default HourlyTimeLogs

@@ -6,6 +6,7 @@ import StatusColor from '@/utils/StatusColor'
 import { useState } from 'react'
 import { CheckSignIcon3, CloseMenuIcon } from '@/staticData/Icon'
 import toast from 'react-hot-toast'
+import { paymentStatuses } from './orderModal/EditStatusModal'
 
 export const projectStatuses = [
   {
@@ -30,11 +31,14 @@ const UpdateStatusModal = ({
   api,
 }) => {
   const [ProjectStatus, setProjectStatus] = useState(itemData?.status)
+  const [PaymentStatus, setPaymentStatus] = useState(itemData?.payment_status)
   const [ProjectStatusDrop, setProjectStatusDrop] = useState(false)
+  const [PaymentStatusDrop, setPaymentStatusDrop] = useState(false)
 
   const handleStatusEdit = async () => {
     try {
-      await api(ProjectStatus)
+      toast.loading('Processing, please wait!', { duration: 600 })
+      await api({ status: ProjectStatus, payment_status: PaymentStatus })
       toast.success('Update successfully!')
       setOpenModal(false)
       window.location.reload()
@@ -45,12 +49,14 @@ const UpdateStatusModal = ({
 
   return (
     <WrappingModal modalOpen={openModal}>
-      <div className="grid bg-white pt-10 pb-4 px-8 rounded-[20px] sm:w-[500px] w-[360px]">
+      <div className="grid bg-white pt-10 pb-4 sm:px-12 px-8 rounded-[20px] w-full">
         <h2 className="text-gray-900 text-xl font-bold text-center">
           Edit {type} Status.
         </h2>
         <div className="break-words flex items-start gap-1 text-xs font-semibold my-4 text-gray-400">
-          <CheckSignIcon3 size={'30'} /> Only an admin can change this.
+          <CheckSignIcon3 size={'30'} /> Only an admin can change this. If the
+          payment is proceeded by stripe then payment status edit will be hidden
+          for admin as well!
         </div>
         <div className="bg-blue-100 h-[1px] w-full"></div>
         <StatusComp
@@ -61,6 +67,16 @@ const UpdateStatusModal = ({
           StatusDrop={ProjectStatusDrop}
           statuses={projectStatuses}
         />
+        {type === 'Proposal' && (
+          <StatusComp
+            title={'Payment status'}
+            setStatus={setPaymentStatus}
+            Status={PaymentStatus}
+            setStatusDrop={setPaymentStatusDrop}
+            StatusDrop={PaymentStatusDrop}
+            statuses={paymentStatuses}
+          />
+        )}
         <div className="flex items-center gap-3 mt-9 mb-5">
           <motion.button
             whileHover={{ scale: 1.07 }}

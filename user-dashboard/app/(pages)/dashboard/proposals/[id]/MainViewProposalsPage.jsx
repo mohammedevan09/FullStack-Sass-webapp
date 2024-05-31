@@ -8,7 +8,7 @@ import {
   NegotiateIcon,
   TotalHoursIcon,
 } from '@/staticData/Icon'
-import { useEffect, useState } from 'react'
+import { useLayoutEffect, useState } from 'react'
 import BackButton from '@/components/others/BackButton'
 import GetACustomProposalModal from '@/components/modals/proposalsModals/GetACustomProposalModal'
 import ThanksSubModal from '@/components/modals/proposalsModals/ThanksSubModal'
@@ -19,6 +19,7 @@ import Image from 'next/image'
 import dummyProfile from '@/public/images/dummyProfile.png'
 import { createChat } from '@/api/chatApi'
 import { redirect } from 'next/navigation'
+import { showTeamMemberErrorToast } from '@/utils/toastUtils'
 
 const MainViewProposalsPage = ({ data }) => {
   const [openModal, setOpenModal] = useState(false)
@@ -30,8 +31,7 @@ const MainViewProposalsPage = ({ data }) => {
   const handleAccept = async (e) => {
     e.preventDefault()
     if (userInfo?.creatorId) {
-      toast.error('Team member cannot do this!')
-      return
+      return showTeamMemberErrorToast()
     }
     try {
       toast.loading('Processing, please wait!', { duration: 600 })
@@ -39,22 +39,27 @@ const MainViewProposalsPage = ({ data }) => {
         {
           details: { ...data?.details, isAccepted: true },
         },
-        data?._id
+        data?._id,
+        userInfo?.token
       )
-      await createChat('proposal', {
-        participants: [
-          {
-            participantType: 'User',
-            participantId: data?.userId,
-          },
-          {
-            participantType: 'User',
-            participantId: data?.details?.lastProposalBy?._id,
-          },
-        ],
-        proposalId: data?._id,
-        messages: [],
-      })
+      await createChat(
+        'proposal',
+        {
+          participants: [
+            {
+              participantType: 'User',
+              participantId: data?.userId,
+            },
+            {
+              participantType: 'User',
+              participantId: data?.details?.lastProposalBy?._id,
+            },
+          ],
+          proposalId: data?._id,
+          messages: [],
+        },
+        userInfo?.token
+      )
       toast.success('Proposal has been accepted!')
       window.location.reload()
     } catch (error) {
@@ -65,24 +70,26 @@ const MainViewProposalsPage = ({ data }) => {
   const handleNegotiate = (e) => {
     e.preventDefault()
     if (userInfo?.creatorId) {
-      toast.error('Team member cannot do this!')
-      return
+      return showTeamMemberErrorToast()
+    } else {
+      setNegotiateModal(true)
     }
-    setNegotiateModal(true)
   }
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!data?._id) {
       redirect(`/dashboard/proposals?userId=${userInfo?._id}`)
     }
-  }, [data, userInfo?._id])
+  }, [data?._id, userInfo?._id])
 
   return (
     <div className="w-full mx-auto">
       <BackButton link={'/dashboard/proposals'} title={'Go Back'} />
       <div className="my-4 bg-white rounded-[15px] relative">
         <div className="grid sm:py-10 py-5 justify-center items-center w-full gap-3">
-          <h1 className="sm:text-2xl text-xl font-semibold">{data?.title}</h1>
+          <h1 className="sm:text-2xl text-xl font-semibold text-center">
+            {data?.title}
+          </h1>
           <h5 className="text-sm font-medium mx-auto">ID #{data?._id}</h5>
         </div>
         <div className="w-full border border-gray-300" />

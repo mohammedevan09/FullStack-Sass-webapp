@@ -7,11 +7,12 @@ import {
   readAllMessageNotification,
   readMessageNotification,
 } from '../../controller/notificationController/messageNotificationController.js'
+import { teamMiddleware } from '../../middleware/teamMiddleware.js'
 
 const router = express.Router()
 
 router.put('/:id', findOrCreateChatNotification)
-router.get('/', getAllMessageNotification)
+router.get('/', teamMiddleware, getAllMessageNotification)
 router.put('/', readAllMessageNotification)
 router.put('/read/:id', readMessageNotification)
 router.delete('/:id', deleteMessageNotification)

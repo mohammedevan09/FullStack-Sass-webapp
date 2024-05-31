@@ -5,8 +5,11 @@ import { FormsByCategoryIdIcon } from '@/staticData/Icon'
 import Link from 'next/link'
 import '../../../../components/text-editor/tiptapstyle.css'
 import BackButton from '@/components/others/BackButton'
+import { useSelector } from 'react-redux'
 
 const MainFormsByCategory = ({ formCategory, forms, searchParams }) => {
+  const { userInfo } = useSelector((state) => state?.user)
+
   return (
     <div className="lg:w-full w-screen px-7 pt-8 overflow-x-scroll">
       <BackButton title={'Go Back'} link={'/forms'} />
@@ -18,12 +21,14 @@ const MainFormsByCategory = ({ formCategory, forms, searchParams }) => {
           </h2>
         </div>{' '}
         <div>
-          <Link
-            href={`/forms/formsByCategory/new?categoryId=${searchParams?.id}`}
-            className="w-[130px] h-[34px] btn-hover rounded-[5px] text-center flex items-center justify-center"
-          >
-            Create New +
-          </Link>
+          {!userInfo?.creatorId && (
+            <Link
+              href={`/forms/formsByCategory/new?categoryId=${searchParams?.id}`}
+              className="w-[130px] h-[34px] btn-hover rounded-[5px] text-center flex items-center justify-center"
+            >
+              Create New +
+            </Link>
+          )}
         </div>
       </div>
       <div className="bg-zinc-400 w-full h-[1px] mt-3 mb-6" />

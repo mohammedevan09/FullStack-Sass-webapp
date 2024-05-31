@@ -1,7 +1,5 @@
 'use client'
 
-import GetACustomProposalModal from '@/components/modals/proposalsModals/GetACustomProposalModal'
-import ThanksSubModal from '@/components/modals/proposalsModals/ThanksSubModal'
 import { useState } from 'react'
 import PricingCard from '../PricingCard'
 import { useForm } from 'react-hook-form'
@@ -14,6 +12,7 @@ import CustomProposals from '../CustomProposals'
 import CheckoutModal from '@/components/modals/serviceModals/CheckoutModal'
 import { setRenewalDate } from '@/utils/SetRenewalDate'
 import { createChat } from '@/api/chatApi'
+import { showTeamMemberErrorToast } from '@/utils/toastUtils'
 
 const MainServicePricingPage = ({ service, link }) => {
   const router = useRouter()
@@ -42,16 +41,7 @@ const MainServicePricingPage = ({ service, link }) => {
 
   const handleModal = (item) => {
     if (userInfo?.creatorId) {
-      toast.error('Sorry Team members cannot do that~', {
-        style: {
-          padding: '6px 16px',
-          color: '#000000',
-          fontWeight: '500',
-        },
-        iconTheme: {
-          primary: '#137cff',
-        },
-      })
+      showTeamMemberErrorToast()
     } else {
       setValue('pricingId', item?._id)
       setValue('totalAmount', item?.amount)
@@ -68,20 +58,24 @@ const MainServicePricingPage = ({ service, link }) => {
           link,
           userInfo?.token
         )
-        await createChat('order', {
-          participants: [
-            {
-              participantType: 'User',
-              participantId: userInfo?._id,
-            },
-            {
-              participantType: 'User',
-              participantId: service?.creatorId,
-            },
-          ],
-          orderId: orderData?._id,
-          messages: [],
-        })
+        await createChat(
+          'order',
+          {
+            participants: [
+              {
+                participantType: 'User',
+                participantId: userInfo?._id,
+              },
+              {
+                participantType: 'User',
+                participantId: service?.creatorId,
+              },
+            ],
+            orderId: orderData?._id,
+            messages: [],
+          },
+          userInfo?.token
+        )
         toast.success('Your service order has been received!')
         router.push(`/dashboard/orders?userId=${userInfo?._id}`)
       } catch (error) {

@@ -7,13 +7,14 @@ import {
   getProposalById,
   updateProposal,
 } from '../../controller/proposalsController/proposalController.js'
+import { authMiddleware } from '../../middleware/authMiddleware.js'
 
 const router = express.Router()
 
-router.post('/', createProposal)
+router.post('/', authMiddleware, createProposal)
 router.get('/', teamMiddleware, getAllProposals)
 router.get('/:id', getProposalById)
-router.put('/:id', updateProposal)
-router.delete('/:id', deleteProposal)
+router.put('/:id', authMiddleware, updateProposal)
+router.delete('/:id', authMiddleware, deleteProposal)
 
 export default router

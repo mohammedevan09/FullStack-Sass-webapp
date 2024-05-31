@@ -1,7 +1,9 @@
 'use client'
 
 import { FilterByIdIcon } from '@/staticData/Icon'
+import { showTeamMemberErrorToast } from '@/utils/toastUtils'
 import { useState } from 'react'
+import { useSelector } from 'react-redux'
 
 const takeActionData = [
   { title: 'Edit details', type: 'EDIT' },
@@ -11,7 +13,12 @@ const takeActionData = [
 const TakeAction = ({ setEditModal, setDeleteModal }) => {
   const [dropOpen, setDropOpen] = useState(false)
 
+  const { userInfo } = useSelector((state) => state?.user)
+
   const handleClick = (item) => {
+    if (userInfo?.creatorId) {
+      return showTeamMemberErrorToast()
+    }
     if (item?.type === 'EDIT') {
       setEditModal(true)
     } else {

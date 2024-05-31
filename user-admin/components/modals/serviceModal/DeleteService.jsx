@@ -27,21 +27,21 @@ const DeleteService = ({
         toast.success(`Your service ${serviceData?.name} is deleted!`)
         setOpenModal(false)
       } catch (error) {
-        toast.error('Sorry cannot delete!')
+        toast.error('Sorry cannot delete! It might be in use.')
       }
     }
   }
 
   return (
     <WrappingModal modalOpen={openModal}>
-      <div className="grid bg-white pt-10 pb-4 px-8 rounded-[20px] sm:w-[500px] w-[360px]">
+      <div className="grid bg-white pt-10 pb-4 sm:px-12 px-8 rounded-[20px] w-full">
         <h3 className="sm:text-2xl text-xl font-semibold tracking-tight mx-auto mb-8">
           Are you sure you want to delete?
         </h3>
         <div className="grid gap-2">
           <label
             htmlFor={'name'}
-            className={`text-base font-semibold tracking-tight mb-1`}
+            className={`text-base font-semibold tracking-tight mb-1 text-center`}
           >
             Type the service name{' '}
             <span className="font-bold text-rose-600">{serviceData?.name}</span>{' '}

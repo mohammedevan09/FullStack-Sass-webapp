@@ -6,10 +6,13 @@ import {
   createNotification,
   updateNotification,
 } from '../notificationController/notificationController.js'
+import Team from '../../model/userModels/teamModel.js'
+import Notification from '../../model/notificationModels/notificationModel.js'
+import MessageNotification from '../../model/notificationModels/messageNotificationModel.js'
 
 export const createProposal = async (req, res, next) => {
   try {
-    const data = await Proposal.create(req.body)
+    const data = await Proposal.create({ ...req.body, userId: req.user._id })
 
     await createNotification({
       content: data?.description,
@@ -105,24 +108,59 @@ export const getProposalById = async (req, res, next) => {
 
 export const updateProposal = async (req, res, next) => {
   try {
-    const data = await Proposal.findByIdAndUpdate(
-      { _id: req.params.id },
-      req.body,
-      {
-        new: true,
-      }
-    )
+    const data = await Proposal.findOne({ _id: req.params.id })
 
-    await updateNotification({
-      content: data?.description,
-      title: `Update of proposal name "${data?.title}"`,
-      type: 'Proposal',
-      to: 'invoiceAndProposal',
-      id: data?._id,
-      userId: data.userId,
-    })
+    const alwaysRestrictedFields = ['totalAmount', 'timeline']
+    const restrictedFields = [
+      'payment_info',
+      'payment_method_types',
+      'payment_status',
+      'status',
+    ]
 
-    return sendResponse(res, data)
+    if (req.user.role === 'user' || req.user.role === 'userMember') {
+      restrictedFields.forEach((field) => {
+        if (req.body.hasOwnProperty(field)) {
+          delete req.body[field]
+        }
+      })
+    }
+
+    if (data?.details?.isAccepted === true) {
+      alwaysRestrictedFields.forEach((field) => {
+        if (req.body.hasOwnProperty(field)) {
+          delete req.body[field]
+        }
+      })
+    }
+
+    if (
+      data.userId.toString() === req.user._id.toString() ||
+      (data.userId.toString() === req.user.creatorId?.toString() &&
+        req.user?.access?.proposals?.accessOf.includes(data?._id)) ||
+      req.user.role === 'admin' ||
+      (req.user.role === 'adminMember' &&
+        req.user?.access?.proposals?.accessOf.includes(data?._id))
+    ) {
+      Object.keys(req.body).forEach((key) => {
+        data[key] = req.body[key]
+      })
+
+      data.save()
+
+      await updateNotification({
+        content: data?.description,
+        title: `Update of proposal name "${data?.title}"`,
+        type: 'Proposal',
+        to: 'invoiceAndProposal',
+        id: data?._id,
+        userId: data.userId,
+      })
+
+      return sendResponse(res, data)
+    } else {
+      return res.status(403).json({ message: 'You are not permitted' })
+    }
   } catch (error) {
     next(error)
   }
@@ -130,13 +168,36 @@ export const updateProposal = async (req, res, next) => {
 
 export const deleteProposal = async (req, res, next) => {
   try {
-    const data = await Proposal.findByIdAndDelete({ _id: req.params.id })
+    const data = await Proposal.findOne({ _id: req.params.id })
 
-    await ProposalChat.deleteOne({
-      proposalId: data?._id,
-    })
+    if (!data) {
+      return res.status(404).json({ message: 'Proposal not found' })
+    }
 
-    return sendResponse(res, data)
+    if (
+      data.userId.toString() === req.user._id.toString() ||
+      (data.userId.toString() === req.user.creatorId?.toString() &&
+        req.user?.access?.proposals?.accessOf.includes(data?._id)) ||
+      req.user.role === 'admin' ||
+      (req.user.role === 'adminMember' &&
+        req.user?.access?.proposals?.accessOf.includes(data?._id))
+    ) {
+      await Promise.all([
+        data.deleteOne(),
+        ProposalChat.deleteOne({
+          proposalId: data?._id,
+        }),
+        Team.updateMany(
+          { 'access.proposals.accessOf': data._id },
+          { $pull: { 'access.proposals.accessOf': data._id } }
+        ),
+        Notification.deleteMany({ id: data._id }),
+        MessageNotification.deleteMany({ id: data._id }),
+      ])
+      return sendResponse(res, { message: 'Deleted Successfully' })
+    } else {
+      return res.status(403).json({ message: 'You are not permitted' })
+    }
   } catch (error) {
     next(error)
   }

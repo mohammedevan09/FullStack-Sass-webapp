@@ -124,10 +124,12 @@ export const updateOrderById = async (req, res, next, to = 'project') => {
       return res.status(404).send({ message: 'Order not found' })
     }
 
+    const alwaysRestrictedFields = ['totalAmount', 'userId', 'serviceId']
     const restrictedFields = [
       'payment_info',
       'payment_method_types',
       'payment_status',
+      'status',
     ]
 
     if (req.user.role === 'user' || req.user.role === 'userMember') {
@@ -140,12 +142,17 @@ export const updateOrderById = async (req, res, next, to = 'project') => {
 
     if (
       order.userId.toString() === req.user._id.toString() ||
-      order.userId.toString() === req.user.creatorId?.toString() ||
+      (order.userId.toString() === req.user.creatorId?.toString() &&
+        req.user?.access?.orders?.accessOf.includes(order?._id)) ||
       order.serviceId?.creatorId.toString() === req.user._id.toString() ||
-      order.serviceId?.creatorId.toString() === req.user.creatorId?.toString()
+      (order.serviceId?.creatorId.toString() ===
+        req.user.creatorId?.toString() &&
+        req.user?.access?.orders?.accessOf.includes(order?._id))
     ) {
       Object.keys(req.body).forEach((key) => {
-        order[key] = req.body[key]
+        if (!alwaysRestrictedFields.includes(key)) {
+          order[key] = req.body[key]
+        }
       })
 
       await order.save()

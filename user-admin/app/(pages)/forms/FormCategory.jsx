@@ -9,6 +9,7 @@ import CategoryModal from '@/components/modals/FormAndFeedbackModal/CategoryModa
 import DeleteCategoryModal from '@/components/modals/FormAndFeedbackModal/DeleteCategoryModal'
 import DeleteFormModal from '@/components/modals/FormAndFeedbackModal/DeleteFormModal'
 import FormCategoryTable from '@/components/tables/FormCategoryTable'
+import { showTeamMemberErrorToast } from '@/utils/toastUtils'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useSelector } from 'react-redux'
@@ -54,8 +55,12 @@ const FormCategory = ({ formCategories }) => {
         className=" mx-auto py-2 px-4 mb-2 bg-blue-800 hover:scale-105 text-white font-semibold rounded-[5px] text-center transition sm:my-10 my-8"
         onClick={(e) => {
           e.preventDefault()
-          setItem(null)
-          setFormCategoryModal(true)
+          if (userInfo?.creatorId) {
+            return showTeamMemberErrorToast()
+          } else {
+            setItem(null)
+            setFormCategoryModal(true)
+          }
         }}
       >
         Add a new Form category
@@ -68,6 +73,7 @@ const FormCategory = ({ formCategories }) => {
           setItem={setItem}
           setRemoveModal={setDeleteModal}
           link={`/forms/formsByCategory?id=`}
+          userInfo={userInfo}
         />
       </div>
       {formCategoryModal && (

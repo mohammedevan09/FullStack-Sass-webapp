@@ -17,17 +17,19 @@ const MainEmailNotification = ({ emailNotifications, userSetting }) => {
     defaultValues: userSetting,
     mode: 'onChange',
   })
+  const { userInfo } = useSelector((state) => state?.user)
 
   const handleSave = async (data) => {
-    await toast.promise(updateSettingByIdApi(data, userSetting?._id), {
-      loading: 'Updating settings',
-      success: <b>Settings updated successfully</b>,
-      error: <b>Settings updated failed!</b>,
-    })
+    await toast.promise(
+      updateSettingByIdApi(data, userSetting?._id, userInfo?.token),
+      {
+        loading: 'Updating settings',
+        success: <b>Settings updated successfully</b>,
+        error: <b>Settings updated failed!</b>,
+      }
+    )
     reset(data)
   }
-
-  const { userInfo } = useSelector((state) => state?.user)
 
   useLayoutEffect(() => {
     if (userInfo?.access) {

@@ -9,6 +9,8 @@ import { useState } from 'react'
 import DeleteModal from '../modals/DeleteModal'
 import UpdateStatusModal from '../modals/UpdateStatusModal'
 import { useSelector } from 'react-redux'
+import { makeCapitalize } from '@/utils/StatusColor'
+import { showTeamMemberErrorToast } from '@/utils/toastUtils'
 
 const Action = ({ data, chat, accessType, to, statusApi, deleteApi }) => {
   const { userInfo } = useSelector((state) => state?.user)
@@ -32,9 +34,17 @@ const Action = ({ data, chat, accessType, to, statusApi, deleteApi }) => {
     } else if (item?.type === 'DELETE') {
       setDeleteModal(true)
     } else if (item?.type === 'ACCESS') {
-      setAccessModal(true)
+      if (userInfo?.creatorId) {
+        return showTeamMemberErrorToast()
+      } else {
+        setAccessModal(true)
+      }
     } else if (item?.type === 'REMOVE_ACCESS') {
-      setRemoveAccessModal(true)
+      if (userInfo?.creatorId) {
+        return showTeamMemberErrorToast()
+      } else {
+        setRemoveAccessModal(true)
+      }
     }
   }
 
@@ -76,7 +86,7 @@ const Action = ({ data, chat, accessType, to, statusApi, deleteApi }) => {
           openModal={statusModal}
           itemData={data}
           api={statusApi}
-          type={'Ticket'}
+          type={makeCapitalize(to)}
         />
       )}
       {deleteModal && (

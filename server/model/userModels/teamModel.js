@@ -13,10 +13,6 @@ const accessTypes = {
     access: { type: Boolean, default: false },
     accessOf: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Ticket' }],
   },
-  invoice: {
-    access: { type: Boolean, default: false },
-    accessOf: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Invoice' }],
-  },
   meetings: {
     access: { type: Boolean, default: false },
     accessOf: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Meeting' }],
@@ -89,7 +85,6 @@ const TeamSchema = new mongoose.Schema(
 TeamSchema.path('access.orders.accessOf').default([])
 TeamSchema.path('access.proposals.accessOf').default([])
 TeamSchema.path('access.tickets.accessOf').default([])
-TeamSchema.path('access.invoice.accessOf').default([])
 TeamSchema.path('access.meetings.accessOf').default([])
 TeamSchema.path('access.affiliate.accessOf').default([])
 

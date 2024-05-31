@@ -7,16 +7,19 @@ import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { useRouter } from 'next/navigation'
 import { deleteGuideApi } from '@/api/guideApi'
+import { useSelector } from 'react-redux'
 
 const DeleteGuideModal = ({ openModal, setOpenModal, guide }) => {
   const router = useRouter()
 
   const [value, setValue] = useState('')
 
+  const { userInfo } = useSelector((state) => state?.user)
+
   const handleClick = async () => {
     if (value === guide?.title) {
       try {
-        await deleteGuideApi(guide?._id)
+        await deleteGuideApi(guide?._id, userInfo?.token)
         router.push(`/how-to-guide`)
         toast.success(`Deleted successfully!`)
         setOpenModal(false)
@@ -28,7 +31,7 @@ const DeleteGuideModal = ({ openModal, setOpenModal, guide }) => {
 
   return (
     <WrappingModal modalOpen={openModal}>
-      <div className="grid bg-white pt-10 pb-4 px-8 rounded-[20px] sm:w-[500px] w-[360px]">
+      <div className="grid bg-white pt-10 pb-4 sm:px-12 px-8 rounded-[20px] w-full">
         <h3 className="sm:text-2xl text-xl font-semibold tracking-tight mx-auto mb-8">
           Are you sure you want to delete?
         </h3>

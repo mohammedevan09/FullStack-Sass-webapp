@@ -124,6 +124,7 @@ const Menu = () => {
       const updatedAccess = {
         ...userInfo.access,
         team: { access: false },
+        clients: { access: false },
       }
 
       return (

@@ -7,14 +7,15 @@ import {
   getFormCategoryByUserId,
   deleteFormCategoryById,
 } from '../../controller/formController/formCategoryController.js'
+import { authMiddleware, isAdmin } from '../../middleware/authMiddleware.js'
 
 const router = express.Router()
 
-router.post('/', createFormCategory)
-router.put('/:id', updateFormCategory)
+router.post('/', authMiddleware, isAdmin, createFormCategory)
+router.put('/:id', authMiddleware, isAdmin, updateFormCategory)
 router.get('/', getAllFormCategories)
 router.get('/:id', getFormCategoryById)
 router.get('/userId/:id', getFormCategoryByUserId)
-router.delete('/:id', deleteFormCategoryById)
+router.delete('/:id', authMiddleware, isAdmin, deleteFormCategoryById)
 
 export default router

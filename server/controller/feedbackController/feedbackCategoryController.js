@@ -3,7 +3,10 @@ import { sendResponse } from '../../utils/sendResponse.js'
 
 export const createFeedbackCategory = async (req, res, next) => {
   try {
-    const data = await FeedbackCategory.create(req.body)
+    const data = await FeedbackCategory.create({
+      ...req.body,
+      creatorId: req.user._id,
+    })
 
     return res.status(200).json(data)
   } catch (error) {
@@ -33,8 +36,8 @@ export const getFeedbackCategoryById = async (req, res, next) => {
 
 export const updateFeedbackCategory = async (req, res, next) => {
   try {
-    const data = await FeedbackCategory.findByIdAndUpdate(
-      { _id: req.params.id },
+    const data = await FeedbackCategory.findOneAndUpdate(
+      { _id: req.params.id, creatorId: req.user._id },
       req.body,
       {
         new: true,
@@ -49,8 +52,9 @@ export const updateFeedbackCategory = async (req, res, next) => {
 
 export const deleteFeedbackCategory = async (req, res, next) => {
   try {
-    const data = await FeedbackCategory.findByIdAndDelete({
+    const data = await FeedbackCategory.findOneAndDelete({
       _id: req.params.id,
+      creatorId: req.user._id,
     })
 
     return sendResponse(res, data)

@@ -22,8 +22,16 @@ router.put('/:id', authMiddleware, async (req, res, next) => {
   }
 })
 router.delete('/:id', authMiddleware, deleteHourlyServiceOrderById)
-router.put('/hourlyTimeLogs/:orderId', addHourlyTimeLogs)
-router.put('/hourlyTimeLogs/:orderId/:logId', updateHourlyTimeLog)
-router.delete('/hourlyTimeLogs/:orderId/:logId', removeHourlyTimeLog)
+router.put('/hourlyTimeLogs/:orderId', authMiddleware, addHourlyTimeLogs)
+router.put(
+  '/hourlyTimeLogs/:orderId/:logId',
+  authMiddleware,
+  updateHourlyTimeLog
+)
+router.delete(
+  '/hourlyTimeLogs/:orderId/:logId',
+  authMiddleware,
+  removeHourlyTimeLog
+)
 
 export default router

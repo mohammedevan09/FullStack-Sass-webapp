@@ -1,4 +1,8 @@
 export function formatDate(dateString) {
+  if (!dateString) {
+    return `00 / 00 / 00`
+  }
+
   const options = {
     year: 'numeric',
     month: 'long',
@@ -17,6 +21,10 @@ export function formatDate(dateString) {
 }
 
 export function formatDateTwo(dateString) {
+  if (!dateString) {
+    return `00 / 00 / 00`
+  }
+
   const months = [
     'Jan',
     'Feb',
@@ -50,6 +58,9 @@ export function formatDateTwo(dateString) {
 }
 
 export const formatChatDateAndTime = (dateString) => {
+  if (!dateString) {
+    return `00 / 00 / 00`
+  }
   const date = new Date(dateString)
 
   // Get components of the date

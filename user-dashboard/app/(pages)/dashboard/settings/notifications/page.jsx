@@ -16,6 +16,7 @@ const page = async ({ searchParams }) => {
       <h2 className="text-black text-lg font-medium leading-relaxed sm:mb-7 mb-4">
         Email Notifications
       </h2>
+
       <MainEmailNotification
         emailNotifications={modifiedEmailNotifications}
         userSetting={userSetting}

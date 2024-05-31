@@ -19,13 +19,6 @@ export const searchAllCollections = async (req, res, next) => {
         }),
     }
 
-    const accessOf =
-      [
-        access?.orders?.accessOf,
-        access?.tickets?.accessOf,
-        access?.proposals?.accessOf,
-      ] || []
-
     const matchStage = {
       $match: {
         ...query,
@@ -41,7 +34,15 @@ export const searchAllCollections = async (req, res, next) => {
     }
 
     if (access) {
-      matchStage.$match._id = { $in: accessOf }
+      const accessOf = [
+        ...(access.orders?.accessOf || []),
+        ...(access.tickets?.accessOf || []),
+        ...(access.proposals?.accessOf || []),
+      ].map((id) => new Types.ObjectId(id))
+
+      if (accessOf.length > 0) {
+        matchStage.$match._id = { $in: accessOf }
+      }
     }
 
     const projectStage = {

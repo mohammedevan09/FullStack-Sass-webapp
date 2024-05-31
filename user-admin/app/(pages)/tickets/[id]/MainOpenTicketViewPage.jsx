@@ -51,11 +51,11 @@ const MainOpenTicketViewPage = ({ data, chat }) => {
               data={data}
               chat={chat?.chat}
               deleteApi={async () => {
-                await deleteTicketApi(data?._id)
+                await deleteTicketApi(data?._id, userInfo?.token)
                 router.push(`/tickets?userId=${userInfo?._id}`)
               }}
               statusApi={async (status) => {
-                await updateTicketApi({ status }, data?._id)
+                await updateTicketApi(status, data?._id, userInfo?.token)
               }}
             />
           </div>

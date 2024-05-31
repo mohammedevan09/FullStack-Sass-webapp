@@ -37,24 +37,28 @@ export const socket = socketIOClient(process.env.NEXT_PUBLIC_HOST, {
   transports: ['websocket'],
 })
 
-export const dropdownData = [
-  {
-    title: 'Profile',
-    icon: <DropProfileIcon />,
-    link: '/settings',
-  },
-  {
-    title: 'Notification',
-    icon: <DropNotificationIcon />,
-    link: '/settings/notifications',
-  },
-]
-
 const Header = () => {
+  const { userInfo } = useSelector((state) => state?.user)
+
+  const dropdownData = [
+    {
+      title: 'Profile',
+      icon: <DropProfileIcon />,
+      link: '/settings',
+    },
+    ...(!userInfo?.creatorId
+      ? [
+          {
+            title: 'Notification',
+            icon: <DropNotificationIcon />,
+            link: '/settings/notifications',
+          },
+        ]
+      : []),
+  ]
+
   const [show, setShow] = useState('top')
   const [lastScrollY, setLastScrollY] = useState(0)
-
-  const { userInfo } = useSelector((state) => state?.user)
 
   const [dropOpen, setDropOpen] = useState(false)
   const [notificationDropOpen, setNotificationDropOpen] = useState(false)
@@ -173,26 +177,32 @@ const Header = () => {
           />
         </div>
         <div className="flex justify-center items-start md:gap-6 xs:gap-3 gap-2">
-          <div className="relative" ref={notificationRef}>
-            <NotificationComp
-              isSmallScreen={isSmallScreen}
-              setNotificationDropOpen={setNotificationDropOpen}
-              notificationDropOpen={notificationDropOpen}
-              IconOne={NotificationIcon}
-              IconTwo={NotificationBellIcon}
-              userInfo={userInfo}
-              api={(data) => getAllNotification(data)}
-              updateOneApi={(updateItem) =>
-                updateOneNotificationApi({ readByAdmin: true }, updateItem?._id)
-              }
-              updateAllApi={() =>
-                updateManyNotificationApi(
-                  { readByAdmin: false },
-                  { readByAdmin: true }
-                )
-              }
-            />
-          </div>
+          {userInfo?.role !== 'adminMember' &&
+            userInfo?.role !== 'userMember' && (
+              <div className="relative" ref={notificationRef}>
+                <NotificationComp
+                  isSmallScreen={isSmallScreen}
+                  setNotificationDropOpen={setNotificationDropOpen}
+                  notificationDropOpen={notificationDropOpen}
+                  IconOne={NotificationIcon}
+                  IconTwo={NotificationBellIcon}
+                  userInfo={userInfo}
+                  api={(data) => getAllNotification(data)}
+                  updateOneApi={(updateItem) =>
+                    updateOneNotificationApi(
+                      { readByAdmin: true },
+                      updateItem?._id
+                    )
+                  }
+                  updateAllApi={() =>
+                    updateManyNotificationApi(
+                      { readByAdmin: false },
+                      { readByAdmin: true }
+                    )
+                  }
+                />
+              </div>
+            )}
           <div className="relative" ref={messageRef}>
             <NotificationComp
               isSmallScreen={isSmallScreen}
@@ -258,7 +268,7 @@ export const SearchComponent = ({ searchDropOpen, searchValue, userInfo }) => {
     results: [],
     totalDocsCount: 0,
   })
-  const [value] = useDebounce(searchValue, 300)
+  const [value] = useDebounce(searchValue, 500)
   const [currentPage, setCurrentPage] = useState(1)
 
   useEffect(() => {
@@ -368,7 +378,7 @@ export const NotificationComp = ({
       setNotificationData(adjustedData)
     }
     fetchNotification()
-  }, [userInfo?._id, currenPage])
+  }, [currenPage])
 
   useEffect(() => {
     const handleNewMessage = (message) => {

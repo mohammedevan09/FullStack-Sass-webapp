@@ -26,7 +26,7 @@ export const findOrCreateUserSettings = async (req, res, next) => {
 export const updateUserSetting = async (req, res, next) => {
   try {
     const update = await UserSetting.findByIdAndUpdate(
-      { _id: req.params.id },
+      { _id: req.params.id, userId: req.user?._id },
       {
         ...req.body,
       },

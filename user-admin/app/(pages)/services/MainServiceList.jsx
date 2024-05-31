@@ -5,14 +5,25 @@ import ServiceTables from '@/components/tables/ServiceTables'
 import { AddProjectIcon, AllProjectsIcon } from '@/staticData/Icon'
 import { useState } from 'react'
 import ServiceMediumHeading from './_components/ServiceMediumHeading'
+import { useSelector } from 'react-redux'
+import { showTeamMemberErrorToast } from '@/utils/toastUtils'
 
 const MainServiceList = ({ services }) => {
   const [openModal, setOpenModal] = useState(false)
+
+  const { userInfo } = useSelector((state) => state?.user)
+
   return (
     <>
       <button
         className="sm:mt-16 mt-10 sm:mb-14 mb-8 sm:py-3 py-1 px-3 flex items-center justify-center sm:gap-2 gap-1 rounded-lg shadow  text-lg font-medium bg-blue-800 text-white"
-        onClick={() => setOpenModal(true)}
+        onClick={() => {
+          if (userInfo?.creatorId) {
+            showTeamMemberErrorToast()
+          } else {
+            setOpenModal(true)
+          }
+        }}
       >
         <AddProjectIcon color={'white'} /> Add New Services
       </button>

@@ -23,7 +23,7 @@ export const findOrCreateChatNotification = async (req, res, next) => {
 
 export const getAllMessageNotification = async (req, res, next) => {
   try {
-    const { page = 1, limit = 10, search = '', userId } = req.query
+    const { page = 1, limit = 10, search = '', userId, access } = req.query
 
     if (!userId) {
       return res.status(400).send({ message: 'userId is required' })
@@ -64,7 +64,7 @@ export const getAllMessageNotification = async (req, res, next) => {
             { $count: 'unread' },
           ],
           notifications: [
-            { $sort: { createdAt: -1 } },
+            { $sort: { updatedAt: -1 } },
             { $skip: (parseInt(page) - 1) * parseInt(limit) },
             { $limit: parseInt(limit) },
           ],
@@ -102,6 +102,18 @@ export const getAllMessageNotification = async (req, res, next) => {
         },
       },
     ]
+
+    if (access) {
+      const accessOf = [
+        ...(access.orders?.accessOf || []),
+        ...(access.tickets?.accessOf || []),
+        ...(access.proposals?.accessOf || []),
+      ].map((id) => new Types.ObjectId(id))
+
+      if (accessOf.length > 0) {
+        pipeline[0].$match.id = { $in: accessOf }
+      }
+    }
 
     const result = await MessageNotification.aggregate(pipeline)
 
@@ -151,10 +163,7 @@ export const readAllMessageNotification = async (req, res, next) => {
       return res.status(400).send({ message: 'userId is required' })
     }
 
-    console.log(userId)
     const objectIdUserId = new Types.ObjectId(userId)
-
-    console.log(objectIdUserId)
 
     await MessageNotification.updateMany(
       { 'receivers.userId': objectIdUserId },

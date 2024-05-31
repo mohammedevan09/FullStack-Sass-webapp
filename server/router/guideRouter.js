@@ -6,13 +6,14 @@ import {
   getGuideById,
   updateGuide,
 } from '../controller/guideController.js'
+import { authMiddleware, isAdmin } from '../middleware/authMiddleware.js'
 
 const router = express.Router()
 
-router.post('/', createGuide)
+router.post('/', authMiddleware, isAdmin, createGuide)
 router.get('/', getAllGuides)
 router.get('/:id', getGuideById)
-router.put('/:id', updateGuide)
-router.delete('/:id', deleteGuide)
+router.put('/:id', authMiddleware, isAdmin, updateGuide)
+router.delete('/:id', authMiddleware, isAdmin, deleteGuide)
 
 export default router

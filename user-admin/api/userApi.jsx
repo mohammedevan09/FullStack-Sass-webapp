@@ -11,6 +11,7 @@ export const adminLoginApi = async (sendData) => {
 }
 
 export const handleRefreshTokenApi = async (queryData) => {
+  console.log('running')
   const data = await axios.get(`${host}/api/user/handleRefreshToken`, {
     params: queryData,
   })

@@ -12,6 +12,7 @@ import { motion } from 'framer-motion'
 import BackButton from '@/components/others/BackButton'
 import { useSelector } from 'react-redux'
 import DeleteGuideModal from '@/components/modals/guideModal/DeleteGuideModal'
+import { showTeamMemberErrorToast } from '@/utils/toastUtils'
 
 const MainSingleGuidePage = ({ guide }) => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false)
@@ -35,16 +36,22 @@ const MainSingleGuidePage = ({ guide }) => {
   })
 
   const handleSave = async (formData) => {
+    if (userInfo?.creatorId) {
+      return showTeamMemberErrorToast()
+    }
     if (isValid) {
       let newGuide
       try {
         if (guide?._id) {
-          newGuide = await updateGuideApi(formData, guide?._id)
+          newGuide = await updateGuideApi(formData, guide?._id, userInfo?.token)
         } else {
-          newGuide = await createGuideApi({
-            ...formData,
-            creatorId: userInfo?._id,
-          })
+          newGuide = await createGuideApi(
+            {
+              ...formData,
+              creatorId: userInfo?._id,
+            },
+            userInfo?.token
+          )
           router.push(`/how-to-guide/${newGuide?._id}`)
         }
         reset(newGuide)
@@ -69,7 +76,13 @@ const MainSingleGuidePage = ({ guide }) => {
             className={`py-1 px-4 bg-rose-600 rounded-[9px] text-white text-lg font-semibold leading-7 disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105 transition ${
               guide?._id ? 'block' : 'hidden'
             }`}
-            onClick={() => setOpenDeleteModal(true)}
+            onClick={() => {
+              if (userInfo?.creatorId) {
+                return showTeamMemberErrorToast()
+              } else {
+                setOpenDeleteModal(true)
+              }
+            }}
           >
             Delete
           </button>

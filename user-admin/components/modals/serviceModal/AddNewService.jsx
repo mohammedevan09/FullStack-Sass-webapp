@@ -113,7 +113,7 @@ const AddNewService = ({ openModal, setOpenModal }) => {
       >
         <CloseIcon color={'#7a93ff'} />
       </div>
-      <div className="grid bg-white pt-10 pb-4 px-8 rounded-[20px] sm:w-[500px] w-[360px]">
+      <div className="grid bg-white pt-10 pb-4 sm:px-12 px-8 rounded-[20px] w-full">
         <Stepper
           activeStep={activeStep}
           stepClassName={'stepper-css'}

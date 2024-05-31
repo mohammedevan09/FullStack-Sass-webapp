@@ -1,6 +1,7 @@
 'use client'
 
 import { EditIcon, RemoveIcon } from '@/staticData/Icon'
+import { showTeamMemberErrorToast } from '@/utils/toastUtils'
 import { useRouter } from 'next/navigation'
 
 const FormCategoryTable = ({
@@ -10,6 +11,7 @@ const FormCategoryTable = ({
   setRemoveModal,
   setItem,
   link,
+  userInfo,
 }) => {
   const router = useRouter()
   return (
@@ -51,8 +53,12 @@ const FormCategoryTable = ({
                     <button
                       onClick={(e) => {
                         e.preventDefault()
-                        setItem(item)
-                        setEditModel(true)
+                        if (userInfo?.creatorId) {
+                          return showTeamMemberErrorToast()
+                        } else {
+                          setItem(item)
+                          setEditModel(true)
+                        }
                       }}
                     >
                       <EditIcon color={'#2525ff'} />
@@ -60,8 +66,12 @@ const FormCategoryTable = ({
                     <button
                       onClick={(e) => {
                         e.preventDefault()
-                        setItem(item)
-                        setRemoveModal(true)
+                        if (userInfo?.creatorId) {
+                          return showTeamMemberErrorToast()
+                        } else {
+                          setItem(item)
+                          setRemoveModal(true)
+                        }
                       }}
                     >
                       <RemoveIcon color={'#ff2a2a'} />

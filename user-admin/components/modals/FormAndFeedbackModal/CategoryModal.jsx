@@ -6,6 +6,7 @@ import ErrorMessage from '@/components/others/ErrorMessage'
 import Labels from '@/components/others/Labels'
 import { Input2 } from '@/components/others/Input'
 import toast from 'react-hot-toast'
+import { useSelector } from 'react-redux'
 
 const CategoryModal = ({
   openModal,
@@ -20,15 +21,17 @@ const CategoryModal = ({
   register,
   item,
 }) => {
+  const { userInfo } = useSelector((state) => state?.user)
+
   const handleClick = async (data) => {
     if (isValid) {
       try {
         if (item === null) {
-          const newData = await api(data)
+          const newData = await api(data, userInfo?.token)
           setCategories((prev) => [newData, ...prev])
           toast.success(`New category created successfully!`)
         } else {
-          const updatedData = await updateApi(data, item?._id)
+          const updatedData = await updateApi(data, item?._id, userInfo?.token)
           setCategories((prev) =>
             prev.map((category) =>
               category._id === updatedData._id ? updatedData : category
@@ -45,7 +48,7 @@ const CategoryModal = ({
 
   return (
     <WrappingModal modalOpen={openModal}>
-      <div className="grid bg-white pt-10 pb-4 px-8 rounded-[20px] sm:w-[500px] w-[360px]">
+      <div className="grid bg-white pt-10 pb-4 sm:px-12 px-8 rounded-[20px] w-full">
         <h3 className="sm:text-2xl text-xl font-semibold tracking-tight mx-auto mb-8">
           Are a new category~
         </h3>

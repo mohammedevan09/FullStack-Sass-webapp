@@ -68,10 +68,9 @@ const OpenTicketModal = ({
   const searchParams = useSearchParams()
   const pathname = usePathname()
   const { replace } = useRouter()
+  const params = new URLSearchParams(searchParams)
 
   const handleSearch = useDebouncedCallback((search) => {
-    const params = new URLSearchParams(searchParams)
-
     if (search && search.startsWith('#')) {
       search = search.slice(1)
       params.set('search', search)
@@ -102,27 +101,33 @@ const OpenTicketModal = ({
         const serviceType = Object.keys(serviceData)[0]
 
         if (existedData) {
-          await updateTicketApi(data, existedData?._id)
+          await updateTicketApi(data, existedData?._id, userInfo?.token)
           toast.success('Your ticket has been updated!')
           window.location.reload()
         } else {
-          const ticket = await createTicketApi(data)
-          await createChat('ticket', {
-            participants: [
-              {
-                participantType: 'User',
-                participantId: userInfo?._id,
-              },
-              {
-                participantType: 'User',
-                participantId: serviceData?.[serviceType]?.[0]?.creatorId,
-              },
-            ],
-            ticketId: ticket?._id,
-            messages: [],
-          })
+          const ticket = await createTicketApi(data, userInfo?.token)
+          await createChat(
+            'ticket',
+            {
+              participants: [
+                {
+                  participantType: 'User',
+                  participantId: userInfo?._id,
+                },
+                {
+                  participantType: 'User',
+                  participantId: serviceData?.[serviceType]?.[0]?.creatorId,
+                },
+              ],
+              ticketId: ticket?._id,
+              messages: [],
+            },
+            userInfo?.token
+          )
           setOpenSubModal(true)
           setOpenModal(false)
+          params.delete('search')
+          replace(`${pathname}?${params.toString()}`, { scroll: false })
           toast.success('Your ticket has been submitted!')
         }
       } catch (error) {

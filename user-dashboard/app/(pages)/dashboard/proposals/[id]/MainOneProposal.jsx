@@ -53,7 +53,7 @@ const MainOneProposal = ({ data, chat }) => {
             data={data}
             chat={chat?.chat}
             deleteApi={async () => {
-              await deleteProposalApi(data?._id)
+              await deleteProposalApi(data?._id, userInfo?.token)
               router.push(`/dashboard/proposals?userId=${userInfo?._id}`)
             }}
           />

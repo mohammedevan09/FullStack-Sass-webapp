@@ -4,12 +4,6 @@ import Input from '@/components/others/Input'
 import WrappingModal from '../WrappingModal'
 import { motion } from 'framer-motion'
 import toast from 'react-hot-toast'
-import {
-  addTime,
-  calculateTotalTime,
-  subtractTime,
-} from '@/app/(pages)/orders/_components/HourlyTimeLogs'
-import { updateOrderApi } from '@/api/orderApi'
 import { deleteHourlyTimeLogApi } from '@/api/hourlyTimeLogsApi'
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
@@ -17,9 +11,7 @@ import { useSelector } from 'react-redux'
 const RemoveHourlyTimeLogsModal = ({
   openModal,
   setOpenModal,
-  reset,
   handleSubmit,
-  setOrderData,
   order,
   logsLength,
 }) => {
@@ -31,36 +23,15 @@ const RemoveHourlyTimeLogsModal = ({
     if (value === order?.title) {
       try {
         toast.loading('Processing, please wait!', { duration: 600 })
-        let totalTimeString = calculateTotalTime(
-          order?.hourlyTimeLogs?.[logsLength]?.startTime,
-          order?.hourlyTimeLogs?.[logsLength]?.endTime
-        )
         await deleteHourlyTimeLogApi(
           order?.hourlyTimeLogs?.[logsLength],
-          `${order?._id}/${order?.hourlyTimeLogs?.[logsLength]?._id}`
-        )
-
-        const updated = await updateOrderApi(
-          {
-            remainHours: addTime(order?.remainHours, totalTimeString),
-            spentHours: subtractTime(order?.spentHours, totalTimeString),
-          },
-          `hourlyService/${order?._id}`,
+          `${order?._id}/${order?.hourlyTimeLogs?.[logsLength]?._id}`,
           userInfo?.token
         )
-        const filteredHourlyTimeLogs = order?.hourlyTimeLogs.filter(
-          (_, index) => index !== logsLength
-        )
 
-        setOrderData({
-          ...updated,
-          hourlyTimeLogs: filteredHourlyTimeLogs,
-        })
-        reset()
-        setOpenModal(false)
         toast.success('Removed Hourly Time log updated!')
+        window.location.reload()
       } catch (error) {
-        console.log(error)
         toast.error('Sorry cannot remove!')
       }
     }
@@ -68,7 +39,7 @@ const RemoveHourlyTimeLogsModal = ({
 
   return (
     <WrappingModal modalOpen={openModal}>
-      <div className="grid bg-white pt-10 pb-4 px-8 rounded-[20px] sm:w-[500px] w-[360px]">
+      <div className="grid bg-white pt-10 pb-4 sm:px-12 px-8 rounded-[20px] w-full">
         <h3 className="sm:text-2xl text-xl font-semibold tracking-tight mx-auto mb-8">
           Are you sure you want to remove?
         </h3>

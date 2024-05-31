@@ -2,8 +2,8 @@
 
 import GetACustomProposalModal from '@/components/modals/proposalsModals/GetACustomProposalModal'
 import ThanksSubModal from '@/components/modals/proposalsModals/ThanksSubModal'
+import { showTeamMemberErrorToast } from '@/utils/toastUtils'
 import { useState } from 'react'
-import toast from 'react-hot-toast'
 import { useSelector } from 'react-redux'
 
 const CustomProposals = () => {
@@ -27,15 +27,7 @@ const CustomProposals = () => {
           className="md:px-5 px-3 md:py-3 py-2 Get a custom proposal rounded-lg shadow border-2 border-zinc-800  font-semibold hover:text-blue-800 hover:border-blue-800"
           onClick={() => {
             if (userInfo?.creatorId) {
-              toast.error('Sorry Team members cannot do that~', {
-                style: {
-                  padding: '6px 16px',
-                  fontWeight: '500',
-                },
-                iconTheme: {
-                  primary: '#137cff',
-                },
-              })
+              showTeamMemberErrorToast()
             } else {
               setOpenModalCustom(true)
             }

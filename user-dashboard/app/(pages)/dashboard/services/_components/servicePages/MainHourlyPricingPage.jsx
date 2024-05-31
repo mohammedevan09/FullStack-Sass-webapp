@@ -6,16 +6,15 @@ import HourlyPricing from '../HourlyPricing'
 import CustomProposals from '../CustomProposals'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useRouter } from 'next/navigation'
 import CheckoutModal from '@/components/modals/serviceModals/CheckoutModal'
 import CustomFormModal from '@/components/modals/serviceModals/CustomFormModal'
-import GetACustomProposalModal from '@/components/modals/proposalsModals/GetACustomProposalModal'
-import ThanksSubModal from '@/components/modals/proposalsModals/ThanksSubModal'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { createOrderApi } from '@/api/orderApi'
 import { createChat } from '@/api/chatApi'
+import { showTeamMemberErrorToast } from '@/utils/toastUtils'
 
 const MainHourlyPricingPage = ({ service, link }) => {
   const router = useRouter()
@@ -58,20 +57,24 @@ const MainHourlyPricingPage = ({ service, link }) => {
           link,
           userInfo?.token
         )
-        await createChat('order', {
-          participants: [
-            {
-              participantType: 'User',
-              participantId: userInfo?._id,
-            },
-            {
-              participantType: 'User',
-              participantId: service?.creatorId,
-            },
-          ],
-          orderId: orderData?._id,
-          messages: [],
-        })
+        await createChat(
+          'order',
+          {
+            participants: [
+              {
+                participantType: 'User',
+                participantId: userInfo?._id,
+              },
+              {
+                participantType: 'User',
+                participantId: service?.creatorId,
+              },
+            ],
+            orderId: orderData?._id,
+            messages: [],
+          },
+          userInfo?.token
+        )
         toast.success('Your service order has been received!')
         router.push(`/dashboard/orders?userId=${userInfo?._id}`)
       } catch (error) {
@@ -130,15 +133,7 @@ const MainHourlyPricingPage = ({ service, link }) => {
               className="w-full sm:py-4 py-3 text-white text-base font-semibold bg-blue-800 sm:rounded-lg rounded-md my-5"
               onClick={() => {
                 if (userInfo?.creatorId) {
-                  toast.error('Sorry Team members cannot do that~', {
-                    style: {
-                      padding: '6px 16px',
-                      fontWeight: '500',
-                    },
-                    iconTheme: {
-                      primary: '#137cff',
-                    },
-                  })
+                  showTeamMemberErrorToast()
                 } else {
                   setOpenModal(true)
                 }

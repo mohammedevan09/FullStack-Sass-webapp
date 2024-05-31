@@ -1,5 +1,6 @@
 import { getUserSettingById } from '@/api/userSettingApi'
 import MainEmailNotification from './MainEmailNotification'
+import { ErrorIcon } from '@/staticData/Icon'
 
 const page = async ({ searchParams }) => {
   const userSetting = await getUserSettingById(searchParams?.userId)
@@ -13,9 +14,14 @@ const page = async ({ searchParams }) => {
 
   return (
     <div className="w-full grid items-center sm:my-20 xs:my-10 my-5 sm:px-4 xs:px-3 px-1">
-      <h2 className="text-black text-lg font-medium leading-relaxed sm:mb-7 mb-4">
+      <h2 className="text-black text-lg font-medium leading-relaxed">
         Email Notifications
       </h2>
+      <div className="bg-blue-700 bg-opacity-20 py-2 px-3 flex justify-start gap-1 rounded-lg font-medium text-sm my-5">
+        <ErrorIcon color={'blue'} /> This feature is not available for Admin
+        yet. It will be available in the future updates! But you can still edit
+        this.
+      </div>
       <MainEmailNotification
         emailNotifications={modifiedEmailNotifications}
         userSetting={userSetting}

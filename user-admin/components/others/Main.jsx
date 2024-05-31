@@ -1,7 +1,7 @@
 'use client'
 
 import { AllProjectsIcon } from '@/staticData/Icon'
-import { projectData } from '@/staticData/MainData'
+// import { projectData } from '@/staticData/MainData'
 import Image from 'next/image'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import DashboardSalesReport from '../charts/DashboardSalesReport'
@@ -211,71 +211,6 @@ const Main = () => {
       <h2 className="text-zinc-700 text-2xl flex justify-start items-center sm:gap-3 gap-2 mt-12">
         <AllProjectsIcon color={'black'} /> Recent Orders
       </h2>
-      <div className="lg:w-full w-screen bg-white rounded-[20.37px] px-7 py-8 sm:mb-14 mb-10 sm:mt-8 mt-6 overflow-x-scroll">
-        <table className="w-full">
-          <tbody>
-            <tr className="text-zinc-700 lg:text-xl text-lg font-semibold tracking-tight text-left">
-              <th>ID</th>
-              <th>Projects Name</th>
-              <th className="text-center">Status</th>
-              <th className="text-center">Progress</th>
-              <th className="text-center">Track</th>
-            </tr>
-
-            {projectData?.map((item, i) => (
-              <tr key={i}>
-                <td className="lg:py-7 py-4">
-                  <div className="text-zinc-700 lg:text-xl text-[16px] font-normal flex justify-start items-center gap-3 w-[90px]">
-                    #{item?.orderId}
-                  </div>
-                </td>
-                <td className="lg:py-7 py-4 2xl:w-[350px] w-[300px]">
-                  <div className="text-zinc-700 lg:text-xl text-[16px] font-normal flex justify-start items-center gap-3 lg:w-full w-[270px]">
-                    {item?.name}
-                  </div>
-                </td>
-                <td className="lg:py-7 py-4 text-center">
-                  <div
-                    className={`lg:w-[127px] w-[96px] h-[34px] mx-auto bg-opacity-20 rounded-[20px] flex justify-center items-center lg:gap-2 gap-[6px] ${
-                      item?.status?.toLocaleLowerCase() === 'pending'
-                        ? 'bg-rose-600'
-                        : item?.status?.toLocaleLowerCase() === 'done'
-                        ? 'bg-green-500'
-                        : 'bg-blue-600'
-                    }`}
-                  >
-                    <div
-                      className={`w-2.5 h-2.5 rounded-full ${
-                        item?.status?.toLocaleLowerCase() === 'pending'
-                          ? 'bg-rose-600'
-                          : item?.status?.toLocaleLowerCase() === 'done'
-                          ? 'bg-green-500'
-                          : 'bg-blue-600'
-                      }`}
-                    />
-                    {item?.status}
-                  </div>
-                </td>
-                <td className="lg:py-7 py-4 text-center">
-                  <div className="lg:w-full w-[150px] mx-auto">
-                    {item?.progress}
-                  </div>
-                </td>
-                <td className="lg:py-7 py-4 text-center">
-                  <button
-                    className="w-[100px] h-[34px] btn-hover rounded-[10px] text-center"
-                    onClick={() =>
-                      router.push(`/dashboard/orders/${item?.orderId}`)
-                    }
-                  >
-                    Open
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
     </>
   )
 }

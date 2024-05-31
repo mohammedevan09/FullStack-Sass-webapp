@@ -50,9 +50,9 @@ const GetACustomProposalModal = ({
         data.totalAmount = parseInt(data.totalAmount)
         data.timeline = parseInt(data.timeline)
         if (existedData) {
-          await updateProposalApi(data, existedData?._id)
+          await updateProposalApi(data, existedData?._id, userInfo?.token)
         } else {
-          await createProposalApi(data)
+          await createProposalApi(data, userInfo?.token)
         }
         toast.success('Successfully submitted proposal request!')
         setOpenModal(false)

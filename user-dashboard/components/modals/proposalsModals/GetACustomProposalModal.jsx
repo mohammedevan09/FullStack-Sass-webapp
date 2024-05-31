@@ -50,9 +50,9 @@ const GetACustomProposalModal = ({
         data.totalAmount = parseInt(data.totalAmount)
         data.timeline = parseInt(data.timeline)
         if (existedData) {
-          await updateProposalApi(data, existedData?._id)
+          await updateProposalApi(data, existedData?._id, userInfo?.token)
         } else {
-          await createProposalApi(data)
+          await createProposalApi(data, userInfo?.token)
         }
         toast.success('Successfully submitted proposal request!')
         setOpenModal(false)
@@ -72,7 +72,7 @@ const GetACustomProposalModal = ({
       >
         <CloseIcon color={'#7a93ff'} />
       </div>
-      <form className="grid bg-white pt-16 pb-10 sm:px-8 px-4 rounded-[20px] w-full">
+      <form className="grid bg-white pt-16 pb-10 sm:px-12 px-8 rounded-[20px] w-full">
         <h3 className="sm:text-2xl text-lg font-semibold tracking-tight mx-auto">
           Provide project details & questionnaire
         </h3>

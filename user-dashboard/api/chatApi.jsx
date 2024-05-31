@@ -3,18 +3,37 @@ import axios from 'axios'
 
 const host = process.env.NEXT_PUBLIC_HOST
 
-export const createChat = async (to, sendData) => {
-  const data = await axios.post(`${host}/api/${to}/chat`, sendData)
+export const createChat = async (to, sendData, token) => {
+  const authorizedToken = await IsAuthorized(token)
+  const data = await axios.post(`${host}/api/${to}/chat`, sendData, {
+    headers: {
+      Authorization: `Bearer ${authorizedToken}`,
+    },
+  })
   return data?.data
 }
 
-export const sendMessageChat = async (to, id, sendData) => {
-  const data = await axios.put(`${host}/api/${to}/chat/${id}`, sendData)
+export const sendMessageChat = async (to, id, sendData, token) => {
+  const authorizedToken = await IsAuthorized(token)
+  const data = await axios.put(`${host}/api/${to}/chat/${id}`, sendData, {
+    headers: {
+      Authorization: `Bearer ${authorizedToken}`,
+    },
+  })
   return data?.data
 }
 
-export const updateChatApi = async (to, id, sendData) => {
-  const data = await axios.put(`${host}/api/${to}/chat/update/${id}`, sendData)
+export const updateChatApi = async (to, id, sendData, token) => {
+  const authorizedToken = await IsAuthorized(token)
+  const data = await axios.put(
+    `${host}/api/${to}/chat/update/${id}`,
+    sendData,
+    {
+      headers: {
+        Authorization: `Bearer ${authorizedToken}`,
+      },
+    }
+  )
   return data?.data
 }
 

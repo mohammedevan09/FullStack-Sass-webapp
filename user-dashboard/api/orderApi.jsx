@@ -3,7 +3,7 @@ import axios from 'axios'
 
 const host = process.env.NEXT_PUBLIC_HOST
 
-export const createOrderApi = async (sendData, link) => {
+export const createOrderApi = async (sendData, link, token) => {
   const authorizedToken = await IsAuthorized(token)
   const data = await axios.post(`${host}/api/order/${link}`, sendData, {
     headers: {

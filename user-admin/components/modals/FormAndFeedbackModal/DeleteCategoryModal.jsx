@@ -5,6 +5,7 @@ import WrappingModal from '../WrappingModal'
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
+import { useSelector } from 'react-redux'
 
 const DeleteCategoryModal = ({
   openModal,
@@ -15,16 +16,23 @@ const DeleteCategoryModal = ({
 }) => {
   const [value, setValue] = useState('')
 
+  const { userInfo } = useSelector((state) => state?.user)
+
   const handleClick = async () => {
     if (value === category?.name) {
       try {
-        await api(category?._id)
+        await api(category?._id, userInfo?.token)
         setCategories((prev) =>
           prev?.filter((item) => item?._id !== category?._id)
         )
         toast.success(`Your category ${category?.name} is deleted!`)
         setOpenModal(false)
       } catch (error) {
+        if (error?.response?.status === 405) {
+          toast.error(<b>{error?.response?.data?.message}</b>)
+        } else {
+          toast.error(`Cannot delete ${category?.name}`)
+        }
         setOpenModal(false)
       }
     }
@@ -32,7 +40,7 @@ const DeleteCategoryModal = ({
 
   return (
     <WrappingModal modalOpen={openModal}>
-      <div className="grid bg-white pt-10 pb-4 px-8 rounded-[20px] sm:w-[500px] w-[360px]">
+      <div className="grid bg-white pt-10 pb-4 sm:px-12 px-8 rounded-[20px] w-full">
         <h3 className="sm:text-2xl text-base font-semibold tracking-tight mx-auto mb-4">
           Are you sure you want to delete?
         </h3>

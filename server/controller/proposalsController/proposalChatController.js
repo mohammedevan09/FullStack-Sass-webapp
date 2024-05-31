@@ -33,32 +33,44 @@ export const getChatByProposalId = async (req, res, next) => {
         },
       },
       {
+        $lookup: {
+          from: 'messages',
+          localField: 'messages',
+          foreignField: '_id',
+          as: 'messageDetails',
+        },
+      },
+      {
         $project: {
           _id: 1,
           participants: {
             $concatArrays: ['$userParticipants', '$teamParticipants'],
           },
           proposalId: 1,
-          messages: {
-            $slice: [{ $reverseArray: '$messages' }, (page - 1) * limit, limit],
+          messageDetails: {
+            $slice: [
+              { $reverseArray: '$messageDetails' },
+              (page - 1) * limit,
+              limit,
+            ],
           },
         },
       },
       {
         $unwind: {
-          path: '$messages',
+          path: '$messageDetails',
           preserveNullAndEmptyArrays: true,
         },
       },
       {
-        $sort: { 'messages.createdAt': 1 },
+        $sort: { 'messageDetails.createdAt': 1 },
       },
       {
         $group: {
           _id: '$_id',
           participants: { $first: '$participants' },
           proposalId: { $first: '$proposalId' },
-          messages: { $push: '$messages' },
+          messageDetails: { $push: '$messageDetails' },
         },
       },
       {
@@ -80,7 +92,7 @@ export const getChatByProposalId = async (req, res, next) => {
           },
           proposalId: 1,
           messages: {
-            $slice: ['$messages', page * limit],
+            $slice: ['$messageDetails', page * limit],
           },
         },
       },
@@ -93,19 +105,27 @@ export const getChatByProposalId = async (req, res, next) => {
         },
       },
       {
+        $lookup: {
+          from: 'messages',
+          localField: 'messages',
+          foreignField: '_id',
+          as: 'messageDetails',
+        },
+      },
+      {
         $project: {
-          messageCount: { $size: '$messages' },
+          messageCount: { $size: '$messageDetails' },
         },
       },
     ]
 
-    const [ticketChat, messageCount] = await Promise.all([
+    const [proposalChat, messageCount] = await Promise.all([
       ProposalChat.aggregate(pipeline),
       ProposalChat.aggregate(countPipeline),
     ])
 
     const result = {
-      chat: ticketChat[0],
+      chat: proposalChat[0],
       messageCount: messageCount.length > 0 ? messageCount[0].messageCount : 0,
     }
 

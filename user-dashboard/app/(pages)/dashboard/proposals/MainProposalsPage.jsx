@@ -7,15 +7,25 @@ import ThanksSubModal from '@/components/modals/proposalsModals/ThanksSubModal'
 import ProposalTables from '@/components/tables/proposal/ProposalTable'
 import TablePagination from '@/components/others/TablePagination'
 import ProjectHeading from '../orders/_components/ProjectHeading'
+import { showTeamMemberErrorToast } from '@/utils/toastUtils'
+import { useSelector } from 'react-redux'
 
 const MainProposalsPage = ({ proposals, totalDocsCount }) => {
   const [openModalCustom, setOpenModalCustom] = useState(false)
   const [openSubModal, setOpenSubModal] = useState(false)
 
+  const { userInfo } = useSelector((state) => state?.user)
+
   return (
     <div className="sm:px-4 xs:px-3 px-1">
       <button
-        onClick={() => setOpenModalCustom(true)}
+        onClick={() => {
+          if (userInfo?.creatorId) {
+            return showTeamMemberErrorToast()
+          } else {
+            setOpenModalCustom(true)
+          }
+        }}
         className="sm:mt-16 mt-10 sm:mb-14 mb-8 sm:py-3 py-2 sm:w-[285px] w-[240px] flex items-center justify-center sm:gap-2 gap-1 rounded-lg shadow border-2 border-blue-800 text-blue-800 lg:text-xl text-base font-medium"
       >
         <AddProjectIcon /> Request new proposals

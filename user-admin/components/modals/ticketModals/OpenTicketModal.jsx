@@ -102,25 +102,29 @@ const OpenTicketModal = ({
         const serviceType = Object.keys(serviceData)[0]
 
         if (existedData) {
-          await updateTicketApi(data, existedData?._id)
+          await updateTicketApi(data, existedData?._id, userInfo?.token)
           toast.success('Your ticket has been updated!')
           window.location.reload()
         } else {
-          const ticket = await createTicketApi(data)
-          await createChat('ticket', {
-            participants: [
-              {
-                participantType: 'User',
-                participantId: userInfo?._id,
-              },
-              {
-                participantType: 'User',
-                participantId: serviceData?.[serviceType]?.[0]?.creatorId,
-              },
-            ],
-            ticketId: ticket?._id,
-            messages: [],
-          })
+          const ticket = await createTicketApi(data, userInfo?.token)
+          await createChat(
+            'ticket',
+            {
+              participants: [
+                {
+                  participantType: 'User',
+                  participantId: userInfo?._id,
+                },
+                {
+                  participantType: 'User',
+                  participantId: serviceData?.[serviceType]?.[0]?.creatorId,
+                },
+              ],
+              ticketId: ticket?._id,
+              messages: [],
+            },
+            userInfo?.token
+          )
           setOpenSubModal(true)
           setOpenModal(false)
           toast.success('Your ticket has been submitted!')

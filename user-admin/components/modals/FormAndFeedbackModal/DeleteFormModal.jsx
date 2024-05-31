@@ -7,19 +7,27 @@ import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { useRouter } from 'next/navigation'
 import { deleteFormById } from '@/api/formApi'
+import { useSelector } from 'react-redux'
 
 const DeleteFormModal = ({ openModal, setOpenModal, form, searchParams }) => {
   const router = useRouter()
   const [value, setValue] = useState('')
 
+  const { userInfo } = useSelector((state) => state?.user)
+
   const handleClick = async () => {
     if (value === form?.name) {
       try {
-        await deleteFormById(form?._id)
+        await deleteFormById(form?._id, userInfo?.token)
         router.push(`/forms/formsByCategory?id=${searchParams?.categoryId}`)
         toast.success(`Your form ${form?.name} is deleted!`)
         setOpenModal(false)
       } catch (error) {
+        if (error?.response?.status === 405) {
+          toast.error(<b>{error?.response?.data?.message}</b>)
+        } else {
+          toast.error(`Cannot delete ${category?.name}`)
+        }
         setOpenModal(false)
       }
     }
@@ -27,7 +35,7 @@ const DeleteFormModal = ({ openModal, setOpenModal, form, searchParams }) => {
 
   return (
     <WrappingModal modalOpen={openModal}>
-      <div className="grid bg-white pt-10 pb-4 px-8 rounded-[20px] sm:w-[500px] w-[360px]">
+      <div className="grid bg-white pt-10 pb-4 sm:px-12 px-8 rounded-[20px] w-full">
         <h3 className="sm:text-2xl text-xl font-semibold tracking-tight mx-auto mb-4">
           Are you sure you want to delete?
         </h3>
@@ -42,7 +50,7 @@ const DeleteFormModal = ({ openModal, setOpenModal, form, searchParams }) => {
           </label>
           <Input2
             id={'name'}
-            placeholder={'Order title'}
+            placeholder={'Form title'}
             type={'text'}
             validationRules={{
               onChange: (e) => setValue(e.target.value),
