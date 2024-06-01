@@ -37,6 +37,7 @@ export const stripeWebhook = (req, res) => {
     stripe.customers
       .retrieve(data.customer)
       .then((customer) => {
+        console.log('customer', customer, 'Data', data)
         createStripeOrder(customer, data, res)
       })
       .catch((err) => console.log(err.message))
