@@ -9,62 +9,78 @@ import { createNotification } from '../notificationController/notificationContro
 
 const stripe = Stripe(process.env.SECURITY_KEY)
 
-const clientURL = process.env.CLIENT_URL
+const clientURL = process.env.BASE_URL
 
 export const createNormalServiceOrder = async (req, res, next) => {
   try {
-    const createOrder = await NormalServiceOrder.create({
+    const populatedOrder = await NormalServiceOrder.create({
       ...req.body,
       userId: req.user?._id,
-    })
+    }).then((order) =>
+      NormalServiceOrder.findById(order._id)
+        .populate({
+          path: 'serviceId',
+          model: 'Service',
+          select: '_id name heading icon',
+        })
+        .exec()
+    )
 
-    if (createOrder?.payment_method_types === 'card') {
-      const customer = await stripe.customers.create({
-        metadata: {
-          orderId: createOrder?._id.toString(),
-        },
-      })
-
-      const line_items = [
-        {
-          price_data: {
-            currency: 'usd',
-            product_data: {
-              name: req.body?.title,
-              images: [
-                'https://i.postimg.cc/NfPBTwRn/Pngtree-contact-our-male-customer-service-5412873.png',
-              ],
-            },
-            unit_amount: req.body?.amount * 100,
-          },
-          quantity: 1,
-        },
-      ]
-
-      const session = await stripe.checkout.sessions.create({
-        payment_method_types: ['card'],
-        phone_number_collection: {
-          enabled: true,
-        },
-        customer: customer.id,
-        line_items,
-        mode: 'payment',
-        success_url: `${clientURL}/dashboard/services/designAndDevelopmentPackages`,
-        cancel_url: `${clientURL}/`,
-      })
-
-      return res.send({ url: session?.url })
-    } else {
+    if (populatedOrder?.payment_method_types !== 'card') {
       await createNotification({
-        content: createOrder?.description,
-        title: createOrder?.title,
+        content: populatedOrder?.description,
+        title: populatedOrder?.title,
         type: 'Order',
         to: 'project',
-        id: createOrder?._id,
-        userId: createOrder.userId,
+        id: populatedOrder?._id,
+        userId: populatedOrder.userId,
       })
-      return res.status(200).json(createOrder)
+      return res.status(200).json(populatedOrder)
     }
+
+    const customer = await stripe.customers.create({
+      metadata: {
+        orderId: populatedOrder._id.toString(),
+      },
+    })
+
+    const line_items = [
+      {
+        price_data: {
+          currency: 'usd',
+          product_data: {
+            name: populatedOrder?.serviceId?.name,
+            description: populatedOrder?.serviceId?.heading,
+            // images: [populatedOrder?.serviceId?.icon],
+          },
+          unit_amount: req.body?.totalAmount * 100,
+        },
+        quantity: 1,
+      },
+    ]
+
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      phone_number_collection: {
+        enabled: true,
+      },
+      customer: customer.id,
+      line_items,
+      mode: 'payment',
+      success_url: `${clientURL}/dashboard/orders?userId=${req.user?._id}`,
+      cancel_url: `${clientURL}/`,
+    })
+
+    await createNotification({
+      content: populatedOrder?.description,
+      title: populatedOrder?.title,
+      type: 'Order',
+      to: 'project',
+      id: populatedOrder?._id,
+      userId: populatedOrder.userId,
+    })
+
+    return res.status(200).json({ ...populatedOrder._doc, url: session?.url })
   } catch (error) {
     next(error)
   }

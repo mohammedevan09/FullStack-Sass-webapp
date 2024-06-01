@@ -15,6 +15,7 @@ const CheckoutModal = ({
   openModal,
   handleCheckOutButton,
   setValue,
+  isSubmitting,
 }) => {
   const [active, setActive] = useState('manually')
 
@@ -103,8 +104,9 @@ const CheckoutModal = ({
         <div className="grid items-center gap-3 mt-14">
           <motion.button
             whileHover={{ scale: 1.03 }}
-            className="w-full p-4 bg-blue-800 rounded-[9px] text-white text-lg font-semibold leading-7"
+            className="w-full p-4 bg-blue-800 rounded-[9px] text-white text-lg font-semibold leading-7 disabled:opacity-50 disabled:cursor-not-allowed"
             onClick={() => handleCheckout()}
+            disabled={isSubmitting}
           >
             {active === 'card' || active === 'paypal'
               ? 'Go to Checkout'

@@ -40,11 +40,7 @@ const orderSchema = new mongoose.Schema(
       inProgress: [{ title: String }],
       complete: [{ title: String }],
     },
-    payment_info: {
-      customerId: String,
-      payment_intent: String,
-      subscriptionId: String,
-    },
+    payment_info: {},
     payment_method_types: {
       type: String,
       enum: ['card', 'paypal', 'manually'],

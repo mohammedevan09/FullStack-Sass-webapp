@@ -10,6 +10,7 @@ const page = async ({ searchParams }) => {
     totalDocsCount,
   } = await getAllOrders({
     ...searchParams,
+    limit: 10,
     __t: 'NormalServiceOrder',
     userId: searchParams?.userId,
     role: 'admin',

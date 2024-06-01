@@ -26,7 +26,7 @@ const MainServicePricingPage = ({ service, link }) => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isSubmitting },
     setValue,
   } = useForm({
     defaultValues: {
@@ -58,6 +58,7 @@ const MainServicePricingPage = ({ service, link }) => {
           link,
           userInfo?.token
         )
+        console.log(orderData)
         await createChat(
           'order',
           {
@@ -77,7 +78,11 @@ const MainServicePricingPage = ({ service, link }) => {
           userInfo?.token
         )
         toast.success('Your service order has been received!')
-        router.push(`/dashboard/orders?userId=${userInfo?._id}`)
+        if (orderData?.url) {
+          router.push(orderData?.url)
+        } else {
+          router.push(`/dashboard/orders?userId=${userInfo?._id}`)
+        }
       } catch (error) {
         toast.error('Checkout order failed!')
       }
@@ -119,6 +124,7 @@ const MainServicePricingPage = ({ service, link }) => {
           setOpenModal={setCheckOutModal}
           handleCheckOutButton={handleSubmit(handleCheckOutButton)}
           setValue={setValue}
+          isSubmitting={isSubmitting}
         />
       )}
     </div>

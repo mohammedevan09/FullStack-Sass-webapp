@@ -11,6 +11,7 @@ const page = async ({ searchParams }) => {
   } = await getAllOrders({
     ...searchParams,
     __t: 'HourlyServiceOrder',
+    limit: 10,
     userId: searchParams?.userId,
     role: 'user',
   })

@@ -4,28 +4,30 @@ import { sendResponse } from '../../utils/sendResponse.js'
 import { updateNotification } from '../notificationController/notificationController.js'
 
 export const createStripeOrder = async (customer, data, res) => {
-  // console.log(customer, data)
   try {
-    const updateOrder = await Order?.findByIdAndUpdate(
-      { _id: customer?.metadata?.orderId },
-      {
-        customerId: customer?.id,
-        payment_intent: data?.payment_intent,
-        payment_status: data?.payment_status,
-        payment_method_types: data?.payment_method_types[0],
-        additionalInfo: {
-          phone: data?.customer_details?.phone,
-        },
-        status: 'running',
-      },
-      { new: true }
+    const order = await Order.findById(customer?.metadata?.orderId).select(
+      '-hourlyTimeLogs'
     )
 
-    if (!updateOrder) {
+    if (!order) {
       return res.status(404).json({ message: 'Order not found!' })
     }
 
-    return res.status(201).json({ message: 'Order completed' })
+    order.additionalInfo = {
+      ...order.additionalInfo,
+      phone: data?.customer_details?.phone,
+    }
+    order.payment_info = {
+      customerId: data?.customer,
+      payment_intent: data?.payment_intent,
+    }
+    order.payment_status = data?.payment_status
+    order.payment_method_types = data?.payment_method_types[0]
+    order.status = 'running'
+
+    await order.save()
+
+    return res.status(201).json({ message: 'Order completed successfully' })
   } catch (error) {
     return res.status(500).json({ message: error?.message })
   }

@@ -28,7 +28,7 @@ const MainHourlyPricingPage = ({ service, link }) => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isSubmitting },
     setValue,
   } = useForm({
     defaultValues: {
@@ -161,6 +161,7 @@ const MainHourlyPricingPage = ({ service, link }) => {
             setOpenModal={setCheckOutModal}
             handleCheckOutButton={handleSubmit(handleCheckOutButton)}
             setValue={setValue}
+            isSubmitting={isSubmitting}
           />
         )}
       </div>
