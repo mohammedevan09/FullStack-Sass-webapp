@@ -34,10 +34,11 @@ export const stripeWebhook = (req, res) => {
 
   // Handle the event
   if (eventType === 'checkout.session.completed') {
+    console.log('running')
     stripe.customers
       .retrieve(data.customer)
       .then((customer) => {
-        console.log('customer', customer, 'Data', data)
+        // console.log('customer', customer, 'Data', data)
         createStripeOrder(customer, data, res)
       })
       .catch((err) => console.log(err.message))
