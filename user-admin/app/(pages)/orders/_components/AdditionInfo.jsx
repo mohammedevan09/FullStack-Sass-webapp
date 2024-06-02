@@ -45,6 +45,8 @@ const AdditionInfo = ({ order }) => {
           ...order?.additionalInfo,
           'Service ID': `#${order?.serviceId?._id}`,
           'User ID': `#${order?.userId}`,
+          'Payment Intent ID': order?.payment_info?.payment_intent,
+          'Customer ID': order?.payment_info?.customerId,
           'Created At': formatDate(order?.createdAt),
           'Updated At': formatDate(order?.updatedAt),
         })?.map(([key, value], i) => {

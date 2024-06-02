@@ -4,8 +4,6 @@ import { sendResponse } from '../../utils/sendResponse.js'
 import { updateNotification } from '../notificationController/notificationController.js'
 
 export const createStripeOrder = async (customer, data, res) => {
-  // console.log(customer, data)
-  console.log('running2')
   try {
     const order = await Order.findById(customer?.metadata?.orderId).select(
       '-hourlyTimeLogs'
@@ -17,7 +15,7 @@ export const createStripeOrder = async (customer, data, res) => {
 
     order.additionalInfo = {
       ...order.additionalInfo,
-      phone: data?.customer_details?.phone,
+      'Payment Phone': data?.customer_details?.phone,
     }
     order.payment_info = {
       customerId: data?.customer,
