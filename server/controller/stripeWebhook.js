@@ -4,7 +4,7 @@ dotenv.config()
 import Stripe from 'stripe'
 import { createStripeOrder } from './orderController/orderController.js'
 
-const stripe = Stripe(process.env.SECURITY_KEY)
+export const stripe = Stripe(process.env.SECURITY_KEY)
 
 export const stripeWebhook = (req, res) => {
   const endpointSecret = process.env.ENDPOINT_SECRET

@@ -7,6 +7,8 @@ export const getColorClass = (status) => {
       return 'bg-rose-600'
     case 'done':
       return 'bg-green-500'
+    case 'paid':
+      return 'bg-green-500'
     case 'canceled':
       return ' bg-rose-600 text-red-600'
     default:

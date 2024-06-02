@@ -55,7 +55,7 @@ const ProposalSchema = new mongoose.Schema(
     },
     payment_status: {
       type: String,
-      enum: ['pending', 'done', 'canceled'],
+      enum: ['pending', 'paid', 'canceled'],
       default: 'pending',
     },
     status: {
