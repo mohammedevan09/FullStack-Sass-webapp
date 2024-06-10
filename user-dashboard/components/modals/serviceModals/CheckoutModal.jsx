@@ -9,6 +9,7 @@ import {
   PaymentCardIcon,
 } from '@/staticData/Icon'
 import { Input2 } from '@/components/others/Input'
+import { usePathname } from 'next/navigation'
 
 const CheckoutModal = ({
   setOpenModal,
@@ -18,14 +19,19 @@ const CheckoutModal = ({
   isSubmitting,
 }) => {
   const [active, setActive] = useState('manually')
+  const pathname = usePathname()
 
   const pricing = [
-    {
-      title: 'Manually',
-      desc: 'Pay manually/ Pay later',
-      icon: <ManualPaymentIcon />,
-      value: 'manually',
-    },
+    ...(pathname.split('/')[3] !== 'subscriptionService'
+      ? [
+          {
+            title: 'Manually',
+            desc: 'Pay manually/ Pay later',
+            icon: <ManualPaymentIcon />,
+            value: 'manually',
+          },
+        ]
+      : []),
     {
       title: 'Credit/Debit Card',
       desc: 'Mastercard, Visa, Amex',

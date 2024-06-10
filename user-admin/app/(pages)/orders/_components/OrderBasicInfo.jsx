@@ -19,7 +19,9 @@ export const getColorClass = (status) => {
 const OrderBasicInfo = ({ order, service }) => {
   return (
     <div className="overflow-hidden">
-      <h1 className="md:text-2xl text-xl font-semibold">{order?.title}</h1>
+      <h1 className="md:text-2xl text-xl font-semibold">
+        {makeCapitalize(order?.title)}
+      </h1>
       <div className="svg-shadow bg-white md:w-[400px] w-full rounded-lg mt-3 font-medium text-sm">
         <div className="py-6 px-5 grid relative overflow-hidden">
           <div className="flex gap-2 items-start">
@@ -35,19 +37,15 @@ const OrderBasicInfo = ({ order, service }) => {
             <h6>
               <b>Order ID</b> - #{order?._id}
             </h6>
-            {/* <h6>
-            <b>Service ID</b> - #{service?._id}
-          </h6> */}
+
             <h6>
               <b>Total Amount</b> - ${order?.totalAmount}
               {''}
               <span className="text-[11px] font-semibold italic">
-                {order?.__t === 'SubscriptionServiceOrder' && '/MO'}
+                {order?.__t === 'SubscriptionServiceOrder' && ' /MO'}
               </span>
             </h6>
-            {/* <h6>
-            <b>User ID</b> - #{order?.userId}
-          </h6> */}
+
             <div className="w-full font-semibold text-sm">
               <div
                 className={`w-[160px] h-[34px] mx-auto bg-opacity-20 absolute rotate-45 top-5 -right-10 flex justify-center items-center ${getColorClass(

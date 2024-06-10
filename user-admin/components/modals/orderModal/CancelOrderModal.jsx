@@ -25,7 +25,12 @@ const CancelOrderModal = ({
         toast.loading('Processing, please wait!', { duration: 600 })
         const updated = await updateOrderApi(
           {
-            status: order?.status === 'canceled' ? 'running' : 'canceled',
+            status:
+              order?.status === 'canceled'
+                ? order?.payment_status === 'paid'
+                  ? 'running'
+                  : 'pending'
+                : 'canceled',
           },
           link,
           userInfo?.token

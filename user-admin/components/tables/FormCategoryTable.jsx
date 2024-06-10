@@ -26,7 +26,7 @@ const FormCategoryTable = ({
       ) : (
         <table className="w-full mt-6">
           <thead>
-            <tr className="text-zinc-700 lg:text-xl text-lg font-semibold tracking-tight text-left">
+            <tr className="lg:text-xl text-lg font-semibold tracking-tight text-left">
               <th>ID</th>
               <th>Name</th>
               <th className="text-center">Creator ID</th>
@@ -34,7 +34,7 @@ const FormCategoryTable = ({
               <th className="text-center">Manage</th>
             </tr>
           </thead>
-          <tbody className="lg:text-base text-sm font-medium text-zinc-800">
+          <tbody className="text-sm font-medium text-zinc-700">
             {formCategoryData?.map((item, i) => (
               <tr key={i}>
                 <td className="lg:py-5 py-4 w-[120px] pr-3">

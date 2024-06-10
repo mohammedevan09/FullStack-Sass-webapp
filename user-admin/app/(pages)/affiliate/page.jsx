@@ -19,7 +19,7 @@ const page = async ({ searchParams }) => {
           ) : (
             <table className="w-full">
               <thead>
-                <tr className="text-zinc-700 lg:text-base text-sm font-semibold tracking-tight text-left">
+                <tr className="lg:text-base text-sm font-semibold tracking-tight text-left">
                   <th>User ID</th>
                   <th>Name</th>
                   <th className="text-center">Visitors count</th>
@@ -29,7 +29,7 @@ const page = async ({ searchParams }) => {
                   <th className="text-center">Action</th>
                 </tr>
               </thead>
-              <tbody className="lg:text-base text-sm font-medium text-zinc-800">
+              <tbody className="text-sm font-medium text-zinc-700">
                 {affiliates?.map((item, i) => (
                   <tr key={i}>
                     <td className="lg:py-5 py-4 pr-1">

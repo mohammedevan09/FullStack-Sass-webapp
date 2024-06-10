@@ -41,6 +41,7 @@ export const getAllForms = async (req, res, next) => {
     const forms = await Form.find(query)
       .skip((page - 1) * limit)
       .limit(limit)
+      .select('-fields')
       .exec()
 
     const totalDocsCount = await Form.countDocuments(query)

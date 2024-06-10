@@ -12,16 +12,16 @@ const SubscriptionServiceTables = ({ subscriptions }) => {
         ) : (
           <table className="w-full">
             <thead>
-              <tr className="text-zinc-700 lg:text-xl text-lg font-semibold tracking-tight text-left">
+              <tr className="lg:text-xl text-lg font-semibold tracking-tight text-left">
                 <th>ID</th>
                 <th>Projects Name</th>
                 <th className="text-center">Status</th>
-                <th className="text-center">Subscription Renew</th>
+                <th className="text-center">Duration</th>
                 <th className="text-center">Service ID</th>
                 <th className="text-center">Track</th>
               </tr>
             </thead>
-            <tbody className="lg:text-base text-sm font-medium text-zinc-600">
+            <tbody className="text-sm font-semibold text-zinc-700">
               {subscriptions?.map((item, i) => (
                 <tr key={i}>
                   <td className="lg:py-5 py-4 w-[120px] pr-3">
@@ -36,8 +36,8 @@ const SubscriptionServiceTables = ({ subscriptions }) => {
                     <StatusColor status={item?.status} />
                   </td>
                   <td className="lg:py-5 py-4 text-center">
-                    <div className="w-[170px] mx-auto">
-                      {item?.subscriptionRenew}
+                    <div className="px-4 mx-auto">
+                      {item?.duration?.days || 0} Days
                     </div>
                   </td>
                   <td className="lg:py-5 py-4 text-center">

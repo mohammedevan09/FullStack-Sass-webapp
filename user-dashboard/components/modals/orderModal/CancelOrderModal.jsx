@@ -5,8 +5,12 @@ import WrappingModal from '../WrappingModal'
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
-import { updateOrderApi } from '@/api/orderApi'
+import {
+  renewOrCancelSubscriptionOrderApi,
+  updateOrderApi,
+} from '@/api/orderApi'
 import { useSelector } from 'react-redux'
+import { useRouter } from 'next/navigation'
 
 const CancelOrderModal = ({
   openModal,
@@ -15,6 +19,7 @@ const CancelOrderModal = ({
   link,
   setOrderData,
 }) => {
+  const router = useRouter()
   const { userInfo } = useSelector((state) => state?.user)
 
   const [value, setValue] = useState('')
@@ -23,19 +28,34 @@ const CancelOrderModal = ({
     if (value === order?.title) {
       try {
         toast.loading('Processing, please wait!', { duration: 600 })
-        const updated = await updateOrderApi(
-          {
-            status: order?.status === 'canceled' ? 'running' : 'canceled',
-          },
-          link,
-          userInfo?.token
-        )
-        setOrderData(updated)
-        toast.success(
-          `${
-            order?.status === 'canceled' ? 'Renew' : 'Cancel'
-          } Canceled successfully!`
-        )
+        if (order?.__t === 'SubscriptionServiceOrder') {
+          const orderData = await renewOrCancelSubscriptionOrderApi(
+            {},
+            link.split('/')[1],
+            userInfo?.token
+          )
+          router.push(orderData?.url)
+        } else {
+          const updated = await updateOrderApi(
+            {
+              status:
+                order?.status === 'canceled'
+                  ? order?.payment_status === 'paid'
+                    ? 'running'
+                    : 'pending'
+                  : 'canceled',
+            },
+            link,
+            userInfo?.token
+          )
+
+          setOrderData(updated)
+          toast.success(
+            `${
+              order?.status === 'canceled' ? 'Renew' : 'Cancel'
+            } Canceled successfully!`
+          )
+        }
         setOpenModal(false)
       } catch (error) {
         toast.error(

@@ -18,10 +18,14 @@ const IsAuthorized = async (token) => {
   const cookieStore = cookies()
   const refreshToken = cookieStore.get('refreshToken')
   if (isAccessTokenExpired(token)) {
-    const { accessToken } = await handleRefreshTokenApi({
-      refreshToken: refreshToken?.value,
-    })
-    return accessToken
+    try {
+      const { accessToken } = await handleRefreshTokenApi({
+        refreshToken: refreshToken?.value,
+      })
+      return accessToken
+    } catch (error) {
+      cookieStore.delete('refreshToken')
+    }
   } else {
     return token
   }

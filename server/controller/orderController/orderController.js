@@ -9,6 +9,10 @@ export const createStripeOrder = async (customer, data, res) => {
       '-hourlyTimeLogs'
     )
 
+    if (order?.__t === 'SubscriptionServiceOrder') {
+      return
+    }
+
     if (!order) {
       return res.status(404).json({ message: 'Order not found!' })
     }
@@ -19,7 +23,6 @@ export const createStripeOrder = async (customer, data, res) => {
     }
     order.payment_info = {
       customerId: data?.customer,
-      payment_intent: data?.payment_intent,
     }
     order.payment_status = data?.payment_status
     order.payment_method_types = data?.payment_method_types[0]
@@ -82,14 +85,63 @@ export const getAllOrder = async (req, res, next) => {
       {
         $group: {
           _id: '$__t',
-          orders: { $push: '$$ROOT' },
+          orders: {
+            $push: {
+              _id: '$_id',
+              __t: '$__t',
+              userId: '$userId',
+              title: '$title',
+              status: '$status',
+              remainHours: '$remainHours',
+              spentHours: '$spentHours',
+              totalHours: '$totalHours',
+              status: '$status',
+              serviceId: '$serviceId',
+              startTime: '$startTime',
+              endTime: '$endTime',
+              subscriptionType: '$subscriptionType',
+            },
+          },
         },
       },
       {
         $project: {
           _id: 0,
           serviceType: '$_id',
-          orders: { $slice: ['$orders', skip, parseInt(limit)] },
+          orders: {
+            $map: {
+              input: { $slice: ['$orders', skip, parseInt(limit)] },
+              as: 'order',
+              in: {
+                _id: '$$order._id',
+                __t: '$$order.__t',
+                userId: '$$order.userId',
+                title: '$$order.title',
+                status: '$$order.status',
+                remainHours: '$$order.remainHours',
+                spentHours: '$$order.spentHours',
+                totalHours: '$$order.totalHours',
+                serviceId: '$$order.serviceId',
+                startTime: '$$order.startTime',
+                endTime: '$$order.endTime',
+                subscriptionType: '$$order.subscriptionType',
+                duration: {
+                  days: {
+                    $round: [
+                      {
+                        $divide: [
+                          {
+                            $subtract: ['$$order.endTime', '$$order.startTime'],
+                          },
+                          1000 * 3600 * 24,
+                        ],
+                      },
+                    ],
+                  },
+                },
+              },
+            },
+          },
         },
       },
     ]
@@ -131,7 +183,7 @@ export const updateOrderById = async (req, res, next, to = 'project') => {
       'payment_info',
       'payment_method_types',
       'payment_status',
-      'status',
+      // 'status',
     ]
 
     if (req.user.role === 'user' || req.user.role === 'userMember') {

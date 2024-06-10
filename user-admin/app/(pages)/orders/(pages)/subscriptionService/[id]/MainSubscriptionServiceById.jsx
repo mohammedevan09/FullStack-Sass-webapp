@@ -12,6 +12,7 @@ import { useState } from 'react'
 import EditOrderModal from '@/components/modals/orderModal/EditOrderModal'
 import SubscriptionInfo from '../../../_components/SubscriptionInfo'
 import { updateOrderApi } from '@/api/orderApi'
+import PaymentRequireComp from '../../../_components/PaymentRequireComp'
 
 const MainSubscriptionServiceById = ({
   order,
@@ -37,6 +38,7 @@ const MainSubscriptionServiceById = ({
     <>
       <div className="sm:my-14 my-8">
         <BackButton link={'/orders/subscriptionService'} title={'Go back'} />
+        {!order?.payment_info?.subscriptionId && <PaymentRequireComp />}
         <div className="md:flex grid md:justify-between xs:items-start items-end gap-6 mb-6">
           <OrderBasicInfo order={orderData} service={service} />
           <div className="flex gap-2 items-start">

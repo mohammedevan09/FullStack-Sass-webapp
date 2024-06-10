@@ -13,6 +13,7 @@ const page = async ({ params }) => {
         service={order?.serviceId || {}}
         orderChat={orderChat?.chat || {}}
         messageCount={orderChat?.messageCount || 0}
+        params={params}
       />
     </>
   )

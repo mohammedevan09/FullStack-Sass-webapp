@@ -68,7 +68,7 @@ export const createNormalServiceOrder = async (req, res, next) => {
       line_items,
       mode: 'payment',
       success_url: `${clientURL}/dashboard/orders?userId=${req.user?._id}`,
-      cancel_url: `${clientURL}/`,
+      cancel_url: `${clientURL}/dashboard/services`,
     })
 
     await createNotification({

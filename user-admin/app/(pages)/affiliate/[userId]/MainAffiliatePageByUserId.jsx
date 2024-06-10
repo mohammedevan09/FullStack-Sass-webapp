@@ -67,14 +67,16 @@ const MainAffiliatePageUserId = ({
         <h2 className="text-2xl font-medium">Referrals</h2>
         <div className="lg:w-full w-full bg-white rounded-[5px] px-7 py-2 mt-3 mb-8 overflow-x-scroll">
           <table className="w-full border-separate border-spacing-y-3">
-            <tbody>
+            <thead>
               <tr className="text-base tracking-tight text-left">
                 <th className="text-center">Name</th>
                 <th className="text-center">Total Project</th>
                 <th className="text-center">Total Spend</th>
               </tr>
+            </thead>
+            <tbody className="text-sm font-semibold text-zinc-700">
               {referredUsers?.map((item, i) => (
-                <tr className="text-base" key={i}>
+                <tr key={i}>
                   <td className="text-center">
                     <div className="lg:w-full w-[150px] mx-auto">
                       {item?.fullName}
@@ -109,7 +111,7 @@ const MainAffiliatePageUserId = ({
                 <th className="text-center">Commission</th>
               </tr>
             </thead>
-            <tbody className="lg:text-base text-sm font-medium text-zinc-600">
+            <tbody className="text-sm font-medium text-zinc-700">
               {orders?.map((item, i) => (
                 <tr key={i}>
                   <td className="lg:py-5 py-4 w-[120px] pr-2">

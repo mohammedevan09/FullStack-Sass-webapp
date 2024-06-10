@@ -4,7 +4,11 @@ import { GoogleOAuthProvider } from '@react-oauth/google'
 import { useEffect, useLayoutEffect } from 'react'
 import { setUsers } from './reducers/userReducer'
 import { useDispatch } from 'react-redux'
-import { getUserByIdApi, handleRefreshTokenApi } from '@/api/userApi'
+import {
+  getUserByIdApi,
+  handleRefreshTokenApi,
+  logoutUserApi,
+} from '@/api/userApi'
 import { useSelector } from 'react-redux'
 import { jwtDecode } from 'jwt-decode'
 import { addVisitorsAffiliateApi } from '@/api/affiliateApi'

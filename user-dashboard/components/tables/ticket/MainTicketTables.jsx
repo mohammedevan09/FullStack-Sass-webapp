@@ -12,7 +12,7 @@ const MainTicketTables = ({ tickets, userInfo }) => {
         ) : (
           <table className="w-full">
             <thead>
-              <tr className="text-zinc-700 lg:text-xl text-lg font-semibold tracking-tight text-left">
+              <tr className="lg:text-xl text-lg font-semibold tracking-tight text-left">
                 <th>ID</th>
                 <th>Title</th>
                 <th className="px-2">Project ID</th>
@@ -20,7 +20,7 @@ const MainTicketTables = ({ tickets, userInfo }) => {
                 <th className="text-center">Track</th>
               </tr>
             </thead>
-            <tbody className="lg:text-base text-sm font-medium text-zinc-600">
+            <tbody className="text-sm font-semibold text-zinc-700">
               {tickets?.map((item, i) => (
                 <tr key={i}>
                   <td className="lg:py-5 py-4 w-[120px] pr-4">

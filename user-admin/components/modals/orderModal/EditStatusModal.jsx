@@ -23,7 +23,7 @@ export const projectStatuses = [
 
 export const paymentStatuses = [
   { title: 'pending' },
-  { title: 'done' },
+  { title: 'paid' },
   { title: 'canceled' },
 ]
 
@@ -62,8 +62,8 @@ const EditStatus = ({ openModal, setOpenModal, order, setOrderData, link }) => {
         </h2>
         <div className="break-words flex items-start gap-1 text-xs font-semibold my-4 text-gray-400">
           <CheckSignIcon3 size={'30'} /> Only an admin can change this. If the
-          payment is proceeded by stripe then payment status edit will be hidden
-          for admin as well!
+          payment is Paid by stripe then payment status edit will be hidden for
+          admin as well!
         </div>
         <div className="bg-blue-100 h-[1px] w-full"></div>
         <StatusComp
@@ -74,7 +74,10 @@ const EditStatus = ({ openModal, setOpenModal, order, setOrderData, link }) => {
           StatusDrop={ProjectStatusDrop}
           statuses={projectStatuses}
         />
-        {order?.payment_method_types === 'manually' && (
+        {order?.payment_method_types === 'card' &&
+        order?.payment_status === 'paid' ? (
+          <></>
+        ) : (
           <StatusComp
             title={'Payment status'}
             setStatus={setPaymentStatus}

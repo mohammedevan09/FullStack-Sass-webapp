@@ -14,7 +14,7 @@ import { useSelector } from 'react-redux'
 const TakeAction = ({ order, orderChat, setValue, setOrderData, link }) => {
   const { userInfo } = useSelector((state) => state?.user)
 
-  const takeActionData = !userInfo?.creatorId
+  let takeActionData = !userInfo?.creatorId
     ? [
         { title: 'Edit  Status', type: 'EDIT_STATUS' },
         order?.status !== 'canceled'
@@ -29,6 +29,13 @@ const TakeAction = ({ order, orderChat, setValue, setOrderData, link }) => {
           ? { title: 'Cancel Service', type: 'CANCEL' }
           : { title: 'Renew Service', type: 'RENEW' },
       ]
+
+  takeActionData =
+    order?.__t === 'SubscriptionServiceOrder'
+      ? takeActionData.filter(
+          (item) => item.type !== 'CANCEL' && item.type !== 'RENEW'
+        )
+      : takeActionData
 
   const [dropOpen, setDropOpen] = useState(false)
   const [statusModal, setStatusModal] = useState(false)

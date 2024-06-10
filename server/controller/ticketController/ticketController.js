@@ -73,6 +73,15 @@ export const getAllTickets = async (req, res, next) => {
       {
         $limit: parseInt(limit),
       },
+      {
+        $project: {
+          title: 1,
+          _id: 1,
+          orderId: 1,
+          status: 1,
+          priority: 1,
+        },
+      },
     ]
 
     const accessOf = req.query?.access?.tickets?.accessOf || []

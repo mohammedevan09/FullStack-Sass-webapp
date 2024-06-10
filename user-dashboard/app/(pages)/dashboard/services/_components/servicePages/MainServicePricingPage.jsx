@@ -32,8 +32,7 @@ const MainServicePricingPage = ({ service, link }) => {
     defaultValues: {
       userId: userInfo?._id,
       serviceId: service?._id,
-      subscriptionRenew: setRenewalDate(),
-      subscriptionType: 'Monthly',
+      subscriptionType: 'monthly',
     },
 
     mode: 'onChange',
@@ -58,7 +57,6 @@ const MainServicePricingPage = ({ service, link }) => {
           link,
           userInfo?.token
         )
-        console.log(orderData)
         await createChat(
           'order',
           {

@@ -34,6 +34,7 @@ import proposalChatRouter from './router/proposalRouter/proposalChatRouter.js'
 import notificationRouter from './router/notificationRouter/notificationRouter.js'
 import messageNotificationRouter from './router/notificationRouter/messageNotificationRouter.js'
 import dashboardRouter from './router/dashboardRouter.js'
+import invoiceRouter from './router/invoiceRouter.js'
 
 dotenv.config()
 
@@ -86,6 +87,7 @@ app.use('/api/ticket', ticketRouter)
 app.use('/api/ticket/chat', ticketChatRouter)
 app.use('/api/proposal', proposalRouter)
 app.use('/api/proposal/chat', proposalChatRouter)
+app.use('/api/invoice', invoiceRouter)
 app.use('/api/feedbackCategory', feedbackCategoryRouter)
 app.use('/api/feedback', feedbackRouter)
 app.use('/api/affiliate', affiliateRouter)

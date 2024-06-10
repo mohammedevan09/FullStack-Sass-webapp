@@ -13,6 +13,24 @@ export const createOrderApi = async (sendData, link, token) => {
   return data?.data
 }
 
+export const renewOrCancelSubscriptionOrderApi = async (
+  sendData,
+  link,
+  token
+) => {
+  const authorizedToken = await IsAuthorized(token)
+  const data = await axios.put(
+    `${host}/api/order/subscriptionService/renew/${link}`,
+    sendData,
+    {
+      headers: {
+        Authorization: `Bearer ${authorizedToken}`,
+      },
+    }
+  )
+  return data?.data
+}
+
 export const getAllOrders = async (queryData, id = '') => {
   try {
     const data = await axios.get(`${host}/api/order/${id}`, {

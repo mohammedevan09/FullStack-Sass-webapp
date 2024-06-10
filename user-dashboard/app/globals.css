@@ -60,7 +60,7 @@
 
 .btn-hover:hover,
 .btn-hover:hover path {
-  background-color: white;
+  background-color: transparent;
   color: #1310c6;
   fill: #1310c6;
   font-weight: bold;

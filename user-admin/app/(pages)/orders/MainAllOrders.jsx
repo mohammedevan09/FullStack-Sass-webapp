@@ -9,7 +9,6 @@ import { useSelector } from 'react-redux'
 
 const MainAllOrders = ({ projects, subscriptions, hourlyData }) => {
   const { userInfo } = useSelector((state) => state?.user)
-
   return (
     <>
       <div className="mt-14 mb-10">
@@ -21,7 +20,7 @@ const MainAllOrders = ({ projects, subscriptions, hourlyData }) => {
           <MediumHeading
             title={'Normal Projects'}
             link={
-              // projects?.length > 4 &&
+              projects?.length > 4 &&
               `/orders/normalService?userId=${userInfo?._id}`
             }
           />
@@ -33,7 +32,7 @@ const MainAllOrders = ({ projects, subscriptions, hourlyData }) => {
           <MediumHeading
             title={'Subscriptions'}
             link={
-              // subscriptions?.length > 4 &&
+              subscriptions?.length > 4 &&
               `/orders/subscriptionService?userId=${userInfo?._id}`
             }
           />
@@ -44,7 +43,7 @@ const MainAllOrders = ({ projects, subscriptions, hourlyData }) => {
           <MediumHeading
             title={'Hourly Plans'}
             link={
-              // hourlyData?.length > 4 &&
+              hourlyData?.length > 4 &&
               `/orders/hourlyService?userId=${userInfo?._id}`
             }
           />

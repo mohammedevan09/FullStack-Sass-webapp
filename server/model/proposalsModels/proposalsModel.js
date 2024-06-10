@@ -45,7 +45,6 @@ const ProposalSchema = new mongoose.Schema(
     },
     payment_info: {
       customerId: String,
-      payment_intent: String,
       subscriptionId: String,
     },
     payment_method_types: {

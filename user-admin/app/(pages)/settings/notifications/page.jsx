@@ -48,7 +48,7 @@ export const emailNotifications = [
     type: 'invoiceAndProposal',
   },
   {
-    title: 'Send me subscription renew & due payment notification to my email',
+    title: 'Send me subscription notification to my email',
     type: 'subscription',
   },
   {

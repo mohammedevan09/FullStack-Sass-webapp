@@ -68,6 +68,16 @@ export const getAllProposals = async (req, res, next) => {
       {
         $limit: parseInt(limit),
       },
+      {
+        $project: {
+          _id: 1,
+          title: 1,
+          'details.isAccepted': 1,
+          'details.lastProposalBy': 1,
+          status: 1,
+          timeline: 1,
+        },
+      },
     ]
 
     const accessOf = req.query?.access?.proposals?.accessOf || []

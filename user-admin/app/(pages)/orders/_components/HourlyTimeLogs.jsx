@@ -72,7 +72,7 @@ const HourlyTimeLogs = ({
           <div className="px-7">
             <table className="w-full">
               <thead>
-                <tr className="text-zinc-700 lg:text-xl text-lg font-semibold tracking-tight text-left">
+                <tr className="lg:text-xl text-lg font-semibold tracking-tight text-left">
                   <th>#Tasks & Memo</th>
                   <th className="text-center">Time & Date</th>
                   <th className="text-center">Logged Hours</th>
@@ -86,7 +86,7 @@ const HourlyTimeLogs = ({
                   No Hourly Time Log created
                 </div>
               ) : (
-                <tbody className="text-sm font-semibold text-zinc-600">
+                <tbody className="text-sm font-semibold text-zinc-700">
                   {order?.hourlyTimeLogs?.map((item, i) => {
                     const currentTime = new Date().getTime()
                     const startDate = new Date(
@@ -99,9 +99,7 @@ const HourlyTimeLogs = ({
                       <tr key={i}>
                         <td className="py-4 w-[300px]">
                           <div className="grid justify-start items-center gap-[2px] w-[300px]">
-                            <div className="text-base font-semibold">
-                              {item?.task}
-                            </div>
+                            <div className="font-semibold">{item?.task}</div>
                             <div className="font-medium">{item?.memo}</div>
                           </div>
                         </td>

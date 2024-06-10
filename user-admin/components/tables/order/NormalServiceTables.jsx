@@ -12,7 +12,7 @@ const NormalServiceTables = ({ projects }) => {
         ) : (
           <table className="w-full">
             <thead>
-              <tr className="text-zinc-700 lg:text-xl text-lg font-semibold tracking-tight text-left">
+              <tr className="lg:text-xl text-lg font-semibold tracking-tight text-left">
                 <th>ID</th>
                 <th>Projects Name</th>
                 <th className="text-center">Status</th>
@@ -20,7 +20,7 @@ const NormalServiceTables = ({ projects }) => {
                 <th className="text-center">Track</th>
               </tr>
             </thead>
-            <tbody className="lg:text-base text-sm font-medium text-zinc-600">
+            <tbody className="text-sm font-semibold text-zinc-700">
               {projects?.map((item, i) => {
                 return (
                   <tr key={i}>

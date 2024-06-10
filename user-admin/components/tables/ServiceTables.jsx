@@ -15,7 +15,7 @@ const ServiceTables = ({ serviceData, title, link }) => {
       ) : (
         <table className="w-full">
           <thead>
-            <tr className="text-zinc-700 lg:text-xl text-lg font-semibold tracking-tight text-left">
+            <tr className="lg:text-xl text-lg font-semibold tracking-tight text-left">
               <th>ID</th>
               <th>Name</th>
               <th className="text-center">Icon</th>
@@ -24,7 +24,7 @@ const ServiceTables = ({ serviceData, title, link }) => {
               <th className="text-center">Action</th>
             </tr>
           </thead>
-          <tbody className="lg:text-base text-sm font-medium text-zinc-800">
+          <tbody className="text-sm font-semibold text-zinc-700">
             {serviceData?.map((item, i) => (
               <tr key={i}>
                 <td className="lg:py-5 py-4 w-[120px] pr-3">

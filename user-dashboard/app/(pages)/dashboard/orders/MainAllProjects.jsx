@@ -38,7 +38,7 @@ const MainAllProjects = ({ projects, subscriptions, hourlyData }) => {
           <MediumHeading
             title={'Normal Projects'}
             link={
-              // projects?.length > 4 &&
+              projects?.length > 4 &&
               `/dashboard/orders/normalService?userId=${userInfo?._id}`
             }
           />
@@ -50,7 +50,7 @@ const MainAllProjects = ({ projects, subscriptions, hourlyData }) => {
           <MediumHeading
             title={'Subscriptions'}
             link={
-              // subscriptions?.length > 4 &&
+              subscriptions?.length > 4 &&
               `/dashboard/orders/subscriptionService?userId=${userInfo?._id}`
             }
           />
@@ -61,7 +61,7 @@ const MainAllProjects = ({ projects, subscriptions, hourlyData }) => {
           <MediumHeading
             title={'Hourly Plans'}
             link={
-              // hourlyData?.length > 4 &&
+              hourlyData?.length > 4 &&
               `/dashboard/orders/hourlyService?userId=${userInfo?._id}`
             }
           />

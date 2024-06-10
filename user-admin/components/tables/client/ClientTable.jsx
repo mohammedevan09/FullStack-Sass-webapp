@@ -14,7 +14,7 @@ const ClientTable = ({ data }) => {
       ) : (
         <table className="w-full">
           <thead>
-            <tr className="text-zinc-700 lg:text-xl text-lg font-semibold tracking-tight text-left">
+            <tr className="lg:text-xl text-lg font-semibold tracking-tight text-left">
               <th>ID</th>
               <th>Full Name</th>
               <th>Email</th>
