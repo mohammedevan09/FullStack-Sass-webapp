@@ -21,7 +21,7 @@ const MainOneProposal = ({ data, chat }) => {
     <div className="sm:my-14 my-8 sm:px-4 xs:px-3 px-1">
       <BackButton link={'/proposals'} title={'Go Back'} />
       <div className="sm:flex grid md:justify-between items-start mb-10 gap-3 font-medium">
-        <div className="grid gap-3 svg-shadow bg-white md:w-[500px] w-full rounded-2xl p-5 relative overflow-hidden">
+        <div className="grid gap-3 svg-shadow bg-white md:w-[500px] w-full rounded-2xl p-5 relative overflow-hidden font-medium">
           <h1 className="text-xl font-semibold max-w-[310px]">{data?.title}</h1>
           <div className="grid gap-3 text-sm">
             <h6>

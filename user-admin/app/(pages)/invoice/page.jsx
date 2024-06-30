@@ -9,6 +9,7 @@ const page = async ({ searchParams }) => {
   return (
     <div className="sm:my-14 my-8">
       <ProjectHeading title={'All Invoices'} />
+
       <div className="bg-white rounded-[20px] sm:my-8 my-6 pt-6 pb-4 grid gap-4 overflow-x-hidden">
         <InvoiceTable invoices={invoices} />
         <TablePagination pageCount={invoices?.totalDocsCount} />

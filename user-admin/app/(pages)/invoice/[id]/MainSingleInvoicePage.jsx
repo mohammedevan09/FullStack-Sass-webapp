@@ -10,17 +10,9 @@ import OrderBasicInfo from '../../orders/_components/OrderBasicInfo'
 import { getColorClass, makeCapitalize } from '@/utils/StatusColor'
 import { ErrorIcon, SpentHoursIcon } from '@/staticData/Icon'
 import BackButton from '@/components/others/BackButton'
-import { payNowOrderOrProposalApi } from '@/api/invoiceApi'
-import { useSelector } from 'react-redux'
-import { showTeamMemberErrorToast } from '@/utils/toastUtils'
-import toast from 'react-hot-toast'
-import { useRouter } from 'next/navigation'
 
 const MainSingleInvoicePage = ({ invoice, searchParams, params }) => {
   const contentRef = useRef(null)
-
-  const router = useRouter()
-  const { userInfo } = useSelector((state) => state?.user)
 
   const downloadPdf = () => {
     const input = contentRef.current
@@ -34,30 +26,9 @@ const MainSingleInvoicePage = ({ invoice, searchParams, params }) => {
     })
   }
 
-  const handlePay = async (e) => {
-    e.preventDefault()
-    if (userInfo?.creatorId) {
-      return showTeamMemberErrorToast()
-    }
-    try {
-      const data = await payNowOrderOrProposalApi(
-        { ...searchParams },
-        params?.id,
-        userInfo?.token
-      )
-      if (data?.url) {
-        router.push(data?.url)
-      } else {
-        router.push(`/dashboard/invoice?userId=${userInfo?._id}`)
-      }
-    } catch (error) {
-      toast.error(<b>You cannot pay now!</b>)
-    }
-  }
-
   return (
     <div className="max-w-[900px] mx-auto">
-      <BackButton link={'/dashboard/invoice'} title={'Go back'} />
+      <BackButton link={'/invoice'} title={'Go back'} />
       <div className="md:flex grid md:justify-between items-end gap-6 mb-6">
         {invoice?.serviceId?._id ? (
           <OrderBasicInfo order={invoice} service={invoice?.serviceId} />
@@ -102,15 +73,8 @@ const MainSingleInvoicePage = ({ invoice, searchParams, params }) => {
       {invoice?.payment_status !== 'paid' && (
         <div className="bg-rose-400 bg-opacity-20 py-2 px-3 flex justify-between gap-4 rounded-lg font-medium text-sm my-5">
           <div className="flex items-center gap-1">
-            <ErrorIcon color={'red'} /> Your payment is required. Pay with your
-            Debit/Credit card to Run this Project!
+            <ErrorIcon color={'red'} /> Wait for your client to pay!
           </div>
-          <button
-            className="py-1 px-3 rounded-md font-semibold btn-hover"
-            onClick={handlePay}
-          >
-            Pay Now
-          </button>
         </div>
       )}
       <div className="grid bg-white rounded-none gap-5 font-medium overflow-x-scroll mx-auto">

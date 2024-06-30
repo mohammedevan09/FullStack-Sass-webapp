@@ -34,7 +34,12 @@ const TakeAction = ({ order, orderChat, setOrderData, link }) => {
 
   const handleClick = (item) => {
     if (item?.type === 'CANCEL' || item?.type === 'RENEW') {
-      setCancelModal(true)
+      e.preventDefault()
+      if (userInfo?.creatorId) {
+        return showTeamMemberErrorToast()
+      } else {
+        setCancelModal(true)
+      }
     } else if (item?.type === 'ACCESS') {
       if (userInfo?.creatorId) {
         return showTeamMemberErrorToast()

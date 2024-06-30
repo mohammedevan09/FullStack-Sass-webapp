@@ -31,7 +31,6 @@ const MoreInfo = ({ data }) => {
       >
         {Object.entries({
           Description: data?.description,
-
           Timeline: `${data?.timeline} Days`,
           'Total Amount': `$${data?.totalAmount}`,
           'Payment Method': makeCapitalize(data?.payment_method_types),
@@ -64,6 +63,8 @@ const MoreInfo = ({ data }) => {
           'Resources Required':
             data?.details?.scope_of_work?.resources_required,
           'User ID': `#${data?.userId}`,
+          'Customer ID': data?.payment_info?.customerId,
+          'Payment Phone': data?.payment_info?.['Payment Phone'],
           'Created At': formatDate(data?.createdAt),
           'Updated At': formatDate(data?.updatedAt),
         })?.map(([key, value], i) => {

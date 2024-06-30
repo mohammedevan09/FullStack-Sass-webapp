@@ -1,3 +1,6 @@
+import dotenv from 'dotenv'
+dotenv.config()
+
 import { Types } from 'mongoose'
 import Order from '../../model/orderModels/orderModel.js'
 import { sendResponse } from '../../utils/sendResponse.js'

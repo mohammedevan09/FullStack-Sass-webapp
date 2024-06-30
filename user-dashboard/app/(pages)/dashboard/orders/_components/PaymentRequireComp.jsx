@@ -2,6 +2,7 @@
 
 import { renewOrCancelSubscriptionOrderApi } from '@/api/orderApi'
 import { ErrorIcon } from '@/staticData/Icon'
+import { showTeamMemberErrorToast } from '@/utils/toastUtils'
 import { useRouter } from 'next/navigation'
 import { useSelector } from 'react-redux'
 
@@ -11,6 +12,10 @@ const PaymentRequireComp = ({ params }) => {
   const { userInfo } = useSelector((state) => state?.user)
 
   const handleRenew = async (e) => {
+    e.preventDefault()
+    if (userInfo?.creatorId) {
+      return showTeamMemberErrorToast()
+    }
     try {
       e.preventDefault()
       const orderData = await renewOrCancelSubscriptionOrderApi(

@@ -81,7 +81,7 @@ const GiveTeamAccessModal = ({
 
   return (
     <WrappingModal modalOpen={openModal}>
-      <div className="grid bg-white pt-8 pb-6 px-8 rounded-[20px] relative">
+      <div className="grid bg-white pt-8 pb-6 px-8 rounded-[20px] relative w-full">
         <h3 className="sm:text-2xl text-base font-semibold tracking-tight mx-auto mb-8">
           Select Team member you want to give access to.
         </h3>

@@ -47,7 +47,12 @@ const TakeAction = ({ order, orderChat, setValue, setOrderData, link }) => {
     if (item?.type === 'EDIT_STATUS') {
       setStatusModal(true)
     } else if (item?.type === 'CANCEL' || item?.type === 'RENEW') {
-      setCancelModal(true)
+      e.preventDefault()
+      if (userInfo?.creatorId) {
+        return showTeamMemberErrorToast()
+      } else {
+        setCancelModal(true)
+      }
     } else if (item?.type === 'ACCESS') {
       if (userInfo?.creatorId) {
         return showTeamMemberErrorToast()

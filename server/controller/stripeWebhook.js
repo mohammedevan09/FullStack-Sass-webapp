@@ -6,6 +6,7 @@ import { createStripeOrder } from './orderController/orderController.js'
 import Order from '../model/orderModels/orderModel.js'
 import { createNotification } from './notificationController/notificationController.js'
 import { generateCustomDate } from '../utils/generateDate.js'
+import { createStripeProposalOrder } from './proposalsController/proposalController.js'
 
 export const stripe = Stripe(process.env.SECURITY_KEY)
 
@@ -50,7 +51,11 @@ export const stripeWebhook = async (req, res, next) => {
         stripe.customers
           .retrieve(data.customer)
           .then((customer) => {
-            createStripeOrder(customer, data, res)
+            if (customer?.metadata?.orderId) {
+              createStripeOrder(customer, data, res)
+            } else {
+              createStripeProposalOrder(customer, data, res)
+            }
           })
           .catch((err) => {
             res.status(500).send(`Error retrieving customer: ${err.message}`)
@@ -169,9 +174,35 @@ export const stripeWebhook = async (req, res, next) => {
 
         await order.save()
 
-        return res.status(201).json({ message: 'Order deleted successfully' })
+        return res.status(201).json({ message: 'Order canceled successfully' })
+      } else if (data?.status === 'past_due' || data?.status === 'unpaid') {
+        order.status = 'pending'
+        order.payment_status = 'pending'
+
+        order.events = order?.events?.find(
+          (item) => item?.eventType === 'canceled'
+        )
+          ? order.events.map((event) =>
+              event.eventType === 'canceled'
+                ? {
+                    eventType: 'canceled',
+                    eventDate: customDate,
+                  }
+                : event
+            )
+          : [
+              ...order.events,
+              {
+                eventType: 'canceled',
+                eventDate: customDate,
+              },
+            ]
+        await order.save()
+
+        return res.status(201).json({ message: 'Order canceled' })
       } else {
         order.status = 'running'
+        order.payment_status = 'paid'
         order.startTime = new Date(data?.current_period_start * 1000)
         order.endTime = new Date(data?.current_period_end * 1000)
 

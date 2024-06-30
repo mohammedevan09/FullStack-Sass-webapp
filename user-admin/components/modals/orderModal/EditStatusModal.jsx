@@ -74,8 +74,9 @@ const EditStatus = ({ openModal, setOpenModal, order, setOrderData, link }) => {
           StatusDrop={ProjectStatusDrop}
           statuses={projectStatuses}
         />
-        {order?.payment_method_types === 'card' &&
-        order?.payment_status === 'paid' ? (
+        {(order?.payment_method_types === 'card' &&
+          order?.payment_status === 'paid') ||
+        order?.__t === 'SubscriptionServiceOrder' ? (
           <></>
         ) : (
           <StatusComp

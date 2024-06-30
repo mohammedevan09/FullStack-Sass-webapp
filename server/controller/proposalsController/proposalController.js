@@ -29,6 +29,39 @@ export const createProposal = async (req, res, next) => {
   }
 }
 
+export const createStripeProposalOrder = async (customer, data, res) => {
+  try {
+    const proposal = await Proposal.findById(customer?.metadata?.proposalId)
+
+    if (!proposal) {
+      return res.status(404).json({ message: 'Proposal not found!' })
+    }
+
+    proposal.payment_info = {
+      customerId: data?.customer,
+      'Payment Phone': data?.customer_details?.phone,
+    }
+    proposal.payment_status = data?.payment_status
+    proposal.payment_method_types = data?.payment_method_types[0]
+    proposal.status = 'running'
+
+    await proposal.save()
+
+    await updateNotification({
+      content: proposal?.description,
+      title: `A proposal name "${proposal?.title}"`,
+      type: 'Proposal',
+      to: 'invoiceAndProposal',
+      id: proposal?._id,
+      userId: proposal.userId,
+    })
+
+    return res.status(201).json({ message: 'Proposal completed successfully' })
+  } catch (error) {
+    return res.status(500).json({ message: error?.message })
+  }
+}
+
 export const getAllProposals = async (req, res, next) => {
   try {
     let query = {}
